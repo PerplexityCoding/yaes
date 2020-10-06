@@ -1,5 +1,5 @@
 const getCurrentTab = jest.fn();
 const openChromeUrl = jest.fn();
-const getCurrentUrl = jest.fn();
+const openOptionsPage = jest.fn();
 
-export { getCurrentUrl, getCurrentTab, openChromeUrl };
+export { getCurrentTab, openChromeUrl, openOptionsPage };

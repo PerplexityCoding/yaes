@@ -21,3 +21,9 @@ export function openChromeUrl(tab, url, inNewTab) {
     }
   }
 }
+
+export function openOptionsPage() {
+  if (window.chrome) {
+    window.chrome.tabs.create({ url: "/options.html" });
+  }
+}
