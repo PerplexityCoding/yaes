@@ -25,5 +25,8 @@ npm run test:unit
 npm run lint
 ```
 
+### Release
+VERSION=x.y.z npm run release
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
