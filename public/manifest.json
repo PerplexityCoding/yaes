@@ -5,7 +5,8 @@
   "description": "Yet Another Environment Switcher",
   "permissions": [
     "declarativeContent",
-    "tabs"
+    "tabs",
+    "storage"
   ],
   "page_action": {
     "default_popup": "popup.html",
