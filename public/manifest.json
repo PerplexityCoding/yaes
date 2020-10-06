@@ -27,9 +27,6 @@
     "192": "assets/images/android-chrome-192x192.png",
     "512": "assets/images/android-chrome-512x512.png"
   },
-  "web_accessible_resources": [
-    "*.png"
-  ],
   "background": {
     "scripts": ["js/background.js"],
     "persistent": false
