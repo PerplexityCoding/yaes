@@ -32,10 +32,14 @@ export default {
   async created() {
     const currentTab = await getCurrentTab();
     const url = new URL(currentTab.url);
-    this.envs = JSON.parse(await storageGetValue("envs"));
-    this.currentEnv = this.envs.find(env => {
-      return new URL(env.url).hostname === url.hostname;
-    });
+    const envsString = await storageGetValue("envs");
+
+    this.envs = envsString && JSON.parse(envsString);
+    this.currentEnv =
+      this.envs &&
+      this.envs.find(env => {
+        return new URL(env.url).hostname === url.hostname;
+      });
 
     this.loaded = true;
   },
