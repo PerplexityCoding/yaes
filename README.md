@@ -1,4 +1,4 @@
-# yaes
+# yaes : Yet Another Environment Switcher
 
 ## Project setup
 ```
