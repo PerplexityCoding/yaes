@@ -5,23 +5,19 @@ describe("EnvList.vue", () => {
   function createDefaultWrapper() {
     const envs = [
       {
-        id: 1,
         name: "FR",
         url: "https://www.google.fr/"
       },
       {
-        id: 2,
         name: "DE",
         url: "https://www.google.de/"
       },
       {
-        id: 3,
         name: "ES",
         url: "https://www.google.es/"
       }
     ];
     const currentEnv = {
-      id: 2,
       name: "DE",
       url: "https://www.google.de/"
     };
@@ -56,7 +52,6 @@ describe("EnvList.vue", () => {
 
     const { env, middle } = wrapper.emitted()["switch-env"][0][0];
     expect(env).toEqual({
-      id: 1,
       name: "FR",
       url: "https://www.google.fr/"
     });
@@ -72,7 +67,6 @@ describe("EnvList.vue", () => {
 
     const { env, middle } = wrapper.emitted()["switch-env"][0][0];
     expect(env).toEqual({
-      id: 1,
       name: "FR",
       url: "https://www.google.fr/"
     });

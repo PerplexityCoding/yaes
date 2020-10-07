@@ -1,8 +1,8 @@
 <template>
   <ul class="env-list">
-    <li v-for="env in envs" :key="env.id">
+    <li v-for="env in envs" :key="env.url">
       <button
-        :class="{ selected: env.id === currentEnv.id }"
+        :class="{ selected: equalsEnv(env, currentEnv) }"
         @click.middle="$emit('switch-env', { env, middle: true })"
         @click="$emit('switch-env', { env })"
       >
@@ -20,16 +20,23 @@ export default {
       type: Array,
       required: true,
       validator: a =>
-        a.reduce((acc, o) => acc && o.name != null && o.id != null, true)
+        a.reduce((acc, o) => acc && o.name != null, true)
     },
     currentEnv: {
       type: Object,
       required: true,
-      validator: o => o.name != null && o.id != null
+      validator: o => o.name != null
     }
   },
   data() {
     return {};
+  },
+  methods: {
+    equalsEnv(env1, env2) {
+      const url1 = new URL(env1.url);
+      const url2 = new URL(env2.url);
+      return url1.hostname === url2.hostname;
+    }
   }
 };
 </script>

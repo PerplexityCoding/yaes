@@ -22,7 +22,6 @@ export default {
       this.envs = JSON.stringify(
         [
           {
-            id: 1,
             name: "FR",
             url: "https://www.google.fr/sdfsdf"
           }
@@ -30,6 +29,7 @@ export default {
         null,
         4
       );
+      this.save();
     }
   },
   methods: {
