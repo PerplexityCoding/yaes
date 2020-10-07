@@ -20,9 +20,17 @@ describe("EnvList.vue", () => {
         url: "https://www.google.es/"
       }
     ];
+    const currentEnv = {
+      id: 2,
+      name: "DE",
+      url: "https://www.google.de/"
+    };
 
     const wrapper = shallowMount(EnvList, {
-      props: { envs }
+      props: {
+        envs,
+        currentEnv
+      }
     });
 
     return wrapper;
@@ -35,6 +43,7 @@ describe("EnvList.vue", () => {
     expect(buttons).toHaveLength(3);
     expect(buttons[0].text()).toContain("FR");
     expect(buttons[1].text()).toContain("DE");
+    expect(buttons[1].classes()).toContain("selected");
     expect(buttons[2].text()).toContain("ES");
   });
 

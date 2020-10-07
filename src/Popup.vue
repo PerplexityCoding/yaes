@@ -1,6 +1,11 @@
 <template>
   <section class="popin" v-if="loaded">
-    <EnvList v-if="currentEnv" :envs="envs" @switch-env="switchEnv" />
+    <EnvList
+      v-if="currentEnv"
+      :envs="envs"
+      :current-env="currentEnv"
+      @switch-env="switchEnv"
+    />
     <div v-else>
       No environment has been found with this domain name. <br />
       Manage your
