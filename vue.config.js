@@ -1,13 +1,13 @@
 module.exports = {
   pages: {
     popup: {
-      title: "Book-Keeper",
+      title: "YAES - Popup",
       entry: "src/popup.js",
       template: "public/popup.html",
       filename: "popup.html"
     },
     options: {
-      title: "Book-Keeper",
+      title: "YAES - Options",
       entry: "src/options.js",
       template: "public/options.html",
       filename: "options.html"
