@@ -8,7 +8,7 @@
     "test:unit": "jest",
     "test:unit:watch": "jest --watchAll",
     "lint": "vue-cli-service lint",
-    "build": "npm run build:app && npm run build:contentScript",
+    "build": "npm run build:app && npm run build:content-script",
     "build:app": "vue-cli-service build",
     "build:app:watch": "npm run build:app -- --no-clean --mode development --watch",
     "build:content-script": "vue-cli-service build --target lib --name content-script --dest dist/js --no-clean src/content-script.js",
