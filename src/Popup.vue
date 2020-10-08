@@ -1,11 +1,13 @@
 <template>
   <section class="popin" v-if="loaded">
-    <EnvList
-      v-if="currentEnv"
-      :envs="envs"
-      :current-env="currentEnv"
-      @switch-env="switchEnv"
-    />
+    <div v-if="currentEnv">
+      <EnvList
+        :envs="envs"
+        :current-env="currentEnv"
+        @switch-env="switchEnv"
+      />
+      <a href="#/options" @click="openOptionsPage"> Edit Configuration </a>
+    </div>
     <div v-else>
       No environment has been found with this domain name. <br />
       Manage your
@@ -29,6 +31,7 @@ export default {
   components: { EnvList },
   data() {
     return {
+      config: {},
       envs: [],
       currentEnv: null,
       loaded: false
@@ -37,9 +40,10 @@ export default {
   async created() {
     const currentTab = await getCurrentTab();
     const url = new URL(currentTab.url);
-    const envsString = await storageGetValue("envs");
+    const config = await storageGetValue("config");
 
-    this.envs = envsString && JSON.parse(envsString);
+    this.config = config && JSON.parse(config);
+    this.envs = this.config && this.config.envs;
     this.currentEnv =
       this.envs &&
       this.envs.find(env => {

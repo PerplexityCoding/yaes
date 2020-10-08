@@ -7,9 +7,10 @@
       </h1>
 
       <div class="title">
-        Environments Configuration:
+        Configuration:
       </div>
-      <textarea class="envs" v-model="envs" @change="envsChanged" />
+
+      <div ref="jsonEditor"></div>
     </section>
     <div v-if="info" class="info">
       {{ info }}
@@ -19,48 +20,67 @@
 
 <script>
 import { storageGetValue, storageSet } from "@/services/chrome/storage";
+import JSONEditor from "jsoneditor";
 
 export default {
   name: "OptionsPage",
   data() {
     return {
       info: null,
-      envs: null
+      config: null
     };
   },
   async created() {
-    this.envs = await storageGetValue("envs");
+    const config = await storageGetValue("config");
 
-    if (!this.envs) {
-      this.envs = JSON.stringify(
-        [
+    if (config) {
+      this.config = JSON.parse(config);
+    } else {
+      this.config = {
+        envs: [
           {
             name: "FR",
-            url: "https://www.google.fr/sdfsdf"
+            url: "https://www.google.fr/",
+            ribbon: {
+              color: "FF1234",
+              position: "left"
+            }
           }
-        ],
-        null,
-        4
-      );
+        ]
+      };
       this.save();
     }
+
+    const editor = new JSONEditor(this.$refs.jsonEditor, {
+      onBlur: () => {
+        this.config = editor.get();
+        this.configChanged();
+      },
+      modes: ["tree", "form", "code"]
+    });
+    editor.set(this.config);
+    editor.expandAll();
   },
   methods: {
-    envsChanged() {
-      this.save();
+    configChanged() {
       this.info = "Saved !";
+      this.save();
       setTimeout(() => {
         this.info = null;
       }, 3000);
     },
     save() {
       storageSet({
-        envs: this.envs
+        config: JSON.stringify(this.config)
       });
     }
   }
 };
 </script>
+
+<style src="jsoneditor/dist/jsoneditor.css">
+/* global styles */
+</style>
 
 <style lang="scss" scoped>
 .options {
@@ -88,7 +108,7 @@ export default {
     padding: 3px 0;
   }
 
-  .envs {
+  .config {
     flex: 1;
     min-height: 300px;
   }

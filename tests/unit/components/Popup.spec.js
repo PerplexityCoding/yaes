@@ -15,23 +15,25 @@ import { storageGetValue } from "@/services/chrome/storage";
 
 function mockStorageEnvGet() {
   storageGetValue.mockReturnValue(
-    JSON.stringify([
-      {
-        id: 1,
-        name: "FR",
-        url: "https://www.google.fr/sdfsdf"
-      },
-      {
-        id: 2,
-        name: "DE",
-        url: "https://www.google.de/sdfsdf"
-      },
-      {
-        id: 3,
-        name: "ES",
-        url: "https://www.google.es/"
-      }
-    ])
+    JSON.stringify({
+      envs: [
+        {
+          id: 1,
+          name: "FR",
+          url: "https://www.google.fr/sdfsdf"
+        },
+        {
+          id: 2,
+          name: "DE",
+          url: "https://www.google.de/sdfsdf"
+        },
+        {
+          id: 3,
+          name: "ES",
+          url: "https://www.google.es/"
+        }
+      ]
+    })
   );
 }
 

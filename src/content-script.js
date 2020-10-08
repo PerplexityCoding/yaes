@@ -5,12 +5,12 @@ function main() {
 }
 
 async function verifyCurrentUrl() {
-  const envsString = await storageGetValue("envs");
-  if (!envsString) {
+  const configString = await storageGetValue("config");
+  if (!configString) {
     return;
   }
 
-  const envs = JSON.parse(envsString);
+  const envs = JSON.parse(configString).envs;
   for (const env of envs) {
     const hostname = new URL(env.url).hostname;
     if (window.location.hostname === hostname) {
