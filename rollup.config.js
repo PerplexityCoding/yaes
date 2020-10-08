@@ -1,7 +1,7 @@
 import alias from "rollup-plugin-alias";
 import commonjs from "rollup-plugin-commonjs";
 import VuePlugin from "rollup-plugin-vue";
-import scss from 'rollup-plugin-scss'
+import styles from "rollup-plugin-styles";
 
 export default {
   input: "src/content-main.js",
@@ -11,10 +11,8 @@ export default {
   },
   plugins: [
     commonjs(),
-    VuePlugin({
-      css: false
-    }),
-    scss(),
+    VuePlugin(),
+    styles(),
     alias({
       resolve: [".js", ".ts"],
       entries: [
