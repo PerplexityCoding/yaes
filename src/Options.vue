@@ -42,7 +42,7 @@ export default {
             name: "FR",
             url: "https://www.google.fr/",
             ribbon: {
-              color: "FF1234",
+              color: "#d74a59",
               position: "left"
             }
           }
@@ -56,7 +56,7 @@ export default {
         this.config = editor.get();
         this.configChanged();
       },
-      modes: ["tree", "form", "code"]
+      modes: ["tree", "code"]
     });
     editor.set(this.config);
     editor.expandAll();
@@ -110,7 +110,7 @@ export default {
 
   .config {
     flex: 1;
-    min-height: 500px;
+    height: 500px;
   }
 
   .info {

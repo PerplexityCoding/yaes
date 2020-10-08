@@ -1,4 +1,5 @@
 import { storageGetValue } from "@/services/chrome/storage";
+import renderRibbon from "./components/Ribbon.js";
 
 function main() {
   verifyCurrentUrl();
@@ -14,11 +15,7 @@ async function verifyCurrentUrl() {
   for (const env of envs) {
     const hostname = new URL(env.url).hostname;
     if (window.location.hostname === hostname) {
-      const src = window.chrome.runtime.getURL("js/content-main.esm.js");
-      const module = await import(/* webpackIgnore: true */ src);
-      module.addComponent("yaes-ribbon", module.Ribbon, {
-        env
-      });
+      renderRibbon(env);
     }
   }
 }

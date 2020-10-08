@@ -1,11 +1,7 @@
 <template>
   <section class="popin" v-if="loaded">
     <div v-if="currentEnv">
-      <EnvList
-        :envs="envs"
-        :current-env="currentEnv"
-        @switch-env="switchEnv"
-      />
+      <EnvList :envs="envs" :current-env="currentEnv" @switch-env="switchEnv" />
       <a href="#/options" @click="openOptionsPage"> Edit Configuration </a>
     </div>
     <div v-else>
