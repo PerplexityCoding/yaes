@@ -14,8 +14,9 @@ async function verifyCurrentUrl() {
   const envs = JSON.parse(configString).envs;
   for (const env of envs) {
     const hostname = new URL(env.url).hostname;
-    if (window.location.hostname === hostname) {
+    if (window.location.hostname === hostname && env.ribbon) {
       renderRibbon(env);
+      break;
     }
   }
 }
