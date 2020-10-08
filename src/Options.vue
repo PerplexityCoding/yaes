@@ -10,7 +10,7 @@
         Configuration:
       </div>
 
-      <div ref="jsonEditor"></div>
+      <div ref="jsonEditor" class="config"></div>
     </section>
     <div v-if="info" class="info">
       {{ info }}
@@ -110,7 +110,7 @@ export default {
 
   .config {
     flex: 1;
-    min-height: 300px;
+    min-height: 500px;
   }
 
   .info {
