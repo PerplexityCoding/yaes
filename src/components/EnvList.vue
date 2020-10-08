@@ -19,8 +19,7 @@ export default {
     envs: {
       type: Array,
       required: true,
-      validator: a =>
-        a.reduce((acc, o) => acc && o.name != null, true)
+      validator: a => a.reduce((acc, o) => acc && o.name != null, true)
     },
     currentEnv: {
       type: Object,

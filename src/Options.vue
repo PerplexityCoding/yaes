@@ -9,11 +9,7 @@
       <div class="title">
         Environments Configuration:
       </div>
-      <textarea
-        class="envs"
-        v-model="envs"
-        @change="envsChanged"
-      />
+      <textarea class="envs" v-model="envs" @change="envsChanged" />
     </section>
     <div v-if="info" class="info">
       {{ info }}
@@ -87,7 +83,7 @@ export default {
   }
 
   .title {
-    font-size: 0.90rem;
+    font-size: 0.9rem;
     font-weight: bold;
     padding: 3px 0;
   }
