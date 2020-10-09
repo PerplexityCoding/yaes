@@ -34,8 +34,7 @@
   "content_scripts": [
     {
       "matches": [
-        "http://*/",
-        "https://*/"
+        "<all_urls>"
       ],
       "js": ["js/content-script.umd.js"]
     }
