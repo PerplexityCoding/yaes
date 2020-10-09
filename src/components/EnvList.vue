@@ -30,6 +30,7 @@ export default {
       validator: o => o.name != null
     }
   },
+  emits: ["switch-env"],
   data() {
     return {};
   },
