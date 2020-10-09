@@ -8,11 +8,14 @@
       <EnvList :envs="envs" :current-env="currentEnv" @switch-env="switchEnv" />
     </div>
     <div v-else class="info">
-      No environment has been found with this domain name. Click on following link to continue.
+      No environment has been found with this domain name. Click on following
+      link to continue.
     </div>
     <footer>
       <a href="#/options" @click="openOptionsPage"> Edit Configuration </a>
-      <a href="https://github.com/ymenard-dev/yaes" target="_blank"> Homepage </a>
+      <a href="https://github.com/ymenard-dev/yaes" target="_blank">
+        Homepage
+      </a>
     </footer>
   </section>
 </template>
