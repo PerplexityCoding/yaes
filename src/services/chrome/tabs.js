@@ -2,7 +2,6 @@ export function getCurrentTab() {
   return new Promise(success => {
     if (window.chrome) {
       window.chrome.tabs.query({ currentWindow: true, active: true }, tabs => {
-        console.log(tabs[0].url);
         success(tabs[0]);
       });
     }

@@ -49,8 +49,6 @@ function renderRibbonHtml(env) {
 
   const backgroundColor = env?.ribbon?.color || "#2f2f2f";
 
-  console.log(env);
-
   elem.innerHTML = ribbonH({
     name: env.name,
     position: env?.ribbon?.position || "right",
