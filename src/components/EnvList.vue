@@ -46,21 +46,28 @@ export default {
 <style lang="scss" scoped>
 .env-list {
   min-width: 250px;
-  min-height: 100px;
 }
 
 ul {
-  padding: 0;
+  padding: 10px 7px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 
   li {
     display: flex;
     list-style: none;
-    margin: 7px 5px;
+    padding: 0;
+
+    + li {
+      padding-top: 7px;
+    }
 
     button {
       appearance: none;
       border-radius: 5px;
-      border: 1px solid #d8d8d8;
+      border: 1px solid #e4e4e4;
       padding: 5px 8px 5px 13px;
       flex: 1;
       text-align: left;
