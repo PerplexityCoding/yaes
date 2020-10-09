@@ -70,6 +70,10 @@ export default {
 };
 </script>
 
+<style lang="scss">
+@import "@/styles/variables.scss";
+</style>
+
 <style lang="scss" scoped>
 .popin {
   min-width: 250px;
@@ -84,8 +88,8 @@ export default {
 }
 
 header {
-  border-bottom: 1px solid #e4e4e4;
-  background-color: #f2f2f2;
+  border-bottom: 1px solid var(--border-grey);
+  background-color: var(--bg-grey);
   padding: 7px;
   display: flex;
 
@@ -96,14 +100,14 @@ header {
 }
 
 footer {
-  border-top: 1px solid #e4e4e4;
-  background-color: #f2f2f2;
+  border-top: 1px solid var(--border-grey);
+  background-color: var(--bg-grey);
   padding: 7px;
   display: flex;
   justify-content: space-between;
 
   a {
-    color: #2677c9;
+    color: var(--blue);
     text-decoration: none;
 
     &:hover {

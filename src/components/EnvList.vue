@@ -68,18 +68,18 @@ ul {
     button {
       appearance: none;
       border-radius: 5px;
-      border: 1px solid #e4e4e4;
+      border: 1px solid var(--border-grey);
       padding: 5px 8px 5px 13px;
       flex: 1;
       text-align: left;
       cursor: pointer;
       display: flex;
       align-items: center;
-      background-color: #efece9;
+      background-color: var(--bg-grey);
       transition: background-color 0.7s ease;
 
       &:hover {
-        background-color: #dbebfb;
+        background-color: var(--bg-grey-hover);
       }
 
       > .env-name {
@@ -87,18 +87,18 @@ ul {
       }
 
       &.selected {
-        border-left-color: #2677c9;
+        border-left-color: var(--blue);
         border-left-width: 5px;
         padding-left: 8px;
         font-weight: bold;
-        background-color: #fff3e3;
+        background-color: var(--bg-yellow);
 
         .selected-pill {
           display: block;
           border-radius: 50px;
           height: 12px;
           width: 12px;
-          background-color: #2677c9;
+          background-color: var(--blue);
         }
       }
     }

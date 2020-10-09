@@ -82,7 +82,13 @@ export default {
 /* global styles */
 </style>
 
+<style lang="scss">
+@import "@/styles/variables.scss";
+</style>
+
 <style lang="scss" scoped>
+@import "@/styles/variables.scss";
+
 .options {
   max-width: 800px;
   margin: 0 auto;
@@ -116,7 +122,7 @@ export default {
   .info {
     display: inline-block;
     border-radius: 3px;
-    background-color: #057705;
+    background-color: var(--green);
     color: white;
     padding: 5px 10px;
     margin-top: 5px;
