@@ -53,8 +53,10 @@ export default {
 
     const editor = new JSONEditor(this.$refs.jsonEditor, {
       onBlur: () => {
-        this.config = editor.get();
-        this.configChanged();
+        const config = editor.getText();
+        if (config) {
+          this.configChanged(config);
+        }
       },
       modes: ["tree", "code"]
     });
@@ -62,16 +64,16 @@ export default {
     editor.expandAll();
   },
   methods: {
-    configChanged() {
+    configChanged(config) {
       this.info = "Saved !";
-      this.save();
+      this.save(config);
       setTimeout(() => {
         this.info = null;
       }, 3000);
     },
-    save() {
+    save(config) {
       storageSet({
-        config: JSON.stringify(this.config)
+        config
       });
     }
   }
