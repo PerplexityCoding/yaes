@@ -27,11 +27,31 @@ const ribbonCss = `
     -webkit-transform: rotate(45deg);
     transform: rotate(45deg);
   }
+
+  .square-ribbon {
+    color: #fff;
+    position: fixed;
+    text-align: center;
+    top: 2px;
+    z-index: 99999;
+    font-size: 18px;
+    box-shadow: 0px 2px 5px #2f2f2f;
+    padding: 6px 12px;
+  }
+
+  .square-ribbon.left {
+    left: 2px;
+  }
+
+  .square-ribbon.right {
+    right: 2px;
+    left: auto;
+  }
 `;
 
-const ribbonH = ({ name, color, backgroundColor, position }) => `
+const ribbonH = ({ name, color, backgroundColor, position, type }) => `
   <div
-    class="corner-ribbon ${position}"
+    class="${type} ${position}"
     style="background-color: ${backgroundColor}; color: ${color};"
   >
     ${name}
@@ -47,16 +67,15 @@ function renderRibbonHtml(config, env) {
   const elem = document.createElement("div");
   elem.setAttribute("id", "ribbon");
 
-  const backgroundColor =
-    env?.ribbon?.color || "#2f2f2f";
-
-  const position =
-    env?.ribbon?.position || "right";
+  const backgroundColor = env?.ribbon?.color || "#2f2f2f";
+  const position = env?.ribbon?.position || "right";
+  const type = env?.ribbon?.type || "corner-ribbon";
 
   elem.innerHTML = ribbonH({
     name: env.name,
     position,
     backgroundColor,
+    type,
     color: getContrast(backgroundColor)
   });
   document.body.prepend(elem);
