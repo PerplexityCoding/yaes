@@ -8,10 +8,10 @@ function main() {
 
 async function verifyCurrentUrl() {
   const config = JSON.parse(await storageGetValue("config"));
-  const env = await getCurrentEnv(window.location.href, config, (env) => env.ribbon);
+  const env = await getCurrentEnv(window.location.href, config);
 
-  if (env) {
-    renderRibbon(env);
+  if (env?.ribbon) {
+    renderRibbon(config, env);
   }
 }
 

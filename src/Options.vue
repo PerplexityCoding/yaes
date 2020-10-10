@@ -14,22 +14,27 @@
 
       <div ref="jsonEditor" class="config"></div>
     </section>
-    <div v-if="info" class="info">
-      {{ info }}
-    </div>
+    <transition name="fade">
+      <div v-if="displayInfo" class="info">
+        {{ info }}
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
 import { storageGetValue, storageSet } from "@/services/chrome/storage";
 import JSONEditor from "jsoneditor";
+import { debounce } from "./services/utils";
 
 export default {
   name: "OptionsPage",
   data() {
     return {
-      info: null,
-      config: null
+      info: "Saved !",
+      displayInfo: false,
+      config: null,
+      editor: null
     };
   },
   async created() {
@@ -53,29 +58,38 @@ export default {
       this.save();
     }
 
-    const editor = new JSONEditor(this.$refs.jsonEditor, {
-      onBlur: () => {
-        const config = editor.getText();
-        if (config) {
-          this.configChanged(config);
+    this.editor = new JSONEditor(this.$refs.jsonEditor, {
+      onChange: () => {
+        try {
+          const config = this.editor.get();
+          if (config) {
+            this.configChanged(config);
+          }
+        } catch (e) {
+          if (e.message.indexOf('Parse error on line') >= 0) {
+            // contain invalid json data ignore
+          } else {
+            console.log(e);
+          }
         }
       },
       modes: ["tree", "code"]
     });
-    editor.set(this.config);
-    editor.expandAll();
+    this.editor.set(this.config);
+    this.editor.expandAll();
   },
   methods: {
-    configChanged(config) {
-      this.info = "Saved !";
+    configChanged: debounce(function(config) {
+      console.log("saved");
+      this.displayInfo = true;
       this.save(config);
       setTimeout(() => {
-        this.info = null;
-      }, 3000);
-    },
+        this.displayInfo = false;
+      }, 2000);
+    }, 1000),
     save(config) {
       storageSet({
-        config
+        config: JSON.stringify(config)
       });
     }
   }
@@ -88,6 +102,7 @@ export default {
 
 <style lang="scss">
 @import "@/styles/variables.scss";
+@import "@/styles/transition.scss";
 </style>
 
 <style lang="scss" scoped>

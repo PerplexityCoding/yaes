@@ -17,10 +17,7 @@ async function getConfig() {
 }
 
 async function onInstalled() {
-  const config = await getConfig();
-  if (config?.options?.displayBadge) {
-    onTabsActivatedUpdateBadge(config);
-  }
+  onTabsActivatedUpdateBadge();
 }
 
 function onTabsActivatedUpdateBadge() {
@@ -40,24 +37,30 @@ function onTabsActivatedUpdateBadge() {
 
 async function updateBadgeTextFromEnv(tabId, url) {
   const config = await getConfig();
-  if (config) {
-    const env = await getCurrentEnv(url, config);
-    if (env) {
-      const color = env.badgeColor || config.options?.badgeColor || "#2677c9";
-      if (color) {
-        window.chrome.browserAction.setBadgeBackgroundColor({
-          color,
-          tabId
-        });
-      }
+  const env = await getCurrentEnv(url, config)
+  if (env?.badge !== false) {
+    const color = env?.badge?.color || "#2677c9";
+    window.chrome.browserAction.setBadgeBackgroundColor({
+      color,
+      tabId
+    });
 
-      const text = (env.shortName || env.name).substring(0, 4);
-      window.chrome.browserAction.setBadgeText({
-        tabId,
-        text
-      });
-    }
+    const text = (env.shortName || env.name).substring(0, 4) || "";
+    window.chrome.browserAction.setBadgeText({
+      tabId,
+      text
+    });
+
+    return;
   }
+  cleaBadgeText();
+}
+
+function cleaBadgeText(tabId) {
+  window.chrome.browserAction.setBadgeText({
+    tabId,
+    text: ""
+  });
 }
 
 main();

@@ -38,20 +38,24 @@ const ribbonH = ({ name, color, backgroundColor, position }) => `
   </div>
 `;
 
-function renderRibbon(env) {
+function renderRibbon(config, env) {
   injectRibbonStyle(ribbonCss);
-  renderRibbonHtml(env);
+  renderRibbonHtml(config, env);
 }
 
-function renderRibbonHtml(env) {
+function renderRibbonHtml(config, env) {
   const elem = document.createElement("div");
   elem.setAttribute("id", "ribbon");
 
-  const backgroundColor = env?.ribbon?.color || "#2f2f2f";
+  const backgroundColor =
+    env?.ribbon?.color || "#2f2f2f";
+
+  const position =
+    env?.ribbon?.position || "right";
 
   elem.innerHTML = ribbonH({
     name: env.name,
-    position: env?.ribbon?.position || "right",
+    position,
     backgroundColor,
     color: getContrast(backgroundColor)
   });

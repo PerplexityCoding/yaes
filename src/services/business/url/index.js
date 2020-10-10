@@ -1,3 +1,5 @@
+import deepmerge from 'deepmerge';
+
 export function switchBaseUrl(currentUrl, newBaseUrl) {
   const baseUrl = new URL(newBaseUrl);
   const url = new URL(currentUrl);
@@ -6,7 +8,7 @@ export function switchBaseUrl(currentUrl, newBaseUrl) {
   return url.href;
 }
 
-export async function getCurrentEnv(url, config, predicate) {
+export async function getCurrentEnv(url, config) {
   if (!config) {
     return;
   }
@@ -16,8 +18,9 @@ export async function getCurrentEnv(url, config, predicate) {
     const envHostname = new URL(env.url).hostname;
     const currentHostname = new URL(url).hostname;
 
-    if (envHostname === currentHostname && (!predicate || predicate(env))) {
-      return env;
+    if (envHostname === currentHostname) {
+      const envWithOptions = deepmerge(Object.assign({}, config.options), env);
+      return envWithOptions;
     }
   }
 }
