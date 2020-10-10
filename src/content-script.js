@@ -1,4 +1,5 @@
 import { storageGetValue } from "@/services/chrome/storage";
+import { getCurrentEnv } from "@/services/business/url";
 import renderRibbon from "./components/Ribbon.js";
 
 function main() {
@@ -6,18 +7,11 @@ function main() {
 }
 
 async function verifyCurrentUrl() {
-  const configString = await storageGetValue("config");
-  if (!configString) {
-    return;
-  }
+  const config = JSON.parse(await storageGetValue("config"));
+  const env = await getCurrentEnv(window.location.href, config, (env) => env.ribbon);
 
-  const envs = JSON.parse(configString).envs;
-  for (const env of envs) {
-    const hostname = new URL(env.url).hostname;
-    if (window.location.hostname === hostname && env.ribbon) {
-      renderRibbon(env);
-      break;
-    }
+  if (env) {
+    renderRibbon(env);
   }
 }
 

@@ -13,10 +13,10 @@ module.exports = {
       filename: "options.html"
     },
     content: {
-      title: "YAES - Contentscript",
-      entry: "src/options.js",
-      template: "public/options.html",
-      filename: "options.html"
+      title: "YAES - Background Page",
+      entry: "src/background.js",
+      template: "public/background.html",
+      filename: "background.html"
     }
   },
   configureWebpack: {

@@ -8,7 +8,7 @@
     "tabs",
     "storage"
   ],
-  "page_action": {
+  "browser_action": {
     "default_popup": "popup.html",
     "default_icon": {
       "16": "assets/images/favicon-16x16.png",
@@ -28,7 +28,7 @@
     "512": "assets/images/android-chrome-512x512.png"
   },
   "background": {
-    "scripts": ["js/background.js"],
+    "page": "background.html",
     "persistent": false
   },
   "content_scripts": [
