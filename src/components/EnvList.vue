@@ -7,7 +7,7 @@
         @click="$emit('switch-env', { env })"
       >
         <span class="env-name">
-          {{ env.name }}
+          {{ env.name || env.shortName }}
         </span>
         <span class="selected-pill" />
       </button>
