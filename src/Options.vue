@@ -3,7 +3,9 @@
     <section>
       <h1>
         YAES - Configuration Page
-        <span> (* All changes will be saved directly *) </span>
+        <span>
+          <em> (All changes will be saved directly) </em>
+        </span>
       </h1>
 
       <div class="title">
