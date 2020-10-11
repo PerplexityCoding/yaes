@@ -1,6 +1,6 @@
 {
   "name": "yaes",
-  "version": "0.4.2",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "cli": "vue-cli-service",
