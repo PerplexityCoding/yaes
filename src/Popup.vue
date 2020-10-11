@@ -47,7 +47,13 @@ export default {
   async created() {
     const currentTab = await getCurrentTab();
     const configString = await storageGetValue("config");
-    const config = configString && mergeOptions(JSON.parse(configString));
+
+    let config = null;
+    try {
+      config = configString && mergeOptions(JSON.parse(configString));
+    } catch (e) {
+      console.log(e);
+    }
 
     if (config) {
       this.currentEnv = getCurrentEnv(currentTab.url, config);

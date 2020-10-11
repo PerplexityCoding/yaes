@@ -97,16 +97,20 @@ export default {
   methods: {
     async getOrInitConfig() {
       const configString = await storageGetValue("config");
-
-      let config = null;
-      if (configString) {
-        config = JSON.parse(configString);
-      } else {
-        config = { ...DEFAULT_CONFIG };
+      const defaultConfig = () => {
+        const config = { ...DEFAULT_CONFIG };
         this.saveConfig(config);
-      }
+        return config;
+      };
 
-      return config;
+      if (configString) {
+        try {
+          return JSON.parse(configString);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+      return defaultConfig();
     },
 
     saveConfig(config) {
