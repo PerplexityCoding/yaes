@@ -1,11 +1,10 @@
 import { waitFor } from "../../../src/services/utils";
-
-jest.mock("@/services/chrome/storage");
-
 import { shallowMount } from "@vue/test-utils";
 import { storageGetValue, storageSet } from "@/services/chrome/storage";
 import Options from "@/Options.vue";
 import { DEFAULT_CONFIG } from "@/Options.vue";
+
+jest.mock("@/services/chrome/storage");
 
 describe("Options.vue", () => {
   const config = {

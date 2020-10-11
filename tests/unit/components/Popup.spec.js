@@ -1,6 +1,3 @@
-jest.mock("@/services/chrome/tabs");
-jest.mock("@/services/chrome/storage");
-
 import { mount } from "@vue/test-utils";
 import Popup from "@/Popup.vue";
 import EnvList from "@/components/EnvList";
@@ -10,8 +7,10 @@ import {
   openChromeUrl,
   openOptionsPage
 } from "@/services/chrome/tabs";
-
 import { storageGetValue } from "@/services/chrome/storage";
+
+jest.mock("@/services/chrome/tabs");
+jest.mock("@/services/chrome/storage");
 
 function mockStorageEnvGet() {
   storageGetValue.mockReturnValue(
