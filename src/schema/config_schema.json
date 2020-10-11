@@ -1,0 +1,113 @@
+{
+  "title": "Config",
+  "description": "Object containing config details",
+  "type": "object",
+  "properties": {
+    "envs": {
+      "type": "array",
+      "default": [],
+      "items": { "$ref": "#/definitions/env" }
+    },
+    "options": {
+      "$ref": "#/definitions/options"
+    }
+  },
+  "definitions": {
+    "options": {
+      "type": "object",
+      "default": {},
+      "properties": {
+        "ribbon": {
+          "oneOf" : [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ribbon"
+            }
+          ]
+        },
+        "badge": {
+          "oneOf" : [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/badge"
+            }
+          ]
+        },
+        "displayDomain": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "env": {
+      "allOf": [
+        { "$ref": "#/definitions/options" },
+        {
+          "properties": {
+            "shortName": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            }
+          },
+          "anyOf": [
+            {
+              "required": [
+                "shortName"
+              ]
+            },
+            {
+              "required": [
+                "name"
+              ]
+            }
+          ],
+          "required": [
+            "url"
+          ]
+        }
+      ]
+    },
+    "badge": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "type": "string",
+          "default": "#2677c9"
+        }
+      }
+    },
+    "ribbon": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "type": "string",
+          "default": "#2f2f2f"
+        },
+        "position": {
+          "type": "string",
+          "enum": ["left", "right"],
+          "default": "right"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["corner-ribbon", "square-ribbon"],
+          "default": "corner-ribbon"
+        }
+      }
+    }
+  },
+  "required": [
+    "envs",
+    "options"
+  ]
+}
+

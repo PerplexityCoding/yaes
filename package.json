@@ -13,6 +13,7 @@
     "build:app:watch": "npm run build:app -- --no-clean --mode development --watch",
     "build:content-script": "vue-cli-service build --target lib --name content-script --dest dist/js --no-clean src/content-script.js",
     "build:content-script:watch": "npm run build:content-script -- --mode development --watch",
+    "build:schema": "ajv compile -s src/schema/config_schema.json -o src/schema/config_schema.gen.js",
     "jest": "jest",
     "bundle": "rm -rf build/ && npm run build && cd dist/ && sh -c 'sed -i \"s/1.0.0/$VERSION/g\" manifest.json' && sh -c 'bestzip ../release/v$VERSION.zip *'",
     "release": "sh -c 'npm version $VERSION' && npm run bundle && git push --tags && git push"
@@ -29,6 +30,7 @@
     "@vue/compiler-sfc": "^3.0.0-0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/test-utils": "^2.0.0-0",
+    "ajv-cli": "^3.3.0",
     "bestzip": "^2.1.5",
     "deepmerge": "^4.2.2",
     "eslint": "^6.7.2",

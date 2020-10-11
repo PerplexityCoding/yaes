@@ -23,9 +23,10 @@
 </template>
 
 <script>
-import { storageGetValue, storageSet } from "@/services/chrome/storage";
-import JSONEditor from "jsoneditor";
+import { storageGetValue, storageSet } from "./services/chrome/storage";
+import JSONEditor from "jsoneditor/dist/jsoneditor.js";
 import { debounce } from "./services/utils";
+import validateSchema from "./schema/config_schema.gen.js";
 
 const SAVE_DELAY = 1500;
 
@@ -54,29 +55,43 @@ export default {
       info: "Saved !",
       displayInfo: false,
       editor: null,
+      errors: [],
     };
   },
   async created() {
     const originalConfig = await this.getOrInitConfig();
 
-    this.editor = new JSONEditor(this.$refs.jsonEditor, {
-      onChange: debounce(() => {
-        try {
-          const config = this.editor.get();
-          if (config) {
-            this.saveConfig(config);
+    this.editor = new JSONEditor(
+      this.$refs.jsonEditor,
+      {
+        onChange: debounce(() => {
+          try {
+            const config = this.editor.get();
+            if (config && this.errors.length === 0) {
+              this.saveConfig(config);
+            }
+          } catch (e) {
+            if (e.message.indexOf("Parse error on line") >= 0) {
+              // contain invalid json data ignore
+            } else {
+              console.log(e);
+            }
           }
-        } catch (e) {
-          if (e.message.indexOf("Parse error on line") >= 0) {
-            // contain invalid json data ignore
-          } else {
-            console.log(e);
+        }, SAVE_DELAY),
+        onValidationError: (errors) => {
+          this.errors = errors;
+        },
+        onModeChange: () => {
+          if (this.editor) {
+            this.editor.validateSchema = validateSchema;
           }
-        }
-      }, SAVE_DELAY),
-      modes: ["tree", "code"]
-    });
-    this.editor.set(originalConfig);
+        },
+        modes: ["tree", "code"]
+      },
+      originalConfig
+    );
+    this.editor.validateSchema = validateSchema;
+    this.editor.validate();
     this.editor.expandAll();
   },
   methods: {
