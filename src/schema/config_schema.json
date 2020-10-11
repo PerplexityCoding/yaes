@@ -78,6 +78,16 @@
         },
         "url": {
           "type": "string"
+        },
+        "group": {
+          "oneOf" : [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
         }
       },
       "anyOf": [

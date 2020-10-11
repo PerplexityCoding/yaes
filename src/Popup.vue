@@ -50,8 +50,10 @@ export default {
     const config = configString && mergeOptions(JSON.parse(configString));
 
     if (config) {
-      this.envs = config.envs;
       this.currentEnv = getCurrentEnv(currentTab.url, config);
+      this.envs = this.currentEnv?.group
+        ? config.envs.filter(env => env.group === this.currentEnv.group)
+        : config.envs;
     }
 
     this.loaded = true;

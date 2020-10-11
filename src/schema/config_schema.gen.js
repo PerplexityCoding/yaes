@@ -13,7 +13,7 @@ var validate = (function() {
           var errs__0 = errors;
           var valid1 = true;
           for (var key0 in data) {
-            var isAdditional0 = !(false || key0 == 'ribbon' || key0 == 'badge' || key0 == 'displayDomain' || key0 == 'shortName' || key0 == 'name' || key0 == 'url');
+            var isAdditional0 = !(false || key0 == 'ribbon' || key0 == 'badge' || key0 == 'displayDomain' || key0 == 'shortName' || key0 == 'name' || key0 == 'url' || key0 == 'group');
             if (isAdditional0) {
               valid1 = false;
               validate.errors = [{
@@ -489,7 +489,88 @@ var validate = (function() {
                         }
                         var valid1 = errors === errs_1;
                       }
-                      if (valid1) {}
+                      if (valid1) {
+                        var data1 = data.group;
+                        if (data1 === undefined) {
+                          valid1 = true;
+                        } else {
+                          var errs_1 = errors;
+                          var errs__1 = errors,
+                            prevValid1 = false,
+                            valid1 = false,
+                            passingSchemas1 = null;
+                          var errs_2 = errors;
+                          if (typeof data1 !== "string") {
+                            var err = {
+                              keyword: 'type',
+                              dataPath: (dataPath || '') + '.group',
+                              schemaPath: '#/properties/group/oneOf/0/type',
+                              params: {
+                                type: 'string'
+                              },
+                              message: 'should be string'
+                            };
+                            if (vErrors === null) vErrors = [err];
+                            else vErrors.push(err);
+                            errors++;
+                          }
+                          var valid2 = errors === errs_2;
+                          if (valid2) {
+                            valid1 = prevValid1 = true;
+                            passingSchemas1 = 0;
+                          }
+                          var errs_2 = errors;
+                          if ((typeof data1 !== "number")) {
+                            var err = {
+                              keyword: 'type',
+                              dataPath: (dataPath || '') + '.group',
+                              schemaPath: '#/properties/group/oneOf/1/type',
+                              params: {
+                                type: 'number'
+                              },
+                              message: 'should be number'
+                            };
+                            if (vErrors === null) vErrors = [err];
+                            else vErrors.push(err);
+                            errors++;
+                          }
+                          var valid2 = errors === errs_2;
+                          if (valid2 && prevValid1) {
+                            valid1 = false;
+                            passingSchemas1 = [passingSchemas1, 1];
+                          } else {
+                            if (valid2) {
+                              valid1 = prevValid1 = true;
+                              passingSchemas1 = 1;
+                            }
+                          }
+                          if (!valid1) {
+                            var err = {
+                              keyword: 'oneOf',
+                              dataPath: (dataPath || '') + '.group',
+                              schemaPath: '#/properties/group/oneOf',
+                              params: {
+                                passingSchemas: passingSchemas1
+                              },
+                              message: 'should match exactly one schema in oneOf'
+                            };
+                            if (vErrors === null) vErrors = [err];
+                            else vErrors.push(err);
+                            errors++;
+                            validate.errors = vErrors;
+                            return false;
+                          } else {
+                            errors = errs__1;
+                            if (vErrors !== null) {
+                              if (errs__1) vErrors.length = errs__1;
+                              else vErrors = null;
+                            }
+                          }
+                          if (errors === errs_1) {}
+                          var valid1 = errors === errs_1;
+                        }
+                        if (valid1) {}
+                      }
                     }
                   }
                 }
@@ -601,6 +682,13 @@ var validate = (function() {
       },
       "url": {
         "type": "string"
+      },
+      "group": {
+        "oneOf": [{
+          "type": "string"
+        }, {
+          "type": "number"
+        }]
       }
     },
     "anyOf": [{
@@ -1304,6 +1392,13 @@ validate.schema = {
         },
         "url": {
           "type": "string"
+        },
+        "group": {
+          "oneOf": [{
+            "type": "string"
+          }, {
+            "type": "number"
+          }]
         }
       },
       "anyOf": [{
