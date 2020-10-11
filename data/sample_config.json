@@ -1,0 +1,54 @@
+{
+  "envs": [
+    {
+      "shortName": "FR",
+      "url": "https://www.google.fr/",
+      "ribbon": {
+        "backgroundColor": "#2519c7",
+        "color": "pink",
+        "type": "corner-ribbon"
+      },
+      "badge": {
+        "backgroundColor": "#154785"
+      },
+      "group": "Google"
+    },
+    {
+      "name": "ES",
+      "url": "https://www.google.es/",
+      "ribbon": false,
+      "group": "Google"
+    },
+    {
+      "shortName": "DE",
+      "name": "Germany",
+      "url": "https://www.google.de/",
+      "ribbon": {
+        "backgroundColor": "#1fab19"
+      },
+      "badge": false,
+      "group": "Google"
+    },
+    {
+      "shortName": "DE",
+      "name": "Germany",
+      "url": "https://de.yahoo.com/",
+      "group": "Yahoo"
+    },
+    {
+      "shortName": "FR",
+      "name": "France",
+      "url": "https://fr.yahoo.com/",
+      "group": "Yahoo"
+    }
+  ],
+  "options": {
+    "ribbon": {
+      "backgroundColor": "red",
+      "color": "#ecefec",
+      "position": "right"
+    },
+    "badge": true,
+    "displayDomain": true
+  }
+}
