@@ -72,7 +72,7 @@ function renderRibbonHtml(config, env) {
   const type = env?.ribbon?.type || "corner-ribbon";
 
   elem.innerHTML = ribbonH({
-    name: env.name,
+    name: env.name || env.shortName,
     position,
     backgroundColor,
     type,

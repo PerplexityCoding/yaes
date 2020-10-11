@@ -27,7 +27,7 @@ import {
   openChromeUrl,
   openOptionsPage
 } from "./services/chrome/tabs";
-import { switchBaseUrl } from "./services/business/url";
+import { switchBaseUrl, getCurrentEnv, mergeOptions } from "./services/business/url";
 import { storageGetValue } from "./services/chrome/storage";
 
 export default {
@@ -35,7 +35,6 @@ export default {
   components: { EnvList },
   data() {
     return {
-      config: {},
       envs: [],
       currentEnv: null,
       loaded: false
@@ -43,16 +42,14 @@ export default {
   },
   async created() {
     const currentTab = await getCurrentTab();
-    const url = new URL(currentTab.url);
-    const config = await storageGetValue("config");
+    const configString = await storageGetValue("config");
+    const config = configString && mergeOptions(JSON.parse(configString));
 
-    this.config = config && JSON.parse(config);
-    this.envs = this.config && this.config.envs;
-    this.currentEnv =
-      this.envs &&
-      this.envs.find(env => {
-        return new URL(env.url).hostname === url.hostname;
-      });
+    if (config) {
+      this.envs = config.envs;
+      this.currentEnv = getCurrentEnv(currentTab.url, config);
+    }
+    console.log(this.currentEnv);
 
     this.loaded = true;
   },

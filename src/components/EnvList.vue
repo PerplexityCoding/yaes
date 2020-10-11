@@ -7,7 +7,14 @@
         @click="$emit('switch-env', { env })"
       >
         <span class="env-name">
-          {{ env.name || env.shortName }}
+          <span v-if="env.shortName">
+            {{ env.shortName }} <span v-if="env.name">-</span>
+          </span>
+
+          {{ env.name }}
+          <div class="domain" v-if="env.displayDomain">
+            {{ env.url }}
+          </div>
         </span>
         <span class="selected-pill" />
       </button>
@@ -22,12 +29,12 @@ export default {
     envs: {
       type: Array,
       required: true,
-      validator: a => a.reduce((acc, o) => acc && o.name != null, true)
+      validator: a => a.reduce((acc, o) => acc && (o.name != null || o.shortName != null), true)
     },
     currentEnv: {
       type: Object,
       required: true,
-      validator: o => o.name != null
+      validator: o => o.name != null || o.shortName != null
     }
   },
   emits: ["switch-env"],

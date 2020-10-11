@@ -1,6 +1,7 @@
 import { storageGetValue } from "@/services/chrome/storage";
 import { getTab } from "@/services/chrome/tabs";
 import { getCurrentEnv } from "@/services/business/url";
+import {mergeOptions} from "./services/business/url";
 
 async function main() {
   window.chrome.runtime.onInstalled.addListener(() => {
@@ -11,7 +12,7 @@ async function main() {
 async function getConfig() {
   const configString = await storageGetValue("config");
   if (configString) {
-    return JSON.parse(configString);
+    return mergeOptions(JSON.parse(configString));
   }
   return null;
 }
@@ -37,7 +38,7 @@ function onTabsActivatedUpdateBadge() {
 
 async function updateBadgeTextFromEnv(tabId, url) {
   const config = await getConfig();
-  const env = await getCurrentEnv(url, config)
+  const env = getCurrentEnv(url, config);
   if (env?.badge !== false) {
     const color = env?.badge?.color || "#2677c9";
     window.chrome.browserAction.setBadgeBackgroundColor({

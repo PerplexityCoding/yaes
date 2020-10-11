@@ -66,7 +66,7 @@ export default {
             this.configChanged(config);
           }
         } catch (e) {
-          if (e.message.indexOf('Parse error on line') >= 0) {
+          if (e.message.indexOf("Parse error on line") >= 0) {
             // contain invalid json data ignore
           } else {
             console.log(e);
