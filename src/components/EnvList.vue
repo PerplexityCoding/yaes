@@ -12,8 +12,8 @@
           </span>
 
           {{ env.name }}
-          <div class="domain" v-if="env.displayDomain">
-            {{ env.url }}
+          <div class="domain" v-if="env.displayDomain && env.url">
+            {{ hostname(env) }}
           </div>
         </span>
         <span class="selected-pill" />
@@ -46,6 +46,9 @@ export default {
       const url1 = new URL(env1.url);
       const url2 = new URL(env2.url);
       return url1.hostname === url2.hostname;
+    },
+    hostname(env) {
+      return new URL(env.url).hostname;
     }
   }
 };
@@ -54,6 +57,11 @@ export default {
 <style lang="scss" scoped>
 .env-list {
   min-width: 250px;
+}
+
+.domain {
+  font-style: italic;
+  font-size: 0.75rem;
 }
 
 ul {
