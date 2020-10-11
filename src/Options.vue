@@ -107,7 +107,7 @@ export default {
         try {
           return JSON.parse(configString);
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       }
       return defaultConfig();

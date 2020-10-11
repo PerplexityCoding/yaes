@@ -52,7 +52,7 @@ export default {
     try {
       config = configString && mergeOptions(JSON.parse(configString));
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
 
     if (config) {

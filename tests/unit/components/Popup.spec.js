@@ -37,6 +37,12 @@ function mockStorageEnvGet() {
   );
 }
 
+function mockStorageEnvGetBadData() {
+  storageGetValue.mockReturnValue(
+    "{'envs':[{'id':1,'name':'FR','url':'https://www.google.fr/sdfsdf',},{'id':2,'name':'DE','url':'https://www.google.de/sdfsdf'},{'id':3,'name':'ES','url':'https://www.google.es/'}]}"
+  );
+}
+
 describe("Popup.vue", () => {
   beforeAll(() => {
     mockStorageEnvGet();
@@ -93,5 +99,20 @@ describe("Popup.vue", () => {
 
     await optionsButton.trigger("click");
     expect(openOptionsPage).toHaveBeenCalled();
+  });
+
+  it("display empty message when can not parse config", async () => {
+    const consoleError = jest.spyOn(console, "error");
+    consoleError.mockImplementation(() => {});
+    mockStorageEnvGetBadData();
+
+    const wrapper = mount(Popup);
+    await waitFor();
+
+    expect(wrapper.html()).toContain("No environment has been found");
+    expect(console.error).toHaveBeenCalledWith(
+      new SyntaxError("Unexpected token ' in JSON at position 1")
+    );
+    consoleError.mockRestore();
   });
 });
