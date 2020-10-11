@@ -36,7 +36,7 @@ export const DEFAULT_CONFIG = {
       name: "FR",
       url: "https://www.google.fr/",
       ribbon: {
-        color: "#d74a59",
+        backgroundColor: "#d74a59",
         position: "left"
       }
     }
