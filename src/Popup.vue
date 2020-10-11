@@ -49,7 +49,6 @@ export default {
       this.envs = config.envs;
       this.currentEnv = getCurrentEnv(currentTab.url, config);
     }
-    console.log(this.currentEnv);
 
     this.loaded = true;
   },

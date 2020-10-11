@@ -29,43 +29,42 @@ import { debounce } from "./services/utils";
 
 const SAVE_DELAY = 1500;
 
+export const DEFAULT_CONFIG = {
+  envs: [
+    {
+      name: "FR",
+      url: "https://www.google.fr/",
+      ribbon: {
+        color: "#d74a59",
+        position: "left"
+      }
+    }
+  ],
+  options: {
+    ribbon: true,
+    badge: true,
+    displayDomain: true
+  }
+};
+
 export default {
   name: "OptionsPage",
   data() {
     return {
       info: "Saved !",
       displayInfo: false,
-      config: null,
-      editor: null
+      editor: null,
     };
   },
   async created() {
-    const config = await storageGetValue("config");
-
-    if (config) {
-      this.config = JSON.parse(config);
-    } else {
-      this.config = {
-        envs: [
-          {
-            name: "FR",
-            url: "https://www.google.fr/",
-            ribbon: {
-              color: "#d74a59",
-              position: "left"
-            }
-          }
-        ]
-      };
-      this.save();
-    }
+    const originalConfig = await this.getOrInitConfig();
 
     this.editor = new JSONEditor(this.$refs.jsonEditor, {
-      onChange: () => {
+      onChange: debounce(() => {
         try {
           const config = this.editor.get();
           if (config) {
-            this.configChanged(config);
+            this.saveConfig(config);
           }
         } catch (e) {
           if (e.message.indexOf("Parse error on line") >= 0) {
@@ -74,25 +73,37 @@ export default {
             console.log(e);
           }
         }
-      },
+      }, SAVE_DELAY),
       modes: ["tree", "code"]
     });
-    this.editor.set(this.config);
+    this.editor.set(originalConfig);
     this.editor.expandAll();
   },
   methods: {
-    configChanged: debounce(function(config) {
-      console.log("saved");
+    async getOrInitConfig() {
+      const configString = await storageGetValue("config");
+
+      let config = null;
+      if (configString) {
+        config = JSON.parse(configString);
+      } else {
+        config = { ...DEFAULT_CONFIG };
+        this.saveConfig(config);
+      }
+
+      return config;
+    },
+
+    saveConfig(config) {
       this.displayInfo = true;
-      this.save(config);
-      setTimeout(() => {
-        this.displayInfo = false;
-      }, 2000);
-    }, SAVE_DELAY),
-    save(config) {
+
       storageSet({
         config: JSON.stringify(config)
       });
+
+      setTimeout(() => {
+        this.displayInfo = false;
+      }, 2000);
     }
   }
 };
