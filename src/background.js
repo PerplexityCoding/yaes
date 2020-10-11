@@ -7,6 +7,7 @@ async function main() {
   window.chrome.runtime.onInstalled.addListener(() => {
     onInstalled();
   });
+  onTabsActivatedUpdateBadge();
 }
 
 async function getConfig() {
