@@ -67,16 +67,17 @@ function renderRibbonHtml(config, env) {
   const elem = document.createElement("div");
   elem.setAttribute("id", "ribbon");
 
-  const backgroundColor = env?.ribbon?.color || "#2f2f2f";
+  const backgroundColor = env?.ribbon?.backgroundColor || "#2f2f2f";
   const position = env?.ribbon?.position || "right";
   const type = env?.ribbon?.type || "corner-ribbon";
+  const color = env?.ribbon?.color || getContrast(backgroundColor);
 
   elem.innerHTML = ribbonH({
     name: env.name || env.shortName,
     position,
     backgroundColor,
     type,
-    color: getContrast(backgroundColor)
+    color
   });
   document.body.prepend(elem);
 }

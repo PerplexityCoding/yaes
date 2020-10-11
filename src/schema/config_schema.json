@@ -90,6 +90,10 @@
       "properties": {
         "color": {
           "type": "string",
+          "default": "white"
+        },
+        "backgroundColor": {
+          "type": "string",
           "default": "#2f2f2f"
         },
         "position": {

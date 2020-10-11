@@ -261,16 +261,15 @@ var validate = (function() {
               var valid4 = errors === errs_4;
             }
             if (valid4) {
-              var data2 = data1.position;
-              if (data2 === undefined) {
+              if (data1.backgroundColor === undefined) {
                 valid4 = true;
               } else {
                 var errs_4 = errors;
-                if (typeof data2 !== "string") {
+                if (typeof data1.backgroundColor !== "string") {
                   var err = {
                     keyword: 'type',
-                    dataPath: (dataPath || '') + '.ribbon.position',
-                    schemaPath: '#/definitions/ribbon/properties/position/type',
+                    dataPath: (dataPath || '') + '.ribbon.backgroundColor',
+                    schemaPath: '#/definitions/ribbon/properties/backgroundColor/type',
                     params: {
                       type: 'string'
                     },
@@ -280,32 +279,10 @@ var validate = (function() {
                   else vErrors.push(err);
                   errors++;
                 }
-                var schema4 = refVal3.properties.position.enum;
-                var valid4;
-                valid4 = false;
-                for (var i4 = 0; i4 < schema4.length; i4++)
-                  if (equal(data2, schema4[i4])) {
-                    valid4 = true;
-                    break;
-                  } if (!valid4) {
-                  var err = {
-                    keyword: 'enum',
-                    dataPath: (dataPath || '') + '.ribbon.position',
-                    schemaPath: '#/definitions/ribbon/properties/position/enum',
-                    params: {
-                      allowedValues: schema4
-                    },
-                    message: 'should be equal to one of the allowed values'
-                  };
-                  if (vErrors === null) vErrors = [err];
-                  else vErrors.push(err);
-                  errors++;
-                } else {}
-                if (errors === errs_4) {}
                 var valid4 = errors === errs_4;
               }
               if (valid4) {
-                var data2 = data1.type;
+                var data2 = data1.position;
                 if (data2 === undefined) {
                   valid4 = true;
                 } else {
@@ -313,8 +290,8 @@ var validate = (function() {
                   if (typeof data2 !== "string") {
                     var err = {
                       keyword: 'type',
-                      dataPath: (dataPath || '') + '.ribbon.type',
-                      schemaPath: '#/definitions/ribbon/properties/type/type',
+                      dataPath: (dataPath || '') + '.ribbon.position',
+                      schemaPath: '#/definitions/ribbon/properties/position/type',
                       params: {
                         type: 'string'
                       },
@@ -324,7 +301,7 @@ var validate = (function() {
                     else vErrors.push(err);
                     errors++;
                   }
-                  var schema4 = refVal3.properties.type.enum;
+                  var schema4 = refVal3.properties.position.enum;
                   var valid4;
                   valid4 = false;
                   for (var i4 = 0; i4 < schema4.length; i4++)
@@ -334,8 +311,8 @@ var validate = (function() {
                     } if (!valid4) {
                     var err = {
                       keyword: 'enum',
-                      dataPath: (dataPath || '') + '.ribbon.type',
-                      schemaPath: '#/definitions/ribbon/properties/type/enum',
+                      dataPath: (dataPath || '') + '.ribbon.position',
+                      schemaPath: '#/definitions/ribbon/properties/position/enum',
                       params: {
                         allowedValues: schema4
                       },
@@ -348,7 +325,52 @@ var validate = (function() {
                   if (errors === errs_4) {}
                   var valid4 = errors === errs_4;
                 }
-                if (valid4) {}
+                if (valid4) {
+                  var data2 = data1.type;
+                  if (data2 === undefined) {
+                    valid4 = true;
+                  } else {
+                    var errs_4 = errors;
+                    if (typeof data2 !== "string") {
+                      var err = {
+                        keyword: 'type',
+                        dataPath: (dataPath || '') + '.ribbon.type',
+                        schemaPath: '#/definitions/ribbon/properties/type/type',
+                        params: {
+                          type: 'string'
+                        },
+                        message: 'should be string'
+                      };
+                      if (vErrors === null) vErrors = [err];
+                      else vErrors.push(err);
+                      errors++;
+                    }
+                    var schema4 = refVal3.properties.type.enum;
+                    var valid4;
+                    valid4 = false;
+                    for (var i4 = 0; i4 < schema4.length; i4++)
+                      if (equal(data2, schema4[i4])) {
+                        valid4 = true;
+                        break;
+                      } if (!valid4) {
+                      var err = {
+                        keyword: 'enum',
+                        dataPath: (dataPath || '') + '.ribbon.type',
+                        schemaPath: '#/definitions/ribbon/properties/type/enum',
+                        params: {
+                          allowedValues: schema4
+                        },
+                        message: 'should be equal to one of the allowed values'
+                      };
+                      if (vErrors === null) vErrors = [err];
+                      else vErrors.push(err);
+                      errors++;
+                    } else {}
+                    if (errors === errs_4) {}
+                    var valid4 = errors === errs_4;
+                  }
+                  if (valid4) {}
+                }
               }
             }
             if (errs__3 == errors) {}
@@ -586,6 +608,10 @@ var validate = (function() {
     "properties": {
       "color": {
         "type": "string",
+        "default": "white"
+      },
+      "backgroundColor": {
+        "type": "string",
         "default": "#2f2f2f"
       },
       "position": {
@@ -786,6 +812,10 @@ validate.schema = {
       "type": "object",
       "properties": {
         "color": {
+          "type": "string",
+          "default": "white"
+        },
+        "backgroundColor": {
           "type": "string",
           "default": "#2f2f2f"
         },
