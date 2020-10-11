@@ -28,7 +28,7 @@ import JSONEditor from "jsoneditor/dist/jsoneditor.js";
 import { debounce } from "./services/utils";
 import validateSchema from "./schema/config_schema.gen.js";
 
-const SAVE_DELAY = 1500;
+const SAVE_DELAY = 500;
 
 export const DEFAULT_CONFIG = {
   envs: [

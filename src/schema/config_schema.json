@@ -41,49 +41,71 @@
           "type": "boolean",
           "default": true
         }
-      }
+      },
+      "additionalProperties": false
     },
     "env": {
-      "allOf": [
-        { "$ref": "#/definitions/options" },
+      "properties": {
+        "ribbon": {
+          "oneOf" : [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ribbon"
+            }
+          ]
+        },
+        "badge": {
+          "oneOf" : [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/badge"
+            }
+          ]
+        },
+        "displayDomain": {
+          "type": "boolean",
+          "default": true
+        },
+        "shortName": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "anyOf": [
         {
-          "properties": {
-            "shortName": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            },
-            "url": {
-              "type": "string"
-            }
-          },
-          "anyOf": [
-            {
-              "required": [
-                "shortName"
-              ]
-            },
-            {
-              "required": [
-                "name"
-              ]
-            }
-          ],
           "required": [
-            "url"
+            "shortName"
+          ]
+        },
+        {
+          "required": [
+            "name"
           ]
         }
-      ]
+      ],
+      "required": [
+        "url"
+      ],
+      "additionalProperties": false
     },
     "badge": {
       "type": "object",
       "properties": {
-        "color": {
+        "backgroundColor": {
           "type": "string",
           "default": "#2677c9"
         }
-      }
+      },
+      "additionalProperties": false
     },
     "ribbon": {
       "type": "object",
@@ -106,12 +128,14 @@
           "enum": ["corner-ribbon", "square-ribbon"],
           "default": "corner-ribbon"
         }
-      }
+      },
+      "additionalProperties": false
     }
   },
   "required": [
     "envs",
     "options"
-  ]
+  ],
+  "additionalProperties": false
 }
 
