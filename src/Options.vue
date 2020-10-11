@@ -55,7 +55,7 @@ export default {
       info: "Saved !",
       displayInfo: false,
       editor: null,
-      errors: [],
+      errors: []
     };
   },
   async created() {
@@ -78,7 +78,7 @@ export default {
             }
           }
         }, SAVE_DELAY),
-        onValidationError: (errors) => {
+        onValidationError: errors => {
           this.errors = errors;
         },
         onModeChange: () => {

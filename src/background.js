@@ -1,7 +1,7 @@
 import { storageGetValue } from "@/services/chrome/storage";
 import { getTab } from "@/services/chrome/tabs";
 import { getCurrentEnv } from "@/services/business/url";
-import {mergeOptions} from "./services/business/url";
+import { mergeOptions } from "./services/business/url";
 
 async function main() {
   window.chrome.runtime.onInstalled.addListener(() => {

@@ -27,7 +27,11 @@ import {
   openChromeUrl,
   openOptionsPage
 } from "./services/chrome/tabs";
-import { switchBaseUrl, getCurrentEnv, mergeOptions } from "./services/business/url";
+import {
+  switchBaseUrl,
+  getCurrentEnv,
+  mergeOptions
+} from "./services/business/url";
 import { storageGetValue } from "./services/chrome/storage";
 
 export default {
