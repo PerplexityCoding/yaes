@@ -27,6 +27,8 @@ import { storageGetValue, storageSet } from "@/services/chrome/storage";
 import JSONEditor from "jsoneditor";
 import { debounce } from "./services/utils";
 
+const SAVE_DELAY = 1500;
+
 export default {
   name: "OptionsPage",
   data() {
@@ -86,7 +88,7 @@ export default {
       setTimeout(() => {
         this.displayInfo = false;
       }, 2000);
-    }, 1000),
+    }, SAVE_DELAY),
     save(config) {
       storageSet({
         config: JSON.stringify(config)
