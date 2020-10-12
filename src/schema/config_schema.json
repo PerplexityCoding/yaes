@@ -84,7 +84,7 @@
           "format": "uri",
           "pattern": "^(https?|wss?|ftp)://"
         },
-        "group": {
+        "project": {
           "oneOf" : [
             {
               "type": "string"

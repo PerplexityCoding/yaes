@@ -57,8 +57,8 @@ export default {
 
     if (config) {
       this.currentEnv = getCurrentEnv(currentTab.url, config);
-      this.envs = this.currentEnv?.group
-        ? config.envs.filter(env => env.group === this.currentEnv.group)
+      this.envs = this.currentEnv?.project
+        ? config.envs.filter(env => env.project === this.currentEnv.project)
         : config.envs;
     }
 

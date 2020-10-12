@@ -1,4 +1,13 @@
 {
+  "projects": [
+    {
+      "id": "Google"
+    },
+    {
+      "id": "Yahoo",
+      "name": "Yahoo"
+    }
+  ],
   "envs": [
     {
       "shortName": "FR",
@@ -11,13 +20,13 @@
       "badge": {
         "backgroundColor": "#154785"
       },
-      "group": "Google"
+      "project": "Google"
     },
     {
       "name": "ES",
       "url": "https://www.google.es/",
       "ribbon": false,
-      "group": "Google"
+      "project": "Google"
     },
     {
       "shortName": "DE",
@@ -27,19 +36,19 @@
         "backgroundColor": "#1fab19"
       },
       "badge": false,
-      "group": "Google"
+      "project": "Google"
     },
     {
       "shortName": "DE",
       "name": "Germany",
       "url": "https://de.yahoo.com/",
-      "group": "Yahoo"
+      "project": "Yahoo"
     },
     {
       "shortName": "FR",
       "name": "France",
       "url": "https://fr.yahoo.com/",
-      "group": "Yahoo"
+      "project": "Yahoo"
     }
   ],
   "options": {

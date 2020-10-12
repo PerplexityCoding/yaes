@@ -17,7 +17,7 @@ var validate = (function() {
           var errs__0 = errors;
           var valid1 = true;
           for (var key0 in data) {
-            var isAdditional0 = !(false || key0 == 'ribbon' || key0 == 'badge' || key0 == 'displayDomain' || key0 == 'shortName' || key0 == 'name' || key0 == 'url' || key0 == 'group');
+            var isAdditional0 = !(false || key0 == 'ribbon' || key0 == 'badge' || key0 == 'displayDomain' || key0 == 'shortName' || key0 == 'name' || key0 == 'url' || key0 == 'project');
             if (isAdditional0) {
               valid1 = false;
               validate.errors = [{
@@ -570,7 +570,7 @@ var validate = (function() {
                         var valid1 = errors === errs_1;
                       }
                       if (valid1) {
-                        var data1 = data.group;
+                        var data1 = data.project;
                         if (data1 === undefined) {
                           valid1 = true;
                         } else {
@@ -583,8 +583,8 @@ var validate = (function() {
                           if (typeof data1 !== "string") {
                             var err = {
                               keyword: 'type',
-                              dataPath: (dataPath || '') + '.group',
-                              schemaPath: '#/properties/group/oneOf/0/type',
+                              dataPath: (dataPath || '') + '.project',
+                              schemaPath: '#/properties/project/oneOf/0/type',
                               params: {
                                 type: 'string'
                               },
@@ -603,8 +603,8 @@ var validate = (function() {
                           if ((typeof data1 !== "number")) {
                             var err = {
                               keyword: 'type',
-                              dataPath: (dataPath || '') + '.group',
-                              schemaPath: '#/properties/group/oneOf/1/type',
+                              dataPath: (dataPath || '') + '.project',
+                              schemaPath: '#/properties/project/oneOf/1/type',
                               params: {
                                 type: 'number'
                               },
@@ -627,8 +627,8 @@ var validate = (function() {
                           if (!valid1) {
                             var err = {
                               keyword: 'oneOf',
-                              dataPath: (dataPath || '') + '.group',
-                              schemaPath: '#/properties/group/oneOf',
+                              dataPath: (dataPath || '') + '.project',
+                              schemaPath: '#/properties/project/oneOf',
                               params: {
                                 passingSchemas: passingSchemas1
                               },
@@ -768,7 +768,7 @@ var validate = (function() {
         "format": "uri",
         "pattern": "^(https?|wss?|ftp)://"
       },
-      "group": {
+      "project": {
         "oneOf": [{
           "type": "string"
         }, {
@@ -1484,7 +1484,7 @@ validate.schema = {
           "format": "uri",
           "pattern": "^(https?|wss?|ftp)://"
         },
-        "group": {
+        "project": {
           "oneOf": [{
             "type": "string"
           }, {
