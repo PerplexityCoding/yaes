@@ -17,7 +17,8 @@ export function getTab(tabId) {
 export function openChromeUrl(tab, url, inNewTab) {
   if (inNewTab) {
     window.chrome.tabs.create({
-      url
+      url,
+      active: false
     });
   } else {
     window.chrome.tabs.update(tab.id, { url });

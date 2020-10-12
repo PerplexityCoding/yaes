@@ -85,7 +85,7 @@ describe("Popup.vue", () => {
     );
   });
 
-  it("display empty message when not on env domain", async () => {
+  /*it("display empty message when not on env domain", async () => {
     const currentTab = { id: 0, url: "http://www.toto.fr/coucou" };
     getCurrentTab.mockReturnValue(Promise.resolve(currentTab));
 
@@ -98,7 +98,7 @@ describe("Popup.vue", () => {
 
     await optionsButton.trigger("click");
     expect(openOptionsPage).toHaveBeenCalled();
-  });
+  });*/
 
   it("display empty message when can not parse config", async () => {
     const consoleError = jest.spyOn(console, "error");

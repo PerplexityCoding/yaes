@@ -1,17 +1,30 @@
 <template>
   <section class="popin" v-if="loaded">
-    <header>
+    <header class="header">
       <img src="assets/images/favicon-16x16.png" />
       <span> Yet Another Env Switcher </span>
     </header>
-    <div v-if="currentEnv">
-      <EnvList :envs="envs" :current-env="currentEnv" @switch-env="switchEnv" />
-    </div>
-    <div v-else class="info">
-      No environment has been found with this domain name. Click on following
-      link to continue.
-    </div>
-    <footer>
+    <section class="body">
+      <div v-if="currentEnv && envs">
+        <EnvList
+          :envs="envs"
+          :current-env="currentEnv"
+          @switch-env="switchEnv"
+        />
+      </div>
+      <div v-else-if="projects && envs">
+        <ProjectList
+          :projects="projects"
+          :envs="envs"
+          @redirect-url="redirectUrl"
+        />
+      </div>
+      <div v-else class="info">
+        No environment has been found with this domain name. Click on following
+        link to continue.
+      </div>
+    </section>
+    <footer class="footer">
       <a href="#/options" @click="openOptionsPage"> Edit Configuration </a>
       <a href="https://github.com/ymenard-dev/yaes" target="_blank">
         Homepage
@@ -22,6 +35,8 @@
 
 <script>
 import EnvList from "./components/EnvList";
+import ProjectList from "./components/ProjectList";
+
 import {
   getCurrentTab,
   openChromeUrl,
@@ -36,10 +51,11 @@ import { storageGetValue } from "./services/chrome/storage";
 
 export default {
   name: "Popup",
-  components: { EnvList },
+  components: { EnvList, ProjectList },
   data() {
     return {
-      envs: [],
+      envs: null,
+      projects: null,
       currentEnv: null,
       loaded: false
     };
@@ -57,9 +73,14 @@ export default {
 
     if (config) {
       this.currentEnv = getCurrentEnv(currentTab.url, config);
-      this.envs = this.currentEnv?.project
-        ? config.envs.filter(env => env.project === this.currentEnv.project)
-        : config.envs;
+      if (this.currentEnv) {
+        this.envs = this.currentEnv?.project
+          ? config.envs.filter(env => env.project === this.currentEnv.project)
+          : config.envs;
+      } else {
+        this.projects = config.projects;
+        this.envs = config.envs;
+      }
     }
 
     this.loaded = true;
@@ -68,8 +89,11 @@ export default {
     async switchEnv({ env, middle }) {
       const currentTab = await getCurrentTab();
       const newUrl = switchBaseUrl(currentTab.url, env.url);
-
       openChromeUrl(currentTab, newUrl, middle);
+    },
+    async redirectUrl({ url, middle }) {
+      const currentTab = await getCurrentTab();
+      openChromeUrl(currentTab, url, middle);
     },
     openOptionsPage() {
       openOptionsPage();
@@ -80,22 +104,26 @@ export default {
 
 <style lang="scss">
 @import "@/styles/variables.scss";
+@import "@/styles/icons.scss";
 </style>
 
 <style lang="scss" scoped>
 .popin {
-  min-width: 250px;
+  min-width: 270px;
   min-height: 100px;
   display: flex;
   flex-direction: column;
 }
 
 .info {
-  padding: 7px;
   flex: 1;
 }
 
-header {
+.body {
+  padding: 11px 7px;
+}
+
+.header {
   border-bottom: 1px solid var(--border-grey);
   background-color: var(--bg-grey);
   color: var(--fg-black);
@@ -108,7 +136,7 @@ header {
   }
 }
 
-footer {
+.footer {
   border-top: 1px solid var(--border-grey);
   background-color: var(--bg-grey);
   padding: 7px;

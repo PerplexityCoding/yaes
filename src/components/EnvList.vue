@@ -33,8 +33,8 @@ export default {
     },
     currentEnv: {
       type: Object,
-      required: true,
-      validator: o => o.name != null || o.shortName != null
+      required: false,
+      validator: o => !o || o.name != null || o.shortName != null
     }
   },
   emits: ["switch-env"],
@@ -43,6 +43,9 @@ export default {
   },
   methods: {
     equalsEnv(env1, env2) {
+      if (!env1 || !env2) {
+        return false;
+      }
       const url1 = new URL(env1.url);
       const url2 = new URL(env2.url);
       return url1.hostname === url2.hostname;
@@ -55,17 +58,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.env-list {
-  min-width: 250px;
-}
-
 .domain {
   font-style: italic;
   font-size: 0.75rem;
 }
 
 ul {
-  padding: 11px 7px;
+  padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;

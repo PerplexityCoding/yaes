@@ -3,6 +3,11 @@
   "description": "Object containing config details",
   "type": "object",
   "properties": {
+    "projects": {
+      "type": "array",
+      "default": [],
+      "items": { "$ref": "#/definitions/project" }
+    },
     "envs": {
       "type": "array",
       "default": [],
@@ -13,6 +18,25 @@
     }
   },
   "definitions": {
+    "project": {
+      "type": "object",
+      "default": {},
+      "properties": {
+        "id": {
+          "oneOf" : [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
     "options": {
       "type": "object",
       "default": {},

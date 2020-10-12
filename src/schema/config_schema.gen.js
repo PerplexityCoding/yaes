@@ -5,7 +5,24 @@ var equal = require('ajv/lib/compile/equal');
 var validate = (function() {
   var pattern0 = new RegExp('^(https?|wss?|ftp)://');
   var refVal = [];
-  var refVal1 = (function() {
+  var refVal1 = {
+    "type": "object",
+    "default": {},
+    "properties": {
+      "id": {
+        "oneOf": [{
+          "type": "string"
+        }, {
+          "type": "number"
+        }]
+      },
+      "name": {
+        "type": "string"
+      }
+    }
+  };
+  refVal[1] = refVal1;
+  var refVal2 = (function() {
     var pattern0 = new RegExp('^(https?|wss?|ftp)://');
     return function validate(data, dataPath, parentData, parentDataProperty, rootData) {
       'use strict';
@@ -149,7 +166,7 @@ var validate = (function() {
                           else vErrors.push(err);
                           errors++;
                         }
-                        var schema4 = refVal2.properties.position.enum;
+                        var schema4 = refVal3.properties.position.enum;
                         var valid4;
                         valid4 = false;
                         for (var i4 = 0; i4 < schema4.length; i4++)
@@ -193,7 +210,7 @@ var validate = (function() {
                             else vErrors.push(err);
                             errors++;
                           }
-                          var schema4 = refVal2.properties.type.enum;
+                          var schema4 = refVal3.properties.type.enum;
                           var valid4;
                           valid4 = false;
                           for (var i4 = 0; i4 < schema4.length; i4++)
@@ -734,7 +751,7 @@ var validate = (function() {
       return errors === 0;
     };
   })();
-  refVal1.schema = {
+  refVal2.schema = {
     "properties": {
       "ribbon": {
         "oneOf": [{
@@ -784,9 +801,9 @@ var validate = (function() {
     "required": ["url"],
     "additionalProperties": false
   };
-  refVal1.errors = null;
-  refVal[1] = refVal1;
-  var refVal2 = {
+  refVal2.errors = null;
+  refVal[2] = refVal2;
+  var refVal3 = {
     "type": "object",
     "properties": {
       "color": {
@@ -810,8 +827,8 @@ var validate = (function() {
     },
     "additionalProperties": false
   };
-  refVal[2] = refVal2;
-  var refVal3 = {
+  refVal[3] = refVal3;
+  var refVal4 = {
     "type": "object",
     "properties": {
       "backgroundColor": {
@@ -821,8 +838,8 @@ var validate = (function() {
     },
     "additionalProperties": false
   };
-  refVal[3] = refVal3;
-  var refVal4 = (function() {
+  refVal[4] = refVal4;
+  var refVal5 = (function() {
     var pattern0 = new RegExp('^(https?|wss?|ftp)://');
     return function validate(data, dataPath, parentData, parentDataProperty, rootData) {
       'use strict';
@@ -965,7 +982,7 @@ var validate = (function() {
                         else vErrors.push(err);
                         errors++;
                       }
-                      var schema4 = refVal[2].properties.position.enum;
+                      var schema4 = refVal[3].properties.position.enum;
                       var valid4;
                       valid4 = false;
                       for (var i4 = 0; i4 < schema4.length; i4++)
@@ -1009,7 +1026,7 @@ var validate = (function() {
                           else vErrors.push(err);
                           errors++;
                         }
-                        var schema4 = refVal[2].properties.type.enum;
+                        var schema4 = refVal[3].properties.type.enum;
                         var valid4;
                         valid4 = false;
                         for (var i4 = 0; i4 < schema4.length; i4++)
@@ -1264,7 +1281,7 @@ var validate = (function() {
       return errors === 0;
     };
   })();
-  refVal4.schema = {
+  refVal5.schema = {
     "type": "object",
     "default": {},
     "properties": {
@@ -1289,8 +1306,8 @@ var validate = (function() {
     },
     "additionalProperties": false
   };
-  refVal4.errors = null;
-  refVal[4] = refVal4;
+  refVal5.errors = null;
+  refVal[5] = refVal5;
   return function validate(data, dataPath, parentData, parentDataProperty, rootData) {
     'use strict';
     var vErrors = null;
@@ -1301,7 +1318,7 @@ var validate = (function() {
         var errs__0 = errors;
         var valid1 = true;
         for (var key0 in data) {
-          var isAdditional0 = !(false || key0 == 'envs' || key0 == 'options');
+          var isAdditional0 = !(false || key0 == 'projects' || key0 == 'envs' || key0 == 'options');
           if (isAdditional0) {
             valid1 = false;
             validate.errors = [{
@@ -1318,31 +1335,137 @@ var validate = (function() {
           }
         }
         if (valid1) {
-          var data1 = data.envs;
+          var data1 = data.projects;
           if (data1 === undefined) {
-            valid1 = false;
-            validate.errors = [{
-              keyword: 'required',
-              dataPath: (dataPath || '') + "",
-              schemaPath: '#/required',
-              params: {
-                missingProperty: 'envs'
-              },
-              message: 'should have required property \'envs\''
-            }];
-            return false;
+            valid1 = true;
           } else {
             var errs_1 = errors;
             if (Array.isArray(data1)) {
               var errs__1 = errors;
               var valid1;
               for (var i1 = 0; i1 < data1.length; i1++) {
+                var data2 = data1[i1];
                 var errs_2 = errors;
-                if (!refVal1(data1[i1], (dataPath || '') + '.envs[' + i1 + ']', data1, i1, rootData)) {
-                  if (vErrors === null) vErrors = refVal1.errors;
-                  else vErrors = vErrors.concat(refVal1.errors);
-                  errors = vErrors.length;
-                } else {}
+                var errs_3 = errors;
+                if ((data2 && typeof data2 === "object" && !Array.isArray(data2))) {
+                  var errs__3 = errors;
+                  var valid4 = true;
+                  var data3 = data2.id;
+                  if (data3 === undefined) {
+                    valid4 = true;
+                  } else {
+                    var errs_4 = errors;
+                    var errs__4 = errors,
+                      prevValid4 = false,
+                      valid4 = false,
+                      passingSchemas4 = null;
+                    var errs_5 = errors;
+                    if (typeof data3 !== "string") {
+                      var err = {
+                        keyword: 'type',
+                        dataPath: (dataPath || '') + '.projects[' + i1 + '].id',
+                        schemaPath: '#/definitions/project/properties/id/oneOf/0/type',
+                        params: {
+                          type: 'string'
+                        },
+                        message: 'should be string'
+                      };
+                      if (vErrors === null) vErrors = [err];
+                      else vErrors.push(err);
+                      errors++;
+                    }
+                    var valid5 = errors === errs_5;
+                    if (valid5) {
+                      valid4 = prevValid4 = true;
+                      passingSchemas4 = 0;
+                    }
+                    var errs_5 = errors;
+                    if ((typeof data3 !== "number")) {
+                      var err = {
+                        keyword: 'type',
+                        dataPath: (dataPath || '') + '.projects[' + i1 + '].id',
+                        schemaPath: '#/definitions/project/properties/id/oneOf/1/type',
+                        params: {
+                          type: 'number'
+                        },
+                        message: 'should be number'
+                      };
+                      if (vErrors === null) vErrors = [err];
+                      else vErrors.push(err);
+                      errors++;
+                    }
+                    var valid5 = errors === errs_5;
+                    if (valid5 && prevValid4) {
+                      valid4 = false;
+                      passingSchemas4 = [passingSchemas4, 1];
+                    } else {
+                      if (valid5) {
+                        valid4 = prevValid4 = true;
+                        passingSchemas4 = 1;
+                      }
+                    }
+                    if (!valid4) {
+                      var err = {
+                        keyword: 'oneOf',
+                        dataPath: (dataPath || '') + '.projects[' + i1 + '].id',
+                        schemaPath: '#/definitions/project/properties/id/oneOf',
+                        params: {
+                          passingSchemas: passingSchemas4
+                        },
+                        message: 'should match exactly one schema in oneOf'
+                      };
+                      if (vErrors === null) vErrors = [err];
+                      else vErrors.push(err);
+                      errors++;
+                      validate.errors = vErrors;
+                      return false;
+                    } else {
+                      errors = errs__4;
+                      if (vErrors !== null) {
+                        if (errs__4) vErrors.length = errs__4;
+                        else vErrors = null;
+                      }
+                    }
+                    if (errors === errs_4) {}
+                    var valid4 = errors === errs_4;
+                  }
+                  if (valid4) {
+                    if (data2.name === undefined) {
+                      valid4 = true;
+                    } else {
+                      var errs_4 = errors;
+                      if (typeof data2.name !== "string") {
+                        validate.errors = [{
+                          keyword: 'type',
+                          dataPath: (dataPath || '') + '.projects[' + i1 + '].name',
+                          schemaPath: '#/definitions/project/properties/name/type',
+                          params: {
+                            type: 'string'
+                          },
+                          message: 'should be string'
+                        }];
+                        return false;
+                      }
+                      var valid4 = errors === errs_4;
+                    }
+                    if (valid4) {}
+                  }
+                  if (errs__3 == errors) {}
+                } else {
+                  validate.errors = [{
+                    keyword: 'type',
+                    dataPath: (dataPath || '') + '.projects[' + i1 + ']',
+                    schemaPath: '#/definitions/project/type',
+                    params: {
+                      type: 'object'
+                    },
+                    message: 'should be object'
+                  }];
+                  return false;
+                }
+                if (errors === errs_3) {}
+                var valid3 = errors === errs_3;
+                if (valid3) {}
                 if (errors === errs_2) {}
                 var valid2 = errors === errs_2;
                 if (!valid2) break;
@@ -1351,8 +1474,8 @@ var validate = (function() {
             } else {
               validate.errors = [{
                 keyword: 'type',
-                dataPath: (dataPath || '') + '.envs',
-                schemaPath: '#/properties/envs/type',
+                dataPath: (dataPath || '') + '.projects',
+                schemaPath: '#/properties/projects/type',
                 params: {
                   type: 'array'
                 },
@@ -1364,29 +1487,76 @@ var validate = (function() {
             var valid1 = errors === errs_1;
           }
           if (valid1) {
-            if (data.options === undefined) {
+            var data1 = data.envs;
+            if (data1 === undefined) {
               valid1 = false;
               validate.errors = [{
                 keyword: 'required',
                 dataPath: (dataPath || '') + "",
                 schemaPath: '#/required',
                 params: {
-                  missingProperty: 'options'
+                  missingProperty: 'envs'
                 },
-                message: 'should have required property \'options\''
+                message: 'should have required property \'envs\''
               }];
               return false;
             } else {
               var errs_1 = errors;
-              if (!refVal4(data.options, (dataPath || '') + '.options', data, 'options', rootData)) {
-                if (vErrors === null) vErrors = refVal4.errors;
-                else vErrors = vErrors.concat(refVal4.errors);
-                errors = vErrors.length;
-              } else {}
+              if (Array.isArray(data1)) {
+                var errs__1 = errors;
+                var valid1;
+                for (var i1 = 0; i1 < data1.length; i1++) {
+                  var errs_2 = errors;
+                  if (!refVal2(data1[i1], (dataPath || '') + '.envs[' + i1 + ']', data1, i1, rootData)) {
+                    if (vErrors === null) vErrors = refVal2.errors;
+                    else vErrors = vErrors.concat(refVal2.errors);
+                    errors = vErrors.length;
+                  } else {}
+                  if (errors === errs_2) {}
+                  var valid2 = errors === errs_2;
+                  if (!valid2) break;
+                }
+                if (errs__1 == errors) {}
+              } else {
+                validate.errors = [{
+                  keyword: 'type',
+                  dataPath: (dataPath || '') + '.envs',
+                  schemaPath: '#/properties/envs/type',
+                  params: {
+                    type: 'array'
+                  },
+                  message: 'should be array'
+                }];
+                return false;
+              }
               if (errors === errs_1) {}
               var valid1 = errors === errs_1;
             }
-            if (valid1) {}
+            if (valid1) {
+              if (data.options === undefined) {
+                valid1 = false;
+                validate.errors = [{
+                  keyword: 'required',
+                  dataPath: (dataPath || '') + "",
+                  schemaPath: '#/required',
+                  params: {
+                    missingProperty: 'options'
+                  },
+                  message: 'should have required property \'options\''
+                }];
+                return false;
+              } else {
+                var errs_1 = errors;
+                if (!refVal5(data.options, (dataPath || '') + '.options', data, 'options', rootData)) {
+                  if (vErrors === null) vErrors = refVal5.errors;
+                  else vErrors = vErrors.concat(refVal5.errors);
+                  errors = vErrors.length;
+                } else {}
+                if (errors === errs_1) {}
+                var valid1 = errors === errs_1;
+              }
+              if (valid1) {}
+            }
           }
         }
         if (errs__0 == errors) {}
@@ -1413,6 +1583,13 @@ validate.schema = {
   "description": "Object containing config details",
   "type": "object",
   "properties": {
+    "projects": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "$ref": "#/definitions/project"
+      }
+    },
     "envs": {
       "type": "array",
       "default": [],
@@ -1425,6 +1602,22 @@ validate.schema = {
     }
   },
   "definitions": {
+    "project": {
+      "type": "object",
+      "default": {},
+      "properties": {
+        "id": {
+          "oneOf": [{
+            "type": "string"
+          }, {
+            "type": "number"
+          }]
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
     "options": {
       "type": "object",
       "default": {},
