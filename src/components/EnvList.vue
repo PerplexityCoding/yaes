@@ -94,6 +94,8 @@ ul {
       transition: background-color 0.7s ease;
       min-height: 37px;
       letter-spacing: 0.35px;
+      color: var(--fg-black);
+      outline-color: var(--blue);
 
       &:hover {
         background-color: var(--bg-grey-hover);

@@ -98,6 +98,7 @@ export default {
 header {
   border-bottom: 1px solid var(--border-grey);
   background-color: var(--bg-grey);
+  color: var(--fg-black);
   padding: 7px;
   display: flex;
 
