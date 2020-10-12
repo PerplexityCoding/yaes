@@ -7,11 +7,7 @@
         @click="$emit('switch-env', { env })"
       >
         <span class="env-name">
-          <span v-if="env.shortName">
-            {{ env.shortName }} <span v-if="env.name">-</span>
-          </span>
-
-          {{ env.name }}
+          {{ env.name || env.shortName }}
           <div class="domain" v-if="env.displayDomain && env.url">
             {{ hostname(env) }}
           </div>
@@ -69,7 +65,7 @@ export default {
 }
 
 ul {
-  padding: 10px 7px;
+  padding: 11px 7px;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -81,14 +77,14 @@ ul {
     padding: 0;
 
     + li {
-      padding-top: 7px;
+      padding-top: 11px;
     }
 
     button {
       appearance: none;
       border-radius: 5px;
       border: 1px solid var(--border-grey);
-      padding: 5px 8px 5px 13px;
+      padding: 5px 8px 5px 15px;
       flex: 1;
       text-align: left;
       cursor: pointer;
@@ -96,6 +92,8 @@ ul {
       align-items: center;
       background-color: var(--bg-grey);
       transition: background-color 0.7s ease;
+      min-height: 37px;
+      letter-spacing: 0.35px;
 
       &:hover {
         background-color: var(--bg-grey-hover);
@@ -107,7 +105,7 @@ ul {
 
       &.selected {
         border-left-color: var(--blue);
-        border-left-width: 5px;
+        border-left-width: 7px;
         padding-left: 8px;
         font-weight: bold;
         background-color: var(--bg-yellow);

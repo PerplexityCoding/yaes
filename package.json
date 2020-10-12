@@ -14,6 +14,7 @@
     "build:content-script": "vue-cli-service build --target lib --name content-script --dest dist/js --no-clean src/content-script.js",
     "build:content-script:watch": "npm run build:content-script -- --mode development --watch",
     "build:schema": "ajv compile -s src/schema/config_schema.json -o src/schema/config_schema.gen.js",
+    "dev": "stmux -w always -e ERROR -- [ -f \"npm run build:app:watch\" : [ \"npm run build:content-script:watch\" .. \"npm run test:unit:watch\" ] ]",
     "jest": "jest",
     "bundle": "rm -rf build/ && npm run build && cd dist/ && sh -c 'sed -i \"s/1.0.0/$VERSION/g\" manifest.json' && sh -c 'bestzip ../release/v$VERSION.zip *'",
     "release": "sh -c 'npm version $VERSION' && npm run bundle && git push --tags && git push"
@@ -41,6 +42,7 @@
     "prettier": "^1.19.1",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
+    "stmux": "^1.8.0",
     "typescript": "~3.9.3",
     "vue-jest": "^5.0.0-0"
   },

@@ -41,7 +41,7 @@ describe("EnvList.vue", () => {
     const buttons = wrapper.findAll("button");
 
     expect(buttons).toHaveLength(3);
-    expect(buttons[0].text()).toContain("FR - France");
+    expect(buttons[0].text()).toContain("France");
     expect(buttons[0].text()).toContain("www.google.fr");
 
     expect(buttons[1].text()).toContain("DE");
