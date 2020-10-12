@@ -71,13 +71,18 @@
           "default": true
         },
         "shortName": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "url": {
-          "type": "string"
+          "type": "string",
+          "format": "uri",
+          "pattern": "^(https?|wss?|ftp)://"
         },
         "group": {
           "oneOf" : [

@@ -1,8 +1,12 @@
 'use strict';
+var formats = require('ajv/lib/compile/formats')();
+var ucs2length = require('ajv/lib/compile/ucs2length');
 var equal = require('ajv/lib/compile/equal');
 var validate = (function() {
+  var pattern0 = new RegExp('^(https?|wss?|ftp)://');
   var refVal = [];
   var refVal1 = (function() {
+    var pattern0 = new RegExp('^(https?|wss?|ftp)://');
     return function validate(data, dataPath, parentData, parentDataProperty, rootData) {
       'use strict';
       var vErrors = null;
@@ -423,11 +427,38 @@ var validate = (function() {
                   var valid1 = errors === errs_1;
                 }
                 if (valid1) {
-                  if (data.shortName === undefined) {
+                  var data1 = data.shortName;
+                  if (data1 === undefined) {
                     valid1 = true;
                   } else {
                     var errs_1 = errors;
-                    if (typeof data.shortName !== "string") {
+                    if (typeof data1 === "string") {
+                      if (ucs2length(data1) > 4) {
+                        validate.errors = [{
+                          keyword: 'maxLength',
+                          dataPath: (dataPath || '') + '.shortName',
+                          schemaPath: '#/properties/shortName/maxLength',
+                          params: {
+                            limit: 4
+                          },
+                          message: 'should NOT be longer than 4 characters'
+                        }];
+                        return false;
+                      } else {
+                        if (ucs2length(data1) < 1) {
+                          validate.errors = [{
+                            keyword: 'minLength',
+                            dataPath: (dataPath || '') + '.shortName',
+                            schemaPath: '#/properties/shortName/minLength',
+                            params: {
+                              limit: 1
+                            },
+                            message: 'should NOT be shorter than 1 characters'
+                          }];
+                          return false;
+                        } else {}
+                      }
+                    } else {
                       validate.errors = [{
                         keyword: 'type',
                         dataPath: (dataPath || '') + '.shortName',
@@ -439,14 +470,29 @@ var validate = (function() {
                       }];
                       return false;
                     }
+                    if (errors === errs_1) {}
                     var valid1 = errors === errs_1;
                   }
                   if (valid1) {
-                    if (data.name === undefined) {
+                    var data1 = data.name;
+                    if (data1 === undefined) {
                       valid1 = true;
                     } else {
                       var errs_1 = errors;
-                      if (typeof data.name !== "string") {
+                      if (typeof data1 === "string") {
+                        if (ucs2length(data1) < 1) {
+                          validate.errors = [{
+                            keyword: 'minLength',
+                            dataPath: (dataPath || '') + '.name',
+                            schemaPath: '#/properties/name/minLength',
+                            params: {
+                              limit: 1
+                            },
+                            message: 'should NOT be shorter than 1 characters'
+                          }];
+                          return false;
+                        } else {}
+                      } else {
                         validate.errors = [{
                           keyword: 'type',
                           dataPath: (dataPath || '') + '.name',
@@ -458,10 +504,12 @@ var validate = (function() {
                         }];
                         return false;
                       }
+                      if (errors === errs_1) {}
                       var valid1 = errors === errs_1;
                     }
                     if (valid1) {
-                      if (data.url === undefined) {
+                      var data1 = data.url;
+                      if (data1 === undefined) {
                         valid1 = false;
                         validate.errors = [{
                           keyword: 'required',
@@ -475,17 +523,49 @@ var validate = (function() {
                         return false;
                       } else {
                         var errs_1 = errors;
-                        if (typeof data.url !== "string") {
-                          validate.errors = [{
-                            keyword: 'type',
-                            dataPath: (dataPath || '') + '.url',
-                            schemaPath: '#/properties/url/type',
-                            params: {
-                              type: 'string'
-                            },
-                            message: 'should be string'
-                          }];
-                          return false;
+                        if ((typeof data1 === "number")) {
+                          if (true) {}
+                        }
+                        if (errors === errs_1) {
+                          if (typeof data1 === "string") {
+                            if (!pattern0.test(data1)) {
+                              validate.errors = [{
+                                keyword: 'pattern',
+                                dataPath: (dataPath || '') + '.url',
+                                schemaPath: '#/properties/url/pattern',
+                                params: {
+                                  pattern: '^(https?|wss?|ftp)://'
+                                },
+                                message: 'should match pattern "^(https?|wss?|ftp)://"'
+                              }];
+                              return false;
+                            } else {
+                              if (!formats.uri.test(data1)) {
+                                validate.errors = [{
+                                  keyword: 'format',
+                                  dataPath: (dataPath || '') + '.url',
+                                  schemaPath: '#/properties/url/format',
+                                  params: {
+                                    format: 'uri'
+                                  },
+                                  message: 'should match format "uri"'
+                                }];
+                                return false;
+                              } else {}
+                            }
+                          } else {
+                            validate.errors = [{
+                              keyword: 'type',
+                              dataPath: (dataPath || '') + '.url',
+                              schemaPath: '#/properties/url/type',
+                              params: {
+                                type: 'string'
+                              },
+                              message: 'should be string'
+                            }];
+                            return false;
+                          }
+                          if (errors === errs_1) {}
                         }
                         var valid1 = errors === errs_1;
                       }
@@ -675,13 +755,18 @@ var validate = (function() {
         "default": true
       },
       "shortName": {
-        "type": "string"
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 4
       },
       "name": {
-        "type": "string"
+        "type": "string",
+        "minLength": 1
       },
       "url": {
-        "type": "string"
+        "type": "string",
+        "format": "uri",
+        "pattern": "^(https?|wss?|ftp)://"
       },
       "group": {
         "oneOf": [{
@@ -738,6 +823,7 @@ var validate = (function() {
   };
   refVal[3] = refVal3;
   var refVal4 = (function() {
+    var pattern0 = new RegExp('^(https?|wss?|ftp)://');
     return function validate(data, dataPath, parentData, parentDataProperty, rootData) {
       'use strict';
       var vErrors = null;
@@ -1385,13 +1471,18 @@ validate.schema = {
           "default": true
         },
         "shortName": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "url": {
-          "type": "string"
+          "type": "string",
+          "format": "uri",
+          "pattern": "^(https?|wss?|ftp)://"
         },
         "group": {
           "oneOf": [{
