@@ -32,7 +32,7 @@ import ArrowDown from "./icons/ArrowDown";
 export default {
   name: "ProjectList",
   components: { EnvList, ArrowDown },
-  emits: ["redirect-env"],
+  emits: ["redirect-url"],
   props: {
     projects: {
       type: Array,

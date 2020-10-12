@@ -34,6 +34,7 @@ export default {
     currentEnv: {
       type: Object,
       required: false,
+      default: null,
       validator: o => !o || o.name != null || o.shortName != null
     }
   },

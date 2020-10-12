@@ -2,11 +2,7 @@ import { mount } from "@vue/test-utils";
 import Popup from "@/Popup.vue";
 import EnvList from "@/components/EnvList";
 import { waitFor } from "@/services/utils";
-import {
-  getCurrentTab,
-  openChromeUrl,
-  openOptionsPage
-} from "@/services/chrome/tabs";
+import { getCurrentTab, openChromeUrl } from "@/services/chrome/tabs";
 import { storageGetValue } from "@/services/chrome/storage";
 
 jest.mock("@/services/chrome/tabs");
