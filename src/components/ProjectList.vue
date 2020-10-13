@@ -14,10 +14,7 @@
         <div class="project-envs" v-if="isOpened(project)">
           <EnvList
             :envs="projectEnvs(project)"
-            @switch-env="
-              ({ env, middle }) =>
-                $emit('redirect-url', { url: env.url, middle })
-            "
+            @switch-env="data => $emit('redirect-env', data)"
           />
         </div>
       </div>
@@ -32,7 +29,7 @@ import ArrowDown from "./icons/ArrowDown";
 export default {
   name: "ProjectList",
   components: { EnvList, ArrowDown },
-  emits: ["redirect-url"],
+  emits: ["redirect-env"],
   props: {
     projects: {
       type: Array,

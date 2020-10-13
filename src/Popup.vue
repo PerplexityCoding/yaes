@@ -5,7 +5,7 @@
       <span> Yet Another Env Switcher </span>
     </header>
     <section class="body">
-      <div v-if="currentEnv && mode === 'envs'">
+      <div v-if="mode === 'envs'">
         <EnvList
           :envs="currentEnvs"
           :current-env="currentEnv"
@@ -15,16 +15,16 @@
         <button
           class="switch-env-btn right"
           @click="mode = 'projects'"
-          v-if="projects"
+          v-if="projects && projects.length > 1"
         >
           <span>See projects</span> <ArrowDown height="8px" width="8px" />
         </button>
       </div>
-      <div v-else-if="projects && mode === 'projects'">
+      <div v-else-if="mode === 'projects'">
         <ProjectList
           :projects="projects"
           :envs="envs"
-          @redirect-url="redirectUrl"
+          @redirect-env="redirectEnv"
         />
 
         <button class="switch-env-btn" @click="mode = 'envs'" v-if="currentEnv">
@@ -87,17 +87,27 @@ export default {
     }
 
     if (config) {
-      this.currentEnv = getCurrentEnv(currentTab.url, config);
-      if (this.currentEnv) {
-        this.currentEnvs = this.currentEnv?.project
-          ? config.envs.filter(env => env.project === this.currentEnv.project)
-          : config.envs;
-        this.mode = "envs";
+      const currentEnv = getCurrentEnv(currentTab.url, config);
+      const { envs, projects } = config;
+
+      let currentEnvs = null;
+      if (currentEnv) {
+        currentEnvs = currentEnv?.project
+          ? envs.filter(env => env.project === currentEnv.project)
+          : envs;
       } else {
-        this.mode = "projects";
+        if (projects?.length === 1) {
+          currentEnvs = envs.filter(env => env.project === projects[0].id);
+        } else if (!projects) {
+          currentEnvs = envs;
+        }
       }
-      this.envs = config.envs;
-      this.projects = config.projects;
+
+      this.mode = currentEnv || currentEnvs ? "envs" : "projects";
+      this.currentEnv = currentEnv;
+      this.currentEnvs = currentEnvs;
+      this.envs = envs;
+      this.projects = projects;
     }
 
     this.loaded = true;
@@ -108,9 +118,9 @@ export default {
       const newUrl = switchBaseUrl(currentTab.url, env.url);
       openChromeUrl(currentTab, newUrl, middle);
     },
-    async redirectUrl({ url, middle }) {
+    async redirectEnv({ env, middle }) {
       const currentTab = await getCurrentTab();
-      openChromeUrl(currentTab, url, middle);
+      openChromeUrl(currentTab, env.url, middle);
     },
     openOptionsPage() {
       openOptionsPage();
