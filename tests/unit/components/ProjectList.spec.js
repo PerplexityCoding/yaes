@@ -67,6 +67,6 @@ describe("EnvList.vue", () => {
     await buttonsWrapper1.find("button").trigger("click");
     await waitFor();
 
-    expect(buttonsWrapper1.html()).toContain("https://www.google.fr/");
+    expect(buttonsWrapper1.html()).toContain("www.google.fr");
   });
 });
