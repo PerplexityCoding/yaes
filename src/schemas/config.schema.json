@@ -1,20 +1,84 @@
 {
+  "$id": "https://github.com/ymenard-dev/yaes/blob/main/src/schemas/config.schema.json",
   "title": "Config",
   "description": "Object containing config details",
   "type": "object",
   "properties": {
     "projects": {
       "type": "array",
-      "default": [],
-      "items": { "$ref": "#/definitions/project" }
+      "default": [
+        {
+          "id": "Google"
+        },
+        {
+          "id": "Yahoo",
+          "name": "Yahoo"
+        }
+      ],
+      "items": {
+        "$ref": "#/definitions/project"
+      }
     },
     "envs": {
       "type": "array",
-      "default": [],
-      "items": { "$ref": "#/definitions/env" }
+      "default": [
+        {
+          "shortName": "FR",
+          "url": "https://www.google.fr/",
+          "ribbon": {
+            "backgroundColor": "#2519c7",
+            "color": "pink",
+            "type": "corner-ribbon"
+          },
+          "badge": {
+            "backgroundColor": "#154785"
+          },
+          "project": "Google"
+        },
+        {
+          "name": "ES",
+          "url": "https://www.google.es/",
+          "ribbon": false,
+          "project": "Google"
+        },
+        {
+          "shortName": "DE",
+          "name": "Germany",
+          "url": "https://www.google.de/",
+          "ribbon": {
+            "backgroundColor": "#1fab19"
+          },
+          "badge": false,
+          "project": "Google"
+        }
+      ],
+      "items": {
+        "$ref": "#/definitions/env"
+      }
     },
     "options": {
-      "$ref": "#/definitions/options"
+      "type": "object",
+      "description": "Global options",
+      "default": {
+        "ribbon": {
+          "type": "corner-ribbon",
+          "color": "white",
+          "backgroundColor": "#2f2f2f",
+          "position": "right"
+        },
+        "badge": {
+          "backgroundColor": "#2677c9"
+        },
+        "displayDomain": true,
+        "displayHeader": true,
+        "displayFooter": true,
+        "displaySeeProjectsLink": true
+      },
+      "anyOf": [
+        {
+          "$ref": "#/definitions/options"
+        }
+      ]
     }
   },
   "definitions": {
@@ -23,19 +87,18 @@
       "default": {},
       "properties": {
         "id": {
-          "oneOf" : [
-            {
-              "type": "string"
-            },
-            {
-              "type": "number"
-            }
+          "type": [
+            "string",
+            "number"
           ]
         },
         "name": {
           "type": "string"
         }
-      }
+      },
+      "required": [
+        "id"
+      ]
     },
     "options": {
       "type": "object",
@@ -43,9 +106,9 @@
       "default": {},
       "properties": {
         "ribbon": {
-          "oneOf" : [
+          "oneOf": [
             {
-              "type": "boolean"
+              "$ref": "#/definitions/boolean"
             },
             {
               "$ref": "#/definitions/ribbon"
@@ -53,9 +116,9 @@
           ]
         },
         "badge": {
-          "oneOf" : [
+          "oneOf": [
             {
-              "type": "boolean"
+              "$ref": "#/definitions/boolean"
             },
             {
               "$ref": "#/definitions/badge"
@@ -63,6 +126,18 @@
           ]
         },
         "displayDomain": {
+          "type": "boolean",
+          "default": true
+        },
+        "displayHeader": {
+          "type": "boolean",
+          "default": true
+        },
+        "displayFooter": {
+          "type": "boolean",
+          "default": true
+        },
+        "displaySeeProjectsLink": {
           "type": "boolean",
           "default": true
         }
@@ -73,9 +148,9 @@
       "type": "object",
       "properties": {
         "ribbon": {
-          "oneOf" : [
+          "oneOf": [
             {
-              "type": "boolean"
+              "$ref": "#/definitions/boolean"
             },
             {
               "$ref": "#/definitions/ribbon"
@@ -83,9 +158,9 @@
           ]
         },
         "badge": {
-          "oneOf" : [
+          "oneOf": [
             {
-              "type": "boolean"
+              "$ref": "#/definitions/boolean"
             },
             {
               "$ref": "#/definitions/badge"
@@ -111,13 +186,9 @@
           "pattern": "^(https?|wss?|ftp)://"
         },
         "project": {
-          "oneOf" : [
-            {
-              "type": "string"
-            },
-            {
-              "type": "number"
-            }
+          "type": [
+            "string",
+            "number"
           ]
         }
       },
@@ -151,6 +222,14 @@
     "ribbon": {
       "type": "object",
       "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "corner-ribbon",
+            "square-ribbon"
+          ],
+          "default": "corner-ribbon"
+        },
         "color": {
           "type": "string",
           "default": "white"
@@ -161,16 +240,17 @@
         },
         "position": {
           "type": "string",
-          "enum": ["left", "right"],
+          "enum": [
+            "left",
+            "right"
+          ],
           "default": "right"
-        },
-        "type": {
-          "type": "string",
-          "enum": ["corner-ribbon", "square-ribbon"],
-          "default": "corner-ribbon"
         }
       },
       "additionalProperties": false
+    },
+    "boolean": {
+      "type": "boolean"
     }
   },
   "required": [
@@ -179,4 +259,3 @@
   ],
   "additionalProperties": false
 }
-
