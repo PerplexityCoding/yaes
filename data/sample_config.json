@@ -58,6 +58,9 @@
       "position": "right"
     },
     "badge": true,
-    "displayDomain": true
+    "displayDomain": true,
+    "displayHeader": true,
+    "displayFooter": true,
+    "displaySeeProjectsLink": true
   }
 }

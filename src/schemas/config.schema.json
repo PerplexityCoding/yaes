@@ -39,6 +39,7 @@
     },
     "options": {
       "type": "object",
+      "description": "Object containing global options",
       "default": {},
       "properties": {
         "ribbon": {
@@ -69,6 +70,7 @@
       "additionalProperties": false
     },
     "env": {
+      "type": "object",
       "properties": {
         "ribbon": {
           "oneOf" : [

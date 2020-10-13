@@ -676,6 +676,17 @@ var validate = (function() {
           }
           if (errs__0 == errors) {}
         }
+      } else {
+        validate.errors = [{
+          keyword: 'type',
+          dataPath: (dataPath || '') + "",
+          schemaPath: '#/type',
+          params: {
+            type: 'object'
+          },
+          message: 'should be object'
+        }];
+        return false;
       }
       if (errors === 0) {
         var errs__0 = errors;
@@ -752,6 +763,7 @@ var validate = (function() {
     };
   })();
   refVal2.schema = {
+    "type": "object",
     "properties": {
       "ribbon": {
         "oneOf": [{
@@ -1283,6 +1295,7 @@ var validate = (function() {
   })();
   refVal5.schema = {
     "type": "object",
+    "description": "Object containing global options",
     "default": {},
     "properties": {
       "ribbon": {
@@ -1620,6 +1633,7 @@ validate.schema = {
     },
     "options": {
       "type": "object",
+      "description": "Object containing global options",
       "default": {},
       "properties": {
         "ribbon": {
@@ -1644,6 +1658,7 @@ validate.schema = {
       "additionalProperties": false
     },
     "env": {
+      "type": "object",
       "properties": {
         "ribbon": {
           "oneOf": [{

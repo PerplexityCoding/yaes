@@ -1,6 +1,6 @@
 <template>
   <section class="popin" v-if="loaded">
-    <header class="header">
+    <header v-if="options.displayHeader !== false" class="header">
       <img src="assets/images/favicon-16x16.png" />
       <span> Yet Another Env Switcher </span>
     </header>
@@ -13,9 +13,13 @@
         />
 
         <button
+          v-if="
+            projects &&
+              projects.length > 1 &&
+              options.displaySeeProjectsLink !== false
+          "
           class="switch-env-btn right"
           @click="mode = 'projects'"
-          v-if="projects && projects.length > 1"
         >
           <span>See projects</span> <ArrowDown height="8px" width="8px" />
         </button>
@@ -27,7 +31,7 @@
           @redirect-env="redirectEnv"
         />
 
-        <button class="switch-env-btn" @click="mode = 'envs'" v-if="currentEnv">
+        <button v-if="currentEnv" class="switch-env-btn" @click="mode = 'envs'">
           <ArrowDown height="8px" width="8px" /> <span>See current env</span>
         </button>
       </div>
@@ -36,7 +40,7 @@
         link to continue.
       </div>
     </section>
-    <footer class="footer">
+    <footer v-if="options.displayFooter !== false" class="footer">
       <a href="#/options" @click="openOptionsPage"> Edit Configuration </a>
       <a href="https://github.com/ymenard-dev/yaes" target="_blank">
         Homepage
@@ -72,7 +76,8 @@ export default {
       projects: null,
       currentEnv: null,
       currentEnvs: null,
-      loaded: false
+      loaded: false,
+      options: {}
     };
   },
   async created() {
@@ -88,7 +93,7 @@ export default {
 
     if (config) {
       const currentEnv = getCurrentEnv(currentTab.url, config);
-      const { envs, projects } = config;
+      const { envs, projects, options } = config;
 
       let currentEnvs = null;
       if (currentEnv) {
@@ -108,6 +113,7 @@ export default {
       this.currentEnvs = currentEnvs;
       this.envs = envs;
       this.projects = projects;
+      this.options = options || {};
     }
 
     this.loaded = true;

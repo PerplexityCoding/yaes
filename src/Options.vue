@@ -26,7 +26,7 @@
 import { storageGetValue, storageSet } from "./services/chrome/storage";
 import JSONEditor from "jsoneditor/dist/jsoneditor.js";
 import { debounce } from "./services/utils";
-import validateSchema from "./schema/config_schema.gen.js";
+import validateSchema from "./schemas/config.schema.gen.js";
 
 const SAVE_DELAY = 500;
 

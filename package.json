@@ -13,17 +13,19 @@
     "build:app:watch": "npm run build:app -- --no-clean --mode development --watch",
     "build:content-script": "vue-cli-service build --target lib --name content-script --dest dist/js --no-clean src/content-script.js",
     "build:content-script:watch": "npm run build:content-script -- --mode development --watch",
-    "build:schema": "ajv compile -s src/schema/config_schema.json -o src/schema/config_schema.gen.js",
+    "build:schemas": "ajv compile -s src/schemas/config.schema.json -o src/schemas/config.schema.gen.js",
     "dev": "stmux -w always -e ERROR -- [ -f \"npm run build:app:watch\" : [ \"npm run build:content-script:watch\" .. \"npm run test:unit:watch\" ] ]",
     "jest": "jest",
     "bundle": "rm -rf build/ && npm run build && cd dist/ && sh -c 'sed -i \"s/1.0.0/$VERSION/g\" manifest.json' && sh -c 'bestzip ../release/v$VERSION.zip *'",
-    "release": "sh -c 'npm version $VERSION' && npm run bundle && git push --tags && git push"
+    "release": "sh -c 'npm version $VERSION' && npm run bundle && git push --tags && git push",
+    "docs:schemas": "node build/generate-schemas-md.js"
   },
   "dependencies": {
     "core-js": "^3.6.5",
     "vue": "^3.0.0-0"
   },
   "devDependencies": {
+    "@adobe/jsonschema2md": "^4.2.0",
     "@vue/cli-plugin-babel": "^4.5.6",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-unit-jest": "~4.5.0",
@@ -37,6 +39,7 @@
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-vue": "^7.0.0-0",
+    "json-schema-to-markdown": "^1.1.1",
     "jsoneditor": "^9.1.1",
     "lint-staged": "^9.5.0",
     "prettier": "^1.19.1",
