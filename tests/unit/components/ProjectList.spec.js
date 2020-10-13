@@ -24,7 +24,7 @@ describe("EnvList.vue", () => {
     },
     {
       shortName: "ES",
-      url: "https://www.google.es/",
+      url: "https://www.yah.es/",
       project: "Yah"
     }
   ];
@@ -68,5 +68,6 @@ describe("EnvList.vue", () => {
     await waitFor();
 
     expect(buttonsWrapper1.html()).toContain("www.google.fr");
+    expect(buttonsWrapper1.html()).not.toContain("www.yah.es");
   });
 });
