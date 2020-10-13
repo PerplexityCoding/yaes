@@ -49,3 +49,18 @@ export function debounce(func, wait, immediate) {
     if (callNow) func.apply(context, args);
   };
 }
+
+export function downloadAsJson(obj) {
+  const data =
+    "text/json;charset=utf-8," +
+    encodeURIComponent(JSON.stringify(obj, null, 2));
+
+  const a = document.createElement("a");
+  a.href = "data:" + data;
+  a.download = "yeas-config.json";
+  a.innerHTML = "download JSON";
+
+  window.document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
