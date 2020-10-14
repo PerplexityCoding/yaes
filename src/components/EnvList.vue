@@ -3,8 +3,9 @@
     <li v-for="env in envs" :key="env.url">
       <button
         :class="{ selected: equalsEnv(env, currentEnv) }"
-        @click.middle="$emit('switch-env', { env, middle: true })"
-        @click="$emit('switch-env', { env })"
+        @click.middle.exact="switchEnv(env, true)"
+        @click.ctrl.exact="switchEnv(env, true)"
+        @click.exact="switchEnv(env)"
       >
         <span class="env-name">
           {{ env.name || env.shortName }}
@@ -53,6 +54,9 @@ export default {
     },
     hostname(env) {
       return new URL(env.url).hostname;
+    },
+    switchEnv(env, newTab) {
+      this.$emit('switch-env', { env, newTab })
     }
   }
 };

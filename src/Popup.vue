@@ -119,14 +119,14 @@ export default {
     this.loaded = true;
   },
   methods: {
-    async switchEnv({ env, middle }) {
+    async switchEnv({ env, newTab }) {
       const currentTab = await getCurrentTab();
       const newUrl = switchBaseUrl(currentTab.url, env.url);
-      openChromeUrl(currentTab, newUrl, middle);
+      openChromeUrl(currentTab, newUrl, newTab);
     },
-    async redirectEnv({ env, middle }) {
+    async redirectEnv({ env, newTab }) {
       const currentTab = await getCurrentTab();
-      openChromeUrl(currentTab, env.url, middle);
+      openChromeUrl(currentTab, env.url, newTab);
     },
     openOptionsPage() {
       openOptionsPage();

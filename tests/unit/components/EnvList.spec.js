@@ -59,9 +59,9 @@ describe("EnvList.vue", () => {
     await buttons[0].trigger("click");
     expect(wrapper.emitted()["switch-env"]).toBeTruthy();
 
-    const { env, middle } = wrapper.emitted()["switch-env"][0][0];
+    const { env, newTab } = wrapper.emitted()["switch-env"][0][0];
     expect(env).toEqual(envs[0]);
-    expect(middle).toBeFalsy();
+    expect(newTab).toBeFalsy();
   });
 
   it("emit event when clicking with middle click", async () => {
@@ -71,8 +71,20 @@ describe("EnvList.vue", () => {
     await buttons[0].trigger("click.middle");
     expect(wrapper.emitted()["switch-env"]).toBeTruthy();
 
-    const { env, middle } = wrapper.emitted()["switch-env"][0][0];
+    const { env, newTab } = wrapper.emitted()["switch-env"][0][0];
     expect(env).toEqual(envs[0]);
-    expect(middle).toBeTruthy();
+    expect(newTab).toBeTruthy();
+  });
+
+  it("emit event when clicking with ctrl click", async () => {
+    const wrapper = createDefaultWrapper();
+
+    const buttons = wrapper.findAll("button");
+    await buttons[0].trigger("click.ctrl");
+    expect(wrapper.emitted()["switch-env"]).toBeTruthy();
+
+    const { env, newTab } = wrapper.emitted()["switch-env"][0][0];
+    expect(env).toEqual(envs[0]);
+    expect(newTab).toBeTruthy();
   });
 });
