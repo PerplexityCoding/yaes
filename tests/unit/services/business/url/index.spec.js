@@ -6,11 +6,12 @@ describe("Url", () => {
       {
         shortName: "FR",
         url: "https://www.google.fr/",
-        ribbon: {
+        displayRibbon: true,
+        ribbonOptions: {
           color: "#2519c7",
           type: "square-ribbon"
         },
-        badge: true,
+        displayBadge: true,
         displayDomain: true
       },
       {
@@ -21,11 +22,11 @@ describe("Url", () => {
       }
     ],
     options: {
-      ribbon: {
+      ribbonOptions: {
         color: "red",
         position: "left"
       },
-      badge: false,
+      displayBadge: false,
       displayDomain: true
     }
   };

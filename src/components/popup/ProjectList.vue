@@ -24,7 +24,7 @@
 
 <script>
 import EnvList from "./EnvList";
-import ArrowDown from "./icons/ArrowDown";
+import ArrowDown from "../icons/ArrowDown";
 
 export default {
   name: "ProjectList",

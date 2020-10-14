@@ -40,7 +40,8 @@
         />
 
         <button v-if="currentEnv" class="switch-env-btn" @click="mode = 'envs'">
-          <ArrowDown height="8px" width="8px" /> <span>See current env</span>
+          <ArrowDown height="8px" width="8px" />
+          <span>See current env</span>
         </button>
       </div>
       <div v-else class="info">
@@ -58,8 +59,8 @@
 </template>
 
 <script>
-import EnvList from "./components/EnvList";
-import ProjectList from "./components/ProjectList";
+import EnvList from "./components/popup/EnvList";
+import ProjectList from "./components/popup/ProjectList";
 import ArrowDown from "./components/icons/ArrowDown";
 
 import {

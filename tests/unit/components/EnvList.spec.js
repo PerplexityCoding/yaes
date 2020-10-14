@@ -1,5 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
-import EnvList from "@/components/EnvList.vue";
+import EnvList from "@/components/popup/EnvList.vue";
 
 describe("EnvList.vue", () => {
   const envs = [

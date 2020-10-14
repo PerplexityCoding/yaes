@@ -1,4 +1,5 @@
 import Options from "./Options.vue";
 import { createApp } from "vue";
 
-createApp(Options).mount("#app");
+const app = createApp(Options);
+app.mount("#app");

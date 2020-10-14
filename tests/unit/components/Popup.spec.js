@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 import Popup from "@/Popup.vue";
-import EnvList from "@/components/EnvList";
+import EnvList from "@/components/popup/EnvList";
 import { waitFor } from "@/services/utils";
 import { getCurrentTab, openChromeUrl } from "@/services/chrome/tabs";
 import { getConfig } from "@/services/business/storage";

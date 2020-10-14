@@ -65,7 +65,7 @@ async function migrate({ mergeOptions } = {}) {
     }
 
     if (mergeOptions) {
-      mergeOptionsInEnv(config);
+      config = mergeOptionsInEnv(config);
     }
   } else {
     config = { ...DEFAULT_CONFIG };
