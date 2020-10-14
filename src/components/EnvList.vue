@@ -56,7 +56,7 @@ export default {
       return new URL(env.url).hostname;
     },
     switchEnv(env, newTab) {
-      this.$emit('switch-env', { env, newTab })
+      this.$emit("switch-env", { env, newTab });
     }
   }
 };

@@ -11,6 +11,7 @@ const ribbonCss = `
     z-index: 99999;
     font-size: 18px;
     box-shadow: 8px 2px 5px #2f2f2f;
+    cursor: alias;
   }
 
   .corner-ribbon.left {
@@ -37,6 +38,7 @@ const ribbonCss = `
     font-size: 18px;
     box-shadow: 0px 2px 5px #2f2f2f;
     padding: 6px 12px;
+    cursor: alias;
   }
 
   .square-ribbon.left {
@@ -79,6 +81,10 @@ function renderRibbonHtml(config, env) {
     type,
     color
   });
+  elem.addEventListener("click", () => {
+    elem.remove();
+  });
+
   document.body.prepend(elem);
 }
 

@@ -38,7 +38,7 @@
         <div>
           <transition name="fade">
             <span v-if="displaySaveInfo" class="info">
-              {{ info }}
+              Saved <CheckIcon width="16px" height="12px" />
             </span>
           </transition>
         </div>
@@ -54,6 +54,7 @@ import { storageGetValue, storageSet } from "./services/chrome/storage";
 import JSONEditor from "jsoneditor/dist/jsoneditor.js";
 import { debounce, downloadAsJson } from "./services/utils";
 import validateSchema from "./schemas/config.schema.gen.js";
+import CheckIcon from "./components/icons/CheckIcon";
 
 const SAVE_DELAY = 500;
 
@@ -81,12 +82,12 @@ export default {
     return {
       configurationUrl: null,
       importConfigLoader: false,
-      info: "Saved !",
       displaySaveInfo: false,
       editor: null,
       errors: []
     };
   },
+  components: { CheckIcon },
   async created() {
     const originalConfig = await this.getOrInitConfig();
 
@@ -189,6 +190,10 @@ export default {
 @import "@/styles/variables.scss";
 @import "@/styles/transition.scss";
 @import "@/styles/loader.scss";
+
+#check-color {
+  fill: var(--green) !important;
+}
 </style>
 
 <style lang="scss" scoped>
@@ -261,10 +266,10 @@ export default {
   .info {
     display: inline-block;
     border-radius: 3px;
-    background-color: var(--green);
-    color: white;
+    color: var(--green);
     padding: 5px 10px;
     margin-top: 5px;
+    font-weight: bold;
   }
 }
 </style>
