@@ -14,11 +14,11 @@
     "build:content-script": "vue-cli-service build --target lib --name content-script --dest dist/js --no-clean src/content-script.js",
     "build:content-script:watch": "npm run build:content-script -- --mode development --watch",
     "build:schemas": "ajv compile -s src/schemas/config.schema.json -o src/schemas/config.schema.gen.js",
-    "dev": "bash ./build/launch-dev.sh",
+    "dev": "bash tools/launch-dev.sh",
     "jest": "jest",
     "bundle": "rm -rf build/ && npm run build && cd dist/ && sh -c 'sed -i \"s/1.0.0/$VERSION/g\" manifest.json' && sh -c 'bestzip ../release/v$VERSION.zip *'",
     "release": "sh -c 'npm version $VERSION' && npm run bundle && git push --tags && git push",
-    "docs:schemas": "node build/generate-schemas-md.js"
+    "docs:schemas": "node tools/generate-schemas-md.js"
   },
   "dependencies": {
     "core-js": "^3.6.5",
