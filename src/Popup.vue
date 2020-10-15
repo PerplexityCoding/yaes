@@ -9,7 +9,7 @@
         <EnvList
           :envs="currentEnvs"
           :current-env="currentEnv"
-          @switch-env="switchEnv"
+          @switch-env="(env) => currentEnv ? switchEnv(env) : redirectEnv(env)"
         />
 
         <button
