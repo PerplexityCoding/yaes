@@ -25,12 +25,14 @@
         {
           "shortName": "FR",
           "url": "https://www.google.fr/",
-          "ribbon": {
+          "displayRibbon": true,
+          "ribbonOptions": {
             "backgroundColor": "#2519c7",
             "color": "pink",
             "type": "corner-ribbon"
           },
-          "badge": {
+          "displayBadge": true,
+          "badgeOptions": {
             "backgroundColor": "#154785"
           },
           "project": "Google"
@@ -38,17 +40,18 @@
         {
           "name": "ES",
           "url": "https://www.google.es/",
-          "ribbon": false,
+          "displayRibbon": false,
           "project": "Google"
         },
         {
           "shortName": "DE",
           "name": "Germany",
           "url": "https://www.google.de/",
-          "ribbon": {
+          "displayRibbon": true,
+          "ribbonOptions": {
             "backgroundColor": "#1fab19"
           },
-          "badge": false,
+          "displayBadge": false,
           "project": "Google"
         }
       ],
@@ -60,13 +63,15 @@
       "type": "object",
       "description": "Global options",
       "default": {
-        "ribbon": {
+        "displayRibbon": true,
+        "ribbonOptions": {
           "type": "corner-ribbon",
           "color": "white",
           "backgroundColor": "#2f2f2f",
           "position": "right"
         },
-        "badge": {
+        "displayBadge": true,
+        "badgeOptions": {
           "backgroundColor": "#2677c9"
         },
         "displayDomain": true,
@@ -105,25 +110,19 @@
       "description": "Object containing global options",
       "default": {},
       "properties": {
-        "ribbon": {
-          "oneOf": [
-            {
-              "$ref": "#/definitions/boolean"
-            },
-            {
-              "$ref": "#/definitions/ribbon"
-            }
-          ]
+        "displayRibbon": {
+          "type": "boolean",
+          "default": true
         },
-        "badge": {
-          "oneOf": [
-            {
-              "$ref": "#/definitions/boolean"
-            },
-            {
-              "$ref": "#/definitions/badge"
-            }
-          ]
+        "ribbonOptions": {
+          "$ref": "#/definitions/ribbon"
+        },
+        "displayBadge": {
+          "type": "boolean",
+          "default": true
+        },
+        "badgeOptions": {
+          "$ref": "#/definitions/badge"
         },
         "displayDomain": {
           "type": "boolean",
@@ -147,25 +146,19 @@
     "env": {
       "type": "object",
       "properties": {
-        "ribbon": {
-          "oneOf": [
-            {
-              "$ref": "#/definitions/boolean"
-            },
-            {
-              "$ref": "#/definitions/ribbon"
-            }
-          ]
+        "displayRibbon": {
+          "type": "boolean",
+          "default": true
         },
-        "badge": {
-          "oneOf": [
-            {
-              "$ref": "#/definitions/boolean"
-            },
-            {
-              "$ref": "#/definitions/badge"
-            }
-          ]
+        "ribbonOptions": {
+          "$ref": "#/definitions/ribbon"
+        },
+        "displayBadge": {
+          "type": "boolean",
+          "default": true
+        },
+        "badgeOptions": {
+          "$ref": "#/definitions/badge"
         },
         "displayDomain": {
           "type": "boolean",

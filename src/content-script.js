@@ -11,7 +11,7 @@ async function verifyCurrentUrl() {
   const config = mergeOptions(await getConfig("config"));
   const env = getCurrentEnv(window.location.href, config);
 
-  if (env?.ribbon) {
+  if (env?.displayRibbon) {
     renderRibbon(config, env);
   }
 }

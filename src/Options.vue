@@ -71,7 +71,7 @@ export const DEFAULT_CONFIG = {
   ],
   options: {
     ribbon: true,
-    badge: true,
+    displayBadge: true,
     displayDomain: true
   }
 };

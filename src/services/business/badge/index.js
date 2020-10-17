@@ -9,8 +9,8 @@ import {
 export async function updateBadgeTextFromEnv(tabId, url) {
   const config = await getConfig({ mergeOptions: true });
   const env = getCurrentEnv(url, config);
-  if (env?.badge !== false) {
-    const color = env?.badge?.backgroundColor || "#2677c9";
+  if (env?.displayBadge !== false) {
+    const color = env?.badgeOptions?.backgroundColor || "#2677c9";
     setBadgeBackgroundColor(tabId, color);
 
     const text = (env.shortName || env.name).substring(0, 4) || "";

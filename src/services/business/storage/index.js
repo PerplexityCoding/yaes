@@ -2,9 +2,12 @@ import {
   storageGet as chromeStorageGet,
   storageSet as chromeStorageSet
 } from "@/services/chrome/storage";
+
 import deepmerge from "deepmerge";
 
-// import { migrate } from "@/services/business/storage/migrate";
+import validate from "../../../schemas/config.schema.gen";
+
+import { migrate } from "@/services/business/storage/migrate";
 
 function mergeOptionsInEnv(config) {
   const envs = config?.envs?.map(env => {
@@ -19,17 +22,19 @@ function mergeOptionsInEnv(config) {
 async function getConfig({ mergeOptions } = {}) {
   const values = await chromeStorageGet("config");
   if (values && values.config != null) {
-    const config = JSON.parse(values.config);
+    let config = JSON.parse(values.config);
 
-    /*const newValue = migrate(value);
-    if (newValue) {
-      await storageSet({
-        [key]: newValue
-      });
-    }*/
+    const hasMigrated = migrate(config);
+    if (hasMigrated) {
+      await setConfig(config);
+    }
 
     if (mergeOptions) {
       mergeOptionsInEnv(config);
+    }
+
+    if (!validate(config)) {
+      return null;
     }
 
     return config;
@@ -38,9 +43,13 @@ async function getConfig({ mergeOptions } = {}) {
 }
 
 async function setConfig(config) {
-  await chromeStorageSet({
-    config: JSON.stringify(config)
-  });
+  if (validate(config)) {
+    await chromeStorageSet({
+      config: JSON.stringify(config)
+    });
+    return true;
+  }
+  return false;
 }
 
 export { setConfig, getConfig };
