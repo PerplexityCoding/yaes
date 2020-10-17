@@ -1,5 +1,3 @@
-import deepmerge from "deepmerge";
-
 export function switchBaseUrl(currentUrl, newBaseUrl) {
   const baseUrl = new URL(newBaseUrl);
   const url = new URL(currentUrl);
@@ -22,14 +20,4 @@ export function getCurrentEnv(url, config) {
       return env;
     }
   }
-}
-
-export function mergeOptions(config) {
-  const envs = config?.envs?.map(env => {
-    return deepmerge(Object.assign({}, config.options), env);
-  });
-  return {
-    ...config,
-    envs
-  };
 }

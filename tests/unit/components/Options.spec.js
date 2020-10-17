@@ -1,10 +1,10 @@
 import { waitFor } from "../../../src/services/utils";
 import { shallowMount } from "@vue/test-utils";
-import { storageGetValue, storageSet } from "@/services/chrome/storage";
+import { getConfig, setConfig } from "@/services/business/storage";
 import Options from "@/Options.vue";
 import { DEFAULT_CONFIG } from "@/Options.vue";
 
-jest.mock("@/services/chrome/storage");
+jest.mock("@/services/business/storage");
 
 describe("Options.vue", () => {
   const config = {
@@ -28,11 +28,11 @@ describe("Options.vue", () => {
   };
 
   function mockStorageEnvGet() {
-    storageGetValue.mockReturnValue(JSON.stringify(config));
+    getConfig.mockReturnValue(config);
   }
 
   function mockStorageEnvGetEmpty() {
-    storageGetValue.mockReturnValue(null);
+    getConfig.mockReturnValue(null);
   }
 
   it("should switch modes without errors", async () => {
@@ -93,8 +93,6 @@ describe("Options.vue", () => {
     shallowMount(Options);
     await waitFor();
 
-    expect(storageSet).toHaveBeenCalledWith({
-      config: JSON.stringify(DEFAULT_CONFIG)
-    });
+    expect(setConfig).toHaveBeenCalledWith(DEFAULT_CONFIG);
   });
 });

@@ -3,39 +3,35 @@ import Popup from "@/Popup.vue";
 import EnvList from "@/components/EnvList";
 import { waitFor } from "@/services/utils";
 import { getCurrentTab, openChromeUrl } from "@/services/chrome/tabs";
-import { storageGetValue } from "@/services/chrome/storage";
+import { getConfig } from "@/services/business/storage";
 
+jest.mock("@/services/business/storage");
 jest.mock("@/services/chrome/tabs");
-jest.mock("@/services/chrome/storage");
 
 function mockStorageEnvGet() {
-  storageGetValue.mockReturnValue(
-    JSON.stringify({
-      envs: [
-        {
-          id: 1,
-          name: "FR",
-          url: "https://www.google.fr/sdfsdf"
-        },
-        {
-          id: 2,
-          name: "DE",
-          url: "https://www.google.de/sdfsdf"
-        },
-        {
-          id: 3,
-          name: "ES",
-          url: "https://www.google.es/"
-        }
-      ]
-    })
-  );
+  getConfig.mockReturnValue({
+    envs: [
+      {
+        id: 1,
+        name: "FR",
+        url: "https://www.google.fr/sdfsdf"
+      },
+      {
+        id: 2,
+        name: "DE",
+        url: "https://www.google.de/sdfsdf"
+      },
+      {
+        id: 3,
+        name: "ES",
+        url: "https://www.google.es/"
+      }
+    ]
+  });
 }
 
 function mockStorageEnvGetBadData() {
-  storageGetValue.mockReturnValue(
-    "{'envs':[{'id':1,'name':'FR','url':'https://www.google.fr/sdfsdf',},{'id':2,'name':'DE','url':'https://www.google.de/sdfsdf'},{'id':3,'name':'ES','url':'https://www.google.es/'}]}"
-  );
+  getConfig.mockReturnValue(null);
 }
 
 describe("Popup.vue", () => {
@@ -105,9 +101,6 @@ describe("Popup.vue", () => {
     await waitFor();
 
     expect(wrapper.html()).toContain("No environment has been found");
-    expect(console.error).toHaveBeenCalledWith(
-      new SyntaxError("Unexpected token ' in JSON at position 1")
-    );
     consoleError.mockRestore();
   });
 });

@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { storageGetValue, storageSet } from "./services/chrome/storage";
+import { getConfig, setConfig } from "./services/business/storage";
 import JSONEditor from "jsoneditor/dist/jsoneditor.js";
 import { debounce, downloadAsJson } from "./services/utils";
 import validateSchema from "./schemas/config.schema.gen.js";
@@ -123,21 +123,13 @@ export default {
   },
   methods: {
     async getOrInitConfig() {
-      const configString = await storageGetValue("config");
+      const config = await getConfig();
       const defaultConfig = () => {
         const config = { ...DEFAULT_CONFIG };
         this.saveConfig(config);
         return config;
       };
-
-      if (configString) {
-        try {
-          return JSON.parse(configString);
-        } catch (e) {
-          console.error(e);
-        }
-      }
-      return defaultConfig();
+      return config || defaultConfig();
     },
 
     saveConfig(config) {
@@ -147,9 +139,7 @@ export default {
 
       this.displaySaveInfo = true;
 
-      storageSet({
-        config: JSON.stringify(config)
-      });
+      setConfig(config);
 
       setTimeout(() => {
         this.displaySaveInfo = false;

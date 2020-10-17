@@ -3,10 +3,10 @@ import {
   setBadgeText
 } from "@/services/chrome/browserAction";
 import { updateBadgeTextFromEnv } from "@/services/business/badge";
-import { storageGetValue } from "@/services/chrome/storage";
+import { getConfig } from "@/services/business/storage";
 import { waitFor } from "../../../../../src/services/utils";
 
-jest.mock("@/services/chrome/storage");
+jest.mock("@/services/business/storage");
 jest.mock("@/services/chrome/browserAction");
 
 describe("Badge", () => {
@@ -59,7 +59,7 @@ describe("Badge", () => {
   });
 
   function mockStorageEnvGet() {
-    storageGetValue.mockReturnValue(JSON.stringify(config));
+    getConfig.mockReturnValue(config);
   }
 
   it("updateBadgeTextFromEnv with shortName", async () => {

@@ -1,7 +1,4 @@
-import {
-  getCurrentEnv,
-  mergeOptions
-} from "../../../../../src/services/business/url";
+import { getCurrentEnv } from "../../../../../src/services/business/url";
 
 describe("Url", () => {
   const config = {
@@ -44,7 +41,7 @@ describe("Url", () => {
     });
   });
 
-  it("Merge Options", async () => {
+  /*it("Merge Options", async () => {
     const mergedConfig = mergeOptions(config);
 
     expect(mergedConfig.envs).toEqual([
@@ -68,5 +65,5 @@ describe("Url", () => {
         displayDomain: true
       }
     ]);
-  });
+  });*/
 });

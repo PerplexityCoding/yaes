@@ -6,14 +6,6 @@ function storageGet(values, type = "sync") {
   });
 }
 
-async function storageGetValue(key, type = "sync") {
-  const value = await storageGet(key, type);
-  if (value) {
-    return value[key];
-  }
-  return null;
-}
-
 function storageSet(data, type = "sync") {
   return new Promise(resolve => {
     window.chrome.storage[type].set(data, () => {
@@ -32,4 +24,4 @@ function storageRemove(data, type = "sync") {
   });
 }
 
-export { storageSet, storageGet, storageGetValue, storageRemove };
+export { storageSet, storageGet, storageRemove };

@@ -9,7 +9,7 @@
         <EnvList
           :envs="currentEnvs"
           :current-env="currentEnv"
-          @switch-env="(env) => currentEnv ? switchEnv(env) : redirectEnv(env)"
+          @switch-env="env => (currentEnv ? switchEnv(env) : redirectEnv(env))"
         />
 
         <button
@@ -59,12 +59,8 @@ import {
   openChromeUrl,
   openOptionsPage
 } from "./services/chrome/tabs";
-import {
-  switchBaseUrl,
-  getCurrentEnv,
-  mergeOptions
-} from "./services/business/url";
-import { storageGetValue } from "./services/chrome/storage";
+import { switchBaseUrl, getCurrentEnv } from "./services/business/url";
+import { getConfig } from "./services/business/storage";
 
 export default {
   name: "Popup",
@@ -82,15 +78,8 @@ export default {
   },
   async created() {
     const currentTab = await getCurrentTab();
-    const configString = await storageGetValue("config");
 
-    let config = null;
-    try {
-      config = configString && mergeOptions(JSON.parse(configString));
-    } catch (e) {
-      console.error(e);
-    }
-
+    const config = await getConfig({ mergeOptions: true });
     if (config) {
       const currentEnv = getCurrentEnv(currentTab.url, config);
       const { envs, projects, options } = config;
