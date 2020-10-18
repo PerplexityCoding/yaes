@@ -61,7 +61,7 @@ export default {
         this.openProjectId === project.id ? null : project.id;
     },
     projectEnvs(project) {
-      return this.envs.filter(env => env.project === project.id);
+      return project.envs.map(envId => this.envs.find(env => env.id === envId));
     }
   }
 };

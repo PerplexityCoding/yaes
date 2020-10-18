@@ -8,7 +8,7 @@ function main() {
 }
 
 async function verifyCurrentUrl() {
-  const config = mergeOptions(await getConfig("config"));
+  const { config } = mergeOptions(await getConfig("config"));
   const env = getCurrentEnv(window.location.href, config);
 
   if (env?.displayRibbon) {

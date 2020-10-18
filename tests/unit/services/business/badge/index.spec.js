@@ -15,24 +15,25 @@ describe("Badge", () => {
       {
         shortName: "FR",
         url: "https://www.google.fr/",
-        ribbon: {
+        displayRibbon: true,
+        ribbonOptions: {
           color: "#2519c7",
           type: "square-ribbon"
         },
-        badge: true,
+        displayBadge: true,
         displayDomain: true
       },
       {
         name: "Germany",
         url: "https://www.google.de/",
-        ribbon: false
+        displayRibbon: false
       },
       {
         name: "Spain",
         shortName: "SP",
         url: "https://www.google.es/",
-        ribbon: false,
-        badge: {
+        displayRibbon: false,
+        badgeOptions: {
           backgroundColor: "red"
         }
       },
@@ -40,15 +41,16 @@ describe("Badge", () => {
         name: "Other",
         shortName: "OH",
         url: "https://www.google.oh/",
-        badge: false
+        displayBadge: false
       }
     ],
     options: {
-      ribbon: {
+      displayRibbon: true,
+      ribbonOptions: {
         color: "red",
         position: "left"
       },
-      badge: true,
+      displayBadge: true,
       displayDomain: true
     }
   };
@@ -59,7 +61,7 @@ describe("Badge", () => {
   });
 
   function mockStorageEnvGet() {
-    getConfig.mockReturnValue(config);
+    getConfig.mockReturnValue({ config });
   }
 
   it("updateBadgeTextFromEnv with shortName", async () => {

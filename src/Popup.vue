@@ -79,19 +79,24 @@ export default {
   async created() {
     const currentTab = await getCurrentTab();
 
-    const config = await getConfig({ mergeOptions: true });
+    const { config } = await getConfig({ mergeOptions: true });
     if (config) {
-      const currentEnv = getCurrentEnv(currentTab.url, config);
       const { envs, projects, options } = config;
+
+      const currentEnv = getCurrentEnv(currentTab.url, config);
+      const mapEnvId = localEnvs => {
+        return localEnvs.map(envId => envs.find(env => env.id === envId));
+      };
 
       let currentEnvs = null;
       if (currentEnv) {
-        currentEnvs = currentEnv?.project
-          ? envs.filter(env => env.project === currentEnv.project)
-          : envs;
+        const currentProject = projects.find(
+          project => project.envs.find(envId => envId === currentEnv.id) != null
+        );
+        currentEnvs = mapEnvId(currentProject.envs);
       } else {
         if (projects?.length === 1) {
-          currentEnvs = envs.filter(env => env.project === projects[0].id);
+          currentEnvs = mapEnvId(projects[0].envs);
         } else if (!projects) {
           currentEnvs = envs;
         }

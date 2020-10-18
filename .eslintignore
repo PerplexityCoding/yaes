@@ -1,1 +1,1 @@
-src/schemas/*.gen.js
+src/schemas/**/*.gen.js

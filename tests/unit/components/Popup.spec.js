@@ -10,28 +10,37 @@ jest.mock("@/services/chrome/tabs");
 
 function mockStorageEnvGet() {
   getConfig.mockReturnValue({
-    envs: [
-      {
-        id: 1,
-        name: "FR",
-        url: "https://www.google.fr/sdfsdf"
-      },
-      {
-        id: 2,
-        name: "DE",
-        url: "https://www.google.de/sdfsdf"
-      },
-      {
-        id: 3,
-        name: "ES",
-        url: "https://www.google.es/"
-      }
-    ]
+    config: {
+      projects: [
+        {
+          id: 0,
+          name: "Default",
+          envs: [1, 2, 3]
+        }
+      ],
+      envs: [
+        {
+          id: 1,
+          name: "FR",
+          url: "https://www.google.fr/sdfsdf"
+        },
+        {
+          id: 2,
+          name: "DE",
+          url: "https://www.google.de/sdfsdf"
+        },
+        {
+          id: 3,
+          name: "ES",
+          url: "https://www.google.es/"
+        }
+      ]
+    }
   });
 }
 
 function mockStorageEnvGetBadData() {
-  getConfig.mockReturnValue(null);
+  getConfig.mockReturnValue({ hasErrors: true });
 }
 
 describe("Popup.vue", () => {

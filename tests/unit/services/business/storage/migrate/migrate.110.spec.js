@@ -1,9 +1,8 @@
-import { migrate } from "@/services/business/storage/migrate";
+import migrate from "@/services/business/storage/migrate/versions/v1.1.0";
 
 describe("Migrate", () => {
-  const migrateTest = (config, expectConfig, expectMigration = true) => {
-    const hasMigrate = migrate(config);
-    expect(hasMigrate).toBe(expectMigration);
+  const migrateTest = (config, expectConfig) => {
+    migrate(config);
     expect(config).toEqual(expectConfig);
   };
 
@@ -35,8 +34,17 @@ describe("Migrate", () => {
         ]
       },
       {
+        version: "1.1.0",
+        projects: [
+          {
+            id: 0,
+            name: "Default Project",
+            envs: [0, 1, 2, 3]
+          }
+        ],
         envs: [
           {
+            id: 0,
             badgeOptions: {
               backgroundColor: "#159752"
             },
@@ -49,15 +57,101 @@ describe("Migrate", () => {
             }
           },
           {
+            id: 1,
             displayBadge: false,
             displayRibbon: false
           },
           {
+            id: 2,
             displayBadge: true,
             displayRibbon: true
           },
           {
+            id: 3,
             name: "Germany"
+          }
+        ]
+      }
+    );
+  });
+
+  it("should migrate envs & projects", () => {
+    migrateTest(
+      {
+        projects: [
+          {
+            id: "G"
+          },
+          {
+            name: "K"
+          },
+          {
+            name: "F"
+          }
+        ],
+        envs: [
+          {
+            name: "123",
+            project: "G"
+          },
+          {
+            name: "456",
+            project: "H"
+          },
+          {
+            name: "753",
+            project: "F"
+          },
+          {
+            name: "789"
+          }
+        ]
+      },
+      {
+        version: "1.1.0",
+        projects: [
+          {
+            id: 0,
+            name: "G",
+            envs: [0]
+          },
+          {
+            id: 1,
+            name: "K",
+            envs: []
+          },
+          {
+            id: 2,
+            name: "F",
+            envs: [2]
+          },
+          {
+            id: 3,
+            name: "H",
+            envs: [1]
+          },
+          {
+            id: 4,
+            name: "Default Project",
+            envs: [3]
+          }
+        ],
+        envs: [
+          {
+            id: 0,
+            name: "123"
+          },
+          {
+            id: 1,
+            name: "456"
+          },
+          {
+            id: 2,
+            name: "753"
+          },
+          {
+            id: 3,
+            name: "789"
           }
         ]
       }
@@ -79,6 +173,8 @@ describe("Migrate", () => {
         }
       },
       {
+        version: "1.1.0",
+        projects: [],
         options: {
           displayRibbon: true,
           ribbonOptions: {
@@ -104,6 +200,8 @@ describe("Migrate", () => {
         }
       },
       {
+        version: "1.1.0",
+        projects: [],
         options: {
           displayRibbon: true,
           displayBadge: true
@@ -121,6 +219,8 @@ describe("Migrate", () => {
         }
       },
       {
+        version: "1.1.0",
+        projects: [],
         options: {
           displayRibbon: false,
           displayBadge: false
@@ -138,6 +238,8 @@ describe("Migrate", () => {
         }
       },
       {
+        projects: [],
+        version: "1.1.0",
         options: {
           displayRibbon: false,
           displayBadge: true
