@@ -30,6 +30,13 @@ export function deleteProject(config, project) {
   };
 }
 
+export function updateProject(config, project) {
+  return {
+    ...config,
+    projects: updateArray(config.projects, findIndex(project), () => project)
+  };
+}
+
 export function newEnv(config, data) {
   return {
     id: getNextEnvId(config.envs),

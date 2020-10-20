@@ -1,8 +1,9 @@
 <template>
   <li>
+    <b class="project-sortable-handle"> handle </b>
     {{ project.name }}
 
-    <ul>
+    <ul class="env-sortable" @sortupdate="onDrop">
       <li
         v-for="env of projectEnvs"
         :key="'env-' + env.id"
@@ -19,6 +20,7 @@
 
 <script>
 import { getProjectEnvs } from "@/services/business/bo/config";
+import sortable from "html5sortable/dist/html5sortable.cjs";
 
 export default {
   name: "EditorFormConfigProject",
@@ -32,6 +34,9 @@ export default {
       default: () => {}
     }
   },
+  mounted() {
+    sortable(".env-sortable");
+  },
   emits: ["select-env", "add-new-env", "delete-project"],
   methods: {
     addEnv() {
@@ -39,6 +44,17 @@ export default {
     },
     deleteProject() {
       this.$emit("delete-project", this.project);
+    },
+    onDrop(e) {
+      const { detail } = e;
+      const { origin, destination } = detail;
+      const { envs } = this.project;
+
+      envs.splice(destination.index, 0, envs.splice(origin.index, 1)[0]);
+      this.$emit("update:project", {
+        ...this.project,
+        ...envs
+      });
     }
   },
   computed: {
