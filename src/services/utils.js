@@ -65,8 +65,8 @@ export function downloadAsJson(obj) {
   a.remove();
 }
 
-export function updateArray(arr, obj, cb) {
-  const index = arr.indexOf(obj);
+export function updateArray(arr, findIndex, cb) {
+  const index = findIndex(arr);
   if (index >= 0) {
     return [
       ...arr.slice(0, index),

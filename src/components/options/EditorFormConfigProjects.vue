@@ -4,12 +4,11 @@
       <EditorFormConfigProject
         v-for="project of config.projects"
         :key="'project-' + project.id"
-        :envs="config.envs"
+        :config="config"
         :project="project"
         @select-env="env => $emit('select-env', env)"
         @delete-project="deleteProject"
         @add-new-env="addNewProjectEnv"
-        @update:envs="updateEnvs"
       />
     </ul>
 
@@ -19,8 +18,14 @@
 
 <script>
 import EditorFormConfigProject from "@/components/options/EditorFormConfigProject";
-import { getNextEnvId, getNextProjectId } from "@/services/business/ids";
-import { updateArray } from "@/services/utils";
+
+import {
+  addEnv,
+  addProject,
+  deleteProject,
+  newEnv,
+  newProject
+} from "@/services/business/bo/config";
 
 export default {
   name: "EditorFormConfigProjects",
@@ -33,53 +38,23 @@ export default {
   },
   emits: ["select-env", "update:config"],
   methods: {
-    updateEnvs(envs) {
-      this.$emit("update:config", {
-        ...this.config,
-        envs
-      });
-    },
     addNewProjectEnv(project) {
-      const configEnvs = this.config.envs;
-      const newEnv = {
-        id: getNextEnvId(configEnvs),
+      const env = newEnv(this.config, {
         name: "New Env",
         url: "https://www.exemple.com"
-      };
-      const projects = updateArray(this.config.projects, project, () => ({
-        ...project,
-        envs: [...project.envs, newEnv.id]
-      }));
-      const envs = [...configEnvs, newEnv];
-
-      this.$emit("update:config", {
-        ...this.config,
-        projects,
-        envs
       });
-      this.$emit("select-env", newEnv);
+      this.$emit("update:config", addEnv(this.config, project, env));
+      this.$emit("select-env", env);
     },
     deleteProject(project) {
-      const envs = this.config.envs.filter(
-        env => project.envs.indexOf(env.id) < 0
-      );
-      const projects = updateArray(this.config.projects, project, () => null);
-      this.$emit("update:config", {
-        ...this.config,
-        envs,
-        projects
-      });
+      this.$emit("update:config", deleteProject(this.config, project));
+      this.$emit("select-env", null);
     },
     addNewProject() {
-      const newProject = {
-        id: getNextProjectId(this.config.projects),
-        name: "New Project",
-        envs: []
-      };
-      this.$emit("update:config", {
-        ...this.config,
-        projects: [...this.config.projects, newProject]
+      const project = newProject(this.config, {
+        name: "New Project"
       });
+      this.$emit("update:config", addProject(this.config, project));
     }
   }
 };

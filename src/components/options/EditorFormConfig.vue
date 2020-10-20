@@ -29,7 +29,7 @@
 import EditorFormEnvConfig from "@/components/options/EditorFormConfigEnv";
 import EditorFormConfigProjects from "@/components/options/EditorFormConfigProjects";
 import EditorFormConfigGlobalOptions from "@/components/options/EditorFormConfigGlobalOptions";
-import { updateArray } from "@/services/utils";
+import { deleteEnv, updateEnv } from "@/services/business/bo/config";
 
 export default {
   name: "EditorFormConfig",
@@ -53,29 +53,15 @@ export default {
   mounted() {},
   methods: {
     deleteEnv(env) {
-      const envs = this.config.envs;
-      const projects = this.config.projects;
-
-      this.updateConfig({
-        projects: projects.map(project => ({
-          ...project,
-          envs: project.envs.filter(envId => envId !== env.id)
-        })),
-        envs: updateArray(envs, env, () => null)
-      });
-      this.selectedEnv = null;
+      this.updateConfig(deleteEnv(this.config, env));
+      this.selectEnv(null);
     },
     updateConfigEnv(env) {
-      this.updateConfig({
-        envs: updateArray(this.config.envs, this.selectedEnv, () => env)
-      });
-      this.selectedEnv = env;
+      this.updateConfig(updateEnv(this.config, env));
+      this.selectEnv(env);
     },
-    updateConfig(data) {
-      this.$emit("update:config", {
-        ...this.config,
-        ...data
-      });
+    updateConfig(config) {
+      this.$emit("update:config", config);
     },
     selectEnv(env) {
       this.selectedEnv = env;

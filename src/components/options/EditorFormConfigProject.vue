@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import { getProjectEnvs } from "@/services/business/bo/config";
+
 export default {
   name: "EditorFormConfigProject",
   props: {
@@ -25,8 +27,8 @@ export default {
       type: Object,
       default: () => {}
     },
-    envs: {
-      type: Array,
+    config: {
+      type: Object,
       default: () => {}
     }
   },
@@ -41,9 +43,7 @@ export default {
   },
   computed: {
     projectEnvs() {
-      return this.project.envs.map(envId =>
-        this.envs.find(env => env.id === envId)
-      );
+      return getProjectEnvs(this.config, this.project);
     }
   }
 };
