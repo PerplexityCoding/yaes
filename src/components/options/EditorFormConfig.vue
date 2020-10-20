@@ -20,7 +20,7 @@
 
     <EditorFormConfigGlobalOptions
       :options="config.options"
-      @update:options="options => updateConfig({ options })"
+      @update:options="updateOptions"
     />
   </div>
 </template>
@@ -57,8 +57,12 @@ export default {
       this.selectEnv(null);
     },
     updateConfigEnv(env) {
-      this.updateConfig(updateEnv(this.config, env));
+      const config = updateEnv(this.config, env);
+      this.updateConfig(config);
       this.selectEnv(env);
+    },
+    updateOptions(options) {
+      this.updateConfig({ ...this.config, options });
     },
     updateConfig(config) {
       this.$emit("update:config", config);

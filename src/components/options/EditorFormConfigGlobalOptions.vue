@@ -2,43 +2,38 @@
   <div class="options-selector">
     Global options
     <form>
-      <fieldset>
-        <label>
-          <input type="checkbox" v-model="displayBadge" />
-          Badge
-        </label>
-        <div v-if="options.displayBadge && options.badgeOptions">
-          <label>
-            <ColorPicker v-model:color="badgeOptionsBgColor" />
-            Background Color
-          </label>
-        </div>
-      </fieldset>
+      <EditorFormBadge :option="options" @update:option="updateComputed" />
+
+      <EditorFormRibbon :option="options" @update:option="updateComputed" />
+
+      <label>
+        <input type="checkbox" v-model="displayDomain" /> Display domain
+      </label>
+      <label>
+        <input type="checkbox" v-model="displayHeader" /> Display header
+      </label>
+      <label>
+        <input type="checkbox" v-model="displayFooter" /> Display footer
+      </label>
+      <label>
+        <input type="checkbox" v-model="displaySeeProjectsLink" />
+        Display see projects link
+      </label>
     </form>
   </div>
 </template>
 
 <script>
 import deepmerge from "deepmerge";
-import ColorPicker from "@/components/core/ColorPicker";
+import { getComputedFactory } from "@/services/business/ui";
+import EditorFormRibbon from "@/components/options/form/EditorFormRibbon";
+import EditorFormBadge from "@/components/options/form/EditorFormBadge";
 
-function generateComputed(key, subKey) {
-  return {
-    get() {
-      const firstOption = this.options[key];
-      return subKey && firstOption != null ? firstOption[subKey] : firstOption;
-    },
-    set(value) {
-      this.updateOptions(
-        subKey ? { [key]: { [subKey]: value } } : { [key]: value }
-      );
-    }
-  };
-}
+const computed = getComputedFactory("options");
 
 export default {
   name: "EditorFormConfigGlobalOptions",
-  components: { ColorPicker },
+  components: { EditorFormBadge, EditorFormRibbon },
   props: {
     options: {
       type: Object,
@@ -48,11 +43,13 @@ export default {
   mounted() {},
   emits: ["update:options"],
   computed: {
-    displayBadge: generateComputed("displayBadge"),
-    badgeOptionsBgColor: generateComputed("badgeOptions", "backgroundColor")
+    displayDomain: computed("displayDomain"),
+    displayHeader: computed("displayHeader"),
+    displayFooter: computed("displayFooter"),
+    displaySeeProjectsLink: computed("displaySeeProjectsLink")
   },
   methods: {
-    updateOptions(data) {
+    updateComputed(data) {
       this.$emit("update:options", deepmerge({ ...this.options }, data));
     }
   }

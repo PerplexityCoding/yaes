@@ -11,25 +11,13 @@
         Overrides: Bellow options are defaulted to global option
         <button @click.prevent="resetToGlobalOptions">reset</button>
 
-        <fieldset>
-          <label :class="{ defaulted: env.displayBadge === undefined }">
-            <input type="checkbox" v-model="displayBadge" />
-            Badge
-          </label>
+        <EditorFormBadge :option="mergedEnv" @update:option="updateComputed" />
 
-          <div v-if="displayBadge">
-            <label
-              :class="{
-                defaulted: env.badgeOptions?.backgroundColor === undefined
-              }"
-            >
-              Background Color
-              <ColorPicker v-model:color="badgeOptionsBgColor" />
-            </label>
-          </div>
-        </fieldset>
+        <EditorFormRibbon :option="mergedEnv" @update:option="updateComputed" />
 
-        displayDomain ribbon
+        <label :class="{ defaulted: env.displayDomain === undefined }">
+          <input type="checkbox" v-model="displayDomain" /> Display domain
+        </label>
       </div>
     </form>
   </div>
@@ -37,26 +25,15 @@
 
 <script>
 import deepmerge from "deepmerge";
-import ColorPicker from "@/components/core/ColorPicker";
+import { getComputedFactory } from "@/services/business/ui";
+import EditorFormRibbon from "@/components/options/form/EditorFormRibbon";
+import EditorFormBadge from "@/components/options/form/EditorFormBadge";
 
-function envComputed(key, subKey, usingDefault) {
-  return {
-    get() {
-      return usingDefault
-        ? this.defaultOptionsValue(key, subKey)
-        : this.env[key];
-    },
-    set(value) {
-      this.updateEnv(
-        subKey ? { [key]: { [subKey]: value } } : { [key]: value }
-      );
-    }
-  };
-}
+const computed = getComputedFactory("mergedEnv");
 
 export default {
   name: "EditorFormConfigEnv",
-  components: { ColorPicker },
+  components: { EditorFormBadge, EditorFormRibbon },
   props: {
     env: {
       type: Object,
@@ -69,34 +46,26 @@ export default {
   },
   emits: ["update:env", "delete-env"],
   computed: {
-    name: envComputed("name"),
-    shortName: envComputed("shortName"),
-    url: envComputed("url"),
-    displayBadge: envComputed("displayBadge", true),
-    badgeOptionsBgColor: envComputed("badgeOptions", "backgroundColor", true)
+    mergedEnv() {
+      return deepmerge(deepmerge({}, this.config.options), this.env);
+    },
+    name: computed("name"),
+    shortName: computed("shortName"),
+    url: computed("url"),
+    displayDomain: computed("displayDomain", null, true)
   },
   methods: {
-    defaultOptionsValue(key, subKey) {
-      const mergedObject = deepmerge(
-        deepmerge({}, this.config.options),
-        this.env
-      );
-      if (mergedObject[key] == null) {
-        return null;
-      }
-      return subKey ? mergedObject[key][subKey] : mergedObject[key];
-    },
-    updateEnv(data) {
-      this.$emit("update:env", deepmerge({ ...this.env }, data));
+    updateComputed(data) {
+      this.$emit("update:env", deepmerge(deepmerge({}, this.env), data));
     },
     resetToGlobalOptions() {
-      const { name, shortName, url, project } = this.env;
+      const { id, name, shortName, url } = this.env;
 
       this.$emit("update:env", {
+        id,
         name,
         shortName,
-        url,
-        project
+        url
       });
     },
     deleteEnv() {
