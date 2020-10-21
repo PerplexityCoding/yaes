@@ -10,13 +10,19 @@ var validate = (function() {
     "default": {},
     "properties": {
       "id": {
-        "type": ["string", "number"]
+        "type": "number"
       },
       "name": {
         "type": "string"
+      },
+      "envs": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        }
       }
     },
-    "required": ["id"]
+    "required": ["id", "name", "envs"]
   };
   refVal[1] = refVal1;
   var refVal2 = (function() {
@@ -48,101 +54,91 @@ var validate = (function() {
             }
           }
           if (valid1) {
-            if (data.displayRibbon === undefined) {
-              valid1 = true;
+            if (data.id === undefined) {
+              valid1 = false;
+              validate.errors = [{
+                keyword: 'required',
+                dataPath: (dataPath || '') + "",
+                schemaPath: '#/required',
+                params: {
+                  missingProperty: 'id'
+                },
+                message: 'should have required property \'id\''
+              }];
+              return false;
             } else {
               var errs_1 = errors;
-              if (typeof data.displayRibbon !== "boolean") {
+              if ((typeof data.id !== "number")) {
                 validate.errors = [{
                   keyword: 'type',
-                  dataPath: (dataPath || '') + '.displayRibbon',
-                  schemaPath: '#/properties/displayRibbon/type',
+                  dataPath: (dataPath || '') + '.id',
+                  schemaPath: '#/properties/id/type',
                   params: {
-                    type: 'boolean'
+                    type: 'number'
                   },
-                  message: 'should be boolean'
+                  message: 'should be number'
                 }];
                 return false;
               }
               var valid1 = errors === errs_1;
             }
             if (valid1) {
-              var data1 = data.ribbonOptions;
-              if (data1 === undefined) {
+              if (data.displayRibbon === undefined) {
                 valid1 = true;
               } else {
                 var errs_1 = errors;
-                var errs_2 = errors;
-                if ((data1 && typeof data1 === "object" && !Array.isArray(data1))) {
-                  var errs__2 = errors;
-                  var valid3 = true;
-                  for (var key2 in data1) {
-                    var isAdditional2 = !(false || key2 == 'type' || key2 == 'color' || key2 == 'backgroundColor' || key2 == 'position');
-                    if (isAdditional2) {
-                      valid3 = false;
-                      validate.errors = [{
-                        keyword: 'additionalProperties',
-                        dataPath: (dataPath || '') + '.ribbonOptions',
-                        schemaPath: '#/definitions/ribbon/additionalProperties',
-                        params: {
-                          additionalProperty: '' + key2 + ''
-                        },
-                        message: 'should NOT have additional properties'
-                      }];
-                      return false;
-                      break;
-                    }
-                  }
-                  if (valid3) {
-                    var data2 = data1.type;
-                    if (data2 === undefined) {
-                      valid3 = true;
-                    } else {
-                      var errs_3 = errors;
-                      if (typeof data2 !== "string") {
+                if (typeof data.displayRibbon !== "boolean") {
+                  validate.errors = [{
+                    keyword: 'type',
+                    dataPath: (dataPath || '') + '.displayRibbon',
+                    schemaPath: '#/properties/displayRibbon/type',
+                    params: {
+                      type: 'boolean'
+                    },
+                    message: 'should be boolean'
+                  }];
+                  return false;
+                }
+                var valid1 = errors === errs_1;
+              }
+              if (valid1) {
+                var data1 = data.ribbonOptions;
+                if (data1 === undefined) {
+                  valid1 = true;
+                } else {
+                  var errs_1 = errors;
+                  var errs_2 = errors;
+                  if ((data1 && typeof data1 === "object" && !Array.isArray(data1))) {
+                    var errs__2 = errors;
+                    var valid3 = true;
+                    for (var key2 in data1) {
+                      var isAdditional2 = !(false || key2 == 'type' || key2 == 'color' || key2 == 'backgroundColor' || key2 == 'position');
+                      if (isAdditional2) {
+                        valid3 = false;
                         validate.errors = [{
-                          keyword: 'type',
-                          dataPath: (dataPath || '') + '.ribbonOptions.type',
-                          schemaPath: '#/definitions/ribbon/properties/type/type',
+                          keyword: 'additionalProperties',
+                          dataPath: (dataPath || '') + '.ribbonOptions',
+                          schemaPath: '#/definitions/ribbon/additionalProperties',
                           params: {
-                            type: 'string'
+                            additionalProperty: '' + key2 + ''
                           },
-                          message: 'should be string'
+                          message: 'should NOT have additional properties'
                         }];
                         return false;
+                        break;
                       }
-                      var schema3 = refVal3.properties.type.enum;
-                      var valid3;
-                      valid3 = false;
-                      for (var i3 = 0; i3 < schema3.length; i3++)
-                        if (equal(data2, schema3[i3])) {
-                          valid3 = true;
-                          break;
-                        } if (!valid3) {
-                        validate.errors = [{
-                          keyword: 'enum',
-                          dataPath: (dataPath || '') + '.ribbonOptions.type',
-                          schemaPath: '#/definitions/ribbon/properties/type/enum',
-                          params: {
-                            allowedValues: schema3
-                          },
-                          message: 'should be equal to one of the allowed values'
-                        }];
-                        return false;
-                      } else {}
-                      if (errors === errs_3) {}
-                      var valid3 = errors === errs_3;
                     }
                     if (valid3) {
-                      if (data1.color === undefined) {
+                      var data2 = data1.type;
+                      if (data2 === undefined) {
                         valid3 = true;
                       } else {
                         var errs_3 = errors;
-                        if (typeof data1.color !== "string") {
+                        if (typeof data2 !== "string") {
                           validate.errors = [{
                             keyword: 'type',
-                            dataPath: (dataPath || '') + '.ribbonOptions.color',
-                            schemaPath: '#/definitions/ribbon/properties/color/type',
+                            dataPath: (dataPath || '') + '.ribbonOptions.type',
+                            schemaPath: '#/definitions/ribbon/properties/type/type',
                             params: {
                               type: 'string'
                             },
@@ -150,18 +146,38 @@ var validate = (function() {
                           }];
                           return false;
                         }
+                        var schema3 = refVal3.properties.type.enum;
+                        var valid3;
+                        valid3 = false;
+                        for (var i3 = 0; i3 < schema3.length; i3++)
+                          if (equal(data2, schema3[i3])) {
+                            valid3 = true;
+                            break;
+                          } if (!valid3) {
+                          validate.errors = [{
+                            keyword: 'enum',
+                            dataPath: (dataPath || '') + '.ribbonOptions.type',
+                            schemaPath: '#/definitions/ribbon/properties/type/enum',
+                            params: {
+                              allowedValues: schema3
+                            },
+                            message: 'should be equal to one of the allowed values'
+                          }];
+                          return false;
+                        } else {}
+                        if (errors === errs_3) {}
                         var valid3 = errors === errs_3;
                       }
                       if (valid3) {
-                        if (data1.backgroundColor === undefined) {
+                        if (data1.color === undefined) {
                           valid3 = true;
                         } else {
                           var errs_3 = errors;
-                          if (typeof data1.backgroundColor !== "string") {
+                          if (typeof data1.color !== "string") {
                             validate.errors = [{
                               keyword: 'type',
-                              dataPath: (dataPath || '') + '.ribbonOptions.backgroundColor',
-                              schemaPath: '#/definitions/ribbon/properties/backgroundColor/type',
+                              dataPath: (dataPath || '') + '.ribbonOptions.color',
+                              schemaPath: '#/definitions/ribbon/properties/color/type',
                               params: {
                                 type: 'string'
                               },
@@ -172,16 +188,15 @@ var validate = (function() {
                           var valid3 = errors === errs_3;
                         }
                         if (valid3) {
-                          var data2 = data1.position;
-                          if (data2 === undefined) {
+                          if (data1.backgroundColor === undefined) {
                             valid3 = true;
                           } else {
                             var errs_3 = errors;
-                            if (typeof data2 !== "string") {
+                            if (typeof data1.backgroundColor !== "string") {
                               validate.errors = [{
                                 keyword: 'type',
-                                dataPath: (dataPath || '') + '.ribbonOptions.position',
-                                schemaPath: '#/definitions/ribbon/properties/position/type',
+                                dataPath: (dataPath || '') + '.ribbonOptions.backgroundColor',
+                                schemaPath: '#/definitions/ribbon/properties/backgroundColor/type',
                                 params: {
                                   type: 'string'
                                 },
@@ -189,228 +204,214 @@ var validate = (function() {
                               }];
                               return false;
                             }
-                            var schema3 = refVal3.properties.position.enum;
-                            var valid3;
+                            var valid3 = errors === errs_3;
+                          }
+                          if (valid3) {
+                            var data2 = data1.position;
+                            if (data2 === undefined) {
+                              valid3 = true;
+                            } else {
+                              var errs_3 = errors;
+                              if (typeof data2 !== "string") {
+                                validate.errors = [{
+                                  keyword: 'type',
+                                  dataPath: (dataPath || '') + '.ribbonOptions.position',
+                                  schemaPath: '#/definitions/ribbon/properties/position/type',
+                                  params: {
+                                    type: 'string'
+                                  },
+                                  message: 'should be string'
+                                }];
+                                return false;
+                              }
+                              var schema3 = refVal3.properties.position.enum;
+                              var valid3;
+                              valid3 = false;
+                              for (var i3 = 0; i3 < schema3.length; i3++)
+                                if (equal(data2, schema3[i3])) {
+                                  valid3 = true;
+                                  break;
+                                } if (!valid3) {
+                                validate.errors = [{
+                                  keyword: 'enum',
+                                  dataPath: (dataPath || '') + '.ribbonOptions.position',
+                                  schemaPath: '#/definitions/ribbon/properties/position/enum',
+                                  params: {
+                                    allowedValues: schema3
+                                  },
+                                  message: 'should be equal to one of the allowed values'
+                                }];
+                                return false;
+                              } else {}
+                              if (errors === errs_3) {}
+                              var valid3 = errors === errs_3;
+                            }
+                            if (valid3) {}
+                          }
+                        }
+                      }
+                    }
+                    if (errs__2 == errors) {}
+                  } else {
+                    validate.errors = [{
+                      keyword: 'type',
+                      dataPath: (dataPath || '') + '.ribbonOptions',
+                      schemaPath: '#/definitions/ribbon/type',
+                      params: {
+                        type: 'object'
+                      },
+                      message: 'should be object'
+                    }];
+                    return false;
+                  }
+                  if (errors === errs_2) {}
+                  var valid2 = errors === errs_2;
+                  if (valid2) {}
+                  if (errors === errs_1) {}
+                  var valid1 = errors === errs_1;
+                }
+                if (valid1) {
+                  if (data.displayBadge === undefined) {
+                    valid1 = true;
+                  } else {
+                    var errs_1 = errors;
+                    if (typeof data.displayBadge !== "boolean") {
+                      validate.errors = [{
+                        keyword: 'type',
+                        dataPath: (dataPath || '') + '.displayBadge',
+                        schemaPath: '#/properties/displayBadge/type',
+                        params: {
+                          type: 'boolean'
+                        },
+                        message: 'should be boolean'
+                      }];
+                      return false;
+                    }
+                    var valid1 = errors === errs_1;
+                  }
+                  if (valid1) {
+                    var data1 = data.badgeOptions;
+                    if (data1 === undefined) {
+                      valid1 = true;
+                    } else {
+                      var errs_1 = errors;
+                      var errs_2 = errors;
+                      if ((data1 && typeof data1 === "object" && !Array.isArray(data1))) {
+                        var errs__2 = errors;
+                        var valid3 = true;
+                        for (var key2 in data1) {
+                          var isAdditional2 = !(false || key2 == 'backgroundColor');
+                          if (isAdditional2) {
                             valid3 = false;
-                            for (var i3 = 0; i3 < schema3.length; i3++)
-                              if (equal(data2, schema3[i3])) {
-                                valid3 = true;
-                                break;
-                              } if (!valid3) {
+                            validate.errors = [{
+                              keyword: 'additionalProperties',
+                              dataPath: (dataPath || '') + '.badgeOptions',
+                              schemaPath: '#/definitions/badge/additionalProperties',
+                              params: {
+                                additionalProperty: '' + key2 + ''
+                              },
+                              message: 'should NOT have additional properties'
+                            }];
+                            return false;
+                            break;
+                          }
+                        }
+                        if (valid3) {
+                          if (data1.backgroundColor === undefined) {
+                            valid3 = true;
+                          } else {
+                            var errs_3 = errors;
+                            if (typeof data1.backgroundColor !== "string") {
                               validate.errors = [{
-                                keyword: 'enum',
-                                dataPath: (dataPath || '') + '.ribbonOptions.position',
-                                schemaPath: '#/definitions/ribbon/properties/position/enum',
+                                keyword: 'type',
+                                dataPath: (dataPath || '') + '.badgeOptions.backgroundColor',
+                                schemaPath: '#/definitions/badge/properties/backgroundColor/type',
                                 params: {
-                                  allowedValues: schema3
+                                  type: 'string'
                                 },
-                                message: 'should be equal to one of the allowed values'
+                                message: 'should be string'
                               }];
                               return false;
-                            } else {}
-                            if (errors === errs_3) {}
+                            }
                             var valid3 = errors === errs_3;
                           }
                           if (valid3) {}
                         }
-                      }
-                    }
-                  }
-                  if (errs__2 == errors) {}
-                } else {
-                  validate.errors = [{
-                    keyword: 'type',
-                    dataPath: (dataPath || '') + '.ribbonOptions',
-                    schemaPath: '#/definitions/ribbon/type',
-                    params: {
-                      type: 'object'
-                    },
-                    message: 'should be object'
-                  }];
-                  return false;
-                }
-                if (errors === errs_2) {}
-                var valid2 = errors === errs_2;
-                if (valid2) {}
-                if (errors === errs_1) {}
-                var valid1 = errors === errs_1;
-              }
-              if (valid1) {
-                if (data.displayBadge === undefined) {
-                  valid1 = true;
-                } else {
-                  var errs_1 = errors;
-                  if (typeof data.displayBadge !== "boolean") {
-                    validate.errors = [{
-                      keyword: 'type',
-                      dataPath: (dataPath || '') + '.displayBadge',
-                      schemaPath: '#/properties/displayBadge/type',
-                      params: {
-                        type: 'boolean'
-                      },
-                      message: 'should be boolean'
-                    }];
-                    return false;
-                  }
-                  var valid1 = errors === errs_1;
-                }
-                if (valid1) {
-                  var data1 = data.badgeOptions;
-                  if (data1 === undefined) {
-                    valid1 = true;
-                  } else {
-                    var errs_1 = errors;
-                    var errs_2 = errors;
-                    if ((data1 && typeof data1 === "object" && !Array.isArray(data1))) {
-                      var errs__2 = errors;
-                      var valid3 = true;
-                      for (var key2 in data1) {
-                        var isAdditional2 = !(false || key2 == 'backgroundColor');
-                        if (isAdditional2) {
-                          valid3 = false;
-                          validate.errors = [{
-                            keyword: 'additionalProperties',
-                            dataPath: (dataPath || '') + '.badgeOptions',
-                            schemaPath: '#/definitions/badge/additionalProperties',
-                            params: {
-                              additionalProperty: '' + key2 + ''
-                            },
-                            message: 'should NOT have additional properties'
-                          }];
-                          return false;
-                          break;
-                        }
-                      }
-                      if (valid3) {
-                        if (data1.backgroundColor === undefined) {
-                          valid3 = true;
-                        } else {
-                          var errs_3 = errors;
-                          if (typeof data1.backgroundColor !== "string") {
-                            validate.errors = [{
-                              keyword: 'type',
-                              dataPath: (dataPath || '') + '.badgeOptions.backgroundColor',
-                              schemaPath: '#/definitions/badge/properties/backgroundColor/type',
-                              params: {
-                                type: 'string'
-                              },
-                              message: 'should be string'
-                            }];
-                            return false;
-                          }
-                          var valid3 = errors === errs_3;
-                        }
-                        if (valid3) {}
-                      }
-                      if (errs__2 == errors) {}
-                    } else {
-                      validate.errors = [{
-                        keyword: 'type',
-                        dataPath: (dataPath || '') + '.badgeOptions',
-                        schemaPath: '#/definitions/badge/type',
-                        params: {
-                          type: 'object'
-                        },
-                        message: 'should be object'
-                      }];
-                      return false;
-                    }
-                    if (errors === errs_2) {}
-                    var valid2 = errors === errs_2;
-                    if (valid2) {}
-                    if (errors === errs_1) {}
-                    var valid1 = errors === errs_1;
-                  }
-                  if (valid1) {
-                    if (data.displayDomain === undefined) {
-                      valid1 = true;
-                    } else {
-                      var errs_1 = errors;
-                      if (typeof data.displayDomain !== "boolean") {
+                        if (errs__2 == errors) {}
+                      } else {
                         validate.errors = [{
                           keyword: 'type',
-                          dataPath: (dataPath || '') + '.displayDomain',
-                          schemaPath: '#/properties/displayDomain/type',
+                          dataPath: (dataPath || '') + '.badgeOptions',
+                          schemaPath: '#/definitions/badge/type',
                           params: {
-                            type: 'boolean'
+                            type: 'object'
                           },
-                          message: 'should be boolean'
+                          message: 'should be object'
                         }];
                         return false;
                       }
+                      if (errors === errs_2) {}
+                      var valid2 = errors === errs_2;
+                      if (valid2) {}
+                      if (errors === errs_1) {}
                       var valid1 = errors === errs_1;
                     }
                     if (valid1) {
-                      var data1 = data.shortName;
-                      if (data1 === undefined) {
+                      if (data.displayDomain === undefined) {
                         valid1 = true;
                       } else {
                         var errs_1 = errors;
-                        if (typeof data1 === "string") {
-                          if (ucs2length(data1) > 4) {
-                            validate.errors = [{
-                              keyword: 'maxLength',
-                              dataPath: (dataPath || '') + '.shortName',
-                              schemaPath: '#/properties/shortName/maxLength',
-                              params: {
-                                limit: 4
-                              },
-                              message: 'should NOT be longer than 4 characters'
-                            }];
-                            return false;
-                          } else {
-                            if (ucs2length(data1) < 1) {
-                              validate.errors = [{
-                                keyword: 'minLength',
-                                dataPath: (dataPath || '') + '.shortName',
-                                schemaPath: '#/properties/shortName/minLength',
-                                params: {
-                                  limit: 1
-                                },
-                                message: 'should NOT be shorter than 1 characters'
-                              }];
-                              return false;
-                            } else {}
-                          }
-                        } else {
+                        if (typeof data.displayDomain !== "boolean") {
                           validate.errors = [{
                             keyword: 'type',
-                            dataPath: (dataPath || '') + '.shortName',
-                            schemaPath: '#/properties/shortName/type',
+                            dataPath: (dataPath || '') + '.displayDomain',
+                            schemaPath: '#/properties/displayDomain/type',
                             params: {
-                              type: 'string'
+                              type: 'boolean'
                             },
-                            message: 'should be string'
+                            message: 'should be boolean'
                           }];
                           return false;
                         }
-                        if (errors === errs_1) {}
                         var valid1 = errors === errs_1;
                       }
                       if (valid1) {
-                        var data1 = data.name;
+                        var data1 = data.shortName;
                         if (data1 === undefined) {
                           valid1 = true;
                         } else {
                           var errs_1 = errors;
                           if (typeof data1 === "string") {
-                            if (ucs2length(data1) < 1) {
+                            if (ucs2length(data1) > 4) {
                               validate.errors = [{
-                                keyword: 'minLength',
-                                dataPath: (dataPath || '') + '.name',
-                                schemaPath: '#/properties/name/minLength',
+                                keyword: 'maxLength',
+                                dataPath: (dataPath || '') + '.shortName',
+                                schemaPath: '#/properties/shortName/maxLength',
                                 params: {
-                                  limit: 1
+                                  limit: 4
                                 },
-                                message: 'should NOT be shorter than 1 characters'
+                                message: 'should NOT be longer than 4 characters'
                               }];
                               return false;
-                            } else {}
+                            } else {
+                              if (ucs2length(data1) < 1) {
+                                validate.errors = [{
+                                  keyword: 'minLength',
+                                  dataPath: (dataPath || '') + '.shortName',
+                                  schemaPath: '#/properties/shortName/minLength',
+                                  params: {
+                                    limit: 1
+                                  },
+                                  message: 'should NOT be shorter than 1 characters'
+                                }];
+                                return false;
+                              } else {}
+                            }
                           } else {
                             validate.errors = [{
                               keyword: 'type',
-                              dataPath: (dataPath || '') + '.name',
-                              schemaPath: '#/properties/name/type',
+                              dataPath: (dataPath || '') + '.shortName',
+                              schemaPath: '#/properties/shortName/type',
                               params: {
                                 type: 'string'
                               },
@@ -422,84 +423,98 @@ var validate = (function() {
                           var valid1 = errors === errs_1;
                         }
                         if (valid1) {
-                          var data1 = data.url;
+                          var data1 = data.name;
                           if (data1 === undefined) {
-                            valid1 = false;
-                            validate.errors = [{
-                              keyword: 'required',
-                              dataPath: (dataPath || '') + "",
-                              schemaPath: '#/required',
-                              params: {
-                                missingProperty: 'url'
-                              },
-                              message: 'should have required property \'url\''
-                            }];
-                            return false;
+                            valid1 = true;
                           } else {
                             var errs_1 = errors;
-                            if ((typeof data1 === "number")) {
-                              if (true) {}
-                            }
-                            if (errors === errs_1) {
-                              if (typeof data1 === "string") {
-                                if (!pattern0.test(data1)) {
-                                  validate.errors = [{
-                                    keyword: 'pattern',
-                                    dataPath: (dataPath || '') + '.url',
-                                    schemaPath: '#/properties/url/pattern',
-                                    params: {
-                                      pattern: '^(https?|wss?|ftp)://'
-                                    },
-                                    message: 'should match pattern "^(https?|wss?|ftp)://"'
-                                  }];
-                                  return false;
-                                } else {
-                                  if (!formats.uri.test(data1)) {
-                                    validate.errors = [{
-                                      keyword: 'format',
-                                      dataPath: (dataPath || '') + '.url',
-                                      schemaPath: '#/properties/url/format',
-                                      params: {
-                                        format: 'uri'
-                                      },
-                                      message: 'should match format "uri"'
-                                    }];
-                                    return false;
-                                  } else {}
-                                }
-                              } else {
+                            if (typeof data1 === "string") {
+                              if (ucs2length(data1) < 1) {
                                 validate.errors = [{
-                                  keyword: 'type',
-                                  dataPath: (dataPath || '') + '.url',
-                                  schemaPath: '#/properties/url/type',
+                                  keyword: 'minLength',
+                                  dataPath: (dataPath || '') + '.name',
+                                  schemaPath: '#/properties/name/minLength',
                                   params: {
-                                    type: 'string'
+                                    limit: 1
                                   },
-                                  message: 'should be string'
+                                  message: 'should NOT be shorter than 1 characters'
                                 }];
                                 return false;
-                              }
-                              if (errors === errs_1) {}
+                              } else {}
+                            } else {
+                              validate.errors = [{
+                                keyword: 'type',
+                                dataPath: (dataPath || '') + '.name',
+                                schemaPath: '#/properties/name/type',
+                                params: {
+                                  type: 'string'
+                                },
+                                message: 'should be string'
+                              }];
+                              return false;
                             }
+                            if (errors === errs_1) {}
                             var valid1 = errors === errs_1;
                           }
                           if (valid1) {
-                            var data1 = data.project;
+                            var data1 = data.url;
                             if (data1 === undefined) {
-                              valid1 = true;
+                              valid1 = false;
+                              validate.errors = [{
+                                keyword: 'required',
+                                dataPath: (dataPath || '') + "",
+                                schemaPath: '#/required',
+                                params: {
+                                  missingProperty: 'url'
+                                },
+                                message: 'should have required property \'url\''
+                              }];
+                              return false;
                             } else {
                               var errs_1 = errors;
-                              if (typeof data1 !== "string" && (typeof data1 !== "number")) {
-                                validate.errors = [{
-                                  keyword: 'type',
-                                  dataPath: (dataPath || '') + '.project',
-                                  schemaPath: '#/properties/project/type',
-                                  params: {
-                                    type: 'string,number'
-                                  },
-                                  message: 'should be string,number'
-                                }];
-                                return false;
+                              if ((typeof data1 === "number")) {
+                                if (true) {}
+                              }
+                              if (errors === errs_1) {
+                                if (typeof data1 === "string") {
+                                  if (!pattern0.test(data1)) {
+                                    validate.errors = [{
+                                      keyword: 'pattern',
+                                      dataPath: (dataPath || '') + '.url',
+                                      schemaPath: '#/properties/url/pattern',
+                                      params: {
+                                        pattern: '^(https?|wss?|ftp)://'
+                                      },
+                                      message: 'should match pattern "^(https?|wss?|ftp)://"'
+                                    }];
+                                    return false;
+                                  } else {
+                                    if (!formats.uri.test(data1)) {
+                                      validate.errors = [{
+                                        keyword: 'format',
+                                        dataPath: (dataPath || '') + '.url',
+                                        schemaPath: '#/properties/url/format',
+                                        params: {
+                                          format: 'uri'
+                                        },
+                                        message: 'should match format "uri"'
+                                      }];
+                                      return false;
+                                    } else {}
+                                  }
+                                } else {
+                                  validate.errors = [{
+                                    keyword: 'type',
+                                    dataPath: (dataPath || '') + '.url',
+                                    schemaPath: '#/properties/url/type',
+                                    params: {
+                                      type: 'string'
+                                    },
+                                    message: 'should be string'
+                                  }];
+                                  return false;
+                                }
+                                if (errors === errs_1) {}
                               }
                               var valid1 = errors === errs_1;
                             }
@@ -604,6 +619,9 @@ var validate = (function() {
   refVal2.schema = {
     "type": "object",
     "properties": {
+      "id": {
+        "type": "number"
+      },
       "displayRibbon": {
         "type": "boolean",
         "default": true
@@ -635,9 +653,6 @@ var validate = (function() {
         "type": "string",
         "format": "uri",
         "pattern": "^(https?|wss?|ftp)://"
-      },
-      "project": {
-        "type": ["string", "number"]
       }
     },
     "anyOf": [{
@@ -645,7 +660,7 @@ var validate = (function() {
     }, {
       "required": ["name"]
     }],
-    "required": ["url"],
+    "required": ["id", "url"],
     "additionalProperties": false
   };
   refVal2.errors = null;
@@ -1140,7 +1155,7 @@ var validate = (function() {
         var errs__0 = errors;
         var valid1 = true;
         for (var key0 in data) {
-          var isAdditional0 = !(false || key0 == 'projects' || key0 == 'envs' || key0 == 'options');
+          var isAdditional0 = !(false || key0 == 'version' || key0 == 'projects' || key0 == 'envs' || key0 == 'options');
           if (isAdditional0) {
             valid1 = false;
             validate.errors = [{
@@ -1157,111 +1172,36 @@ var validate = (function() {
           }
         }
         if (valid1) {
-          var data1 = data.projects;
-          if (data1 === undefined) {
-            valid1 = true;
+          if (data.version === undefined) {
+            valid1 = false;
+            validate.errors = [{
+              keyword: 'required',
+              dataPath: (dataPath || '') + "",
+              schemaPath: '#/required',
+              params: {
+                missingProperty: 'version'
+              },
+              message: 'should have required property \'version\''
+            }];
+            return false;
           } else {
             var errs_1 = errors;
-            if (Array.isArray(data1)) {
-              var errs__1 = errors;
-              var valid1;
-              for (var i1 = 0; i1 < data1.length; i1++) {
-                var data2 = data1[i1];
-                var errs_2 = errors;
-                var errs_3 = errors;
-                if ((data2 && typeof data2 === "object" && !Array.isArray(data2))) {
-                  if (true) {
-                    var errs__3 = errors;
-                    var valid4 = true;
-                    var data3 = data2.id;
-                    if (data3 === undefined) {
-                      valid4 = false;
-                      validate.errors = [{
-                        keyword: 'required',
-                        dataPath: (dataPath || '') + '.projects[' + i1 + ']',
-                        schemaPath: '#/definitions/project/required',
-                        params: {
-                          missingProperty: 'id'
-                        },
-                        message: 'should have required property \'id\''
-                      }];
-                      return false;
-                    } else {
-                      var errs_4 = errors;
-                      if (typeof data3 !== "string" && (typeof data3 !== "number")) {
-                        validate.errors = [{
-                          keyword: 'type',
-                          dataPath: (dataPath || '') + '.projects[' + i1 + '].id',
-                          schemaPath: '#/definitions/project/properties/id/type',
-                          params: {
-                            type: 'string,number'
-                          },
-                          message: 'should be string,number'
-                        }];
-                        return false;
-                      }
-                      var valid4 = errors === errs_4;
-                    }
-                    if (valid4) {
-                      if (data2.name === undefined) {
-                        valid4 = true;
-                      } else {
-                        var errs_4 = errors;
-                        if (typeof data2.name !== "string") {
-                          validate.errors = [{
-                            keyword: 'type',
-                            dataPath: (dataPath || '') + '.projects[' + i1 + '].name',
-                            schemaPath: '#/definitions/project/properties/name/type',
-                            params: {
-                              type: 'string'
-                            },
-                            message: 'should be string'
-                          }];
-                          return false;
-                        }
-                        var valid4 = errors === errs_4;
-                      }
-                      if (valid4) {}
-                    }
-                    if (errs__3 == errors) {}
-                  }
-                } else {
-                  validate.errors = [{
-                    keyword: 'type',
-                    dataPath: (dataPath || '') + '.projects[' + i1 + ']',
-                    schemaPath: '#/definitions/project/type',
-                    params: {
-                      type: 'object'
-                    },
-                    message: 'should be object'
-                  }];
-                  return false;
-                }
-                if (errors === errs_3) {}
-                var valid3 = errors === errs_3;
-                if (valid3) {}
-                if (errors === errs_2) {}
-                var valid2 = errors === errs_2;
-                if (!valid2) break;
-              }
-              if (errs__1 == errors) {}
-            } else {
+            if (typeof data.version !== "string") {
               validate.errors = [{
                 keyword: 'type',
-                dataPath: (dataPath || '') + '.projects',
-                schemaPath: '#/properties/projects/type',
+                dataPath: (dataPath || '') + '.version',
+                schemaPath: '#/properties/version/type',
                 params: {
-                  type: 'array'
+                  type: 'string'
                 },
-                message: 'should be array'
+                message: 'should be string'
               }];
               return false;
             }
-            if (errors === errs_1) {}
             var valid1 = errors === errs_1;
           }
           if (valid1) {
-            var data1 = data.envs;
+            var data1 = data.projects;
             if (data1 === undefined) {
               valid1 = false;
               validate.errors = [{
@@ -1269,9 +1209,9 @@ var validate = (function() {
                 dataPath: (dataPath || '') + "",
                 schemaPath: '#/required',
                 params: {
-                  missingProperty: 'envs'
+                  missingProperty: 'projects'
                 },
-                message: 'should have required property \'envs\''
+                message: 'should have required property \'projects\''
               }];
               return false;
             } else {
@@ -1280,12 +1220,142 @@ var validate = (function() {
                 var errs__1 = errors;
                 var valid1;
                 for (var i1 = 0; i1 < data1.length; i1++) {
+                  var data2 = data1[i1];
                   var errs_2 = errors;
-                  if (!refVal2(data1[i1], (dataPath || '') + '.envs[' + i1 + ']', data1, i1, rootData)) {
-                    if (vErrors === null) vErrors = refVal2.errors;
-                    else vErrors = vErrors.concat(refVal2.errors);
-                    errors = vErrors.length;
-                  } else {}
+                  var errs_3 = errors;
+                  if ((data2 && typeof data2 === "object" && !Array.isArray(data2))) {
+                    if (true) {
+                      var errs__3 = errors;
+                      var valid4 = true;
+                      if (data2.id === undefined) {
+                        valid4 = false;
+                        validate.errors = [{
+                          keyword: 'required',
+                          dataPath: (dataPath || '') + '.projects[' + i1 + ']',
+                          schemaPath: '#/definitions/project/required',
+                          params: {
+                            missingProperty: 'id'
+                          },
+                          message: 'should have required property \'id\''
+                        }];
+                        return false;
+                      } else {
+                        var errs_4 = errors;
+                        if ((typeof data2.id !== "number")) {
+                          validate.errors = [{
+                            keyword: 'type',
+                            dataPath: (dataPath || '') + '.projects[' + i1 + '].id',
+                            schemaPath: '#/definitions/project/properties/id/type',
+                            params: {
+                              type: 'number'
+                            },
+                            message: 'should be number'
+                          }];
+                          return false;
+                        }
+                        var valid4 = errors === errs_4;
+                      }
+                      if (valid4) {
+                        if (data2.name === undefined) {
+                          valid4 = false;
+                          validate.errors = [{
+                            keyword: 'required',
+                            dataPath: (dataPath || '') + '.projects[' + i1 + ']',
+                            schemaPath: '#/definitions/project/required',
+                            params: {
+                              missingProperty: 'name'
+                            },
+                            message: 'should have required property \'name\''
+                          }];
+                          return false;
+                        } else {
+                          var errs_4 = errors;
+                          if (typeof data2.name !== "string") {
+                            validate.errors = [{
+                              keyword: 'type',
+                              dataPath: (dataPath || '') + '.projects[' + i1 + '].name',
+                              schemaPath: '#/definitions/project/properties/name/type',
+                              params: {
+                                type: 'string'
+                              },
+                              message: 'should be string'
+                            }];
+                            return false;
+                          }
+                          var valid4 = errors === errs_4;
+                        }
+                        if (valid4) {
+                          var data3 = data2.envs;
+                          if (data3 === undefined) {
+                            valid4 = false;
+                            validate.errors = [{
+                              keyword: 'required',
+                              dataPath: (dataPath || '') + '.projects[' + i1 + ']',
+                              schemaPath: '#/definitions/project/required',
+                              params: {
+                                missingProperty: 'envs'
+                              },
+                              message: 'should have required property \'envs\''
+                            }];
+                            return false;
+                          } else {
+                            var errs_4 = errors;
+                            if (Array.isArray(data3)) {
+                              var errs__4 = errors;
+                              var valid4;
+                              for (var i4 = 0; i4 < data3.length; i4++) {
+                                var errs_5 = errors;
+                                if ((typeof data3[i4] !== "number")) {
+                                  validate.errors = [{
+                                    keyword: 'type',
+                                    dataPath: (dataPath || '') + '.projects[' + i1 + '].envs[' + i4 + ']',
+                                    schemaPath: '#/definitions/project/properties/envs/items/type',
+                                    params: {
+                                      type: 'number'
+                                    },
+                                    message: 'should be number'
+                                  }];
+                                  return false;
+                                }
+                                var valid5 = errors === errs_5;
+                                if (!valid5) break;
+                              }
+                              if (errs__4 == errors) {}
+                            } else {
+                              validate.errors = [{
+                                keyword: 'type',
+                                dataPath: (dataPath || '') + '.projects[' + i1 + '].envs',
+                                schemaPath: '#/definitions/project/properties/envs/type',
+                                params: {
+                                  type: 'array'
+                                },
+                                message: 'should be array'
+                              }];
+                              return false;
+                            }
+                            if (errors === errs_4) {}
+                            var valid4 = errors === errs_4;
+                          }
+                          if (valid4) {}
+                        }
+                      }
+                      if (errs__3 == errors) {}
+                    }
+                  } else {
+                    validate.errors = [{
+                      keyword: 'type',
+                      dataPath: (dataPath || '') + '.projects[' + i1 + ']',
+                      schemaPath: '#/definitions/project/type',
+                      params: {
+                        type: 'object'
+                      },
+                      message: 'should be object'
+                    }];
+                    return false;
+                  }
+                  if (errors === errs_3) {}
+                  var valid3 = errors === errs_3;
+                  if (valid3) {}
                   if (errors === errs_2) {}
                   var valid2 = errors === errs_2;
                   if (!valid2) break;
@@ -1294,8 +1364,8 @@ var validate = (function() {
               } else {
                 validate.errors = [{
                   keyword: 'type',
-                  dataPath: (dataPath || '') + '.envs',
-                  schemaPath: '#/properties/envs/type',
+                  dataPath: (dataPath || '') + '.projects',
+                  schemaPath: '#/properties/projects/type',
                   params: {
                     type: 'array'
                   },
@@ -1307,7 +1377,7 @@ var validate = (function() {
               var valid1 = errors === errs_1;
             }
             if (valid1) {
-              var data1 = data.options;
+              var data1 = data.envs;
               if (data1 === undefined) {
                 valid1 = false;
                 validate.errors = [{
@@ -1315,61 +1385,108 @@ var validate = (function() {
                   dataPath: (dataPath || '') + "",
                   schemaPath: '#/required',
                   params: {
-                    missingProperty: 'options'
+                    missingProperty: 'envs'
                   },
-                  message: 'should have required property \'options\''
+                  message: 'should have required property \'envs\''
                 }];
                 return false;
               } else {
                 var errs_1 = errors;
-                if ((!data1 || typeof data1 !== "object" || Array.isArray(data1))) {
+                if (Array.isArray(data1)) {
+                  var errs__1 = errors;
+                  var valid1;
+                  for (var i1 = 0; i1 < data1.length; i1++) {
+                    var errs_2 = errors;
+                    if (!refVal2(data1[i1], (dataPath || '') + '.envs[' + i1 + ']', data1, i1, rootData)) {
+                      if (vErrors === null) vErrors = refVal2.errors;
+                      else vErrors = vErrors.concat(refVal2.errors);
+                      errors = vErrors.length;
+                    } else {}
+                    if (errors === errs_2) {}
+                    var valid2 = errors === errs_2;
+                    if (!valid2) break;
+                  }
+                  if (errs__1 == errors) {}
+                } else {
                   validate.errors = [{
                     keyword: 'type',
-                    dataPath: (dataPath || '') + '.options',
-                    schemaPath: '#/properties/options/type',
+                    dataPath: (dataPath || '') + '.envs',
+                    schemaPath: '#/properties/envs/type',
                     params: {
-                      type: 'object'
+                      type: 'array'
                     },
-                    message: 'should be object'
+                    message: 'should be array'
                   }];
                   return false;
-                }
-                var errs__1 = errors;
-                var valid1 = false;
-                var errs_2 = errors;
-                if (!refVal5(data1, (dataPath || '') + '.options', data, 'options', rootData)) {
-                  if (vErrors === null) vErrors = refVal5.errors;
-                  else vErrors = vErrors.concat(refVal5.errors);
-                  errors = vErrors.length;
-                } else {}
-                if (errors === errs_2) {}
-                var valid2 = errors === errs_2;
-                valid1 = valid1 || valid2;
-                if (!valid1) {}
-                if (!valid1) {
-                  var err = {
-                    keyword: 'anyOf',
-                    dataPath: (dataPath || '') + '.options',
-                    schemaPath: '#/properties/options/anyOf',
-                    params: {},
-                    message: 'should match some schema in anyOf'
-                  };
-                  if (vErrors === null) vErrors = [err];
-                  else vErrors.push(err);
-                  errors++;
-                  validate.errors = vErrors;
-                  return false;
-                } else {
-                  errors = errs__1;
-                  if (vErrors !== null) {
-                    if (errs__1) vErrors.length = errs__1;
-                    else vErrors = null;
-                  }
                 }
                 if (errors === errs_1) {}
                 var valid1 = errors === errs_1;
               }
-              if (valid1) {}
+              if (valid1) {
+                var data1 = data.options;
+                if (data1 === undefined) {
+                  valid1 = false;
+                  validate.errors = [{
+                    keyword: 'required',
+                    dataPath: (dataPath || '') + "",
+                    schemaPath: '#/required',
+                    params: {
+                      missingProperty: 'options'
+                    },
+                    message: 'should have required property \'options\''
+                  }];
+                  return false;
+                } else {
+                  var errs_1 = errors;
+                  if ((!data1 || typeof data1 !== "object" || Array.isArray(data1))) {
+                    validate.errors = [{
+                      keyword: 'type',
+                      dataPath: (dataPath || '') + '.options',
+                      schemaPath: '#/properties/options/type',
+                      params: {
+                        type: 'object'
+                      },
+                      message: 'should be object'
+                    }];
+                    return false;
+                  }
+                  var errs__1 = errors;
+                  var valid1 = false;
+                  var errs_2 = errors;
+                  if (!refVal5(data1, (dataPath || '') + '.options', data, 'options', rootData)) {
+                    if (vErrors === null) vErrors = refVal5.errors;
+                    else vErrors = vErrors.concat(refVal5.errors);
+                    errors = vErrors.length;
+                  } else {}
+                  if (errors === errs_2) {}
+                  var valid2 = errors === errs_2;
+                  valid1 = valid1 || valid2;
+                  if (!valid1) {}
+                  if (!valid1) {
+                    var err = {
+                      keyword: 'anyOf',
+                      dataPath: (dataPath || '') + '.options',
+                      schemaPath: '#/properties/options/anyOf',
+                      params: {},
+                      message: 'should match some schema in anyOf'
+                    };
+                    if (vErrors === null) vErrors = [err];
+                    else vErrors.push(err);
+                    errors++;
+                    validate.errors = vErrors;
+                    return false;
+                  } else {
+                    errors = errs__1;
+                    if (vErrors !== null) {
+                      if (errs__1) vErrors.length = errs__1;
+                      else vErrors = null;
+                    }
+                  }
+                  if (errors === errs_1) {}
+                  var valid1 = errors === errs_1;
+                }
+                if (valid1) {}
+              }
             }
           }
         }
@@ -1398,12 +1515,16 @@ validate.schema = {
   "description": "Object containing config details",
   "type": "object",
   "properties": {
+    "version": {
+      "type": "string"
+    },
     "projects": {
       "type": "array",
       "default": [{
-        "id": "Google"
+        "id": 0,
+        "name": "Google"
       }, {
-        "id": "Yahoo",
+        "id": 1,
         "name": "Yahoo"
       }],
       "items": {
@@ -1424,13 +1545,11 @@ validate.schema = {
         "displayBadge": true,
         "badgeOptions": {
           "backgroundColor": "#154785"
-        },
-        "project": "Google"
+        }
       }, {
         "name": "ES",
         "url": "https://www.google.es/",
-        "displayRibbon": false,
-        "project": "Google"
+        "displayRibbon": false
       }, {
         "shortName": "DE",
         "name": "Germany",
@@ -1439,8 +1558,7 @@ validate.schema = {
         "ribbonOptions": {
           "backgroundColor": "#1fab19"
         },
-        "displayBadge": false,
-        "project": "Google"
+        "displayBadge": false
       }],
       "items": {
         "$ref": "#/definitions/env"
@@ -1477,13 +1595,19 @@ validate.schema = {
       "default": {},
       "properties": {
         "id": {
-          "type": ["string", "number"]
+          "type": "number"
         },
         "name": {
           "type": "string"
+        },
+        "envs": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
         }
       },
-      "required": ["id"]
+      "required": ["id", "name", "envs"]
     },
     "options": {
       "type": "object",
@@ -1526,6 +1650,9 @@ validate.schema = {
     "env": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "number"
+        },
         "displayRibbon": {
           "type": "boolean",
           "default": true
@@ -1557,9 +1684,6 @@ validate.schema = {
           "type": "string",
           "format": "uri",
           "pattern": "^(https?|wss?|ftp)://"
-        },
-        "project": {
-          "type": ["string", "number"]
         }
       },
       "anyOf": [{
@@ -1567,7 +1691,7 @@ validate.schema = {
       }, {
         "required": ["name"]
       }],
-      "required": ["url"],
+      "required": ["id", "url"],
       "additionalProperties": false
     },
     "badge": {
@@ -1608,7 +1732,7 @@ validate.schema = {
       "type": "boolean"
     }
   },
-  "required": ["envs", "options"],
+  "required": ["version", "projects", "envs", "options"],
   "additionalProperties": false
 };
 validate.errors = null;

@@ -35,6 +35,11 @@
           Configuration:
         </h2>
 
+        <div v-if="loadingError">
+          Oh oh it seems we had a little issue getting your configuration in a
+          proper state.
+        </div>
+
         <div>
           <transition name="fade">
             <span v-if="displaySaveInfo" class="info">
@@ -46,6 +51,10 @@
 
       <div ref="jsonEditor" class="config"></div>
     </section>
+
+    <button class="save-btn" @click="saveConfig(editor.get(), true)">
+      force save
+    </button>
   </div>
 </template>
 
@@ -53,28 +62,10 @@
 import { getConfig, setConfig } from "./services/business/storage";
 import JSONEditor from "jsoneditor/dist/jsoneditor.js";
 import { debounce, downloadAsJson } from "./services/utils";
-import validateSchema from "./schemas/config.schema.gen.js";
+import validateSchema from "./schemas/config.schema.gen";
 import CheckIcon from "./components/icons/CheckIcon";
 
 const SAVE_DELAY = 500;
-
-export const DEFAULT_CONFIG = {
-  envs: [
-    {
-      name: "FR",
-      url: "https://www.google.fr/",
-      ribbon: {
-        backgroundColor: "#d74a59",
-        position: "left"
-      }
-    }
-  ],
-  options: {
-    ribbon: true,
-    displayBadge: true,
-    displayDomain: true
-  }
-};
 
 export default {
   name: "OptionsPage",
@@ -84,6 +75,7 @@ export default {
       importConfigLoader: false,
       displaySaveInfo: false,
       editor: null,
+      loadingError: false,
       errors: []
     };
   },
@@ -123,23 +115,22 @@ export default {
   },
   methods: {
     async getOrInitConfig() {
-      const config = await getConfig();
-      const defaultConfig = () => {
-        const config = { ...DEFAULT_CONFIG };
-        this.saveConfig(config);
-        return config;
-      };
-      return config || defaultConfig();
+      const { config, errors } = await getConfig();
+      if (errors && (errors.migrationFailed || errors.validationFailed)) {
+        console.error(errors);
+        this.loadingError = true;
+      }
+      return config;
     },
 
-    saveConfig(config) {
-      if (!config || this.errors?.length > 0) {
+    saveConfig(config, force) {
+      if (!force && (!config || this.errors?.length > 0)) {
         return;
       }
 
       this.displaySaveInfo = true;
 
-      setConfig(config);
+      setConfig(config, force);
 
       setTimeout(() => {
         this.displaySaveInfo = false;
@@ -250,7 +241,7 @@ export default {
   .config {
     flex: 1;
     min-height: 400px;
-    height: calc(100vh - 200px);
+    height: calc(100vh - 220px);
   }
 
   .info {
@@ -260,6 +251,10 @@ export default {
     padding: 5px 10px;
     margin-top: 5px;
     font-weight: bold;
+  }
+
+  .save-btn {
+    margin: 10px 0;
   }
 }
 </style>

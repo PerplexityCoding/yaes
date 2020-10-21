@@ -2,40 +2,43 @@ import { mount } from "@vue/test-utils";
 import ProjectList from "@/components/ProjectList.vue";
 import { waitFor } from "../../../src/services/utils";
 
-describe("EnvList.vue", () => {
+describe("ProjectList.vue", () => {
   const envs = [
     {
+      id: 0,
       name: "France",
       shortName: "FR",
       url: "https://www.google.fr/",
-      displayDomain: true,
-      project: "Goog"
+      displayDomain: true
     },
     {
+      id: 1,
       name: "DE",
       url: "https://www.google.de/",
-      displayDomain: false,
-      project: "Goog"
+      displayDomain: false
     },
     {
+      id: 2,
       shortName: "ES",
-      url: "https://www.google.es/",
-      project: "Goog"
+      url: "https://www.google.es/"
     },
     {
+      id: 3,
       shortName: "ES",
-      url: "https://www.yah.es/",
-      project: "Yah"
+      url: "https://www.yah.es/"
     }
   ];
 
   const projects = [
     {
-      id: "Goog"
+      id: 0,
+      name: "Google",
+      envs: [0, 1, 2]
     },
     {
-      id: "Yah",
-      name: "Yah"
+      id: 1,
+      name: "Yah",
+      envs: [3]
     }
   ];
 

@@ -5,9 +5,27 @@ import {
 
 import deepmerge from "deepmerge";
 
-import validate from "../../../schemas/config.schema.gen";
+import validateSchema from "./validate";
 
-import { migrate } from "@/services/business/storage/migrate";
+import {
+  checkUpdate,
+  ConfigUpdateStatus
+} from "@/services/business/storage/migrate";
+
+export const DEFAULT_CONFIG = {
+  projects: [
+    {
+      id: 0,
+      name: "Default Project"
+    }
+  ],
+  envs: [],
+  options: {
+    ribbon: true,
+    displayBadge: true,
+    displayDomain: true
+  }
+};
 
 function mergeOptionsInEnv(config) {
   const envs = config?.envs?.map(env => {
@@ -21,29 +39,42 @@ function mergeOptionsInEnv(config) {
 
 async function getConfig({ mergeOptions } = {}) {
   const values = await chromeStorageGet("config");
-  if (values && values.config != null) {
-    let config = JSON.parse(values.config);
+  let errors = {};
+  let config = null;
 
-    const hasMigrated = migrate(config);
-    if (hasMigrated) {
+  if (values && values.config != null) {
+    config = JSON.parse(values.config);
+
+    const updateStatus = checkUpdate(config);
+    if (updateStatus === ConfigUpdateStatus.MIGRATION_SUCCESS) {
       await setConfig(config);
+    }
+
+    if (updateStatus === ConfigUpdateStatus.MIGRATION_FAILED) {
+      config = JSON.parse(values.config);
+      errors.migrationFailed = true;
+    }
+
+    if (!validateSchema(config)) {
+      errors.validationFailed = true;
     }
 
     if (mergeOptions) {
       mergeOptionsInEnv(config);
     }
-
-    if (!validate(config)) {
-      return null;
-    }
-
-    return config;
+  } else {
+    config = { ...DEFAULT_CONFIG };
+    await setConfig(config);
   }
-  return null;
+
+  return {
+    config,
+    errors
+  };
 }
 
-async function setConfig(config) {
-  if (validate(config)) {
+async function setConfig(config, force = false) {
+  if (force || validateSchema(config)) {
     await chromeStorageSet({
       config: JSON.stringify(config)
     });
