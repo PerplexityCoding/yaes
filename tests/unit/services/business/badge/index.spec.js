@@ -33,6 +33,7 @@ describe("Badge", () => {
         shortName: "SP",
         url: "https://www.google.es/",
         displayRibbon: false,
+        displayBadge: true,
         badgeOptions: {
           backgroundColor: "red"
         }
@@ -67,7 +68,7 @@ describe("Badge", () => {
   it("updateBadgeTextFromEnv with shortName", async () => {
     mockStorageEnvGet();
 
-    updateBadgeTextFromEnv(0, "https://www.google.fr");
+    await updateBadgeTextFromEnv(0, "https://www.google.fr");
     await waitFor();
     expect(setBadgeText).toHaveBeenCalledWith(0, "FR");
   });
@@ -75,7 +76,7 @@ describe("Badge", () => {
   it("updateBadgeTextFromEnv with name", async () => {
     mockStorageEnvGet();
 
-    updateBadgeTextFromEnv(1, "https://www.google.de");
+    await updateBadgeTextFromEnv(1, "https://www.google.de");
     await waitFor();
     expect(setBadgeText).toHaveBeenCalledWith(1, "Germ");
     expect(setBadgeBackgroundColor).toHaveBeenCalledWith(1, "#2677c9");
@@ -84,7 +85,7 @@ describe("Badge", () => {
   it("updateBadgeTextFromEnv with shortName and name and color", async () => {
     mockStorageEnvGet();
 
-    updateBadgeTextFromEnv(2, "https://www.google.es");
+    await updateBadgeTextFromEnv(2, "https://www.google.es");
     await waitFor();
     expect(setBadgeText).toHaveBeenCalledWith(2, "SP");
     expect(setBadgeBackgroundColor).toHaveBeenCalledWith(2, "red");
@@ -93,7 +94,7 @@ describe("Badge", () => {
   it("updateBadgeTextFromEnv with badge false", async () => {
     mockStorageEnvGet();
 
-    updateBadgeTextFromEnv(3, "https://www.google.oh");
+    await updateBadgeTextFromEnv(3, "https://www.google.oh");
     await waitFor();
     expect(setBadgeText).toHaveBeenCalledWith(3, "");
   });
