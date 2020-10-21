@@ -50,9 +50,11 @@
       </div>
 
       <div ref="jsonEditor" class="config"></div>
-
-      <button @click="saveConfig(editor.get(), true)">force save</button>
     </section>
+
+    <button class="save-btn" @click="saveConfig(editor.get(), true)">
+      force save
+    </button>
   </div>
 </template>
 
@@ -239,7 +241,7 @@ export default {
   .config {
     flex: 1;
     min-height: 400px;
-    height: calc(100vh - 200px);
+    height: calc(100vh - 220px);
   }
 
   .info {
@@ -249,6 +251,10 @@ export default {
     padding: 5px 10px;
     margin-top: 5px;
     font-weight: bold;
+  }
+
+  .save-btn {
+    margin: 10px 0;
   }
 }
 </style>
