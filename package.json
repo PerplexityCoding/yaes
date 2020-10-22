@@ -17,7 +17,7 @@
     "dev": "bash tools/launch-dev.sh",
     "jest": "jest",
     "bundle": "rm -rf build/ && npm run build && cd dist/ && sh -c 'sed -i \"s/1.0.0/$VERSION/g\" manifest.json' && sh -c 'bestzip ../release/v$VERSION.zip *'",
-    "release": "sh -c 'npm version $VERSION' && npm run bundle && git push --tags && git push",
+    "release": "npm run lint && npm run test:unit && sh -c 'npm version $VERSION' && npm run bundle && git push --tags && git push",
     "docs:schemas": "node tools/generate-schemas-md.js"
   },
   "dependencies": {
