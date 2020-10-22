@@ -15,9 +15,11 @@
 
         <EditorFormRibbon :option="mergedEnv" @update:option="updateComputed" />
 
-        <label :class="{ defaulted: env.displayDomain === undefined }">
-          <input type="checkbox" v-model="displayDomain" /> Display domain
-        </label>
+        <fieldset>
+          <label :class="{ defaulted: env.displayDomain === undefined }">
+            <input type="checkbox" v-model="displayDomain" /> Display domain
+          </label>
+        </fieldset>
       </div>
     </form>
   </div>

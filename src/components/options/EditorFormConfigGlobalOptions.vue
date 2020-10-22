@@ -6,19 +6,21 @@
 
       <EditorFormRibbon :option="options" @update:option="updateComputed" />
 
-      <label>
-        <input type="checkbox" v-model="displayDomain" /> Display domain
-      </label>
-      <label>
-        <input type="checkbox" v-model="displayHeader" /> Display header
-      </label>
-      <label>
-        <input type="checkbox" v-model="displayFooter" /> Display footer
-      </label>
-      <label>
-        <input type="checkbox" v-model="displaySeeProjectsLink" />
-        Display see projects link
-      </label>
+      <fieldset>
+        <label>
+          <input type="checkbox" v-model="displayDomain" /> Display domain
+        </label>
+        <label>
+          <input type="checkbox" v-model="displayHeader" /> Display header
+        </label>
+        <label>
+          <input type="checkbox" v-model="displayFooter" /> Display footer
+        </label>
+        <label>
+          <input type="checkbox" v-model="displaySeeProjectsLink" />
+          Display see projects link
+        </label>
+      </fieldset>
     </form>
   </div>
 </template>

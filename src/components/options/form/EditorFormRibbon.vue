@@ -6,20 +6,22 @@
     </label>
     <div>
       <label>
-        <ColorPicker v-model:color="ribbonColor" />
-        Text Color
-      </label>
-      <label>
-        <ColorPicker v-model:color="ribbonBgColor" />
         Background Color
+        <ColorPicker v-model:color="ribbonBgColor" />
       </label>
       <label>
+        Text Color
+        <ColorPicker v-model:color="ribbonColor" />
+      </label>
+      <label>
+        Position
         <select v-model="ribbonPosition">
           <option value="left"> left </option>
           <option value="right"> right </option>
         </select>
       </label>
       <label>
+        Type
         <select v-model="ribbonType">
           <option value="corner-ribbon"> Corner </option>
           <option value="square-ribbon"> Square </option>
@@ -47,10 +49,10 @@ export default {
   emits: ["update:option"],
   computed: {
     displayRibbon: computed("displayRibbon"),
-    ribbonColor: computed("ribbonOptions", "color"),
-    ribbonBgColor: computed("ribbonOptions", "backgroundColor"),
-    ribbonPosition: computed("ribbonOptions", "position"),
-    ribbonType: computed("ribbonOptions", "type")
+    ribbonColor: computed("ribbonOptions", "color", "white"),
+    ribbonBgColor: computed("ribbonOptions", "backgroundColor", "#2f2f2f"),
+    ribbonPosition: computed("ribbonOptions", "position", "right"),
+    ribbonType: computed("ribbonOptions", "type", "corner-ribbon")
   },
   methods: {
     updateComputed(data) {
@@ -59,3 +61,9 @@ export default {
   }
 };
 </script>
+
+<style scoped lang="scss">
+label {
+  display: block;
+}
+</style>

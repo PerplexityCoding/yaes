@@ -1,4 +1,10 @@
-/*jest.mock("@/services/business/storage");
+import { getConfig } from "@/services/business/storage";
+import { mount } from "@vue/test-utils";
+import Options from "@/Options.vue";
+import { waitFor } from "@/services/utils";
+import EditorFormConfigProjects from "@/components/options/EditorFormConfigProjects";
+
+jest.mock("@/services/business/storage");
 
 describe("Options.vue", () => {
   const config = {
@@ -6,7 +12,7 @@ describe("Options.vue", () => {
     projects: [
       {
         id: 0,
-        name: "test",
+        name: "Project name test",
         envs: [1, 2, 3]
       }
     ],
@@ -26,12 +32,28 @@ describe("Options.vue", () => {
         name: "ES",
         url: "https://www.google.es/"
       }
-    ]
+    ],
+    options: {}
   };
 
   function mockStorageEnvGet() {
     getConfig.mockReturnValue({ config });
-  }*/
+  }
+
+  it("should display the projects and envs", async () => {
+    mockStorageEnvGet();
+
+    const wrapper = mount(Options);
+    await waitFor();
+
+    const projects = wrapper.findComponent(EditorFormConfigProjects);
+
+    const projectsContent = projects.html();
+    expect(projects.exists()).toBe(true);
+    expect(projectsContent).toContain("Project name test");
+  });
+});
+
 /*function mockStorageEnvGetEmpty() {
     getConfig.mockReturnValue({ config: DEFAULT_CONFIG });
   }*/

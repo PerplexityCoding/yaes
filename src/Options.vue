@@ -50,8 +50,6 @@
       <button v-if="editorMode === 'json'" @click="editorMode = 'form'">
         Switch to form
       </button>
-
-
     </section>
 
     <button class="save-btn" @click="forceSave">force save</button>
