@@ -2,15 +2,15 @@ import { getConfig } from "@/services/business/storage";
 import { getCurrentEnv } from "@/services/business/url";
 import renderRibbon from "./components/Ribbon.js";
 
-function main() {
-  verifyCurrentUrl();
+async function main() {
+  await verifyCurrentUrl();
 }
 
 async function verifyCurrentUrl() {
-  const { config } = getConfig({ mergeOptions: true });
+  const { config } = await getConfig({ mergeOptions: true });
   const env = getCurrentEnv(window.location.href, config);
 
-  if (env?.displayRibbon) {
+  if (env != null && env.displayRibbon !== false) {
     renderRibbon(config, env);
   }
 }

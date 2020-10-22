@@ -37,7 +37,7 @@ function mergeOptionsInEnv(config) {
   };
 }
 
-async function getConfig({ mergeOptions } = {}) {
+async function migrate({ mergeOptions } = {}) {
   const values = await chromeStorageGet("config");
   let errors = {};
   let config = null;
@@ -62,6 +62,25 @@ async function getConfig({ mergeOptions } = {}) {
     if (mergeOptions) {
       mergeOptionsInEnv(config);
     }
+  }
+
+  return {
+    config,
+    errors
+  };
+}
+
+async function getConfig({ mergeOptions } = {}) {
+  const values = await chromeStorageGet("config");
+  let errors = {};
+  let config = null;
+
+  if (values && values.config != null) {
+    config = JSON.parse(values.config);
+
+    if (mergeOptions) {
+      config = mergeOptionsInEnv(config);
+    }
   } else {
     config = { ...DEFAULT_CONFIG };
     await setConfig(config);
@@ -83,4 +102,4 @@ async function setConfig(config, force = false) {
   return false;
 }
 
-export { setConfig, getConfig };
+export { setConfig, getConfig, migrate };

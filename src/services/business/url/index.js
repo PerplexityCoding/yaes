@@ -11,6 +11,10 @@ export function getCurrentEnv(url, config) {
     return;
   }
 
+  if (url == null || !url.match(/^https?:\/\//)) {
+    return null;
+  }
+
   const envs = config.envs;
   for (const env of envs) {
     const envHostname = new URL(env.url).hostname;
