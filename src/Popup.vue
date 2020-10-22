@@ -6,23 +6,31 @@
     </header>
     <section class="body">
       <div v-if="mode === 'envs'">
-        <EnvList
-          :envs="currentEnvs"
-          :current-env="currentEnv"
-          @switch-env="env => (currentEnv ? switchEnv(env) : redirectEnv(env))"
-        />
+        <div v-if="currentEnvs && currentEnvs.length > 0">
+          <EnvList
+            :envs="currentEnvs"
+            :current-env="currentEnv"
+            @switch-env="
+              env => (currentEnv ? switchEnv(env) : redirectEnv(env))
+            "
+          />
 
-        <button
-          v-if="
-            projects &&
-              projects.length > 1 &&
-              options.displaySeeProjectsLink !== false
-          "
-          class="switch-env-btn right"
-          @click="mode = 'projects'"
-        >
-          <span>See projects</span> <ArrowDown height="8px" width="8px" />
-        </button>
+          <button
+            v-if="
+              projects &&
+                projects.length > 1 &&
+                options.displaySeeProjectsLink !== false
+            "
+            class="switch-env-btn right"
+            @click="mode = 'projects'"
+          >
+            <span>See projects</span> <ArrowDown height="8px" width="8px" />
+          </button>
+        </div>
+        <div v-else class="info">
+          No environments has been configured yet. Click on edit configuration
+          link.
+        </div>
       </div>
       <div v-else-if="mode === 'projects'">
         <ProjectList

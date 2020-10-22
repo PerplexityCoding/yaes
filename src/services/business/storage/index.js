@@ -13,17 +13,22 @@ import {
 } from "@/services/business/storage/migrate";
 
 export const DEFAULT_CONFIG = {
+  version: "1.1.0",
   projects: [
     {
       id: 0,
-      name: "Default Project"
+      name: "Default Project",
+      envs: []
     }
   ],
   envs: [],
   options: {
-    ribbon: true,
-    displayBadge: true,
-    displayDomain: true
+    displayDomain: true,
+    displayHeader: true,
+    displayFooter: true,
+    displaySeeProjectsLink: true,
+    displayRibbon: true,
+    displayBadge: true
   }
 };
 
@@ -62,6 +67,9 @@ async function migrate({ mergeOptions } = {}) {
     if (mergeOptions) {
       mergeOptionsInEnv(config);
     }
+  } else {
+    config = { ...DEFAULT_CONFIG };
+    await setConfig(config);
   }
 
   return {
