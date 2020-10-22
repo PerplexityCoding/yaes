@@ -1,7 +1,10 @@
 <template>
   <li>
     <b class="project-sortable-handle"> handle </b>
-    {{ project.name }}
+    <input
+      :value="project.name"
+      @input="e => updateProject({ name: e.target.value })"
+    />
 
     <ul class="env-sortable" @sortupdate="onDrop">
       <li
@@ -45,15 +48,21 @@ export default {
     deleteProject() {
       this.$emit("delete-project", this.project);
     },
+    updateProject(data) {
+      console.log(data);
+      this.$emit("update:project", {
+        ...this.project,
+        ...data
+      });
+    },
     onDrop(e) {
       const { detail } = e;
       const { origin, destination } = detail;
       const { envs } = this.project;
 
       envs.splice(destination.index, 0, envs.splice(origin.index, 1)[0]);
-      this.$emit("update:project", {
-        ...this.project,
-        ...envs
+      this.updateProject({
+        envs
       });
     }
   },
