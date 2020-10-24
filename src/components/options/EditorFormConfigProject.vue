@@ -2,26 +2,40 @@
   <li>
     <b class="project-sortable-handle"> handle </b>
 
-    <input
-      v-if="projectNameEditable"
-      :value="project.name"
-      @focusout="projectNameEditable = false"
-      @input="e => updateProject({ name: e.target.value })"
-    />
-    <span v-else @click="projectNameEditable = true"> {{ project.name }} </span>
+    <div class="project-name">
+      <input
+        v-if="projectNameEditable"
+        :value="project.name"
+        @focusout="projectNameEditable = false"
+        @input="e => updateProject({ name: e.target.value })"
+      />
+      <span v-else>
+        {{ project.name }}
+      </span>
+      <button
+        class="edit-project-name"
+        @click="projectNameEditable = true"
+        v-if="!projectNameEditable"
+      >
+        Edit
+      </button>
+    </div>
 
     <ul class="env-sortable" @sortupdate="onDrop">
       <li
         v-for="env of projectEnvs"
         :key="'env-' + env.id"
+        class="project-env"
         @click="$emit('select-env', env)"
       >
         {{ env.name || env.shortName }}
       </li>
     </ul>
 
-    <button @click="addEnv()">Add new Env</button>
-    <button @click="deleteProject()">Delete Project</button>
+    <button class="add-new-env" @click="addEnv()">Add new Env</button>
+    <button class="delete-project" @click="deleteProject()">
+      Delete Project
+    </button>
   </li>
 </template>
 
@@ -47,17 +61,21 @@ export default {
     }
   },
   mounted() {
-    sortable(".env-sortable");
+    this.updateSortable({
+      hoverClass: "toto"
+    });
   },
   emits: ["select-env", "add-new-env", "delete-project", "update:project"],
   methods: {
     addEnv() {
+      this.updateSortable();
       this.$emit("add-new-env", this.project);
     },
     deleteProject() {
       this.$emit("delete-project", this.project);
     },
     updateProject(data) {
+      this.updateSortable();
       this.$emit("update:project", {
         ...this.project,
         ...data
@@ -72,6 +90,11 @@ export default {
       this.updateProject({
         envs
       });
+    },
+    async updateSortable(options) {
+      setTimeout(() => {
+        sortable(".env-sortable", options);
+      }, 0);
     }
   },
   computed: {

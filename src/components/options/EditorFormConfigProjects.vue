@@ -13,7 +13,7 @@
       />
     </ul>
 
-    <button @click="addNewProject">Add new Project</button>
+    <button class="new-project" @click="addNewProject">Add new Project</button>
   </div>
 </template>
 
@@ -83,7 +83,7 @@ export default {
       );
       this.$emit("update:config", {
         ...this.config,
-        ...projects
+        projects
       });
     }
   }
