@@ -52,7 +52,7 @@ export default {
     },
     selectedEnv: {
       type: Object,
-      required: true
+      default: null
     }
   },
   mounted() {

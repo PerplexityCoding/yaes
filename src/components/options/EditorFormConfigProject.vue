@@ -85,7 +85,7 @@ export default {
     },
     selectedEnv: {
       type: Object,
-      required: true
+      default: null
     }
   },
   mounted() {
@@ -193,7 +193,7 @@ export default {
       margin: 0 8px 0 4px;
       cursor: grab;
       display: flex;
-      fill: var(--ruby);
+      fill: var(--blue);
       position: relative;
       top: 1px;
     }

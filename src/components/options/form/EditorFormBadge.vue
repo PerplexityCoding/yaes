@@ -1,18 +1,27 @@
 <template>
   <fieldset>
-    <label :class="{ defaulted: displayBadge === undefined }">
+    <label
+      display-badge
+      :class="{ defaulted: env ? env.displayBadge === undefined : false }"
+    >
       <input type="checkbox" v-model="displayBadge" />
       Badge
     </label>
 
     <div>
       <label
+        class="badge-bg-color"
+        badge-bg-color
         :class="{
-          defaulted: badgeBgColor === undefined
+          defaulted: env
+            ? env.badgeOptions
+              ? env.badgeOptions.backgroundColor === undefined
+              : true
+            : false
         }"
       >
-        Background Color
         <ColorPicker v-model:color="badgeBgColor" />
+        <span>Background Color</span>
       </label>
     </div>
   </fieldset>
@@ -28,6 +37,10 @@ export default {
   name: "EditorFormBadge",
   components: { ColorPicker },
   props: {
+    env: {
+      type: Object,
+      default: undefined
+    },
     option: {
       type: Object,
       required: true
@@ -45,3 +58,24 @@ export default {
   }
 };
 </script>
+
+<style scoped lang="scss">
+fieldset {
+  border: none;
+
+  label {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.badge-bg-color {
+  display: flex;
+  align-items: center;
+  margin: 4px 0 0 24px;
+
+  & > span {
+    margin-left: 4px;
+  }
+}
+</style>

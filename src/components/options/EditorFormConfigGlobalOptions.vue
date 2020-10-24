@@ -5,21 +5,22 @@
     </h2>
 
     <form>
-      <EditorFormBadge :option="options" @update:option="updateComputed" />
+      <div class="left-col">
+        <EditorFormBadge :option="options" @update:option="updateComputed" />
+        <EditorFormRibbon :option="options" @update:option="updateComputed" />
+      </div>
 
-      <EditorFormRibbon :option="options" @update:option="updateComputed" />
-
-      <fieldset>
-        <label>
+      <fieldset class="right-col">
+        <label display-domain>
           <input type="checkbox" v-model="displayDomain" /> Display domain
         </label>
-        <label>
+        <label display-header>
           <input type="checkbox" v-model="displayHeader" /> Display header
         </label>
-        <label>
+        <label display-footer>
           <input type="checkbox" v-model="displayFooter" /> Display footer
         </label>
-        <label>
+        <label display-projects-links>
           <input type="checkbox" v-model="displaySeeProjectsLink" />
           Display see projects link
         </label>
@@ -62,9 +63,34 @@ export default {
 </script>
 
 <style scoped lang="scss">
-h2 {
-  font-size: 0.9rem;
-  font-weight: bold;
-  padding: 3px 0;
+.options-selector {
+  padding: 8px 4px 4px 4px;
+  margin-bottom: 32px;
+
+  form {
+    background-color: var(--bg-grey);
+    display: flex;
+  }
+
+  .right-col,
+  .left-col {
+    flex: 1;
+  }
+
+  .right-col {
+    border: none;
+    display: flex;
+    flex-direction: column;
+
+    label {
+      margin-bottom: 8px;
+    }
+  }
+
+  h2 {
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 4px 0;
+  }
 }
 </style>

@@ -135,10 +135,30 @@ export default {
 };
 </script>
 
+<style lang="scss">
+input[type="url"],
+input[type="text"] {
+  outline-color: var(--blue);
+  padding: 4px;
+  border: 1px solid var(--fg-black);
+  border-radius: 4px;
+  color: var(--fg-black);
+}
+select {
+  color: var(--fg-black);
+}
+
+.defaulted {
+  font-style: oblique;
+  color: var(--fg-black-disabled);
+}
+</style>
+
 <style lang="scss" scoped>
 .options {
   max-width: 800px;
   margin: 0 auto;
+  color: var(--fg-black);
 
   a {
     color: var(--blue);
