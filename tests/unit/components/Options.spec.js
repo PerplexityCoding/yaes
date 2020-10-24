@@ -1,7 +1,8 @@
-import { waitFor } from "../../../src/services/utils";
-import { shallowMount } from "@vue/test-utils";
 import { getConfig } from "@/services/business/storage";
+import { mount } from "@vue/test-utils";
 import Options from "@/Options.vue";
+import { waitFor } from "@/services/utils";
+import EditorFormConfigProjects from "@/components/options/EditorFormConfigProjects";
 
 jest.mock("@/services/business/storage");
 
@@ -11,7 +12,7 @@ describe("Options.vue", () => {
     projects: [
       {
         id: 0,
-        name: "test",
+        name: "Project name test",
         envs: [1, 2, 3]
       }
     ],
@@ -31,20 +32,34 @@ describe("Options.vue", () => {
         name: "ES",
         url: "https://www.google.es/"
       }
-    ]
+    ],
+    options: {}
   };
 
   function mockStorageEnvGet() {
     getConfig.mockReturnValue({ config });
   }
 
-  /*function mockStorageEnvGetEmpty() {
+  it("should display the projects and envs", async () => {
+    mockStorageEnvGet();
+
+    const wrapper = mount(Options);
+    await waitFor();
+
+    const projects = wrapper.findComponent(EditorFormConfigProjects);
+
+    const projectsContent = projects.html();
+    expect(projects.exists()).toBe(true);
+    expect(projectsContent).toContain("Project name test");
+  });
+});
+
+/*function mockStorageEnvGetEmpty() {
     getConfig.mockReturnValue({ config: DEFAULT_CONFIG });
   }*/
-
-  it("should switch modes without errors", async () => {
+/* it("should switch modes without errors", async () => {
     mockStorageEnvGet();
-    const wrapper = shallowMount(Options);
+    const wrapper = mount(Options);
     await waitFor();
 
     const clickOnModes = async idx => {
@@ -68,14 +83,15 @@ describe("Options.vue", () => {
 
   it("load without errors", async () => {
     mockStorageEnvGet();
-    const wrapper = shallowMount(Options);
+    const wrapper = mount(Options);
     await waitFor();
 
-    const editor = wrapper.vm.$data.editor;
-    expect(editor.get()).toEqual(config);
-  });
+    const jsonConfig = wrapper.findComponent(EditorJsonConfig);
+    const editor = jsonConfig.vm.editor;
 
-  /*it("save to storage when editing", async () => {
+    expect(editor.get()).toEqual(config);
+  }); */
+/*it("save to storage when editing", async () => {
     jest.useFakeTimers();
     mockStorageEnvGet();
 
@@ -101,5 +117,5 @@ describe("Options.vue", () => {
     await waitFor();
 
     expect(setConfig).toHaveBeenCalledWith(DEFAULT_CONFIG);
-  }); */
-});
+  });
+});*/

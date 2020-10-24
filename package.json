@@ -21,7 +21,9 @@
     "docs:schemas": "node tools/generate-schemas-md.js"
   },
   "dependencies": {
+    "@simonwep/pickr": "^1.7.4",
     "core-js": "^3.6.5",
+    "html5sortable": "^0.9.18",
     "vue": "^3.0.0-0"
   },
   "devDependencies": {

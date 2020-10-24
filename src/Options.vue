@@ -5,34 +5,27 @@
         YAES - Configuration Page
       </h1>
 
-      <section class="import-config-section">
-        <div class="import-configuration">
-          <strong>
-            Import configuration
-          </strong>
-          <input
-            type="url"
-            placeholder="https://gist.githubusercontent.com/.../config.json"
-            v-model="configurationUrl"
-          />
-          <button @click="importConfig">import</button>
-          <div v-if="importConfigLoader" class="lds-dual-ring loader" />
-        </div>
+      <h2>
+        Import / Export
+      </h2>
 
-        <div class="import-configuration">
-          <strong>
-            Export configuration
-          </strong>
-          <button @click="downloadConfig">download</button>
-          <a href="https://gist.github.com/" target="_blank"
-            >Share it on gist</a
-          >
-        </div>
-      </section>
+      <ImportConfig @config-loaded="saveImportedConfig" />
 
       <div class="title">
         <h2>
-          Configuration:
+          <span @click="envClick++">
+            Environments
+          </span>
+          <div class="dev-buttons" v-if="envClick > 5">
+            <button class="save-btn" @click="forceSave">force save</button>
+
+            <button v-if="editorMode === 'form'" @click="editorMode = 'json'">
+              Switch to json
+            </button>
+            <button v-if="editorMode === 'json'" @click="editorMode = 'form'">
+              Switch to form
+            </button>
+          </div>
         </h2>
 
         <div v-if="loadingError">
@@ -46,72 +39,52 @@
               Saved <CheckIcon width="16px" height="12px" />
             </span>
           </transition>
+          <transition name="fade">
+            <span v-if="errorMessage" class="info">
+              {{ errorMessage }} <CheckIcon width="16px" height="12px" />
+            </span>
+          </transition>
         </div>
       </div>
 
-      <div ref="jsonEditor" class="config"></div>
-    </section>
+      <EditorJsonConfig
+        v-if="config && editorMode === 'json'"
+        ref="editor"
+        :config="config"
+        @update:config="saveConfig"
+      />
 
-    <button class="save-btn" @click="saveConfig(editor.get(), true)">
-      force save
-    </button>
+      <EditorFormConfig
+        v-if="config && editorMode === 'form'"
+        :config="config"
+        @update:config="saveConfig"
+      />
+    </section>
   </div>
 </template>
 
 <script>
 import { getConfig, setConfig } from "./services/business/storage";
-import JSONEditor from "jsoneditor/dist/jsoneditor.js";
-import { debounce, downloadAsJson } from "./services/utils";
-import validateSchema from "./schemas/config.schema.gen";
 import CheckIcon from "./components/icons/CheckIcon";
-
-const SAVE_DELAY = 500;
+import ImportConfig from "@/components/options/ImportConfig";
+import EditorJsonConfig from "@/components/options/EditorJsonConfig";
+import EditorFormConfig from "@/components/options/EditorFormConfig";
 
 export default {
   name: "OptionsPage",
   data() {
     return {
-      configurationUrl: null,
-      importConfigLoader: false,
+      envClick: 0,
+      editorMode: "form",
+      config: false,
       displaySaveInfo: false,
-      editor: null,
       loadingError: false,
-      errors: []
+      errorMessage: null
     };
   },
-  components: { CheckIcon },
+  components: { EditorFormConfig, EditorJsonConfig, ImportConfig, CheckIcon },
   async created() {
-    const originalConfig = await this.getOrInitConfig();
-
-    this.editor = new JSONEditor(
-      this.$refs.jsonEditor,
-      {
-        onChange: debounce(() => {
-          try {
-            this.saveConfig(this.editor.get());
-          } catch (e) {
-            if (e.message.indexOf("Parse error on line") >= 0) {
-              // contain invalid json data ignore
-            } else {
-              console.log(e);
-            }
-          }
-        }, SAVE_DELAY),
-        onValidationError: errors => {
-          this.errors = errors;
-        },
-        onModeChange: () => {
-          if (this.editor) {
-            this.editor.validateSchema = validateSchema;
-          }
-        },
-        modes: ["tree", "code"]
-      },
-      originalConfig
-    );
-    this.editor.validateSchema = validateSchema;
-    this.editor.validate();
-    this.editor.expandAll();
+    this.config = await this.getOrInitConfig();
   },
   methods: {
     async getOrInitConfig() {
@@ -123,66 +96,69 @@ export default {
       return config;
     },
 
-    saveConfig(config, force) {
-      if (!force && (!config || this.errors?.length > 0)) {
+    forceSave() {
+      const editor = this.$refs.editor.editor;
+      this.saveConfig(editor.get(), true);
+    },
+
+    saveImportedConfig(data) {
+      const editor = this.$refs.editor.editor;
+      editor.set(data);
+      editor.validate();
+      if (editor.getMode() === "tree") {
+        editor.expandAll();
+      }
+      setTimeout(() => {
+        this.saveConfig(editor.get());
+      }, 100);
+    },
+
+    async saveConfig(config, force) {
+      if (!force && !config) {
         return;
       }
 
       this.displaySaveInfo = true;
 
-      setConfig(config, force);
+      if (!(await setConfig(config, force))) {
+        this.displaySaveInfo = false;
+        this.errorMessage = "Save Failed";
+        return;
+      }
+      this.config = config;
 
       setTimeout(() => {
         this.displaySaveInfo = false;
       }, 2000);
-    },
-
-    async importConfig() {
-      if (this.configurationUrl) {
-        this.importConfigLoader = true;
-
-        const response = await fetch(this.configurationUrl);
-        if (response) {
-          const data = await response.json();
-          this.editor.set(data);
-          this.editor.validate();
-          this.editor.expandAll();
-          setTimeout(() => {
-            this.saveConfig(this.editor.get());
-            this.configurationUrl = null;
-            this.importConfigLoader = false;
-          }, 100);
-        }
-      }
-    },
-
-    downloadConfig() {
-      downloadAsJson(this.editor.get());
     }
   }
 };
 </script>
 
-<style src="jsoneditor/dist/jsoneditor.css">
-/* global styles */
-</style>
-
 <style lang="scss">
-@import "@/styles/variables.scss";
-@import "@/styles/transition.scss";
-@import "@/styles/loader.scss";
+input[type="url"],
+input[type="text"] {
+  outline-color: var(--blue);
+  padding: 4px;
+  border: 1px solid var(--fg-black);
+  border-radius: 4px;
+  color: var(--fg-black);
+}
+select {
+  color: var(--fg-black);
+}
 
-#check-color {
-  fill: var(--green) !important;
+.defaulted {
+  font-style: oblique;
+  color: var(--fg-black-disabled);
 }
 </style>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
-
 .options {
   max-width: 800px;
   margin: 0 auto;
+  color: var(--fg-black);
 
   a {
     color: var(--blue);
@@ -198,29 +174,6 @@ export default {
     }
   }
 
-  .import-config-section {
-    background-color: var(--bg-grey);
-    padding: 0.5rem;
-    border-radius: 3px;
-  }
-
-  .import-configuration {
-    display: flex;
-    padding: 5px 0;
-
-    > * {
-      margin-left: 0.5rem;
-    }
-
-    *:first-child {
-      margin-left: 0;
-    }
-
-    input {
-      flex: 1;
-    }
-  }
-
   section {
     display: flex;
     flex-direction: column;
@@ -231,17 +184,23 @@ export default {
     align-items: center;
 
     h2 {
-      flex: 1;
-      font-size: 0.9rem;
-      font-weight: bold;
-      padding: 3px 0;
+      display: flex;
+
+      button {
+        margin: 0;
+      }
+
+      span {
+        flex: 1;
+      }
     }
   }
 
-  .config {
+  h2 {
     flex: 1;
-    min-height: 400px;
-    height: calc(100vh - 220px);
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 3px 0;
   }
 
   .info {
@@ -253,8 +212,16 @@ export default {
     font-weight: bold;
   }
 
-  .save-btn {
-    margin: 10px 0;
+  .dev-buttons {
+    button {
+      visibility: hidden;
+    }
+
+    &:hover {
+      button {
+        visibility: visible;
+      }
+    }
   }
 }
 </style>

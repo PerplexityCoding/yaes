@@ -13,13 +13,16 @@
             {{ hostname(env) }}
           </div>
         </span>
-        <span class="selected-pill" />
+        <span v-if="equalsEnv(env, currentEnv)" class="selected-pill" />
+        <ArrowRight v-else height="14px" width="14px" />
       </button>
     </li>
   </ul>
 </template>
 
 <script>
+import ArrowRight from "../icons/ArrowRight";
+
 export default {
   name: "EnvList",
   props: {
@@ -39,6 +42,7 @@ export default {
       validator: o => !o || o.name != null || o.shortName != null
     }
   },
+  components: { ArrowRight },
   emits: ["switch-env"],
   data() {
     return {};

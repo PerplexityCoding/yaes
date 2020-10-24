@@ -1,5 +1,5 @@
 import { mount } from "@vue/test-utils";
-import ProjectList from "@/components/ProjectList.vue";
+import ProjectList from "@/components/popup/ProjectList.vue";
 import { waitFor } from "../../../src/services/utils";
 
 describe("ProjectList.vue", () => {

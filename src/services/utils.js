@@ -64,3 +64,28 @@ export function downloadAsJson(obj) {
   a.click();
   a.remove();
 }
+
+export function updateArray(arr, findIndex, cb) {
+  const index = findIndex(arr);
+  if (index >= 0) {
+    return [
+      ...arr.slice(0, index),
+      cb(arr[index]),
+      ...arr.slice(index + 1)
+    ].filter(el => el != null);
+  }
+  return arr;
+}
+
+export function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export function getNextId(idsObj, limit = 1000) {
+  for (let i = 1; i < limit; i++) {
+    if (!idsObj[i]) {
+      return i;
+    }
+  }
+  return null;
+}
