@@ -6,6 +6,7 @@
         :key="'project-' + project.id"
         :config="config"
         :project="project"
+        :selected-env="selectedEnv"
         @select-env="env => $emit('select-env', env)"
         @delete-project="deleteProject"
         @add-new-env="addNewProjectEnv"
@@ -13,7 +14,12 @@
       />
     </ul>
 
-    <button class="new-project" @click="addNewProject">Add new Project</button>
+    <footer>
+      <button class="new-project" @click="addNewProject">
+        <AddIcon height="18px" width="18px" />
+        Add new project
+      </button>
+    </footer>
   </div>
 </template>
 
@@ -29,14 +35,24 @@ import {
   updateProject
 } from "@/services/business/bo/config";
 import sortable from "html5sortable/dist/html5sortable.cjs";
+import AddIcon from "@/components/icons/Add";
 
 export default {
   name: "EditorFormConfigProjects",
-  components: { EditorFormConfigProject },
+  components: { EditorFormConfigProject, AddIcon },
+  data() {
+    return {
+      collapsed: false
+    };
+  },
   props: {
     config: {
       type: Object,
       default: () => {}
+    },
+    selectedEnv: {
+      type: Object,
+      required: true
     }
   },
   mounted() {
@@ -85,9 +101,56 @@ export default {
         ...this.config,
         projects
       });
+      this.collapsed = false;
     }
   }
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.project-sortable {
+  padding: 0;
+  margin: 0;
+
+  li {
+    margin-bottom: 8px;
+    display: block;
+    list-style: none;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+footer {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid var(--bg-grey);
+
+  button {
+    cursor: pointer;
+    appearance: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    background: none;
+    padding: 8px;
+    line-height: 20px;
+    border-radius: 4px;
+
+    svg {
+      margin-right: 4px;
+    }
+
+    &:hover {
+      background: var(--bg-grey-hover);
+    }
+  }
+
+  .new-project {
+    fill: var(--green);
+    color: var(--green);
+  }
+}
+</style>

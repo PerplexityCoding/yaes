@@ -9,7 +9,7 @@
           <span>
             {{ project.name || project.id }}
           </span>
-          <ArrowDown height="10px" width="10px" />
+          <ArrowRight height="14px" width="14px" />
         </button>
         <div class="project-envs" v-if="isOpened(project)">
           <EnvList
@@ -24,11 +24,11 @@
 
 <script>
 import EnvList from "./EnvList";
-import ArrowDown from "../icons/ArrowDown";
+import ArrowRight from "../icons/ArrowRight";
 
 export default {
   name: "ProjectList",
-  components: { EnvList, ArrowDown },
+  components: { EnvList, ArrowRight },
   emits: ["redirect-env"],
   props: {
     projects: {
@@ -110,13 +110,14 @@ export default {
       }
 
       svg {
+        transform: rotate(90deg);
         transition: transform 0.8s ease;
         fill: var(--blue);
       }
 
       &.is-opened {
         svg {
-          transform: rotate(180deg);
+          transform: rotate(-90deg);
         }
 
         border: 2px solid var(--blue);

@@ -1,6 +1,9 @@
 <template>
   <div class="options-selector">
-    Global options
+    <h2>
+      Options
+    </h2>
+
     <form>
       <EditorFormBadge :option="options" @update:option="updateComputed" />
 
@@ -58,4 +61,10 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+h2 {
+  font-size: 0.9rem;
+  font-weight: bold;
+  padding: 3px 0;
+}
+</style>

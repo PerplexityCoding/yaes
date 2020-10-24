@@ -5,11 +5,27 @@
         YAES - Configuration Page
       </h1>
 
+      <h2>
+        Import / Export
+      </h2>
+
       <ImportConfig @config-loaded="saveImportedConfig" />
 
       <div class="title">
         <h2>
-          Configuration:
+          <span @click="envClick++">
+            Environments
+          </span>
+          <div class="dev-buttons" v-if="envClick > 5">
+            <button class="save-btn" @click="forceSave">force save</button>
+
+            <button v-if="editorMode === 'form'" @click="editorMode = 'json'">
+              Switch to json
+            </button>
+            <button v-if="editorMode === 'json'" @click="editorMode = 'form'">
+              Switch to form
+            </button>
+          </div>
         </h2>
 
         <div v-if="loadingError">
@@ -43,16 +59,7 @@
         :config="config"
         @update:config="saveConfig"
       />
-
-      <button v-if="editorMode === 'form'" @click="editorMode = 'json'">
-        Switch to json
-      </button>
-      <button v-if="editorMode === 'json'" @click="editorMode = 'form'">
-        Switch to form
-      </button>
     </section>
-
-    <button class="save-btn" @click="forceSave">force save</button>
   </div>
 </template>
 
@@ -67,6 +74,7 @@ export default {
   name: "OptionsPage",
   data() {
     return {
+      envClick: 0,
       editorMode: "form",
       config: false,
       displaySaveInfo: false,
@@ -156,11 +164,23 @@ export default {
     align-items: center;
 
     h2 {
-      flex: 1;
-      font-size: 0.9rem;
-      font-weight: bold;
-      padding: 3px 0;
+      display: flex;
+
+      button {
+        margin: 0;
+      }
+
+      span {
+        flex: 1;
+      }
     }
+  }
+
+  h2 {
+    flex: 1;
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 3px 0;
   }
 
   .info {
@@ -172,8 +192,16 @@ export default {
     font-weight: bold;
   }
 
-  .save-btn {
-    margin: 10px 0;
+  .dev-buttons {
+    button {
+      visibility: hidden;
+    }
+
+    &:hover {
+      button {
+        visibility: visible;
+      }
+    }
   }
 }
 </style>

@@ -1,20 +1,26 @@
 <template>
   <div>
     <div class="editor-form">
-      <div>
+      <div class="left-pane">
         <EditorFormConfigProjects
           :config="config"
+          :selected-env="selectedEnv"
           @select-env="selectEnv"
           @update:config="updateConfig"
         />
       </div>
-      <div v-if="selectedEnv">
+      <div class="right-pane" :class="{ 'right-pane-empty': !selectedEnv }">
         <EditorFormEnvConfig
+          v-if="selectedEnv"
           :env="selectedEnv"
           :config="config"
           @delete-env="deleteEnv"
           @update:env="updateConfigEnv"
         />
+        <div v-else class="empty-env">
+          No env currently selected. <br />
+          Select one on the left side to edit
+        </div>
       </div>
     </div>
 
@@ -81,6 +87,23 @@ export default {
 
   > div {
     flex: 1;
+    padding: 4px;
+  }
+
+  .right-pane {
+    display: flex;
+    margin-left: 4px;
+    background-color: var(--bg-grey);
+    border-radius: 4px;
+
+    &-empty {
+      align-items: center;
+    }
+
+    .empty-env {
+      margin: 0 auto;
+      font-size: 14px;
+    }
   }
 }
 </style>

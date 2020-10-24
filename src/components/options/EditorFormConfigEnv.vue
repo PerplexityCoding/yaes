@@ -1,6 +1,6 @@
 <template>
   <div class="side-panel">
-    Side Panel edit <button @click="deleteEnv">delete</button>
+    Side Panel edit
     <form>
       <label> Name <input type="text" v-model="name" /> </label> <br />
       <label> Short name <input type="text" v-model="shortName" /> </label>
@@ -21,6 +21,9 @@
           </label>
         </fieldset>
       </div>
+
+      Danger zone
+      <button @click="deleteEnv">delete</button>
     </form>
   </div>
 </template>
@@ -79,7 +82,7 @@ export default {
 
 <style scoped lang="scss">
 .side-panel {
-  background-color: lightgrey;
+  width: 100%;
 }
 .defaulted {
   color: purple;

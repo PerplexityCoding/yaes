@@ -24,7 +24,8 @@
             class="switch-env-btn right"
             @click="mode = 'projects'"
           >
-            <span>See projects</span> <ArrowDown height="8px" width="8px" />
+            <span>See projects</span>
+            <ArrowRight class="arrow" height="12px" width="12px" />
           </button>
         </div>
         <div v-else class="info">
@@ -40,7 +41,7 @@
         />
 
         <button v-if="currentEnv" class="switch-env-btn" @click="mode = 'envs'">
-          <ArrowDown height="8px" width="8px" />
+          <ArrowRight class="arrow" height="12px" width="12px" />
           <span>See current env</span>
         </button>
       </div>
@@ -61,7 +62,7 @@
 <script>
 import EnvList from "./components/popup/EnvList";
 import ProjectList from "./components/popup/ProjectList";
-import ArrowDown from "./components/icons/ArrowDown";
+import ArrowRight from "./components/icons/ArrowRight";
 
 import {
   getCurrentTab,
@@ -73,7 +74,7 @@ import { getConfig } from "./services/business/storage";
 
 export default {
   name: "Popup",
-  components: { EnvList, ProjectList, ArrowDown },
+  components: { EnvList, ProjectList, ArrowRight },
   data() {
     return {
       envs: null,
@@ -188,11 +189,15 @@ export default {
     margin-right: 5px;
   }
 
+  .arrow {
+    transform: rotate(180deg);
+  }
+
   &.right {
     margin-left: auto;
 
-    svg {
-      transform: rotate(270deg);
+    .arrow {
+      transform: rotate(0deg);
     }
   }
 }
