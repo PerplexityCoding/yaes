@@ -113,7 +113,6 @@ export default {
   margin: 0;
 
   li {
-    margin-bottom: 8px;
     display: block;
     list-style: none;
 
@@ -124,9 +123,8 @@ export default {
 }
 
 footer {
-  margin-top: 4px;
-  padding-top: 4px;
-  border-top: 1px solid var(--bg-grey);
+  border-top: 1px solid var(--border-grey);
+  padding: 4px;
 
   button {
     cursor: pointer;

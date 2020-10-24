@@ -138,19 +138,41 @@ export default {
 <style lang="scss">
 input[type="url"],
 input[type="text"] {
-  outline-color: var(--blue);
+  outline: none;
   padding: 4px;
-  border: 1px solid var(--fg-black);
+  border: 1px solid var(--bg-grey-2);
   border-radius: 4px;
   color: var(--fg-black);
+  background-color: var(--bg-white-off);
+
+  &:active,
+  &:hover,
+  &:focus {
+    box-shadow: 0px 0px 1px 1px var(--blue);
+  }
 }
+button,
 select {
   color: var(--fg-black);
+}
+
+select {
+  padding: 4px;
+  border-radius: 4px;
+  background-color: var(--bg-white-off);
+  border: 1px solid var(--bg-grey-2);
 }
 
 .defaulted {
   font-style: oblique;
   color: var(--fg-black-disabled);
+}
+
+.box-elevation {
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+  background-color: var(--bg-grey);
+  border-radius: 4px;
+  padding: 12px;
 }
 </style>
 

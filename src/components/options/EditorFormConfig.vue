@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="editor-form">
+    <div class="editor-form box-elevation">
       <div class="left-pane">
         <EditorFormConfigProjects
           :config="config"
@@ -84,17 +84,21 @@ export default {
 .editor-form {
   display: flex;
   flex-direction: row;
+  padding: 0;
 
   > div {
     flex: 1;
-    padding: 4px;
+  }
+
+  .left-pane {
   }
 
   .right-pane {
+    padding: 4px 12px;
     display: flex;
-    margin-left: 4px;
-    background-color: var(--bg-grey);
-    border-radius: 4px;
+    background-color: var(--border-grey);
+    border-radius: 0 4px 4px 0;
+    box-shadow: inset 6px 0px 10px -10px rgba(0, 0, 0, 0.55);
 
     &-empty {
       align-items: center;

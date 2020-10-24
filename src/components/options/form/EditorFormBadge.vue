@@ -62,6 +62,8 @@ export default {
 <style scoped lang="scss">
 fieldset {
   border: none;
+  margin: 0;
+  padding: 0;
 
   label {
     display: flex;

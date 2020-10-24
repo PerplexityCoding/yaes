@@ -4,10 +4,14 @@
       Options
     </h2>
 
-    <form>
+    <form class="box-elevation">
       <div class="left-col">
         <EditorFormBadge :option="options" @update:option="updateComputed" />
-        <EditorFormRibbon :option="options" @update:option="updateComputed" />
+        <EditorFormRibbon
+          class="form-ribbon"
+          :option="options"
+          @update:option="updateComputed"
+        />
       </div>
 
       <fieldset class="right-col">
@@ -64,12 +68,14 @@ export default {
 
 <style scoped lang="scss">
 .options-selector {
-  padding: 8px 4px 4px 4px;
-  margin-bottom: 32px;
+  margin-bottom: 48px;
 
   form {
-    background-color: var(--bg-grey);
     display: flex;
+  }
+
+  .form-ribbon {
+    margin-top: 8px;
   }
 
   .right-col,

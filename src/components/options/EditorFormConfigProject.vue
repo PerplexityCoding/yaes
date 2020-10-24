@@ -150,14 +150,19 @@ export default {
 .project-item {
   display: block;
 
+  &:first-child {
+    > header {
+      border-radius: 4px 0 0 0;
+    }
+  }
+
   > header {
     padding: 4px;
     display: flex;
     flex-direction: row;
     align-items: center;
     font-size: 15px;
-    background-color: var(--bg-grey);
-    border-radius: 4px;
+    background-color: var(--border-grey);
 
     .project-name {
       flex: 1;
@@ -204,13 +209,13 @@ export default {
     flex-direction: column;
     list-style: none;
     margin: 0;
-    padding: 4px 0;
+    padding: 0;
+    border-bottom: 1px solid var(--border-grey);
 
     .project-env {
-      padding: 8px;
+      padding: 12px 8px;
       cursor: pointer;
       display: flex;
-      border-radius: 4px;
 
       .env-name {
         flex: 1;
@@ -255,6 +260,7 @@ export default {
 
   .action-buttons {
     display: flex;
+    padding: 4px;
 
     .add-new-env {
       fill: var(--green);

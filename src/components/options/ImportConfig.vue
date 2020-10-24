@@ -1,5 +1,5 @@
 <template>
-  <section class="import-config-section">
+  <section class="import-config-section box-elevation">
     <div class="import-configuration">
       <strong>
         Import configuration
@@ -60,13 +60,13 @@ export default {
 @import "@/styles/variables.scss";
 
 .import-config-section {
-  background-color: var(--bg-grey);
-  padding: 0.5rem;
-  border-radius: 3px;
-
   .import-configuration {
     display: flex;
-    padding: 5px 0;
+    padding-bottom: 16px;
+
+    &:last-child {
+      padding-bottom: 0;
+    }
 
     > * {
       margin-left: 0.5rem;

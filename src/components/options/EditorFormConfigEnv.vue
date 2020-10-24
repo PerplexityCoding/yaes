@@ -39,12 +39,13 @@
         />
 
         <EditorFormRibbon
+          class="form-ribbon"
           :option="mergedEnv"
           :env="env"
           @update:option="updateComputed"
         />
 
-        <fieldset>
+        <fieldset class="field-domain">
           <label :class="{ defaulted: env.displayDomain === undefined }">
             <input type="checkbox" v-model="displayDomain" /> Display domain
           </label>
@@ -113,6 +114,7 @@ h3 {
   margin: 0 0 8px 0;
   font-size: 12px;
   display: flex;
+  align-items: center;
 
   span {
     flex: 1;
@@ -121,6 +123,8 @@ h3 {
 
 fieldset {
   border: none;
+  margin: 0;
+  padding: 0;
 
   label {
     display: flex;
@@ -144,6 +148,11 @@ fieldset {
   }
 }
 
+.field-domain,
+.form-ribbon {
+  margin-top: 8px;
+}
+
 button {
   cursor: pointer;
   appearance: none;
@@ -164,7 +173,7 @@ button {
 }
 
 .override-options {
-  border-top: 1px solid var(--border-grey);
+  border-top: 1px solid var(--bg-grey-2);
   padding-top: 4px;
 
   .override-message {
@@ -184,6 +193,5 @@ button {
 
 .side-panel {
   width: 100%;
-  padding: 4px;
 }
 </style>
