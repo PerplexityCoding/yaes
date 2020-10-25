@@ -24,8 +24,6 @@
 </template>
 
 <script>
-import { downloadAsJson } from "../../services/utils";
-
 export default {
   name: "ImportConfig",
   data() {
@@ -34,7 +32,7 @@ export default {
       importConfigLoader: false
     };
   },
-  emits: ["config-loaded"],
+  emits: ["config-loaded", "download-config"],
   methods: {
     async importConfig() {
       if (this.configurationUrl) {
@@ -50,7 +48,7 @@ export default {
       }
     },
     downloadConfig() {
-      downloadAsJson(this.editor.get());
+      this.$emit("download-config");
     }
   }
 };

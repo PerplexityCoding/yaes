@@ -9,7 +9,10 @@
         Import / Export
       </h2>
 
-      <ImportConfig @config-loaded="saveImportedConfig" />
+      <ImportConfig
+        @config-loaded="saveImportedConfig"
+        @download-config="downloadConfig"
+      />
 
       <div class="title">
         <h2>
@@ -69,6 +72,7 @@ import CheckIcon from "./components/icons/CheckIcon";
 import ImportConfig from "@/components/options/ImportConfig";
 import EditorJsonConfig from "@/components/options/EditorJsonConfig";
 import EditorFormConfig from "@/components/options/EditorFormConfig";
+import { downloadAsJson } from "@/services/utils";
 
 export default {
   name: "OptionsPage",
@@ -130,6 +134,10 @@ export default {
       setTimeout(() => {
         this.displaySaveInfo = false;
       }, 2000);
+    },
+
+    downloadConfig() {
+      downloadAsJson(this.config);
     }
   }
 };
