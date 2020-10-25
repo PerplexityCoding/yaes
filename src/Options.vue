@@ -159,6 +159,13 @@ input[type="text"] {
     box-shadow: 0px 0px 1px 1px var(--blue);
   }
 }
+
+input[type="checkbox"] {
+  margin: 0 4px 0 0;
+  position: relative;
+  top: 1px;
+}
+
 button,
 select {
   color: var(--fg-black);
@@ -171,9 +178,26 @@ select {
   border: 1px solid var(--bg-grey-2);
 }
 
+label {
+  display: flex;
+  align-items: center;
+}
+
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
 .defaulted {
   font-style: oblique;
+  font-weight: normal;
   color: var(--fg-black-disabled);
+
+  &::after {
+    margin-left: 4px;
+    content: "*";
+  }
 }
 
 .box-elevation {

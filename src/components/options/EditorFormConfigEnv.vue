@@ -1,5 +1,5 @@
 <template>
-  <div class="side-panel">
+  <div class="side-panel" :class="{ 'has-env': !!env }">
     <h3>
       <span>
         Environment settings
@@ -25,8 +25,11 @@
 
       <div class="override-options">
         <div class="override-message">
-          <span>Overrides default options for this environment</span>
-          <button @click.prevent="resetToGlobalOptions">
+          <span>
+            Overrides default options for this environment <br />
+            <i>* Grayed out fields are using global options</i>
+          </span>
+          <button @click.prevent="resetToGlobalOptions" v-if="hasOverrides">
             <GoBack height="18px" width="18px" />
             Reset
           </button>
@@ -86,7 +89,18 @@ export default {
     name: computed("name"),
     shortName: computed("shortName"),
     url: computed("url"),
-    displayDomain: computed("displayDomain", null, true)
+    displayDomain: computed("displayDomain", null, true),
+    hasOverrides() {
+      const env = this.env;
+      const hasBadgeOverrides =
+        env.displayBadge !== undefined || env.badgeOptions !== undefined;
+      const hasRibbonOverrides =
+        env.displayRibbon !== undefined || env.ribbonOptions !== undefined;
+      const hasDisplayDomainOverrides = env.displayDomain !== undefined;
+      return (
+        hasBadgeOverrides || hasRibbonOverrides || hasDisplayDomainOverrides
+      );
+    }
   },
   methods: {
     updateComputed(data) {
@@ -121,21 +135,8 @@ h3 {
   }
 }
 
-fieldset {
-  border: none;
-  margin: 0;
-  padding: 0;
-
-  label {
-    display: flex;
-    align-items: center;
-  }
-}
-
 .basis-settings {
   label {
-    display: flex;
-
     span {
       min-width: 70px;
       text-align: right;
@@ -180,7 +181,13 @@ button {
     display: flex;
     align-items: center;
 
-    span {
+    i {
+      color: var(--fg-black-disabled);
+      font-weight: normal;
+    }
+
+    > span {
+      padding: 9px 0;
       flex: 1;
     }
   }
@@ -193,5 +200,9 @@ button {
 
 .side-panel {
   width: 100%;
+}
+
+.has-env {
+  font-weight: 500;
 }
 </style>

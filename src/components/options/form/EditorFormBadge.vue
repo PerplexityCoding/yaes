@@ -1,5 +1,5 @@
 <template>
-  <fieldset>
+  <fieldset :class="{ 'has-env': !!env }">
     <label
       display-badge
       :class="{ defaulted: env ? env.displayBadge === undefined : false }"
@@ -60,17 +60,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-fieldset {
-  border: none;
-  margin: 0;
-  padding: 0;
-
-  label {
-    display: flex;
-    align-items: center;
-  }
-}
-
 .badge-bg-color {
   display: flex;
   align-items: center;
@@ -79,5 +68,9 @@ fieldset {
   & > span {
     margin-left: 4px;
   }
+}
+
+.has-env {
+  font-weight: 500;
 }
 </style>

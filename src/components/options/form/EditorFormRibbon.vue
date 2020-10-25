@@ -1,5 +1,5 @@
 <template>
-  <fieldset>
+  <fieldset :class="{ 'has-env': !!env }">
     <label
       display-ribbon
       :class="{ defaulted: env ? env.displayRibbon === undefined : false }"
@@ -108,19 +108,10 @@ export default {
 </style>
 
 <style scoped lang="scss">
-label {
-  display: flex;
-}
-
-fieldset {
-  border: none;
-  padding: 0;
-  margin: 0;
-}
-
 .input-selector {
   margin: 8px 0 0 24px;
   display: flex;
+  align-items: center;
 
   span {
     text-align: right;
@@ -141,5 +132,9 @@ fieldset {
   & > span {
     margin-left: 4px;
   }
+}
+
+.has-env {
+  font-weight: 500;
 }
 </style>
