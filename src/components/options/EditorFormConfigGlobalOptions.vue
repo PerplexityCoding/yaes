@@ -68,8 +68,6 @@ export default {
 
 <style scoped lang="scss">
 .options-selector {
-  margin-bottom: 48px;
-
   form {
     display: flex;
   }

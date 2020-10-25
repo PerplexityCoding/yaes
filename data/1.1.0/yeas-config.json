@@ -1,0 +1,83 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "name": "Yahoo",
+      "envs": [
+        3,
+        5,
+        4
+      ]
+    },
+    {
+      "id": 0,
+      "envs": [
+        2,
+        1,
+        0
+      ],
+      "name": "Google"
+    },
+    {
+      "id": 2,
+      "envs": [],
+      "name": "New Project"
+    }
+  ],
+  "envs": [
+    {
+      "id": 0,
+      "shortName": "FR",
+      "url": "https://www.google.fr/"
+    },
+    {
+      "id": 1,
+      "name": "ES",
+      "url": "https://www.google.es/",
+      "ribbonOptions": {
+        "position": "right"
+      }
+    },
+    {
+      "id": 2,
+      "name": "Germany",
+      "shortName": "DE",
+      "url": "https://www.google.de/"
+    },
+    {
+      "id": 3,
+      "name": "Germany",
+      "shortName": "DE",
+      "url": "https://de.yahoo.com/"
+    },
+    {
+      "id": 5,
+      "name": "Spain",
+      "shortName": "SP",
+      "url": "https://es.yahoo.com/"
+    },
+    {
+      "id": 4,
+      "name": "New Env",
+      "url": "https://www.exemple.com"
+    }
+  ],
+  "options": {
+    "displayDomain": false,
+    "displayHeader": true,
+    "displayFooter": true,
+    "displaySeeProjectsLink": true,
+    "displayRibbon": true,
+    "displayBadge": true,
+    "ribbonOptions": {
+      "position": "left",
+      "backgroundColor": "#C60E0E",
+      "color": "#000000",
+      "type": "square-ribbon"
+    },
+    "badgeOptions": {
+      "backgroundColor": "#4B00BC"
+    }
+  },
+  "version": "1.1.0"
+}

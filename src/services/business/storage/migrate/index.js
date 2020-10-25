@@ -1,8 +1,8 @@
 import migrate from "./versions";
-import validate from "@/services/business/storage/validate";
+import validateSchema from "@/services/business/storage/validate";
 
 function migrateVersion(config, fromVersion, toVersion) {
-  const beforeValidation = validate(config, fromVersion);
+  const beforeValidation = validateSchema(config, fromVersion);
   if (!beforeValidation.status) {
     console.log("before validation", config);
     console.error(beforeValidation.errors);
@@ -14,7 +14,7 @@ function migrateVersion(config, fromVersion, toVersion) {
     console.log(e);
     return false;
   }
-  const afterValidation = validate(config, toVersion);
+  const afterValidation = validateSchema(config, toVersion);
   if (!afterValidation.status) {
     console.log("after validation", config);
     console.error(afterValidation.errors);

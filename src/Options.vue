@@ -2,17 +2,9 @@
   <div class="options">
     <section>
       <h1>
+        <img src="/assets/images/favicon-32x32.png" />
         YAES - Configuration Page
       </h1>
-
-      <h2>
-        Import / Export
-      </h2>
-
-      <ImportConfig
-        @config-loaded="saveImportedConfig"
-        @download-config="downloadConfig"
-      />
 
       <div class="title">
         <h2>
@@ -62,6 +54,15 @@
         :config="config"
         @update:config="saveConfig"
       />
+
+      <h2>
+        Import / Export
+      </h2>
+
+      <ImportConfig
+        @config-loaded="saveImportedConfig"
+        @download-config="downloadConfig"
+      />
     </section>
   </div>
 </template>
@@ -106,15 +107,7 @@ export default {
     },
 
     saveImportedConfig(data) {
-      const editor = this.$refs.editor.editor;
-      editor.set(data);
-      editor.validate();
-      if (editor.getMode() === "tree") {
-        editor.expandAll();
-      }
-      setTimeout(() => {
-        this.saveConfig(editor.get());
-      }, 100);
+      this.saveConfig(data);
     },
 
     async saveConfig(config, force) {
@@ -147,7 +140,7 @@ export default {
 input[type="url"],
 input[type="text"] {
   outline: none;
-  padding: 4px;
+  padding: 3px 4px 4px 4px;
   border: 1px solid var(--bg-grey-2);
   border-radius: 4px;
   color: var(--fg-black);
@@ -220,6 +213,14 @@ fieldset {
 
   h1 {
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+
+    img {
+      height: 32px;
+      width: 32px;
+      margin-right: 16px;
+    }
 
     span {
       font-size: 0.8rem;

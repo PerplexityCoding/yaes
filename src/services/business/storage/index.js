@@ -42,40 +42,57 @@ function mergeOptionsInEnv(config) {
   };
 }
 
-async function migrate({ mergeOptions } = {}) {
-  const values = await chromeStorageGet("config");
-  let errors = {};
-  let config = null;
+async function migrateConfig(config, { mergeOptions } = {}) {
+  let errors = null;
+  let updatingConfig = deepmerge({}, config);
 
-  if (values && values.config != null) {
-    config = JSON.parse(values.config);
+  const updateStatus = checkUpdate(updatingConfig);
 
-    const updateStatus = checkUpdate(config);
-    if (updateStatus === ConfigUpdateStatus.MIGRATION_SUCCESS) {
-      await setConfig(config);
-    }
+  if (updateStatus === ConfigUpdateStatus.MIGRATION_SUCCESS) {
+    config = updatingConfig;
+    await setConfig(config);
+  }
 
-    if (updateStatus === ConfigUpdateStatus.MIGRATION_FAILED) {
-      config = JSON.parse(values.config);
-      errors.migrationFailed = true;
-    }
+  if (updateStatus === ConfigUpdateStatus.MIGRATION_FAILED) {
+    errors = errors || {};
+    errors.migrationFailed = true;
+  }
 
-    if (!validateSchema(config)) {
+  if (!errors) {
+    const validation = validateSchema(config);
+    if (validation.status === false) {
+      errors = errors || {};
       errors.validationFailed = true;
+      errors.validationErrors = validation.errors;
     }
 
     if (mergeOptions) {
       config = mergeOptionsInEnv(config);
     }
-  } else {
-    config = { ...DEFAULT_CONFIG };
-    await setConfig(config);
   }
 
   return {
     config,
     errors
   };
+}
+
+async function migrate(migrateOptions = {}) {
+  const values = await chromeStorageGet("config");
+  let config = null;
+
+  if (values && values.config != null) {
+    config = JSON.parse(values.config);
+
+    return migrateConfig(config, migrateOptions);
+  } else {
+    config = { ...DEFAULT_CONFIG };
+    await setConfig(config);
+
+    return {
+      config
+    };
+  }
 }
 
 async function getConfig({ mergeOptions } = {}) {
@@ -110,4 +127,4 @@ async function setConfig(config, force = false) {
   return false;
 }
 
-export { setConfig, getConfig, migrate };
+export { setConfig, getConfig, migrate, migrateConfig };

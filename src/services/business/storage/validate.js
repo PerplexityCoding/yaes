@@ -4,6 +4,10 @@ import validateCurrent from "../../../schemas/config.schema.gen";
 export default function validate(config, version) {
   let result = {};
 
+  if (config.version) {
+    version = version || config.version || "1.0.0";
+  }
+
   switch (version) {
     case "1.0.0":
       result.status = validateV100(config);
