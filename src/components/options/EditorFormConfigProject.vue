@@ -137,12 +137,8 @@ export default {
 <style lang="scss">
 .sortable-placeholder {
   display: block;
-  height: 32px;
+  height: 40px;
   background-color: var(--bg-grey-hover);
-  border-radius: 4px;
-}
-.sortable-dragging {
-  background-color: red;
 }
 </style>
 
