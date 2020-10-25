@@ -94,7 +94,7 @@ export default {
   }
 
   .right-pane {
-    padding: 4px 12px;
+    padding: 4px 12px 12px 12px;
     display: flex;
     background-color: var(--border-grey);
     border-radius: 0 4px 4px 0;
