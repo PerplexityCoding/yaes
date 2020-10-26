@@ -125,7 +125,10 @@ export default {
   methods: {
     async switchEnv({ env, newTab }) {
       const currentTab = await getCurrentTab();
-      const newUrl = switchBaseUrl(currentTab.url, env.url);
+      const newUrl = switchBaseUrl(currentTab.url, env.url, {
+        appendUrlParams: env.appendUrlParams,
+        removeUrlParams: env.removeUrlParams
+      });
       openChromeUrl(currentTab, newUrl, newTab);
     },
     async redirectEnv({ env, newTab }) {

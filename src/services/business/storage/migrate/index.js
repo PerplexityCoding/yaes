@@ -38,6 +38,10 @@ export function checkUpdate(config) {
       if (!migrateVersion(config, "1.0.0", "1.1.0")) {
         return ConfigUpdateStatus.MIGRATION_FAILED;
       }
+
+    // eslint-disable-next-line no-fallthrough
+    case "1.1.0":
+      config.version = "1.1.1";
       break;
 
     default:

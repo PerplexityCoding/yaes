@@ -186,16 +186,6 @@
           "type": "string",
           "format": "uri",
           "pattern": "^(https?|wss?|ftp)://"
-        },
-        "appendUrlParams": {
-          "type": "string",
-          "pattern": "^([^=&]+=[^=&]+)(&[^=&]+=[^=&]+)*$",
-          "description": "Append url parameters"
-        },
-        "removeUrlParams": {
-          "type": "string",
-          "pattern": "^[^,]+(,[^,]+)*$",
-          "description": "Remove url parameters"
         }
       },
       "anyOf": [

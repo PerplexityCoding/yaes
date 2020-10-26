@@ -1,8 +1,29 @@
-export function switchBaseUrl(currentUrl, newBaseUrl) {
+export function switchBaseUrl(
+  currentUrl,
+  newBaseUrl,
+  { appendUrlParams, removeUrlParams }
+) {
   const baseUrl = new URL(newBaseUrl);
   const url = new URL(currentUrl);
   url.hostname = baseUrl.hostname;
   url.protocol = baseUrl.protocol;
+
+  const searchParams = url.searchParams;
+  if (appendUrlParams) {
+    const newSearchParams = new URLSearchParams(appendUrlParams);
+
+    newSearchParams.forEach(function(value, key) {
+      searchParams.set(key, value);
+    });
+  }
+
+  if (removeUrlParams) {
+    const removeUrlParamsList = removeUrlParams.split(",");
+    removeUrlParamsList.forEach(key => {
+      searchParams.delete(key.trim());
+    });
+  }
+
   return url.href;
 }
 
