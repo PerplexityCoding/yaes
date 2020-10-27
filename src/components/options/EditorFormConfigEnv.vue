@@ -14,13 +14,18 @@
         <label>
           <span> Name </span> <input type="text" v-model="name" />
         </label>
-        <br />
         <label>
           <span> Short name </span> <input type="text" v-model="shortName" />
         </label>
-        <br />
         <label> <span> Url </span> <input type="text" v-model="url" /> </label>
-        <br />
+        <label>
+          <span> Append url params </span>
+          <input type="text" v-model="appendUrlParams" />
+        </label>
+        <label>
+          <span> Remove url params </span>
+          <input type="text" v-model="removeUrlParams" />
+        </label>
       </fieldset>
 
       <div class="override-options">
@@ -89,6 +94,8 @@ export default {
     name: computed("name"),
     shortName: computed("shortName"),
     url: computed("url"),
+    appendUrlParams: computed("appendUrlParams", null),
+    removeUrlParams: computed("removeUrlParams", null),
     displayDomain: computed("displayDomain", null, true),
     hasOverrides() {
       const env = this.env;
@@ -107,13 +114,22 @@ export default {
       this.$emit("update:env", deepmerge(deepmerge({}, this.env), data));
     },
     resetToGlobalOptions() {
-      const { id, name, shortName, url } = this.env;
+      const {
+        id,
+        name,
+        shortName,
+        url,
+        appendUrlParams,
+        removeUrlParams
+      } = this.env;
 
       this.$emit("update:env", {
         id,
         name,
         shortName,
-        url
+        url,
+        appendUrlParams,
+        removeUrlParams
       });
     },
     deleteEnv() {
@@ -136,9 +152,13 @@ h3 {
 }
 
 .basis-settings {
+  padding: 4px 0;
+
   label {
+    margin-bottom: 8px;
+
     span {
-      min-width: 70px;
+      min-width: 114px;
       text-align: right;
       padding-right: 16px;
     }

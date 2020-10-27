@@ -4,8 +4,6 @@ var ucs2length = require('ajv/lib/compile/ucs2length');
 var equal = require('ajv/lib/compile/equal');
 var validate = (function() {
   var pattern0 = new RegExp('^(https?|wss?|ftp)://');
-  var pattern1 = new RegExp('^([^=&]+=[^=&]+)(&[^=&]+=[^=&]+)*$');
-  var pattern2 = new RegExp('^[^,]+(,[^,]+)*$');
   var refVal = [];
   var refVal1 = {
     "type": "object",
@@ -29,8 +27,6 @@ var validate = (function() {
   refVal[1] = refVal1;
   var refVal2 = (function() {
     var pattern0 = new RegExp('^(https?|wss?|ftp)://');
-    var pattern1 = new RegExp('^([^=&]+=[^=&]+)(&[^=&]+=[^=&]+)*$');
-    var pattern2 = new RegExp('^[^,]+(,[^,]+)*$');
     return function validate(data, dataPath, parentData, parentDataProperty, rootData) {
       'use strict';
       var vErrors = null;
@@ -522,77 +518,7 @@ var validate = (function() {
                               }
                               var valid1 = errors === errs_1;
                             }
-                            if (valid1) {
-                              var data1 = data.appendUrlParams;
-                              if (data1 === undefined) {
-                                valid1 = true;
-                              } else {
-                                var errs_1 = errors;
-                                if (typeof data1 === "string") {
-                                  if (!pattern1.test(data1)) {
-                                    validate.errors = [{
-                                      keyword: 'pattern',
-                                      dataPath: (dataPath || '') + '.appendUrlParams',
-                                      schemaPath: '#/properties/appendUrlParams/pattern',
-                                      params: {
-                                        pattern: '^([^=&]+=[^=&]+)(&[^=&]+=[^=&]+)*$'
-                                      },
-                                      message: 'should match pattern "^([^=&]+=[^=&]+)(&[^=&]+=[^=&]+)*$"'
-                                    }];
-                                    return false;
-                                  } else {}
-                                } else {
-                                  validate.errors = [{
-                                    keyword: 'type',
-                                    dataPath: (dataPath || '') + '.appendUrlParams',
-                                    schemaPath: '#/properties/appendUrlParams/type',
-                                    params: {
-                                      type: 'string'
-                                    },
-                                    message: 'should be string'
-                                  }];
-                                  return false;
-                                }
-                                if (errors === errs_1) {}
-                                var valid1 = errors === errs_1;
-                              }
-                              if (valid1) {
-                                var data1 = data.removeUrlParams;
-                                if (data1 === undefined) {
-                                  valid1 = true;
-                                } else {
-                                  var errs_1 = errors;
-                                  if (typeof data1 === "string") {
-                                    if (!pattern2.test(data1)) {
-                                      validate.errors = [{
-                                        keyword: 'pattern',
-                                        dataPath: (dataPath || '') + '.removeUrlParams',
-                                        schemaPath: '#/properties/removeUrlParams/pattern',
-                                        params: {
-                                          pattern: '^[^,]+(,[^,]+)*$'
-                                        },
-                                        message: 'should match pattern "^[^,]+(,[^,]+)*$"'
-                                      }];
-                                      return false;
-                                    } else {}
-                                  } else {
-                                    validate.errors = [{
-                                      keyword: 'type',
-                                      dataPath: (dataPath || '') + '.removeUrlParams',
-                                      schemaPath: '#/properties/removeUrlParams/type',
-                                      params: {
-                                        type: 'string'
-                                      },
-                                      message: 'should be string'
-                                    }];
-                                    return false;
-                                  }
-                                  if (errors === errs_1) {}
-                                  var valid1 = errors === errs_1;
-                                }
-                                if (valid1) {}
-                              }
-                            }
+                            if (valid1) {}
                           }
                         }
                       }
@@ -727,16 +653,6 @@ var validate = (function() {
         "type": "string",
         "format": "uri",
         "pattern": "^(https?|wss?|ftp)://"
-      },
-      "appendUrlParams": {
-        "type": "string",
-        "pattern": "^([^=&]+=[^=&]+)(&[^=&]+=[^=&]+)*$",
-        "description": "Append url parameters"
-      },
-      "removeUrlParams": {
-        "type": "string",
-        "pattern": "^[^,]+(,[^,]+)*$",
-        "description": "Remove url parameters"
       }
     },
     "anyOf": [{
@@ -787,8 +703,6 @@ var validate = (function() {
   refVal[4] = refVal4;
   var refVal5 = (function() {
     var pattern0 = new RegExp('^(https?|wss?|ftp)://');
-    var pattern1 = new RegExp('^([^=&]+=[^=&]+)(&[^=&]+=[^=&]+)*$');
-    var pattern2 = new RegExp('^[^,]+(,[^,]+)*$');
     return function validate(data, dataPath, parentData, parentDataProperty, rootData) {
       'use strict';
       var vErrors = null;
@@ -1770,16 +1684,6 @@ validate.schema = {
           "type": "string",
           "format": "uri",
           "pattern": "^(https?|wss?|ftp)://"
-        },
-        "appendUrlParams": {
-          "type": "string",
-          "pattern": "^([^=&]+=[^=&]+)(&[^=&]+=[^=&]+)*$",
-          "description": "Append url parameters"
-        },
-        "removeUrlParams": {
-          "type": "string",
-          "pattern": "^[^,]+(,[^,]+)*$",
-          "description": "Remove url parameters"
         }
       },
       "anyOf": [{
