@@ -8,12 +8,12 @@
       <div class="project-name">
         <input
           v-if="projectNameEditable"
-          :value="project.name"
+          :value="projectName"
           @focusout="projectNameEditable = false"
           @input="e => updateProject({ name: e.target.value })"
         />
         <span v-else>
-          {{ project.name }}
+          {{ projectName }}
         </span>
       </div>
 
@@ -26,21 +26,24 @@
         Edit
       </button>
 
-      <button class="delete-project" @click="deleteProject()">
+      <button
+        class="delete-project"
+        @click="$emit('delete-project', projectId)"
+      >
         <DeleteIcon height="18px" width="18px" />
         Delete
       </button>
     </header>
 
-    <ul class="env-sortable" @sortupdate="onDrop" @sortstart="onDrag">
+    <ul class="env-sortable" @sortupdate="onDrop">
       <li
         v-for="env of projectEnvs"
         :key="'env-' + env.id"
         class="project-env"
         :class="{
-          'selected-env': selectedEnv ? env.id === selectedEnv.id : false
+          'selected-env': selectedEnvId ? env.id === selectedEnvId : false
         }"
-        @click="$emit('select-env', { env, project })"
+        @click="$emit('select-env', { envId: env.id, projectId })"
       >
         <span class="env-name">
           {{ env.name || env.shortName }}
@@ -50,7 +53,7 @@
     </ul>
 
     <div class="action-buttons">
-      <button class="add-new-env" @click="addEnv()">
+      <button class="add-new-env" @click="$emit('new-env', projectId)">
         <AddIcon height="18px" width="18px" /> Add new env
       </button>
     </div>
@@ -58,13 +61,13 @@
 </template>
 
 <script>
-import { getProjectEnvs } from "@/services/business/bo/config";
-import sortable from "html5sortable/dist/html5sortable.cjs";
+import { getProjectById, getProjectEnvs } from "@/services/business/bo/config";
 import DragList from "@/components/icons/DragList";
 import EditText from "@/components/icons/EditText";
 import ArrowRight from "@/components/icons/ArrowRight";
 import AddIcon from "@/components/icons/Add";
 import DeleteIcon from "@/components/icons/Delete";
+import { updateSortableEnvs } from "@/services/business/ui";
 
 export default {
   name: "EditorFormConfigProject",
@@ -75,60 +78,53 @@ export default {
   },
   components: { AddIcon, DeleteIcon, DragList, EditText, ArrowRight },
   props: {
-    project: {
-      type: Object,
+    projectId: {
+      type: Number,
       default: () => {}
     },
     config: {
       type: Object,
       default: () => {}
     },
-    selectedEnv: {
-      type: Object,
+    selectedEnvId: {
+      type: Number,
       default: null
     }
   },
   mounted() {
-    this.updateSortable();
+    updateSortableEnvs();
   },
-  emits: ["select-env", "add-new-env", "delete-project", "update:project"],
+  emits: [
+    "select-env",
+    "new-env",
+    "drop-env",
+    "delete-project",
+    "update-project"
+  ],
+  computed: {
+    projectEnvs() {
+      return getProjectEnvs(this.config, this.projectId);
+    },
+    projectName() {
+      const project = getProjectById(this.config, this.projectId);
+      return project.name;
+    }
+  },
   methods: {
-    addEnv() {
-      this.updateSortable();
-      this.$emit("add-new-env", this.project);
-    },
-    deleteProject() {
-      this.$emit("delete-project", this.project);
-    },
     updateProject(data) {
-      this.updateSortable();
-      this.$emit("update:project", {
-        ...this.project,
-        ...data
+      this.$emit("update-project", {
+        projectId: this.projectId,
+        data
       });
-    },
-    onDrag() {
-      this.$emit("select-env");
     },
     onDrop(e) {
       const { detail } = e;
       const { origin, destination } = detail;
-      const { envs } = this.project;
-
-      envs.splice(destination.index, 0, envs.splice(origin.index, 1)[0]);
-      this.updateProject({
-        envs
+      this.$emit("drop-env", {
+        projectId: this.projectId,
+        origin,
+        destination
       });
-    },
-    async updateSortable(options) {
-      setTimeout(() => {
-        sortable(".env-sortable", options);
-      }, 0);
-    }
-  },
-  computed: {
-    projectEnvs() {
-      return getProjectEnvs(this.config, this.project);
     }
   }
 };

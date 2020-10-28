@@ -5,17 +5,18 @@
         v-for="project of config.projects"
         :key="'project-' + project.id"
         :config="config"
-        :project="project"
-        :selected-env="selectedEnv"
+        :project-id="project.id"
+        :selected-env-id="selectedEnvId"
         @select-env="data => $emit('select-env', data)"
-        @delete-project="deleteProject"
-        @add-new-env="addNewProjectEnv"
-        @update:project="updateProject"
+        @delete-project="data => $emit('delete-project', data)"
+        @new-env="data => $emit('new-env', data)"
+        @drop-env="data => $emit('drop-env', data)"
+        @update-project="data => $emit('update-project', data)"
       />
     </ul>
 
     <footer>
-      <button class="new-project" @click="addNewProject">
+      <button class="new-project" @click="$emit('new-project')">
         <AddIcon height="18px" width="18px" />
         Add new project
       </button>
@@ -25,15 +26,6 @@
 
 <script>
 import EditorFormConfigProject from "@/components/options/EditorFormConfigProject";
-
-import {
-  addEnv,
-  addProject,
-  deleteProject,
-  newEnv,
-  newProject,
-  updateProject
-} from "@/services/business/bo/config";
 import sortable from "html5sortable/dist/html5sortable.cjs";
 import AddIcon from "@/components/icons/Add";
 
@@ -50,8 +42,8 @@ export default {
       type: Object,
       default: () => {}
     },
-    selectedEnv: {
-      type: Object,
+    selectedEnvId: {
+      type: Number,
       default: null
     }
   },
@@ -60,47 +52,20 @@ export default {
       handle: ".project-sortable-handle"
     });
   },
-  beforeUpdate() {
-    sortable(".project-sortable");
-  },
-  emits: ["select-env", "update:config"],
+  emits: [
+    "select-env",
+    "new-env",
+    "delete-project",
+    "drop-env",
+    "new-project",
+    "update-project",
+    "drop-project"
+  ],
   methods: {
-    addNewProjectEnv(project) {
-      const env = newEnv(this.config, {
-        name: "New Env",
-        url: "https://www.exemple.com"
-      });
-      this.$emit("update:config", addEnv(this.config, project, env));
-      this.$emit("select-env", { env, project });
-    },
-    deleteProject(project) {
-      this.$emit("update:config", deleteProject(this.config, project));
-      this.$emit("select-env");
-    },
-    updateProject(project) {
-      this.$emit("update:config", updateProject(this.config, project));
-      this.$emit("select-env");
-    },
-    addNewProject() {
-      const project = newProject(this.config, {
-        name: "New Project"
-      });
-      this.$emit("update:config", addProject(this.config, project));
-    },
     onDrop(e) {
       const { detail } = e;
       const { origin, destination } = detail;
-      const { projects } = this.config;
-
-      projects.splice(
-        destination.index,
-        0,
-        projects.splice(origin.index, 1)[0]
-      );
-      this.$emit("update:config", {
-        ...this.config,
-        projects
-      });
+      this.$emit("drop-project", { origin, destination });
       this.collapsed = false;
     }
   }

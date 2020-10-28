@@ -1,14 +1,14 @@
 <template>
-  <div class="side-panel" :class="{ 'has-env': !!env }">
+  <div v-if="env" class="side-panel" :class="{ 'has-env': !!envId }">
     <h3>
       <span>
         Environment settings
       </span>
-      <button class="clone-env" @click="cloneEnv">
+      <button class="clone-env" @click="$emit('clone-env', envId)">
         <CloneIcon height="18px" width="18px" />
         Clone
       </button>
-      <button class="delete-env" @click="deleteEnv">
+      <button class="delete-env" @click="$emit('delete-env', envId)">
         <DeleteIcon height="18px" width="18px" />
         Delete
       </button>
@@ -60,12 +60,14 @@
         </div>
 
         <EditorFormBadge
+          v-if="env"
           :option="mergedEnv"
           :env="env"
           @update:option="updateComputed"
         />
 
         <EditorFormRibbon
+          v-if="env"
           class="form-ribbon"
           :option="mergedEnv"
           :env="env"
@@ -90,6 +92,7 @@ import EditorFormBadge from "@/components/options/form/EditorFormBadge";
 import DeleteIcon from "@/components/icons/Delete";
 import CloneIcon from "@/components/icons/Clone";
 import GoBack from "@/components/icons/GoBack";
+import { getEnvById } from "@/services/business/bo/config";
 
 const computed = getComputedFactory("mergedEnv");
 
@@ -103,8 +106,8 @@ export default {
     GoBack
   },
   props: {
-    env: {
-      type: Object,
+    envId: {
+      type: Number,
       required: true
     },
     config: {
@@ -112,10 +115,12 @@ export default {
       required: true
     }
   },
-  emits: ["update:env", "delete-env", "clone-env"],
+  emits: ["update-env", "delete-env", "clone-env"],
   computed: {
     mergedEnv() {
-      return deepmerge(deepmerge({}, this.config.options), this.env);
+      return this.env
+        ? deepmerge(deepmerge({}, this.config.options), this.env)
+        : {};
     },
     name: computed("name"),
     shortName: computed("shortName"),
@@ -125,19 +130,26 @@ export default {
     displayDomain: computed("displayDomain", null, true),
     hasOverrides() {
       const env = this.env;
-      const hasBadgeOverrides =
-        env.displayBadge !== undefined || env.badgeOptions !== undefined;
-      const hasRibbonOverrides =
-        env.displayRibbon !== undefined || env.ribbonOptions !== undefined;
-      const hasDisplayDomainOverrides = env.displayDomain !== undefined;
-      return (
-        hasBadgeOverrides || hasRibbonOverrides || hasDisplayDomainOverrides
-      );
+      if (env) {
+        const hasBadgeOverrides =
+          env.displayBadge !== undefined || env.badgeOptions !== undefined;
+        const hasRibbonOverrides =
+          env.displayRibbon !== undefined || env.ribbonOptions !== undefined;
+        const hasDisplayDomainOverrides = env.displayDomain !== undefined;
+        return (
+          hasBadgeOverrides || hasRibbonOverrides || hasDisplayDomainOverrides
+        );
+      }
+      return false;
+    },
+    env() {
+      return getEnvById(this.config, this.envId);
     }
   },
   methods: {
     updateComputed(data) {
-      this.$emit("update:env", deepmerge(deepmerge({}, this.env), data));
+      const mergedEnv = deepmerge(deepmerge({}, this.env), data);
+      this.$emit("update-env", mergedEnv);
     },
     resetToGlobalOptions() {
       const {
@@ -149,7 +161,7 @@ export default {
         removeUrlParams
       } = this.env;
 
-      this.$emit("update:env", {
+      this.$emit("update-env", {
         id,
         name,
         shortName,
@@ -157,12 +169,6 @@ export default {
         appendUrlParams,
         removeUrlParams
       });
-    },
-    deleteEnv() {
-      this.$emit("delete-env", this.env);
-    },
-    cloneEnv() {
-      this.$emit("clone-env", this.env);
     }
   }
 };

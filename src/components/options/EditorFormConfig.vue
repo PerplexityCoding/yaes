@@ -4,19 +4,26 @@
       <div class="left-pane">
         <EditorFormConfigProjects
           :config="config"
-          :selected-env="selectedEnv"
+          :selected-env-id="selectedEnvId"
           @select-env="selectEnv"
+          @new-env="addNewEnv"
+          @delete-env="deleteEnv"
+          @drop-env="dropEnv"
+          @new-project="addNewProject"
+          @delete-project="deleteProject"
+          @update-project="updateProject"
+          @drop-project="dropProject"
           @update:config="updateConfig"
         />
       </div>
-      <div class="right-pane" :class="{ 'right-pane-empty': !selectedEnv }">
+      <div class="right-pane" :class="{ 'right-pane-empty': !selectedEnvId }">
         <EditorFormEnvConfig
-          v-if="selectedEnv"
-          :env="selectedEnv"
+          v-if="selectedEnvId"
+          :env-id="selectedEnvId"
           :config="config"
           @delete-env="deleteEnv"
           @clone-env="cloneEnv"
-          @update:env="updateConfigEnv"
+          @update-env="updateEnv"
         />
         <div v-else class="empty-env">
           No env currently selected. <br />
@@ -40,9 +47,20 @@ import {
   deleteEnv,
   updateEnv,
   newEnv,
-  addEnv
+  addEnv,
+  getProjectEnvs,
+  deleteProject,
+  updateProject,
+  newProject,
+  addProject,
+  getEnvById,
+  getProjectById
 } from "@/services/business/bo/config";
 import deepmerge from "deepmerge";
+import {
+  updateSortableEnvs,
+  updateSortableProjects
+} from "@/services/business/ui";
 
 export default {
   name: "EditorFormConfig",
@@ -59,27 +77,88 @@ export default {
   },
   data() {
     return {
-      selectedEnv: null,
-      selectedProject: null
+      selectedEnvId: null,
+      selectedProjectId: null
     };
   },
   emits: ["update:config"],
   mounted() {},
   methods: {
-    deleteEnv(env) {
-      this.updateConfig(deleteEnv(this.config, env));
-      this.selectEnv();
-    },
-    cloneEnv(env) {
-      const clonedEnv = newEnv(this.config, deepmerge({}, env));
-      const config = addEnv(this.config, this.selectedProject, clonedEnv);
+    addNewEnv(projectId) {
+      const env = newEnv(this.config, {
+        name: "New Env",
+        url: "https://www.exemple.com"
+      });
+      const config = addEnv(this.config, projectId, env);
       this.updateConfig(config);
-      this.selectEnv({ env: clonedEnv, project: this.selectedProject });
+      this.selectEnv({ envId: env.id });
+      updateSortableEnvs();
     },
-    updateConfigEnv(env) {
+    updateEnv(env) {
       const config = updateEnv(this.config, env);
       this.updateConfig(config);
-      this.selectEnv({ env, selectedProject: this.selectedProject });
+    },
+    cloneEnv(envId) {
+      const env = getEnvById(this.config, envId);
+      const clonedEnv = newEnv(this.config, deepmerge({}, env));
+      const config = addEnv(this.config, this.selectedProjectId, clonedEnv);
+      this.updateConfig(config);
+      this.selectEnv({ envId: clonedEnv.id });
+      updateSortableEnvs();
+    },
+    deleteEnv(envId) {
+      const config = deleteEnv(this.config, envId);
+      this.updateConfig(config);
+      this.selectLastEnv(config);
+      updateSortableEnvs();
+    },
+    dropEnv({ projectId, origin, destination }) {
+      const project = getProjectById(this.config, projectId);
+      const { envs } = project;
+
+      envs.splice(destination.index, 0, envs.splice(origin.index, 1)[0]);
+      this.updateProject({
+        projectId,
+        data: {
+          envs
+        }
+      });
+    },
+    addNewProject() {
+      const project = newProject(this.config, {
+        name: "New Project"
+      });
+      const config = addProject(this.config, project);
+      this.updateConfig(config);
+      updateSortableProjects();
+    },
+    updateProject({ projectId, data }) {
+      const project = getProjectById(this.config, projectId);
+      const updatedProject = {
+        ...project,
+        ...data
+      };
+      const config = updateProject(this.config, updatedProject);
+      this.updateConfig(config);
+    },
+    deleteProject(projectId) {
+      const config = deleteProject(this.config, projectId);
+      this.updateConfig(config);
+      this.selectEnv(null);
+      updateSortableProjects();
+    },
+    dropProject({ origin, destination }) {
+      const { projects } = this.config;
+
+      projects.splice(
+        destination.index,
+        0,
+        projects.splice(origin.index, 1)[0]
+      );
+      this.updateConfig({
+        ...this.config,
+        projects
+      });
     },
     updateOptions(options) {
       this.updateConfig({ ...this.config, options });
@@ -87,9 +166,25 @@ export default {
     updateConfig(config) {
       this.$emit("update:config", config);
     },
-    selectEnv({ env, project } = {}) {
-      this.selectedEnv = env;
-      this.selectedProject = project;
+    selectLastEnv(config) {
+      const projectEnvs = getProjectEnvs(config, this.selectedProjectId);
+      if (projectEnvs.length > 0) {
+        this.selectEnv({
+          envId: projectEnvs[projectEnvs.length - 1].id
+        });
+      }
+    },
+    selectEnv(data) {
+      if (data != null) {
+        const { envId, projectId } = data;
+        this.selectedEnvId = envId;
+        if (projectId) {
+          this.selectedProjectId = projectId;
+        }
+      } else {
+        this.selectedEnvId = null;
+        this.selectedProjectId = null;
+      }
     }
   }
 };

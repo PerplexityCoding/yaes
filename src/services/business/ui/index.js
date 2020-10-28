@@ -1,3 +1,5 @@
+import sortable from "html5sortable/dist/html5sortable.cjs";
+
 export function getComputedFactory(objectKey) {
   return (key, subKey, defaultValue) => {
     return {
@@ -15,4 +17,16 @@ export function getComputedFactory(objectKey) {
       }
     };
   };
+}
+
+export function updateSortableEnvs(options) {
+  setTimeout(() => {
+    sortable(".env-sortable", options);
+  }, 0);
+}
+
+export function updateSortableProjects(options) {
+  setTimeout(() => {
+    sortable(".project-sortable", options);
+  }, 0);
 }
