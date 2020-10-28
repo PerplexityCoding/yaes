@@ -39,8 +39,8 @@ export function updateProject(config, project) {
 
 export function newEnv(config, data) {
   return {
-    id: getNextEnvId(config.envs),
-    ...data
+    ...data,
+    id: getNextEnvId(config.envs)
   };
 }
 

@@ -15,6 +15,7 @@
           :env="selectedEnv"
           :config="config"
           @delete-env="deleteEnv"
+          @clone-env="cloneEnv"
           @update:env="updateConfigEnv"
         />
         <div v-else class="empty-env">
@@ -35,7 +36,13 @@
 import EditorFormEnvConfig from "@/components/options/EditorFormConfigEnv";
 import EditorFormConfigProjects from "@/components/options/EditorFormConfigProjects";
 import EditorFormConfigGlobalOptions from "@/components/options/EditorFormConfigGlobalOptions";
-import { deleteEnv, updateEnv } from "@/services/business/bo/config";
+import {
+  deleteEnv,
+  updateEnv,
+  newEnv,
+  addEnv
+} from "@/services/business/bo/config";
+import deepmerge from "deepmerge";
 
 export default {
   name: "EditorFormConfig",
@@ -52,7 +59,8 @@ export default {
   },
   data() {
     return {
-      selectedEnv: null
+      selectedEnv: null,
+      selectedProject: null
     };
   },
   emits: ["update:config"],
@@ -60,12 +68,18 @@ export default {
   methods: {
     deleteEnv(env) {
       this.updateConfig(deleteEnv(this.config, env));
-      this.selectEnv(null);
+      this.selectEnv();
+    },
+    cloneEnv(env) {
+      const clonedEnv = newEnv(this.config, deepmerge({}, env));
+      const config = addEnv(this.config, this.selectedProject, clonedEnv);
+      this.updateConfig(config);
+      this.selectEnv({ env: clonedEnv, project: this.selectedProject });
     },
     updateConfigEnv(env) {
       const config = updateEnv(this.config, env);
       this.updateConfig(config);
-      this.selectEnv(env);
+      this.selectEnv({ env, selectedProject: this.selectedProject });
     },
     updateOptions(options) {
       this.updateConfig({ ...this.config, options });
@@ -73,8 +87,9 @@ export default {
     updateConfig(config) {
       this.$emit("update:config", config);
     },
-    selectEnv(env) {
+    selectEnv({ env, project } = {}) {
       this.selectedEnv = env;
+      this.selectedProject = project;
     }
   }
 };
@@ -94,7 +109,7 @@ export default {
   }
 
   .right-pane {
-    padding: 4px 12px 12px 12px;
+    padding: 4px 16px 12px 16px;
     display: flex;
     background-color: var(--border-grey);
     border-radius: 0 4px 4px 0;

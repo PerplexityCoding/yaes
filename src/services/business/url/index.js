@@ -36,13 +36,45 @@ export function getCurrentEnv(url, config) {
     return null;
   }
 
-  const envs = config.envs;
-  for (const env of envs) {
-    const envHostname = new URL(env.url).hostname;
-    const currentHostname = new URL(url).hostname;
+  const envsByDomains = getEnvsByDomain(config);
 
-    if (envHostname === currentHostname) {
-      return env;
+  const currentUrl = new URL(url);
+  const currentHostname = currentUrl.hostname;
+  const currentSearchParams = currentUrl.searchParams;
+
+  for (const [domain, domainEnvs] of Object.entries(envsByDomains)) {
+    if (domain === currentHostname) {
+      let mostMatchingEnv = { env: null, count: -100 };
+      for (const env of domainEnvs) {
+        let count = 0;
+        if (env.appendUrlParams) {
+          const params = new URLSearchParams(env.appendUrlParams);
+
+          for (const [key, value] of params) {
+            if (currentSearchParams.get(key) === value) {
+              count += 100;
+            }
+            count--;
+          }
+        }
+        if (count > mostMatchingEnv.count) {
+          mostMatchingEnv = { env, count };
+        }
+      }
+
+      return mostMatchingEnv.env;
     }
   }
+
+  return null;
+}
+
+function getEnvsByDomain(config) {
+  const envs = config.envs;
+  return envs.reduce((result, env) => {
+    const envHostname = new URL(env.url).hostname;
+    result[envHostname] = result[envHostname] || [];
+    result[envHostname].push(env);
+    return result;
+  }, {});
 }

@@ -133,7 +133,11 @@ export default {
     },
     async redirectEnv({ env, newTab }) {
       const currentTab = await getCurrentTab();
-      openChromeUrl(currentTab, env.url, newTab);
+      const newUrl = switchBaseUrl(env.url, env.url, {
+        appendUrlParams: env.appendUrlParams,
+        removeUrlParams: env.removeUrlParams
+      });
+      openChromeUrl(currentTab, newUrl, newTab);
     },
     openOptionsPage() {
       openOptionsPage();

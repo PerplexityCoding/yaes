@@ -7,7 +7,7 @@
         :config="config"
         :project="project"
         :selected-env="selectedEnv"
-        @select-env="env => $emit('select-env', env)"
+        @select-env="data => $emit('select-env', data)"
         @delete-project="deleteProject"
         @add-new-env="addNewProjectEnv"
         @update:project="updateProject"
@@ -71,15 +71,15 @@ export default {
         url: "https://www.exemple.com"
       });
       this.$emit("update:config", addEnv(this.config, project, env));
-      this.$emit("select-env", env);
+      this.$emit("select-env", { env, project });
     },
     deleteProject(project) {
       this.$emit("update:config", deleteProject(this.config, project));
-      this.$emit("select-env", null);
+      this.$emit("select-env");
     },
     updateProject(project) {
       this.$emit("update:config", updateProject(this.config, project));
-      this.$emit("select-env", null);
+      this.$emit("select-env");
     },
     addNewProject() {
       const project = newProject(this.config, {

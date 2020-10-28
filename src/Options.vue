@@ -35,8 +35,8 @@
             </span>
           </transition>
           <transition name="fade">
-            <span v-if="errorMessage" class="info">
-              {{ errorMessage }} <CheckIcon width="16px" height="12px" />
+            <span v-if="errorMessage" class="info error">
+              {{ errorMessage }} <DeleteIcon width="16px" height="12px" />
             </span>
           </transition>
         </div>
@@ -70,6 +70,7 @@
 <script>
 import { getConfig, setConfig } from "./services/business/storage";
 import CheckIcon from "./components/icons/CheckIcon";
+import DeleteIcon from "./components/icons/Delete";
 import ImportConfig from "@/components/options/ImportConfig";
 import EditorJsonConfig from "@/components/options/EditorJsonConfig";
 import EditorFormConfig from "@/components/options/EditorFormConfig";
@@ -87,7 +88,13 @@ export default {
       errorMessage: null
     };
   },
-  components: { EditorFormConfig, EditorJsonConfig, ImportConfig, CheckIcon },
+  components: {
+    EditorFormConfig,
+    EditorJsonConfig,
+    ImportConfig,
+    CheckIcon,
+    DeleteIcon
+  },
   async created() {
     this.config = await this.getOrInitConfig();
   },
@@ -115,13 +122,14 @@ export default {
         return;
       }
 
-      this.displaySaveInfo = true;
+      this.errorMessage = null;
 
       if (!(await setConfig(config, force))) {
         this.displaySaveInfo = false;
         this.errorMessage = "Save Failed";
         return;
       }
+      this.displaySaveInfo = true;
       this.config = config;
 
       setTimeout(() => {
@@ -157,6 +165,13 @@ input[type="checkbox"] {
   margin: 0 4px 0 0;
   position: relative;
   top: 1px;
+}
+
+input::placeholder {
+  font-weight: lighter;
+  font-style: oblique;
+  color: var(--fg-black-disabled);
+  opacity: 0.7;
 }
 
 button,
@@ -265,6 +280,11 @@ fieldset {
     padding: 5px 10px;
     margin-top: 5px;
     font-weight: bold;
+  }
+
+  .error {
+    color: var(--ruby);
+    fill: var(--ruby);
   }
 
   .dev-buttons {

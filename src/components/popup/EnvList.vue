@@ -52,9 +52,7 @@ export default {
       if (!env1 || !env2) {
         return false;
       }
-      const url1 = new URL(env1.url);
-      const url2 = new URL(env2.url);
-      return url1.hostname === url2.hostname;
+      return env1.id === env2.id;
     },
     hostname(env) {
       return new URL(env.url).hostname;

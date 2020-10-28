@@ -40,7 +40,7 @@
         :class="{
           'selected-env': selectedEnv ? env.id === selectedEnv.id : false
         }"
-        @click="$emit('select-env', env)"
+        @click="$emit('select-env', { env, project })"
       >
         <span class="env-name">
           {{ env.name || env.shortName }}
@@ -108,7 +108,7 @@ export default {
       });
     },
     onDrag() {
-      this.$emit("select-env", null);
+      this.$emit("select-env");
     },
     onDrop(e) {
       const { detail } = e;

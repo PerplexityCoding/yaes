@@ -4,6 +4,10 @@
       <span>
         Environment settings
       </span>
+      <button class="clone-env" @click="cloneEnv">
+        <CloneIcon height="18px" width="18px" />
+        Clone
+      </button>
       <button class="delete-env" @click="deleteEnv">
         <DeleteIcon height="18px" width="18px" />
         Delete
@@ -17,14 +21,29 @@
         <label>
           <span> Short name </span> <input type="text" v-model="shortName" />
         </label>
-        <label> <span> Url </span> <input type="text" v-model="url" /> </label>
+        <label>
+          <span> Url </span>
+          <input
+            type="text"
+            v-model="url"
+            placeholder="https://www.exemple.com"
+          />
+        </label>
         <label>
           <span> Append url params </span>
-          <input type="text" v-model="appendUrlParams" />
+          <input
+            type="text"
+            v-model="appendUrlParams"
+            placeholder="eg: search=true&query=dev&..."
+          />
         </label>
         <label>
           <span> Remove url params </span>
-          <input type="text" v-model="removeUrlParams" />
+          <input
+            type="text"
+            v-model="removeUrlParams"
+            placeholder="eg: search,query,..."
+          />
         </label>
       </fieldset>
 
@@ -69,13 +88,20 @@ import { getComputedFactory } from "@/services/business/ui";
 import EditorFormRibbon from "@/components/options/form/EditorFormRibbon";
 import EditorFormBadge from "@/components/options/form/EditorFormBadge";
 import DeleteIcon from "@/components/icons/Delete";
+import CloneIcon from "@/components/icons/Clone";
 import GoBack from "@/components/icons/GoBack";
 
 const computed = getComputedFactory("mergedEnv");
 
 export default {
   name: "EditorFormConfigEnv",
-  components: { EditorFormBadge, EditorFormRibbon, DeleteIcon, GoBack },
+  components: {
+    EditorFormBadge,
+    EditorFormRibbon,
+    DeleteIcon,
+    CloneIcon,
+    GoBack
+  },
   props: {
     env: {
       type: Object,
@@ -86,7 +112,7 @@ export default {
       required: true
     }
   },
-  emits: ["update:env", "delete-env"],
+  emits: ["update:env", "delete-env", "clone-env"],
   computed: {
     mergedEnv() {
       return deepmerge(deepmerge({}, this.config.options), this.env);
@@ -134,6 +160,9 @@ export default {
     },
     deleteEnv() {
       this.$emit("delete-env", this.env);
+    },
+    cloneEnv() {
+      this.$emit("clone-env", this.env);
     }
   }
 };
@@ -216,6 +245,10 @@ button {
 .delete-env {
   fill: var(--ruby);
   color: var(--ruby);
+}
+
+.clone-env {
+  fill: var(--fg-black);
 }
 
 .side-panel {

@@ -1,4 +1,5 @@
 import validateV100 from "../../../schemas/1.0.0/config.schema.gen";
+import validateV110 from "../../../schemas/1.1.0/config.schema.gen";
 import validateCurrent from "../../../schemas/config.schema.gen";
 
 export default function validate(config, version) {
@@ -15,11 +16,14 @@ export default function validate(config, version) {
       break;
 
     case "1.1.0":
+      result.status = validateV110(config);
+      result.errors = validateV110.errors;
+      break;
+
     default:
       result.status = validateCurrent(config);
       result.errors = validateCurrent.errors;
       break;
   }
-
   return result;
 }

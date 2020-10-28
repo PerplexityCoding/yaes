@@ -118,7 +118,7 @@ async function getConfig({ mergeOptions } = {}) {
 }
 
 async function setConfig(config, force = false) {
-  if (force || validateSchema(config)) {
+  if (force || validateSchema(config).status) {
     await chromeStorageSet({
       config: JSON.stringify(config)
     });
