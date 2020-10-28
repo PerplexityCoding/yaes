@@ -41,7 +41,8 @@
         :key="'env-' + env.id"
         class="project-env"
         :class="{
-          'selected-env': selectedEnvId ? env.id === selectedEnvId : false
+          'selected-env':
+            selectedEnvId != null ? env.id === selectedEnvId : false
         }"
         @click="$emit('select-env', { envId: env.id, projectId })"
       >

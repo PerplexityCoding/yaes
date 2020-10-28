@@ -18,7 +18,7 @@
       </div>
       <div class="right-pane" :class="{ 'right-pane-empty': !selectedEnvId }">
         <EditorFormEnvConfig
-          v-if="selectedEnvId"
+          v-if="selectedEnvId != null"
           :env-id="selectedEnvId"
           :config="config"
           @delete-env="deleteEnv"
@@ -178,7 +178,7 @@ export default {
       if (data != null) {
         const { envId, projectId } = data;
         this.selectedEnvId = envId;
-        if (projectId) {
+        if (projectId != null) {
           this.selectedProjectId = projectId;
         }
       } else {
