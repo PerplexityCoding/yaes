@@ -2,6 +2,7 @@ import deepmerge from "deepmerge";
 import { mount } from "@vue/test-utils";
 import EditorFormConfigProject from "@/components/options/EditorFormConfigProject";
 import EditorFormConfig from "@/components/options/EditorFormConfig";
+import { waitFor } from "@/services/utils";
 
 describe("EditorFormConfig.vue", () => {
   const config = {
@@ -68,7 +69,7 @@ describe("EditorFormConfig.vue", () => {
     expectName(projects[1], "Project2");
   });
 
-  it("update config event when clicking on add new env button", () => {
+  it("add new env 1st button", () => {
     const wrapper = createDefaultWrapper();
 
     const firstButton = wrapper.find("button.add-new-env");
@@ -98,7 +99,7 @@ describe("EditorFormConfig.vue", () => {
     });
   });
 
-  it("update config event when clicking on add new env button", () => {
+  it("add new env 2nd button", () => {
     const wrapper = createDefaultWrapper();
 
     const secondButton = wrapper.findAll("button.add-new-env")[1];
@@ -128,7 +129,111 @@ describe("EditorFormConfig.vue", () => {
     });
   });
 
-  it("update config event when clicking on delete project button", () => {
+  it("clone env", async () => {
+    const wrapper = createDefaultWrapper();
+    await waitFor();
+
+    const selectEnvButton = wrapper.find(".project-env");
+    await selectEnvButton.trigger("click");
+
+    const firstButton = wrapper.find("button.clone-env");
+    await firstButton.trigger("click");
+
+    checkUpdateConfig(wrapper, {
+      projects: [
+        {
+          id: 0,
+          name: "Project1",
+          envs: [2, 1, 4]
+        },
+        {
+          id: 1,
+          name: "Project2",
+          envs: [3]
+        }
+      ],
+      envs: [
+        {
+          id: 1,
+          name: "FR",
+          url: "https://www.google.fr/sdfsdf"
+        },
+        {
+          id: 2,
+          name: "DE",
+          url: "https://www.google.de/sdfsdf"
+        },
+        {
+          id: 3,
+          name: "ES",
+          url: "https://www.google.es/"
+        },
+        {
+          id: 4,
+          name: "DE",
+          url: "https://www.google.de/sdfsdf"
+        }
+      ]
+    });
+  });
+
+  it("delete env", async () => {
+    const wrapper = createDefaultWrapper();
+    await waitFor();
+
+    const selectEnvButton = wrapper.find(".project-env");
+    await selectEnvButton.trigger("click");
+
+    const firstButton = wrapper.find("button.delete-env");
+    await firstButton.trigger("click");
+
+    checkUpdateConfig(wrapper, {
+      projects: [
+        {
+          id: 0,
+          name: "Project1",
+          envs: [1]
+        },
+        {
+          id: 1,
+          name: "Project2",
+          envs: [3]
+        }
+      ],
+      envs: [
+        {
+          id: 1,
+          name: "FR",
+          url: "https://www.google.fr/sdfsdf"
+        },
+        {
+          id: 3,
+          name: "ES",
+          url: "https://www.google.es/"
+        }
+      ]
+    });
+  });
+
+  it("add new project", () => {
+    const wrapper = createDefaultWrapper();
+
+    const button = wrapper.find("button.new-project");
+    button.trigger("click");
+
+    checkUpdateConfig(wrapper, {
+      projects: [
+        ...config.projects,
+        {
+          id: 2,
+          name: "New Project",
+          envs: []
+        }
+      ]
+    });
+  });
+
+  it("delete project 1st button", () => {
     const wrapper = createDefaultWrapper();
 
     const firstButton = wrapper.find("button.delete-project");
@@ -152,7 +257,7 @@ describe("EditorFormConfig.vue", () => {
     });
   });
 
-  it("update config event when clicking on second delete project button", () => {
+  it("delete project 2nd button", () => {
     const wrapper = createDefaultWrapper();
 
     const secondButton = wrapper.findAll("button.delete-project")[1];
@@ -176,24 +281,6 @@ describe("EditorFormConfig.vue", () => {
           id: 2,
           name: "DE",
           url: "https://www.google.de/sdfsdf"
-        }
-      ]
-    });
-  });
-
-  it("update config event when clicking add new project button", () => {
-    const wrapper = createDefaultWrapper();
-
-    const button = wrapper.find("button.new-project");
-    button.trigger("click");
-
-    checkUpdateConfig(wrapper, {
-      projects: [
-        ...config.projects,
-        {
-          id: 2,
-          name: "New Project",
-          envs: []
         }
       ]
     });
