@@ -200,11 +200,11 @@ fieldset {
 .defaulted {
   font-style: oblique;
   font-weight: normal;
-  color: var(--fg-black-disabled);
 
   &::after {
     margin-left: 4px;
     content: "*";
+    color: var(--blue);
   }
 }
 

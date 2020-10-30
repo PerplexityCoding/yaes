@@ -51,7 +51,7 @@
         <div class="override-message">
           <span>
             Overrides default options for this environment <br />
-            <i>* Grayed out fields are using global options</i>
+            <i>Fields with * are using global options, change to override</i>
           </span>
           <button @click.prevent="resetToGlobalOptions" v-if="hasOverrides">
             <GoBack height="18px" width="18px" />
@@ -241,7 +241,7 @@ button {
     align-items: center;
 
     i {
-      color: var(--fg-black-disabled);
+      color: var(--blue);
       font-weight: normal;
     }
 
