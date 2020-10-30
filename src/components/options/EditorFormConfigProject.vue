@@ -155,7 +155,7 @@ export default {
     flex-direction: row;
     align-items: center;
     font-size: 15px;
-    background-color: var(--border-grey);
+    background-color: var(--bg-grey-2);
 
     .project-name {
       flex: 1;
@@ -224,10 +224,10 @@ export default {
     }
 
     .selected-env {
-      background: var(--bg-yellow);
+      background: var(--border-grey);
 
       &:hover {
-        background: var(--bg-yellow-hover);
+        background: var(--bg-grey-hover);
       }
     }
   }
