@@ -82,7 +82,16 @@ export default {
     };
   },
   emits: ["update:config"],
-  mounted() {},
+  mounted() {
+    const projects = this.config.projects;
+    if (projects.length > 0) {
+      const firstProject = projects[0];
+      this.selectedProjectId = firstProject.id;
+      if (firstProject.envs && firstProject.envs.length > 0) {
+        this.selectedEnvId = firstProject.envs[0];
+      }
+    }
+  },
   methods: {
     addNewEnv(projectId) {
       const env = newEnv(this.config, {
