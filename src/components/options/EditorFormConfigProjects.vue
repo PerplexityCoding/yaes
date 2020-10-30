@@ -1,18 +1,24 @@
 <template>
-  <div>
+  <div :class="{ 'has-projects': hasProjects }">
     <ul class="project-sortable" @sortupdate="onDrop">
-      <EditorFormConfigProject
-        v-for="project of config.projects"
-        :key="'project-' + project.id"
-        :config="config"
-        :project-id="project.id"
-        :selected-env-id="selectedEnvId"
-        @select-env="data => $emit('select-env', data)"
-        @delete-project="data => $emit('delete-project', data)"
-        @new-env="data => $emit('new-env', data)"
-        @drop-env="data => $emit('drop-env', data)"
-        @update-project="data => $emit('update-project', data)"
-      />
+      <div v-if="hasProjects">
+        <EditorFormConfigProject
+          v-for="project of config.projects"
+          :key="'project-' + project.id"
+          :config="config"
+          :project-id="project.id"
+          :selected-env-id="selectedEnvId"
+          @select-env="data => $emit('select-env', data)"
+          @delete-project="data => $emit('delete-project', data)"
+          @new-env="data => $emit('new-env', data)"
+          @drop-env="data => $emit('drop-env', data)"
+          @update-project="data => $emit('update-project', data)"
+        />
+      </div>
+      <h3 v-else>
+        There is currently no projects. <br />
+        Create one by clicking on the create button.
+      </h3>
     </ul>
 
     <footer>
@@ -68,6 +74,11 @@ export default {
       this.$emit("drop-project", { origin, destination });
       this.collapsed = false;
     }
+  },
+  computed: {
+    hasProjects() {
+      return this.config.projects && this.config.projects.length > 0;
+    }
   }
 };
 </script>
@@ -87,8 +98,11 @@ export default {
   }
 }
 
+h3 {
+  padding: 32px 16px 8px 16px;
+}
+
 footer {
-  border-top: 1px solid var(--border-grey);
   padding: 4px;
 
   button {
@@ -114,6 +128,12 @@ footer {
   .new-project {
     fill: var(--green);
     color: var(--green);
+  }
+}
+
+.has-projects {
+  footer {
+    border-top: 1px solid var(--border-grey);
   }
 }
 </style>

@@ -195,6 +195,7 @@ export default {
   display: flex;
   flex-direction: row;
   padding: 0;
+  min-height: 400px;
 
   > div {
     flex: 1;
