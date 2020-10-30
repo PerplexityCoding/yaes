@@ -93,6 +93,7 @@ import DeleteIcon from "@/components/icons/Delete";
 import CloneIcon from "@/components/icons/Clone";
 import GoBack from "@/components/icons/GoBack";
 import { getEnvById } from "@/services/business/bo/config";
+import { removeUndefined } from "@/services/utils";
 
 const computed = getComputedFactory("mergedEnv");
 
@@ -161,14 +162,17 @@ export default {
         removeUrlParams
       } = this.env;
 
-      this.$emit("update-env", {
+      const newEnv = {
         id,
         name,
         shortName,
         url,
         appendUrlParams,
         removeUrlParams
-      });
+      };
+      removeUndefined(newEnv);
+
+      this.$emit("update-env", newEnv);
     }
   }
 };

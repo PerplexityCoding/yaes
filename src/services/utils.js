@@ -89,3 +89,11 @@ export function getNextId(idsObj, limit = 1000) {
   }
   return null;
 }
+
+export function removeUndefined(o) {
+  Object.keys(o).forEach(key => {
+    if (o[key] === undefined) {
+      delete o[key];
+    }
+  });
+}
