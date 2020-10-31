@@ -100,7 +100,10 @@ export default {
   },
   methods: {
     async getOrInitConfig() {
-      const { config, errors } = await getConfig();
+      const { config, errors } = await getConfig({
+        mergeOptions: false,
+        mergeDefault: false
+      });
       if (errors && (errors.migrationFailed || errors.validationFailed)) {
         console.error(errors);
         this.loadingError = true;
@@ -110,14 +113,19 @@ export default {
 
     forceSave() {
       const editor = this.$refs.editor.editor;
-      this.saveConfig(editor.get(), true);
+      this.saveConfig(editor.get(), { force: true });
     },
 
     saveImportedConfig(data) {
       this.saveConfig(data);
     },
 
-    async saveConfig(config, force) {
+    async saveConfig(config, { force, noSave } = {}) {
+      if (noSave) {
+        this.config = config;
+        return;
+      }
+
       if (!force && !config) {
         return;
       }

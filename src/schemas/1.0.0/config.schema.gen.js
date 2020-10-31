@@ -1630,7 +1630,7 @@ validate.schema = {
       "type": "array",
       "default": [{
         "shortName": "FR",
-        "url": "https://www.google.fr/",
+        "url": "https://www.ecosia.org/",
         "ribbon": {
           "backgroundColor": "#2519c7",
           "color": "pink",

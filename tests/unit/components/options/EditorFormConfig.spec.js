@@ -92,8 +92,7 @@ describe("EditorFormConfig.vue", () => {
         ...config.envs,
         {
           id: 4,
-          name: "New Env",
-          url: "https://www.exemple.com"
+          name: "New Env"
         }
       ]
     });
@@ -122,8 +121,7 @@ describe("EditorFormConfig.vue", () => {
         ...config.envs,
         {
           id: 4,
-          name: "New Env",
-          url: "https://www.exemple.com"
+          name: "New Env"
         }
       ]
     });

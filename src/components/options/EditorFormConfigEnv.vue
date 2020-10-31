@@ -15,18 +15,22 @@
     </h3>
     <form>
       <fieldset class="basis-settings">
+        <p class="mandatory-field-message">
+          <i>Fields with <b>*</b> are mandatory</i>
+        </p>
         <label>
-          <span> Name </span> <input type="text" v-model="name" />
+          <span> Name <b>*</b> </span> <input type="text" v-model="name" />
         </label>
         <label>
-          <span> Short name </span> <input type="text" v-model="shortName" />
+          <span> Short name </span>
+          <input type="text" v-model="shortName" maxlength="4" />
         </label>
         <label>
-          <span> Url </span>
+          <span> Url <b>*</b> </span>
           <input
             type="text"
             v-model="url"
-            placeholder="https://www.exemple.com"
+            placeholder="eg: https://www.ecosia.org"
           />
         </label>
         <label>
@@ -94,6 +98,7 @@ import CloneIcon from "@/components/icons/Clone";
 import GoBack from "@/components/icons/GoBack";
 import { getEnvById } from "@/services/business/bo/config";
 import { removeUndefined } from "@/services/utils";
+import { DEFAULT_OPTIONS } from "@/services/business/storage";
 
 const computed = getComputedFactory("mergedEnv");
 
@@ -120,7 +125,10 @@ export default {
   computed: {
     mergedEnv() {
       return this.env
-        ? deepmerge(deepmerge({}, this.config.options), this.env)
+        ? deepmerge(
+            deepmerge(deepmerge({}, DEFAULT_OPTIONS), this.config.options),
+            this.env
+          )
         : {};
     },
     name: computed("name"),
@@ -180,7 +188,7 @@ export default {
 
 <style scoped lang="scss">
 h3 {
-  margin: 0 0 8px 0;
+  margin: 0;
   font-size: 12px;
   display: flex;
   align-items: center;
@@ -206,6 +214,15 @@ h3 {
       flex: 1;
     }
   }
+}
+
+.mandatory-field-message {
+  margin: 0 0 12px 0;
+  font-weight: normal;
+}
+
+b {
+  color: var(--ruby);
 }
 
 .field-domain,

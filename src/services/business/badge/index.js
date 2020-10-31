@@ -7,7 +7,7 @@ import {
 } from "@/services/chrome/browserAction";
 
 export async function updateBadgeTextFromEnv(tabId, url) {
-  const { config } = await getConfig({ mergeOptions: true });
+  const { config } = await getConfig();
   const env = getCurrentEnv(url, config);
   if (env != null && env.displayBadge !== false) {
     const color = env?.badgeOptions?.backgroundColor || "#2677c9";

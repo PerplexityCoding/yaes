@@ -89,7 +89,7 @@ export default {
   async created() {
     const currentTab = await getCurrentTab();
 
-    const { config } = await getConfig({ mergeOptions: true });
+    const { config } = await getConfig();
     if (config) {
       const { envs, projects, options } = config;
 

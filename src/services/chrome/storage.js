@@ -1,6 +1,7 @@
 function storageGet(values, type = "sync") {
   return new Promise(resolve => {
     window.chrome.storage[type].get(values, async data => {
+      console.log(data);
       resolve(data);
     });
   });

@@ -6,10 +6,13 @@
 
     <form class="box-elevation">
       <div class="left-col">
-        <EditorFormBadge :option="options" @update:option="updateComputed" />
+        <EditorFormBadge
+          :option="mergedOptions"
+          @update:option="updateComputed"
+        />
         <EditorFormRibbon
           class="form-ribbon"
-          :option="options"
+          :option="mergedOptions"
           @update:option="updateComputed"
         />
       </div>
@@ -38,8 +41,9 @@ import deepmerge from "deepmerge";
 import { getComputedFactory } from "@/services/business/ui";
 import EditorFormRibbon from "@/components/options/form/EditorFormRibbon";
 import EditorFormBadge from "@/components/options/form/EditorFormBadge";
+import { DEFAULT_OPTIONS } from "@/services/business/storage";
 
-const computed = getComputedFactory("options");
+const computed = getComputedFactory("mergedOptions");
 
 export default {
   name: "EditorFormConfigGlobalOptions",
@@ -56,7 +60,14 @@ export default {
     displayDomain: computed("displayDomain"),
     displayHeader: computed("displayHeader"),
     displayFooter: computed("displayFooter"),
-    displaySeeProjectsLink: computed("displaySeeProjectsLink")
+    displaySeeProjectsLink: computed("displaySeeProjectsLink"),
+    mergedOptions() {
+      const options = deepmerge(
+        deepmerge({}, DEFAULT_OPTIONS),
+        this.options || {}
+      );
+      return options;
+    }
   },
   methods: {
     updateComputed(data) {

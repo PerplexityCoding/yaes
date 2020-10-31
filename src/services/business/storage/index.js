@@ -12,7 +12,25 @@ import {
   ConfigUpdateStatus
 } from "@/services/business/storage/migrate";
 
-export const DEFAULT_CONFIG = {
+export const DEFAULT_OPTIONS = {
+  displayDomain: false,
+  displayHeader: true,
+  displayFooter: true,
+  displaySeeProjectsLink: true,
+  displayRibbon: true,
+  displayBadge: true,
+  badgeOptions: {
+    backgroundColor: "#2677c9"
+  },
+  ribbonOptions: {
+    type: "corner-ribbon",
+    color: "white",
+    backgroundColor: "#2677c9",
+    position: "right"
+  }
+};
+
+export const INIT_DEFAULT_CONFIG = {
   version: "1.1.0",
   projects: [
     {
@@ -22,14 +40,7 @@ export const DEFAULT_CONFIG = {
     }
   ],
   envs: [],
-  options: {
-    displayDomain: true,
-    displayHeader: true,
-    displayFooter: true,
-    displaySeeProjectsLink: true,
-    displayRibbon: true,
-    displayBadge: true
-  }
+  options: {}
 };
 
 function mergeOptionsInEnv(config) {
@@ -40,6 +51,14 @@ function mergeOptionsInEnv(config) {
     ...config,
     envs
   };
+}
+
+function mergeOptionsDefault(config) {
+  config.options = deepmerge(
+    deepmerge({}, DEFAULT_OPTIONS),
+    config.options || {}
+  );
+  return config;
 }
 
 async function migrateConfig(config, { mergeOptions } = {}) {
@@ -66,6 +85,7 @@ async function migrateConfig(config, { mergeOptions } = {}) {
       errors.validationErrors = validation.errors;
     }
 
+    config = mergeOptionsDefault(config);
     if (mergeOptions) {
       config = mergeOptionsInEnv(config);
     }
@@ -86,7 +106,7 @@ async function migrate(migrateOptions = {}) {
 
     return migrateConfig(config, migrateOptions);
   } else {
-    config = { ...DEFAULT_CONFIG };
+    config = { ...INIT_DEFAULT_CONFIG };
     await setConfig(config);
 
     return {
@@ -95,7 +115,9 @@ async function migrate(migrateOptions = {}) {
   }
 }
 
-async function getConfig({ mergeOptions } = {}) {
+async function getConfig(
+  { mergeOptions, mergeDefault } = { mergeOptions: true, mergeDefault: true }
+) {
   const values = await chromeStorageGet("config");
   let errors = {};
   let config = null;
@@ -103,11 +125,15 @@ async function getConfig({ mergeOptions } = {}) {
   if (values && values.config != null) {
     config = JSON.parse(values.config);
 
+    if (mergeDefault) {
+      config = mergeOptionsDefault(config);
+    }
+
     if (mergeOptions) {
       config = mergeOptionsInEnv(config);
     }
   } else {
-    config = { ...DEFAULT_CONFIG };
+    config = { ...INIT_DEFAULT_CONFIG };
     await setConfig(config);
   }
 

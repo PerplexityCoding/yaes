@@ -85,7 +85,7 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
     isCheckbox(label);
   });
 
-  test.each`
+  it.each`
     name                        | optionName
     ${"display-badge"}          | ${"displayBadge"}
     ${"display-ribbon"}         | ${"displayRibbon"}
@@ -94,15 +94,16 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
     ${"display-footer"}         | ${"displayFooter"}
     ${"display-projects-links"} | ${"displaySeeProjectsLink"}
   `(
-    "Changing select options ${name} ${optionName}",
+    "Changing select options $name $optionName",
     async ({ name, optionName }) => {
       const wrapper = createDefaultWrapper();
 
       const input = wrapper.find(`label[${name}] input`);
       expect(input.element.value).toBe("on");
-      input.setValue(true);
+      const newValue = !input.element.checked;
+      await input.setValue(newValue);
 
-      updateOptionsWith(wrapper, { [optionName]: true });
+      updateOptionsWith(wrapper, { [optionName]: newValue });
     }
   );
 });

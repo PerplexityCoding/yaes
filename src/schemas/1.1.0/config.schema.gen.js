@@ -1535,7 +1535,7 @@ validate.schema = {
       "type": "array",
       "default": [{
         "shortName": "FR",
-        "url": "https://www.google.fr/",
+        "url": "https://www.ecosia.org/",
         "displayRibbon": true,
         "ribbonOptions": {
           "backgroundColor": "#2519c7",

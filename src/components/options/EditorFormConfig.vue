@@ -95,11 +95,10 @@ export default {
   methods: {
     addNewEnv(projectId) {
       const env = newEnv(this.config, {
-        name: "New Env",
-        url: "https://www.exemple.com"
+        name: "New Env"
       });
       const config = addEnv(this.config, projectId, env);
-      this.updateConfig(config);
+      this.updateConfig(config, { noSave: true });
       this.selectEnv({ envId: env.id });
       updateSortableEnvs();
     },
@@ -172,8 +171,8 @@ export default {
     updateOptions(options) {
       this.updateConfig({ ...this.config, options });
     },
-    updateConfig(config) {
-      this.$emit("update:config", config);
+    updateConfig(config, options) {
+      this.$emit("update:config", config, options);
     },
     selectLastEnv(config) {
       const projectEnvs = getProjectEnvs(config, this.selectedProjectId);

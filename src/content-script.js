@@ -7,7 +7,7 @@ async function main() {
 }
 
 async function verifyCurrentUrl() {
-  const { config } = await getConfig({ mergeOptions: true });
+  const { config } = await getConfig();
   const env = getCurrentEnv(window.location.href, config);
 
   if (env != null && env.displayRibbon !== false) {
