@@ -5,13 +5,16 @@
         Import configuration
       </strong>
       <div class="import-methods">
-        <label>
-          <span> Using Url </span>
-          <input
-            type="url"
-            placeholder="https://gist.githubusercontent.com/.../config.json"
-            v-model="configurationUrl"
-          />
+        <div>
+          <div class="label-set">
+            <label :for="$id('import-url')"> Using Url </label>
+            <input
+              :id="$id('import-url')"
+              type="url"
+              placeholder="https://gist.githubusercontent.com/.../config.json"
+              v-model="configurationUrl"
+            />
+          </div>
           <button @click="importConfig">
             <ImportIcon width="16px" height="16px" /> <span> import </span>
           </button>
@@ -22,17 +25,24 @@
             Import from url successful
           </span>
           <div v-if="importConfigLoader" class="lds-dual-ring loader" />
-        </label>
-        <label>
-          <span> Using File </span>
-          <input type="file" accept=".json" @change="importFile" />
+        </div>
+        <div>
+          <div class="label-set">
+            <label :for="$id('import-file')"> Using File </label>
+            <input
+              :id="$id('import-file')"
+              type="file"
+              accept=".json"
+              @change="importFile"
+            />
+          </div>
           <span class="import-failed-message" v-if="importFileStatus === false">
             Import file failed
           </span>
           <span class="import-success-message" v-if="importFileStatus === true">
             Import file successful
           </span>
-        </label>
+        </div>
       </div>
     </div>
 
@@ -169,15 +179,21 @@ button {
       position: relative;
       top: -4px;
 
-      > label {
+      > div {
+        flex: 1;
+        display: flex;
         margin-bottom: 8px;
+
+        .label-set {
+          flex: 1;
+        }
 
         input {
           flex: 1;
           margin-right: 8px;
         }
 
-        span {
+        label {
           margin-right: 8px;
         }
       }
