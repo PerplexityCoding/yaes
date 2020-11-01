@@ -1,6 +1,8 @@
 import {
   storageGet as chromeStorageGet,
-  storageSet as chromeStorageSet
+  storageSet as chromeStorageSet,
+  storageRemove as chromeStorageRemove,
+  storageClear as chromeStorageClear
 } from "@/services/chrome/storage";
 
 import deepmerge from "deepmerge";
@@ -98,12 +100,11 @@ async function migrateConfig(config, { mergeOptions } = {}) {
 }
 
 async function migrate(migrateOptions = {}) {
-  const values = await chromeStorageGet("config");
-  let config = null;
+  let values = await chromeStorageGet(null);
+  values = await migrateMonoConfig(values);
+  let config = await getAndAssembleConfig(values);
 
-  if (values && values.config != null) {
-    config = JSON.parse(values.config);
-
+  if (config != null) {
     return migrateConfig(config, migrateOptions);
   } else {
     config = { ...INIT_DEFAULT_CONFIG };
@@ -118,13 +119,13 @@ async function migrate(migrateOptions = {}) {
 async function getConfig(
   { mergeOptions, mergeDefault } = { mergeOptions: true, mergeDefault: true }
 ) {
-  const values = await chromeStorageGet("config");
   let errors = {};
-  let config = null;
 
-  if (values && values.config != null) {
-    config = JSON.parse(values.config);
+  let values = await chromeStorageGet(null);
+  values = await migrateMonoConfig(values);
+  let config = await getAndAssembleConfig(values);
 
+  if (config != null) {
     if (mergeDefault) {
       config = mergeOptionsDefault(config);
     }
@@ -143,14 +144,91 @@ async function getConfig(
   };
 }
 
+async function migrateMonoConfig(values) {
+  if (values.config != null) {
+    const oldConfig = JSON.parse(values.config);
+    if (validateSchema(oldConfig).status) {
+      await chromeStorageClear();
+      await setConfig(oldConfig);
+    }
+    return await chromeStorageGet(null);
+  }
+  return values;
+}
+
+async function getAndAssembleConfig(values) {
+  try {
+    const config = {
+      options: values.options ? JSON.parse(values.options) : {},
+      projects: values.projects ? JSON.parse(values.projects) : [],
+      envs: await loadEnvs(values),
+      version: values.version
+    };
+
+    config.envs = await removeUnrefEnvs(config);
+
+    return config;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+async function loadEnvs(values) {
+  return Object.entries(values)
+    .filter(([key]) => /^env-[0-9]*$/.exec(key))
+    .reduce((acc, entry) => {
+      acc.push(JSON.parse(entry[1]));
+      return acc;
+    }, []);
+}
+
+async function removeUnrefEnvs(config) {
+  const envIdsUsed = config.projects.reduce((acc, project) => {
+    project.envs.forEach(envId => {
+      acc[envId] = true;
+    });
+    return acc;
+  }, {});
+  const unusedEnvIds = config.envs
+    .filter(({ id }) => !envIdsUsed[id])
+    .map(env => env.id);
+  const usedEnvs = config.envs.filter(({ id }) => envIdsUsed[id]);
+
+  if (unusedEnvIds.length > 0) {
+    await deleteEnvs(config, unusedEnvIds);
+  }
+
+  return usedEnvs;
+}
+
 async function setConfig(config, force = false) {
   if (force || validateSchema(config).status) {
+    const envsById = config.envs.reduce((acc, env) => {
+      acc[`env-${env.id}`] = JSON.stringify(env);
+      return acc;
+    }, {});
     await chromeStorageSet({
-      config: JSON.stringify(config)
+      version: config.version,
+      options: JSON.stringify(config.options),
+      projects: JSON.stringify(config.projects),
+      ...envsById
     });
     return true;
   }
   return false;
 }
 
-export { setConfig, getConfig, migrate, migrateConfig };
+async function deleteEnvs(config, envs) {
+  if (validateSchema(config).status) {
+    if (!Array.isArray(envs)) {
+      envs = [envs];
+    }
+    const envsKey = envs.map(envId => `env-${envId}`);
+    await chromeStorageRemove(envsKey);
+    return true;
+  }
+  return false;
+}
+
+export { setConfig, getConfig, migrate, migrateConfig, deleteEnvs };

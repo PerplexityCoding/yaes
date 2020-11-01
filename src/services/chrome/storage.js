@@ -1,7 +1,6 @@
 function storageGet(values, type = "sync") {
   return new Promise(resolve => {
     window.chrome.storage[type].get(values, async data => {
-      console.log(data);
       resolve(data);
     });
   });
@@ -25,4 +24,12 @@ function storageRemove(data, type = "sync") {
   });
 }
 
-export { storageSet, storageGet, storageRemove };
+function storageClear(data, type = "sync") {
+  return new Promise(resolve => {
+    window.chrome.storage[type].clear(() => {
+      resolve();
+    });
+  });
+}
+
+export { storageSet, storageGet, storageRemove, storageClear };
