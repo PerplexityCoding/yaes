@@ -20,7 +20,7 @@
         </p>
         <div class="label-set">
           <label :for="$id('name')"> Name <b>*</b> </label>
-          <input :id="$id('name')" type="text" v-model="name" />
+          <input ref="name" :id="$id('name')" type="text" v-model="name" />
         </div>
         <div class="label-set">
           <label :for="$id('short-name')"> Short name </label>
@@ -131,6 +131,10 @@ export default {
     GoBack
   },
   props: {
+    focus: {
+      type: Boolean,
+      default: false
+    },
     envId: {
       type: Number,
       required: true
@@ -138,6 +142,15 @@ export default {
     config: {
       type: Object,
       required: true
+    }
+  },
+  watch: {
+    focus(val) {
+      if (val) {
+        this.$refs.name.focus();
+        const nameEl = this.$refs.name;
+        nameEl.setSelectionRange(0, nameEl.value.length);
+      }
     }
   },
   emits: ["update-env", "delete-env", "clone-env"],

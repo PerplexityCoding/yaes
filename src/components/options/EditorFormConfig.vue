@@ -21,6 +21,7 @@
           v-if="selectedEnvId != null"
           :env-id="selectedEnvId"
           :config="config"
+          :focus="newEnv"
           @delete-env="deleteEnv"
           @clone-env="cloneEnv"
           @update-env="updateEnv"
@@ -77,6 +78,7 @@ export default {
   },
   data() {
     return {
+      newEnv: false,
       selectedEnvId: null,
       selectedProjectId: null
     };
@@ -99,7 +101,7 @@ export default {
       });
       const config = addEnv(this.config, projectId, env);
       this.updateConfig(config, { noSave: true });
-      this.selectEnv({ envId: env.id });
+      this.selectEnv({ envId: env.id, newEnv: true });
       updateSortableEnvs();
     },
     updateEnv(env) {
@@ -184,14 +186,16 @@ export default {
     },
     selectEnv(data) {
       if (data != null) {
-        const { envId, projectId } = data;
+        const { envId, projectId, newEnv } = data;
         this.selectedEnvId = envId;
         if (projectId != null) {
           this.selectedProjectId = projectId;
         }
+        this.newEnv = newEnv;
       } else {
         this.selectedEnvId = null;
         this.selectedProjectId = null;
+        this.newEnv = false;
       }
     }
   }
