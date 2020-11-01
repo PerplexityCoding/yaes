@@ -2,9 +2,11 @@
   <div>
     <div class="editor-form box-elevation">
       <div class="left-pane">
+        <div v-if="isNewEnv" class="blocking-mask"></div>
         <EditorFormConfigProjects
           :config="config"
           :selected-env-id="selectedEnvId"
+          :selected-project-id="selectedProjectId"
           @select-env="selectEnv"
           @new-env="addNewEnv"
           @delete-env="deleteEnv"
@@ -16,19 +18,28 @@
           @update:config="updateConfig"
         />
       </div>
-      <div class="right-pane" :class="{ 'right-pane-empty': !selectedEnvId }">
+      <div
+        class="right-pane"
+        :class="{ 'right-pane-empty': !selectedEnvId && !newEnv }"
+      >
         <transition name="slide-fade">
           <EditorFormEnvConfig
-            v-if="selectedEnvId != null"
-            :env-id="selectedEnvId"
+            v-if="selectedEnv != null || newEnv != null"
+            :env="newEnv ? newEnv : selectedEnv"
             :config="config"
-            :focus="focusEnv"
+            :new-env="isNewEnv"
+            :project-name="selectedProject.name"
             @delete-env="deleteEnv"
             @clone-env="cloneEnv"
             @update-env="updateEnv"
+            @cancel-new-env="cancelNewEnv"
+            @create-new-env="createNewEnv"
           />
         </transition>
-        <div v-if="selectedEnvId == null && !transitioning" class="empty-env">
+        <div
+          v-if="selectedEnvId == null && !transitioning && !newEnv"
+          class="empty-env"
+        >
           No env currently selected. <br />
           Select one on the left side to edit
         </div>
@@ -81,7 +92,8 @@ export default {
   data() {
     return {
       transitioning: false,
-      focusEnv: false,
+      newEnv: null,
+      isNewEnv: false,
       selectedEnvId: null,
       selectedProjectId: null
     };
@@ -99,19 +111,27 @@ export default {
   },
   methods: {
     addNewEnv(projectId) {
-      const env = newEnv(this.config, {
-        name: "New Env"
-      });
-      const config = addEnv(this.config, projectId, env);
-      this.updateConfig(config, { noSave: true });
+      const env = newEnv(this.config, {});
+      this.selectEnv({ projectId, newEnv: env });
+    },
+    cancelNewEnv() {
+      this.selectFirstEnv(this.config);
+    },
+    createNewEnv(env) {
+      const config = addEnv(this.config, this.selectedProjectId, env);
+      this.updateConfig(config);
       setTimeout(() => {
-        this.selectEnv({ envId: env.id, focusEnv: true });
+        this.selectEnv({ envId: env.id });
         updateSortableEnvs();
       }, 0);
     },
     updateEnv(env) {
-      const config = updateEnv(this.config, env);
-      this.updateConfig(config);
+      if (this.newEnv) {
+        this.newEnv = env;
+      } else {
+        const config = updateEnv(this.config, env);
+        this.updateConfig(config);
+      }
     },
     cloneEnv(envId) {
       const env = getEnvById(this.config, envId);
@@ -196,9 +216,21 @@ export default {
         this.selectEnv(null);
       }
     },
+    selectFirstEnv(config) {
+      const projectEnvs = getProjectEnvs(config, this.selectedProjectId);
+      if (projectEnvs.length > 0) {
+        const env = projectEnvs[0];
+
+        this.selectEnv({
+          envId: env.id
+        });
+      } else {
+        this.selectEnv(null);
+      }
+    },
     selectEnv(data) {
       if (data != null) {
-        const { envId, projectId, focusEnv } = data;
+        const { envId, projectId, newEnv } = data;
 
         this.selectedEnvId = null;
         this.transitioning = true;
@@ -208,17 +240,27 @@ export default {
           if (projectId != null) {
             this.selectedProjectId = projectId;
           }
+          this.newEnv = newEnv;
           this.transitioning = false;
         }, 0);
 
         setTimeout(() => {
-          this.focusEnv = focusEnv;
+          this.isNewEnv = !!this.newEnv;
         }, 10);
       } else {
         this.selectedEnvId = null;
         this.selectedProjectId = null;
-        this.focusEnv = false;
+        this.newEnv = null;
+        this.isNewEnv = false;
       }
+    }
+  },
+  computed: {
+    selectedEnv() {
+      return getEnvById(this.config, this.selectedEnvId);
+    },
+    selectedProject() {
+      return getProjectById(this.config, this.selectedProjectId);
     }
   }
 };
@@ -231,11 +273,22 @@ export default {
   padding: 0;
   min-height: 400px;
 
+  .blocking-mask {
+    background-color: #0000009c;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+
   > div {
     flex: 1;
   }
 
   .left-pane {
+    position: relative;
   }
 
   .right-pane {

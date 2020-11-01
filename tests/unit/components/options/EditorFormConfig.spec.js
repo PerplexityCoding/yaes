@@ -55,7 +55,6 @@ describe("EditorFormConfig.vue", () => {
 
   function checkUpdateConfig(wrapper, newConfig) {
     const updatedConfig = wrapper.emitted()["update:config"][0][0];
-
     expect(updatedConfig).toEqual({
       ...config,
       ...newConfig
@@ -137,6 +136,7 @@ describe("EditorFormConfig.vue", () => {
 
     const selectEnvButton = wrapper.find(".project-env");
     await selectEnvButton.trigger("click");
+    await waitFor();
 
     const firstButton = wrapper.find("button.clone-env");
     await firstButton.trigger("click");
@@ -185,9 +185,13 @@ describe("EditorFormConfig.vue", () => {
 
     const selectEnvButton = wrapper.find(".project-env");
     await selectEnvButton.trigger("click");
+    await waitFor();
 
-    const firstButton = wrapper.find("button.delete-env");
+    const firstButton = wrapper.find(".side-panel button.delete-btn");
     await firstButton.trigger("click");
+
+    const confirmButton = wrapper.find(".side-panel button.delete-confirm-btn");
+    await confirmButton.trigger("click");
 
     checkUpdateConfig(wrapper, {
       projects: [
@@ -235,11 +239,15 @@ describe("EditorFormConfig.vue", () => {
     });
   });
 
-  it("delete project 1st button", () => {
+  it("delete project 1st button", async () => {
     const wrapper = createDefaultWrapper();
 
-    const firstButton = wrapper.find("button.delete-project");
-    firstButton.trigger("click");
+    const firstButton = wrapper.find(".project-item button.delete-btn");
+    await firstButton.trigger("click");
+
+    const confirmButton = wrapper.find("button.delete-confirm-btn");
+    await confirmButton.trigger("click");
+    await waitFor();
 
     checkUpdateConfig(wrapper, {
       projects: [
@@ -259,11 +267,15 @@ describe("EditorFormConfig.vue", () => {
     });
   });
 
-  it("delete project 2nd button", () => {
+  it("delete project 2nd button", async () => {
     const wrapper = createDefaultWrapper();
 
-    const secondButton = wrapper.findAll("button.delete-project")[1];
-    secondButton.trigger("click");
+    const secondButton = wrapper.findAll(".project-item button.delete-btn")[1];
+    await secondButton.trigger("click");
+
+    const confirmButton = wrapper.find("button.delete-confirm-btn");
+    await confirmButton.trigger("click");
+    await waitFor();
 
     checkUpdateConfig(wrapper, {
       projects: [

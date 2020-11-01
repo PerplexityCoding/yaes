@@ -1,5 +1,8 @@
 <template>
-  <li class="project-item">
+  <li
+    class="project-item"
+    :class="{ 'selected-project': projectId === selectedProjectId }"
+  >
     <header>
       <span class="project-sortable-handle">
         <DragList height="16px" width="16px" />
@@ -93,6 +96,10 @@ export default {
       default: () => {}
     },
     selectedEnvId: {
+      type: Number,
+      default: null
+    },
+    selectedProjectId: {
       type: Number,
       default: null
     }
@@ -232,6 +239,16 @@ export default {
       &:hover {
         background: var(--bg-grey-hover);
       }
+    }
+  }
+
+  &.selected-project {
+    .project-sortable-handle {
+      fill: var(--ruby);
+    }
+
+    .project-name {
+      color: var(--blue-2);
     }
   }
 

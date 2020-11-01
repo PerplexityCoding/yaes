@@ -8,6 +8,7 @@
           :config="config"
           :project-id="project.id"
           :selected-env-id="selectedEnvId"
+          :selected-project-id="selectedProjectId"
           @select-env="data => $emit('select-env', data)"
           @delete-project="data => $emit('delete-project', data)"
           @new-env="data => $emit('new-env', data)"
@@ -49,6 +50,10 @@ export default {
       default: () => {}
     },
     selectedEnvId: {
+      type: Number,
+      default: null
+    },
+    selectedProjectId: {
       type: Number,
       default: null
     }

@@ -223,8 +223,20 @@ fieldset {
   padding: 12px;
 }
 
+/* fade-in */
+
+.fade-in-enter-active {
+  transition: opacity 2s ease;
+}
+
+.fade-in-enter-from {
+  opacity: 0;
+}
+
+/* slide fade */
+
 .slide-fade-enter-active {
-  transition: all 0.3s ease-out;
+  transition: all 0.35s ease-out;
 }
 
 .slide-fade-leave-active {
@@ -233,7 +245,23 @@ fieldset {
 
 .slide-fade-enter-from,
 .slide-fade-leave-to {
-  transform: translateX(20px);
+  transform: translateX(30px);
+  opacity: 0;
+}
+
+/* slide fade 2 */
+
+.slide-fade-2-enter-active {
+  transition: all 0.35s ease-out;
+}
+
+.slide-fade-2-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-2-enter-from,
+.slide-fade-2-leave-to {
+  transform: translateX(30px);
   opacity: 0;
 }
 </style>
