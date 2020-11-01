@@ -2,6 +2,7 @@ import deepmerge from "deepmerge";
 import { mount } from "@vue/test-utils";
 import EditorFormConfigGlobalOptions from "@/components/options/EditorFormConfigGlobalOptions";
 import { waitFor } from "@/services/utils";
+import UniqueId from "@/utils/plugins/unique-id";
 
 describe("EditorFormConfigGlobalOptions.vue", () => {
   const options = {
@@ -13,6 +14,9 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
     const wrapper = mount(EditorFormConfigGlobalOptions, {
       props: {
         options: deepmerge({}, options)
+      },
+      global: {
+        plugins: [UniqueId]
       }
     });
 
@@ -27,7 +31,7 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
   it("renders All options", async () => {
     const wrapper = createDefaultWrapper();
 
-    const labels = wrapper.findAll("label");
+    const labels = wrapper.findAll(".label-set");
     await waitFor();
     expect(labels).toHaveLength(11);
 
@@ -98,7 +102,7 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
     async ({ name, optionName }) => {
       const wrapper = createDefaultWrapper();
 
-      const input = wrapper.find(`label[${name}] input`);
+      const input = wrapper.find(`.label-set[${name}] input`);
       expect(input.element.value).toBe("on");
       const newValue = !input.element.checked;
       await input.setValue(newValue);

@@ -170,7 +170,7 @@ input[type="text"] {
 }
 
 input[type="checkbox"] {
-  margin: 0 4px 0 0;
+  margin: 0 8px 0 0;
   position: relative;
   top: 1px;
 }
@@ -194,7 +194,7 @@ select {
   border: 1px solid var(--bg-grey-2);
 }
 
-label {
+.label-set {
   display: flex;
   align-items: center;
 }

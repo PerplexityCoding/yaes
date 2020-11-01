@@ -18,37 +18,46 @@
         <p class="mandatory-field-message">
           <i>Fields with <b>*</b> are mandatory</i>
         </p>
-        <label>
-          <span> Name <b>*</b> </span> <input type="text" v-model="name" />
-        </label>
-        <label>
-          <span> Short name </span>
-          <input type="text" v-model="shortName" maxlength="4" />
-        </label>
-        <label>
-          <span> Url <b>*</b> </span>
+        <div class="label-set">
+          <label :for="$id('name')"> Name <b>*</b> </label>
+          <input :id="$id('name')" type="text" v-model="name" />
+        </div>
+        <div class="label-set">
+          <label :for="$id('short-name')"> Short name </label>
           <input
+            :id="$id('short-name')"
+            type="text"
+            v-model="shortName"
+            maxlength="4"
+          />
+        </div>
+        <div class="label-set">
+          <label :for="$id('url')"> Url <b>*</b> </label>
+          <input
+            :id="$id('url')"
             type="text"
             v-model="url"
             placeholder="eg: https://www.ecosia.org"
           />
-        </label>
-        <label>
-          <span> Append url params </span>
+        </div>
+        <div class="label-set">
+          <label :for="$id('append-url-params')"> Append url params </label>
           <input
+            :id="$id('append-url-params')"
             type="text"
             v-model="appendUrlParams"
             placeholder="eg: search=true&query=dev&..."
           />
-        </label>
-        <label>
-          <span> Remove url params </span>
+        </div>
+        <div class="label-set">
+          <label :for="$id('remove-url-params')"> Remove url params </label>
           <input
+            :id="$id('remove-url-params')"
             type="text"
             v-model="removeUrlParams"
             placeholder="eg: search,query,..."
           />
-        </label>
+        </div>
       </fieldset>
 
       <div class="override-options">
@@ -79,9 +88,19 @@
         />
 
         <fieldset class="field-domain">
-          <label :class="{ defaulted: env.displayDomain === undefined }">
-            <input type="checkbox" v-model="displayDomain" /> Display domain
-          </label>
+          <div class="label-set">
+            <input
+              :id="$id('display-domain')"
+              type="checkbox"
+              v-model="displayDomain"
+            />
+            <label
+              :for="$id('display-domain')"
+              :class="{ defaulted: env.displayDomain === undefined }"
+            >
+              Display domain
+            </label>
+          </div>
         </fieldset>
       </div>
     </form>
@@ -201,10 +220,10 @@ h3 {
 .basis-settings {
   padding: 4px 0;
 
-  label {
+  .label-set {
     margin-bottom: 8px;
 
-    span {
+    label {
       min-width: 114px;
       text-align: right;
       padding-right: 16px;

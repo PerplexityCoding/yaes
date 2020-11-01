@@ -2,6 +2,7 @@ import deepmerge from "deepmerge";
 import { mount } from "@vue/test-utils";
 import EditorFormConfigProjects from "@/components/options/EditorFormConfigProjects";
 import EditorFormConfigProject from "@/components/options/EditorFormConfigProject";
+import UniqueId from "@/utils/plugins/unique-id";
 
 describe("EditorFormConfigProjects.vue", () => {
   const config = {
@@ -43,6 +44,9 @@ describe("EditorFormConfigProjects.vue", () => {
       props: {
         config: deepmerge({}, config),
         selectedEnvId: 1
+      },
+      global: {
+        plugins: [UniqueId]
       }
     });
 

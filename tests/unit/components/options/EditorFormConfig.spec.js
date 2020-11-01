@@ -3,6 +3,7 @@ import { mount } from "@vue/test-utils";
 import EditorFormConfigProject from "@/components/options/EditorFormConfigProject";
 import EditorFormConfig from "@/components/options/EditorFormConfig";
 import { waitFor } from "@/services/utils";
+import UniqueId from "@/utils/plugins/unique-id";
 
 describe("EditorFormConfig.vue", () => {
   const config = {
@@ -43,6 +44,9 @@ describe("EditorFormConfig.vue", () => {
     const wrapper = mount(EditorFormConfig, {
       props: {
         config: deepmerge({}, config)
+      },
+      global: {
+        plugins: [UniqueId]
       }
     });
 

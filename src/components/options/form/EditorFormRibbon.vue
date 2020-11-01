@@ -1,59 +1,66 @@
 <template>
   <fieldset :class="{ 'has-env': !!env }">
-    <label
+    <div
+      class="label-set"
       display-ribbon
       :class="{ defaulted: env ? env.displayRibbon === undefined : false }"
     >
-      <input type="checkbox" v-model="displayRibbon" />
-      Ribbon
-    </label>
-    <div>
-      <label
-        class="color-selector"
-        :class="{
-          defaulted: isDefaulted('backgroundColor')
-        }"
-        ribbon-bg-color
-      >
-        <ColorPicker v-model:color="ribbonBgColor" />
-        <span>Background Color</span>
-      </label>
-      <label
-        class="color-selector"
-        :class="{
-          defaulted: isDefaulted('color')
-        }"
-        ribbon-text-color
-      >
-        <ColorPicker v-model:color="ribbonColor" />
-        <span>Text Color</span>
-      </label>
-      <label
-        class="input-selector"
+      <input
+        :id="$id('display-ribbon')"
+        type="checkbox"
+        v-model="displayRibbon"
+      />
+      <label :for="$id('display-ribbon')">Ribbon</label>
+    </div>
+    <div class="form-options">
+      <div class="label-set" ribbon-bg-color>
+        <label
+          class="color-selector"
+          :class="{
+            defaulted: isDefaulted('backgroundColor')
+          }"
+        >
+          <ColorPicker v-model:color="ribbonBgColor" />
+          <span>Background Color</span>
+        </label>
+      </div>
+      <div class="label-set" ribbon-text-color>
+        <label
+          class="color-selector"
+          :class="{
+            defaulted: isDefaulted('color')
+          }"
+        >
+          <ColorPicker v-model:color="ribbonColor" />
+          <span>Text Color</span>
+        </label>
+      </div>
+      <div
+        class="label-set input-selector"
         :class="{
           defaulted: isDefaulted('position')
         }"
         ribbon-position
       >
-        <span>Position</span>
-        <select v-model="ribbonPosition">
+        <label :for="$id('ribbon-position')">Position</label>
+        <select :id="$id('ribbon-position')" v-model="ribbonPosition">
           <option value="left"> left </option>
           <option value="right"> right </option>
         </select>
-      </label>
-      <label
-        class="input-selector"
+      </div>
+      <div
+        class="label-set input-selector"
         :class="{
           defaulted: isDefaulted('type')
         }"
         ribbon-type
       >
-        <span>Type</span>
-        <select v-model="ribbonType">
+        <label :for="$id('ribbon-type')">Type</label>
+        <select :id="$id('ribbon-type')" v-model="ribbonType">
           <option value="corner-ribbon"> Corner </option>
           <option value="square-ribbon"> Square </option>
         </select>
-      </label>
+      </div>
     </div>
   </fieldset>
 </template>
@@ -113,7 +120,7 @@ export default {
   display: flex;
   align-items: center;
 
-  span {
+  label {
     text-align: right;
     min-width: 42px;
     padding-right: 8px;
@@ -125,7 +132,7 @@ export default {
 }
 
 .color-selector {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   margin: 4px 0 0 24px;
 
