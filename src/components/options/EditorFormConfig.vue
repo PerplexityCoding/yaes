@@ -17,16 +17,18 @@
         />
       </div>
       <div class="right-pane" :class="{ 'right-pane-empty': !selectedEnvId }">
-        <EditorFormEnvConfig
-          v-if="selectedEnvId != null"
-          :env-id="selectedEnvId"
-          :config="config"
-          :focus="newEnv"
-          @delete-env="deleteEnv"
-          @clone-env="cloneEnv"
-          @update-env="updateEnv"
-        />
-        <div v-else class="empty-env">
+        <transition name="slide-fade">
+          <EditorFormEnvConfig
+            v-if="selectedEnvId != null"
+            :env-id="selectedEnvId"
+            :config="config"
+            :focus="focusEnv"
+            @delete-env="deleteEnv"
+            @clone-env="cloneEnv"
+            @update-env="updateEnv"
+          />
+        </transition>
+        <div v-if="selectedEnvId == null && !transitioning" class="empty-env">
           No env currently selected. <br />
           Select one on the left side to edit
         </div>
@@ -78,7 +80,8 @@ export default {
   },
   data() {
     return {
-      newEnv: false,
+      transitioning: false,
+      focusEnv: false,
       selectedEnvId: null,
       selectedProjectId: null
     };
@@ -102,7 +105,7 @@ export default {
       const config = addEnv(this.config, projectId, env);
       this.updateConfig(config, { noSave: true });
       setTimeout(() => {
-        this.selectEnv({ envId: env.id, newEnv: true });
+        this.selectEnv({ envId: env.id, focusEnv: true });
         updateSortableEnvs();
       }, 0);
     },
@@ -189,20 +192,32 @@ export default {
         this.selectEnv({
           envId: env.id
         });
+      } else {
+        this.selectEnv(null);
       }
     },
     selectEnv(data) {
       if (data != null) {
-        const { envId, projectId, newEnv } = data;
-        this.selectedEnvId = envId;
-        if (projectId != null) {
-          this.selectedProjectId = projectId;
-        }
-        this.newEnv = newEnv;
+        const { envId, projectId, focusEnv } = data;
+
+        this.selectedEnvId = null;
+        this.transitioning = true;
+
+        setTimeout(() => {
+          this.selectedEnvId = envId;
+          if (projectId != null) {
+            this.selectedProjectId = projectId;
+          }
+          this.transitioning = false;
+        }, 0);
+
+        setTimeout(() => {
+          this.focusEnv = focusEnv;
+        }, 10);
       } else {
         this.selectedEnvId = null;
         this.selectedProjectId = null;
-        this.newEnv = false;
+        this.focusEnv = false;
       }
     }
   }
