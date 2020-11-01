@@ -59,6 +59,12 @@ export default {
         this.updateColor(color);
       });
   },
+  beforeUnmount() {
+    if (this.pickr) {
+      this.pickr._root.app.remove();
+      this.pickr.destroy();
+    }
+  },
   methods: {
     updateColor(color) {
       this.$emit("update:color", color.toHEXA().toString());

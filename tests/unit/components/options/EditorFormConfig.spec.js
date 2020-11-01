@@ -116,7 +116,7 @@ describe("EditorFormConfig.vue", () => {
 
     const secondButton = wrapper.findAll("button.add-new-env")[1];
     await secondButton.trigger("click");
-    await waitFor(10);
+    await waitFor(20);
 
     const inputs = wrapper.findAll(".right-pane input");
     await inputs[0].setValue("My New Env 2");

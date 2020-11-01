@@ -191,7 +191,6 @@ export default {
   },
   watch: {
     newEnv(val) {
-      console.log(val);
       const nameEl = this.$refs.name;
       if (val && nameEl) {
         nameEl.focus();
