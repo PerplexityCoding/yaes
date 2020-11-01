@@ -127,7 +127,10 @@ export default {
     },
     updateEnv(env) {
       if (this.newEnv) {
-        this.newEnv = env;
+        this.newEnv = {
+          ...this.newEnv,
+          ...env
+        };
       } else {
         const config = updateEnv(this.config, env);
         this.updateConfig(config);

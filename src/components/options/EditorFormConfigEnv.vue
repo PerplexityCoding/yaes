@@ -56,7 +56,7 @@
           />
         </div>
         <transition name="fade-in">
-          <div v-show="!newEnv">
+          <div v-if="!newEnv">
             <div class="label-set">
               <label :for="$id('append-url-params')"> Append url params </label>
               <input

@@ -72,11 +72,20 @@ describe("EditorFormConfig.vue", () => {
     expectName(projects[1], "Project2");
   });
 
-  it("add new env 1st button", () => {
+  it("add new env 1st button", async () => {
     const wrapper = createDefaultWrapper();
 
     const firstButton = wrapper.find("button.add-new-env");
-    firstButton.trigger("click");
+    await firstButton.trigger("click");
+    await waitFor(10);
+
+    const inputs = wrapper.findAll(".right-pane input");
+    await inputs[0].setValue("My New Env");
+    await inputs[1].setValue("https://gogo.fr");
+    await waitFor(10);
+
+    await wrapper.find("button.create-env-btn").trigger("click");
+    await waitFor();
 
     checkUpdateConfig(wrapper, {
       projects: [
@@ -95,17 +104,27 @@ describe("EditorFormConfig.vue", () => {
         ...config.envs,
         {
           id: 4,
-          name: "New Env"
+          name: "My New Env",
+          url: "https://gogo.fr"
         }
       ]
     });
   });
 
-  it("add new env 2nd button", () => {
+  it("add new env 2nd button", async () => {
     const wrapper = createDefaultWrapper();
 
     const secondButton = wrapper.findAll("button.add-new-env")[1];
-    secondButton.trigger("click");
+    await secondButton.trigger("click");
+    await waitFor(10);
+
+    const inputs = wrapper.findAll(".right-pane input");
+    await inputs[0].setValue("My New Env 2");
+    await inputs[1].setValue("https://gogo2.fr");
+    await waitFor(10);
+
+    await wrapper.find("button.create-env-btn").trigger("click");
+    await waitFor();
 
     checkUpdateConfig(wrapper, {
       projects: [
@@ -124,7 +143,8 @@ describe("EditorFormConfig.vue", () => {
         ...config.envs,
         {
           id: 4,
-          name: "New Env"
+          name: "My New Env 2",
+          url: "https://gogo2.fr"
         }
       ]
     });
