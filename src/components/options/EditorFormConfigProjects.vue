@@ -1,7 +1,7 @@
 <template>
   <div :class="{ 'has-projects': hasProjects }">
-    <ul class="project-sortable" @sortupdate="onDrop">
-      <div v-if="hasProjects">
+    <div v-if="hasProjects">
+      <ul class="project-sortable" @sortupdate="onDrop">
         <EditorFormConfigProject
           v-for="project of config.projects"
           :key="'project-' + project.id"
@@ -15,12 +15,12 @@
           @drop-env="data => $emit('drop-env', data)"
           @update-project="data => $emit('update-project', data)"
         />
-      </div>
-      <h3 v-else>
-        There is currently no projects. <br />
-        Create one by clicking on the create button.
-      </h3>
-    </ul>
+      </ul>
+    </div>
+    <h3 v-else>
+      There is currently no projects. <br />
+      Create one by clicking on the create button.
+    </h3>
 
     <footer>
       <button class="new-project" @click="$emit('new-project')">
@@ -33,8 +33,8 @@
 
 <script>
 import EditorFormConfigProject from "@/components/options/EditorFormConfigProject";
-import sortable from "html5sortable/dist/html5sortable.cjs";
 import AddIcon from "@/components/icons/Add";
+import { updateSortableProjects } from "@/services/business/ui";
 
 export default {
   name: "EditorFormConfigProjects",
@@ -59,9 +59,11 @@ export default {
     }
   },
   mounted() {
-    sortable(".project-sortable", {
-      handle: ".project-sortable-handle"
-    });
+    setTimeout(() => {
+      updateSortableProjects({
+        handle: ".project-sortable-handle"
+      });
+    }, 100);
   },
   emits: [
     "select-env",
