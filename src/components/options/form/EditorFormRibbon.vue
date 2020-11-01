@@ -108,9 +108,11 @@ export default {
 </script>
 
 <style lang="scss">
-.pcr-button {
-  border: 2px solid var(--blue);
-  border-radius: 4px;
+.pickr .pcr-button {
+  &:after,
+  &:before {
+    border-radius: 4px;
+  }
 }
 </style>
 
