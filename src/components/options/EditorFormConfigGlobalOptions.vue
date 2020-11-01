@@ -53,6 +53,13 @@
           >
         </div>
       </fieldset>
+
+      <div class="third-col">
+        <button @click.prevent="resetToDefaultOptions" v-show="hasOptions">
+          <GoBack height="18px" width="18px" />
+          Reset
+        </button>
+      </div>
     </form>
   </div>
 </template>
@@ -63,12 +70,13 @@ import { getComputedFactory } from "@/services/business/ui";
 import EditorFormRibbon from "@/components/options/form/EditorFormRibbon";
 import EditorFormBadge from "@/components/options/form/EditorFormBadge";
 import { DEFAULT_OPTIONS } from "@/services/business/storage";
+import GoBack from "@/components/icons/GoBack";
 
 const computed = getComputedFactory("mergedOptions");
 
 export default {
   name: "EditorFormConfigGlobalOptions",
-  components: { EditorFormBadge, EditorFormRibbon },
+  components: { EditorFormBadge, EditorFormRibbon, GoBack },
   props: {
     options: {
       type: Object,
@@ -88,9 +96,15 @@ export default {
         this.options || {}
       );
       return options;
+    },
+    hasOptions() {
+      return Object.keys(this.options).length > 0;
     }
   },
   methods: {
+    resetToDefaultOptions() {
+      this.$emit("update:options", {});
+    },
     updateComputed(data) {
       this.$emit("update:options", deepmerge({ ...this.options }, data));
     }
@@ -108,8 +122,15 @@ export default {
     margin-top: 8px;
   }
 
-  .right-col,
+  .right-col {
+    flex: 2;
+  }
+
   .left-col {
+    flex: 3;
+  }
+
+  .third-col {
     flex: 1;
   }
 
@@ -127,6 +148,26 @@ export default {
     font-size: 0.9rem;
     font-weight: bold;
     padding: 4px 0;
+  }
+
+  button {
+    cursor: pointer;
+    appearance: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    background: none;
+    padding: 8px;
+    border-radius: 4px;
+    float: right;
+
+    svg {
+      margin-right: 4px;
+    }
+
+    &:hover {
+      background: var(--bg-grey-hover);
+    }
   }
 }
 </style>
