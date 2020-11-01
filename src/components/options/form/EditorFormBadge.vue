@@ -1,17 +1,21 @@
 <template>
   <fieldset :class="{ 'has-env': !!env }">
-    <label
+    <div
+      class="label-set"
       display-badge
       :class="{ defaulted: env ? env.displayBadge === undefined : false }"
     >
-      <input type="checkbox" v-model="displayBadge" />
-      Badge
-    </label>
+      <input
+        :id="$id('display-badge')"
+        type="checkbox"
+        v-model="displayBadge"
+      />
+      <label :for="$id('display-badge')">Badge</label>
+    </div>
 
-    <div>
+    <div class="label-set" badge-bg-color>
       <label
         class="badge-bg-color"
-        badge-bg-color
         :class="{
           defaulted: env
             ? env.badgeOptions
@@ -61,7 +65,7 @@ export default {
 
 <style scoped lang="scss">
 .badge-bg-color {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   margin: 4px 0 0 24px;
 

@@ -2,27 +2,27 @@ import { getContrast } from "../services/utils";
 
 const ribbonCss = `
   .corner-ribbon {
-    width: 250px;
+    width: 225px;
     color: #fff;
     position: fixed;
     text-align: center;
-    top: 50px;
+    top: 45px;
     line-height: 40px;
     z-index: 99999;
     font-size: 18px;
-    box-shadow: 8px 2px 5px #2f2f2f;
+    box-shadow: 0px 1px 4px #a9a9a9;
     cursor: alias;
   }
 
   .corner-ribbon.left {
-    left: -75px;
+    left: -53px;
     -ms-transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
     transform: rotate(-45deg);
   }
 
   .corner-ribbon.right {
-    right: -75px;
+    right: -53px;
     left: auto;
     -ms-transform: rotate(45deg);
     -webkit-transform: rotate(45deg);

@@ -18,19 +18,40 @@
       </div>
 
       <fieldset class="right-col">
-        <label display-domain>
-          <input type="checkbox" v-model="displayDomain" /> Display domain
-        </label>
-        <label display-header>
-          <input type="checkbox" v-model="displayHeader" /> Display header
-        </label>
-        <label display-footer>
-          <input type="checkbox" v-model="displayFooter" /> Display footer
-        </label>
-        <label display-projects-links>
-          <input type="checkbox" v-model="displaySeeProjectsLink" />
-          Display see projects link
-        </label>
+        <div class="label-set" display-domain>
+          <input
+            :id="$id('display-domain')"
+            type="checkbox"
+            v-model="displayDomain"
+          />
+          <label :for="$id('display-domain')"> Display domain </label>
+        </div>
+        <div class="label-set" display-header>
+          <input
+            :id="$id('display-header')"
+            type="checkbox"
+            v-model="displayHeader"
+          />
+          <label :for="$id('display-header')"> Display header </label>
+        </div>
+        <div class="label-set" display-footer>
+          <input
+            :id="$id('display-footer')"
+            type="checkbox"
+            v-model="displayFooter"
+          />
+          <label :for="$id('display-footer')"> Display footer </label>
+        </div>
+        <div class="label-set" display-projects-links>
+          <input
+            :id="$id('display-projects-links')"
+            type="checkbox"
+            v-model="displaySeeProjectsLink"
+          />
+          <label :for="$id('display-projects-links')"
+            >Display see projects link</label
+          >
+        </div>
       </fieldset>
     </form>
   </div>
@@ -97,7 +118,7 @@ export default {
     display: flex;
     flex-direction: column;
 
-    label {
+    .label-set {
       margin-bottom: 8px;
     }
   }

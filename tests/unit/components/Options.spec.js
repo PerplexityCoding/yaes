@@ -3,6 +3,7 @@ import { mount } from "@vue/test-utils";
 import Options from "@/Options.vue";
 import { waitFor } from "@/services/utils";
 import EditorFormConfigProjects from "@/components/options/EditorFormConfigProjects";
+import UniqueId from "@/utils/plugins/unique-id";
 
 jest.mock("@/services/business/storage");
 
@@ -43,7 +44,11 @@ describe("Options.vue", () => {
   it("should display the projects and envs", async () => {
     mockStorageEnvGet();
 
-    const wrapper = mount(Options);
+    const wrapper = mount(Options, {
+      global: {
+        plugins: [UniqueId]
+      }
+    });
     await waitFor();
 
     const projects = wrapper.findComponent(EditorFormConfigProjects);
