@@ -4,14 +4,18 @@
       <span>
         Environment settings
       </span>
-      <button class="clone-env" @click="$emit('clone-env', envId)">
+      <button
+        v-if="!deleteConfirm"
+        class="clone-env"
+        @click="$emit('clone-env', envId)"
+      >
         <CloneIcon height="18px" width="18px" />
         Clone
       </button>
-      <button class="delete-env" @click="$emit('delete-env', envId)">
-        <DeleteIcon height="18px" width="18px" />
-        Delete
-      </button>
+      <ConfirmationDeleteButton
+        v-model="deleteConfirm"
+        @action="$emit('delete-env', envId)"
+      />
     </h3>
     <form>
       <fieldset class="basis-settings">
@@ -112,21 +116,21 @@ import deepmerge from "deepmerge";
 import { getComputedFactory } from "@/services/business/ui";
 import EditorFormRibbon from "@/components/options/form/EditorFormRibbon";
 import EditorFormBadge from "@/components/options/form/EditorFormBadge";
-import DeleteIcon from "@/components/icons/Delete";
 import CloneIcon from "@/components/icons/Clone";
 import GoBack from "@/components/icons/GoBack";
 import { getEnvById } from "@/services/business/bo/config";
 import { removeUndefined } from "@/services/utils";
 import { DEFAULT_OPTIONS } from "@/services/business/storage";
+import ConfirmationDeleteButton from "@/components/options/form/ConfirmationDeleteButton";
 
 const computed = getComputedFactory("mergedEnv");
 
 export default {
   name: "EditorFormConfigEnv",
   components: {
+    ConfirmationDeleteButton,
     EditorFormBadge,
     EditorFormRibbon,
-    DeleteIcon,
     CloneIcon,
     GoBack
   },
@@ -143,6 +147,11 @@ export default {
       type: Object,
       required: true
     }
+  },
+  data() {
+    return {
+      deleteConfirm: false
+    };
   },
   watch: {
     focus(val) {
@@ -299,11 +308,6 @@ button {
       flex: 1;
     }
   }
-}
-
-.delete-env {
-  fill: var(--ruby);
-  color: var(--ruby);
 }
 
 .clone-env {

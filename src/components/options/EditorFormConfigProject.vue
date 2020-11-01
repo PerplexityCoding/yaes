@@ -20,19 +20,17 @@
       <button
         class="edit-project-name"
         @click="projectNameEditable = true"
-        v-if="!projectNameEditable"
+        v-if="!projectNameEditable && !deleteConfirm"
       >
         <EditText height="14px" width="14px" />
         Edit
       </button>
 
-      <button
+      <ConfirmationDeleteButton
         class="delete-project"
-        @click="$emit('delete-project', projectId)"
-      >
-        <DeleteIcon height="18px" width="18px" />
-        Delete
-      </button>
+        v-model="deleteConfirm"
+        @action="$emit('delete-project', projectId)"
+      />
     </header>
 
     <ul class="env-sortable" @sortupdate="onDrop">
@@ -67,17 +65,24 @@ import DragList from "@/components/icons/DragList";
 import EditText from "@/components/icons/EditText";
 import ArrowRight from "@/components/icons/ArrowRight";
 import AddIcon from "@/components/icons/Add";
-import DeleteIcon from "@/components/icons/Delete";
 import { updateSortableEnvs } from "@/services/business/ui";
+import ConfirmationDeleteButton from "@/components/options/form/ConfirmationDeleteButton";
 
 export default {
   name: "EditorFormConfigProject",
   data() {
     return {
+      deleteConfirm: false,
       projectNameEditable: false
     };
   },
-  components: { AddIcon, DeleteIcon, DragList, EditText, ArrowRight },
+  components: {
+    AddIcon,
+    DragList,
+    EditText,
+    ArrowRight,
+    ConfirmationDeleteButton
+  },
   props: {
     projectId: {
       type: Number,
@@ -165,8 +170,6 @@ export default {
 
     .delete-project {
       display: none;
-      fill: var(--ruby);
-      color: var(--ruby);
     }
 
     &:hover {

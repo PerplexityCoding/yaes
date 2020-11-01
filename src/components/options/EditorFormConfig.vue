@@ -101,8 +101,10 @@ export default {
       });
       const config = addEnv(this.config, projectId, env);
       this.updateConfig(config, { noSave: true });
-      this.selectEnv({ envId: env.id, newEnv: true });
-      updateSortableEnvs();
+      setTimeout(() => {
+        this.selectEnv({ envId: env.id, newEnv: true });
+        updateSortableEnvs();
+      }, 0);
     },
     updateEnv(env) {
       const config = updateEnv(this.config, env);
@@ -117,9 +119,12 @@ export default {
       updateSortableEnvs();
     },
     deleteEnv(envId) {
+      const projectEnvs = getProjectEnvs(this.config, this.selectedProjectId);
+      const envIdx = projectEnvs.findIndex(env => env.id === envId);
+
       const config = deleteEnv(this.config, envId);
       this.updateConfig(config);
-      this.selectLastEnv(config);
+      this.selectNextEnv(config, envIdx);
       updateSortableEnvs();
     },
     dropEnv({ projectId, origin, destination }) {
@@ -176,11 +181,13 @@ export default {
     updateConfig(config, options) {
       this.$emit("update:config", config, options);
     },
-    selectLastEnv(config) {
+    selectNextEnv(config, envIdx) {
       const projectEnvs = getProjectEnvs(config, this.selectedProjectId);
       if (projectEnvs.length > 0) {
+        const env = projectEnvs[envIdx] || projectEnvs[projectEnvs.length - 1];
+
         this.selectEnv({
-          envId: projectEnvs[projectEnvs.length - 1].id
+          envId: env.id
         });
       }
     },
