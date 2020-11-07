@@ -89,7 +89,7 @@ ul {
     button {
       appearance: none;
       border-radius: 5px;
-      border: 1px solid var(--border-grey);
+      border: 1px solid rgba(var(--border-grey));
       padding: 5px 8px 5px 15px;
       flex: 1;
       text-align: left;
@@ -100,11 +100,11 @@ ul {
       transition: background-color 0.7s ease;
       min-height: 37px;
       letter-spacing: 0.35px;
-      color: var(--fg-black);
-      outline-color: var(--blue);
+      color: rgba(var(--fg-black));
+      outline-color: rgba(var(--blue));
 
       &:hover {
-        background-color: var(--bg-grey-hover);
+        background-color: rgba(var(--bg-grey-hover));
       }
 
       > .env-name {
@@ -112,18 +112,18 @@ ul {
       }
 
       &.selected {
-        border-left-color: var(--blue);
+        border-left-color: rgba(var(--blue));
         border-left-width: 7px;
         padding-left: 8px;
         font-weight: bold;
-        background-color: var(--bg-yellow);
+        background-color: rgba(var(--bg-yellow));
 
         .selected-pill {
           display: block;
           border-radius: 50px;
           height: 12px;
           width: 12px;
-          background-color: var(--blue);
+          background-color: rgba(var(--blue));
         }
       }
     }

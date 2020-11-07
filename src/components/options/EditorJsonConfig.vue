@@ -82,7 +82,7 @@ export default {
 @import "@/styles/loader.scss";
 
 #check-color {
-  fill: var(--green) !important;
+  fill: rgba(var(--green)) !important;
 }
 </style>
 

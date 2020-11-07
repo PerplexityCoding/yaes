@@ -128,19 +128,19 @@ footer {
     }
 
     &:hover {
-      background: var(--bg-grey-hover);
+      background: rgba(var(--bg-grey-hover));
     }
   }
 
   .new-project {
-    fill: var(--green);
-    color: var(--green);
+    fill: rgba(var(--green));
+    color: rgba(var(--green));
   }
 }
 
 .has-projects {
   footer {
-    border-top: 1px solid var(--border-grey);
+    border-top: 1px solid rgba(var(--border-grey));
   }
 }
 </style>

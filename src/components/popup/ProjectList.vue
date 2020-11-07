@@ -87,22 +87,22 @@ export default {
     button {
       appearance: none;
       border-radius: 5px;
-      border: 1px solid var(--border-grey);
+      border: 1px solid rgba(var(--border-grey));
       padding: 5px 8px 5px 10px;
       flex: 1;
       text-align: left;
       cursor: pointer;
       display: flex;
       align-items: center;
-      background-color: var(--bg-yellow);
+      background-color: rgba(var(--bg-yellow));
       transition: background-color 0.7s ease;
       min-height: 37px;
       letter-spacing: 0.35px;
-      color: var(--fg-black);
-      outline-color: var(--blue);
+      color: rgba(var(--fg-black));
+      outline-color: rgba(var(--blue));
 
       &:hover {
-        background-color: var(--bg-yellow-hover);
+        background-color: rgba(var(--bg-yellow-hover));
       }
 
       > span {
@@ -112,7 +112,7 @@ export default {
       svg {
         transform: rotate(90deg);
         transition: transform 0.8s ease;
-        fill: var(--blue);
+        fill: rgba(var(--blue));
       }
 
       &.is-opened {
@@ -120,7 +120,7 @@ export default {
           transform: rotate(-90deg);
         }
 
-        border: 2px solid var(--blue);
+        border: 2px solid rgba(var(--blue));
       }
     }
 

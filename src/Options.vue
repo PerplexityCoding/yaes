@@ -159,13 +159,13 @@ input[type="text"] {
   padding: 3px 4px 4px 4px;
   border: 1px solid rgba(var(--bg-grey-2));
   border-radius: 4px;
-  color: var(--fg-black);
-  background-color: var(--bg-white-off);
+  color: rgba(var(--fg-black));
+  background-color: rgba(var(--bg-white-off));
 
   &:active,
   &:hover,
   &:focus {
-    box-shadow: 0px 0px 1px 1px var(--blue);
+    box-shadow: 0px 0px 1px 1px rgba(var(--blue));
   }
 }
 
@@ -178,34 +178,34 @@ input[type="checkbox"] {
 input::placeholder {
   font-weight: lighter;
   font-style: oblique;
-  color: var(--fg-black-disabled);
+  color: rgba(var(--fg-black-disabled));
   opacity: 0.7;
 }
 
 .error {
-  color: var(--ruby);
+  color: rgba(var(--ruby));
 }
 
 input.error {
-  border-color: var(--ruby);
-  color: var(--fg-black);
+  border-color: rgba(var(--ruby));
+  color: rgba(var(--fg-black));
 
   &:active,
   &:hover,
   &:focus {
-    box-shadow: 0px 0px 1px 1px var(--ruby);
+    box-shadow: 0px 0px 1px 1px rgba(var(--ruby));
   }
 }
 
 button,
 select {
-  color: var(--fg-black);
+  color: rgba(var(--fg-black));
 }
 
 select {
   padding: 4px;
   border-radius: 4px;
-  background-color: var(--bg-white-off);
+  background-color: rgba(var(--bg-white-off));
   border: 1px solid rgba(var(--bg-grey-2));
 }
 
@@ -227,7 +227,7 @@ fieldset {
   &::after {
     margin-left: 4px;
     content: "*";
-    color: var(--blue);
+    color: rgba(var(--blue));
   }
 }
 
@@ -285,10 +285,10 @@ fieldset {
 .options {
   max-width: 800px;
   margin: 0 auto;
-  color: var(--fg-black);
+  color: rgba(var(--fg-black));
 
   a {
-    color: var(--blue);
+    color: rgba(var(--blue));
   }
 
   h1 {
@@ -341,15 +341,15 @@ fieldset {
   .info {
     display: inline-block;
     border-radius: 3px;
-    color: var(--green);
+    color: rgba(var(--green));
     padding: 5px 10px;
     margin-top: 5px;
     font-weight: bold;
   }
 
   .error {
-    color: var(--ruby);
-    fill: var(--ruby);
+    color: rgba(var(--ruby));
+    fill: rgba(var(--ruby));
   }
 
   .dev-buttons {

@@ -166,7 +166,7 @@ export default {
     }
 
     &:hover {
-      background: var(--bg-grey-hover);
+      background: rgba(var(--bg-grey-hover));
     }
   }
 }

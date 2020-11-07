@@ -316,7 +316,7 @@ h3 {
   }
 
   i {
-    color: var(--blue);
+    color: rgba(var(--blue));
   }
 }
 
@@ -344,7 +344,7 @@ h3 {
 }
 
 b {
-  color: var(--ruby);
+  color: rgba(var(--ruby));
 }
 
 .field-domain,
@@ -367,7 +367,7 @@ button {
   }
 
   &:hover {
-    background: var(--bg-grey-hover);
+    background: rgba(var(--bg-grey-hover));
   }
 }
 
@@ -380,7 +380,7 @@ button {
     align-items: center;
 
     i {
-      color: var(--blue);
+      color: rgba(var(--blue));
       font-weight: normal;
     }
 
@@ -392,7 +392,7 @@ button {
 }
 
 .clone-env {
-  fill: var(--fg-black);
+  fill: rgba(var(--fg-black));
 }
 
 .side-panel {
@@ -408,8 +408,8 @@ button {
   justify-content: flex-end;
 
   .create-env-btn {
-    fill: var(--green);
-    color: var(--green);
+    fill: rgba(var(--green));
+    color: rgba(var(--green));
   }
 }
 </style>

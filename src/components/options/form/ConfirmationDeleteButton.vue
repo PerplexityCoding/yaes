@@ -99,8 +99,8 @@ export default {
 <style scoped lang="scss">
 .delete-btn,
 .delete-confirm-btn {
-  fill: var(--ruby);
-  color: var(--ruby);
+  fill: rgba(var(--ruby));
+  color: rgba(var(--ruby));
 }
 
 .buttons-wrapper {
@@ -122,7 +122,7 @@ button {
   }
 
   &:hover {
-    background: var(--bg-grey-hover);
+    background: rgba(var(--bg-grey-hover));
   }
 }
 

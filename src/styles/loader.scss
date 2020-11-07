@@ -9,8 +9,8 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  border: 2px solid var(--blue);
-  border-color: var(--blue) transparent var(--blue) transparent;
+  border: 2px solid rgba(var(--blue));
+  border-color: rgba(var(--blue)) transparent rgba(var(--blue)) transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
 @keyframes lds-dual-ring {

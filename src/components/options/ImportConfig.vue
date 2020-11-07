@@ -200,12 +200,12 @@ button {
     }
 
     .import-failed-message {
-      color: var(--ruby);
+      color: rgba(var(--ruby));
       margin-left: 8px;
     }
 
     .import-success-message {
-      color: var(--green);
+      color: rgba(var(--green));
       margin-left: 8px;
     }
   }

@@ -285,7 +285,7 @@ export default {
   .right-pane {
     padding: 4px 16px 12px 16px;
     display: flex;
-    background-color: var(--border-grey);
+    background-color: rgba(var(--border-grey));
     border-radius: 0 4px 4px 0;
     box-shadow: inset 6px 0px 10px -10px rgba(0, 0, 0, 0.55);
 

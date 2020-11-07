@@ -149,7 +149,7 @@ export default {
 .sortable-placeholder {
   display: block;
   height: 40px;
-  background-color: var(--bg-grey-hover);
+  background-color: rgba(var(--bg-grey-hover));
 }
 </style>
 
@@ -203,7 +203,7 @@ export default {
       margin: 0 8px 0 4px;
       cursor: grab;
       display: flex;
-      fill: var(--blue);
+      fill: rgba(var(--blue));
       position: relative;
       top: 1px;
     }
@@ -215,7 +215,7 @@ export default {
     list-style: none;
     margin: 0;
     padding: 0;
-    border-bottom: 1px solid var(--border-grey);
+    border-bottom: 1px solid rgba(var(--border-grey));
 
     .project-env {
       padding: 12px 8px;
@@ -227,7 +227,7 @@ export default {
       }
 
       &:hover {
-        background: var(--bg-grey-hover);
+        background: rgba(var(--bg-grey-hover));
       }
 
       &:active {
@@ -236,17 +236,17 @@ export default {
     }
 
     .selected-env {
-      background: var(--border-grey);
+      background: rgba(var(--border-grey));
 
       &:hover {
-        background: var(--bg-grey-hover);
+        background: rgba(var(--bg-grey-hover));
       }
     }
   }
 
   &.selected-project {
     .project-sortable-handle {
-      fill: var(--ruby);
+      fill: rgba(var(--ruby));
     }
 
     .project-name {
@@ -273,7 +273,7 @@ export default {
     }
 
     &:hover {
-      background: var(--bg-grey-hover);
+      background: rgba(var(--bg-grey-hover));
     }
   }
 
@@ -282,8 +282,8 @@ export default {
     padding: 4px;
 
     .add-new-env {
-      fill: var(--green);
-      color: var(--green);
+      fill: rgba(var(--green));
+      color: rgba(var(--green));
     }
   }
 }

@@ -177,9 +177,9 @@ export default {
   justify-content: center;
   margin-top: 6px;
   align-items: center;
-  color: var(--fg-black);
+  color: rgba(var(--fg-black));
   font-size: 0.75rem;
-  outline-color: var(--blue);
+  outline-color: rgba(var(--blue));
 
   &:hover {
     text-decoration: underline;
@@ -192,7 +192,7 @@ export default {
 
   svg {
     transform: rotate(90deg);
-    fill: var(--fg-black);
+    fill: rgba(var(--fg-black));
     margin-right: 5px;
   }
 
@@ -210,9 +210,9 @@ export default {
 }
 
 .header {
-  border-bottom: 1px solid var(--border-grey);
+  border-bottom: 1px solid rgba(var(--border-grey));
   background-color: rgba(var(--bg-grey));
-  color: var(--fg-black);
+  color: rgba(var(--fg-black));
   padding: 7px;
   display: flex;
 
@@ -223,14 +223,14 @@ export default {
 }
 
 .footer {
-  border-top: 1px solid var(--border-grey);
+  border-top: 1px solid rgba(var(--border-grey));
   background-color: rgba(var(--bg-grey));
   padding: 7px;
   display: flex;
   justify-content: space-between;
 
   a {
-    color: var(--blue);
+    color: rgba(var(--blue));
     text-decoration: none;
 
     &:hover {
