@@ -10,18 +10,17 @@
             Environment settings
           </span>
           <div class="env-btns">
-            <button
-              v-if="!deleteConfirm"
-              class="clone-env"
-              @click="$emit('clone-env', env.id)"
-            >
-              <CloneIcon height="18px" width="18px" />
-              Clone
-            </button>
             <ConfirmationDeleteButton
               v-model="deleteConfirm"
               @action="$emit('delete-env', env.id)"
-            />
+            >
+              <template #beforeButton>
+                <button class="clone-env" @click="$emit('clone-env', env.id)">
+                  <CloneIcon height="18px" width="18px" />
+                  Clone
+                </button>
+              </template>
+            </ConfirmationDeleteButton>
           </div>
         </div>
       </transition>

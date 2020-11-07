@@ -1,15 +1,20 @@
 <template>
   <div @mouseleave="hideDelay" @mouseenter="stopHide">
-    <button
-      v-if="!modelValue"
-      class="delete-btn"
-      @click="$emit('update:modelValue', !modelValue)"
-    >
-      <DeleteIcon height="18px" width="18px" />
-      Delete
-    </button>
-    <transition name="slide-fade-2">
-      <div class="delete-confirm" v-if="modelValue && !hiding">
+    <transition name="fade" mode="out-in">
+      <div class="buttons-wrapper" v-if="!modelValue">
+        <slot name="beforeButton" />
+
+        <button
+          class="delete-btn"
+          @click="$emit('update:modelValue', !modelValue)"
+        >
+          <DeleteIcon height="18px" width="18px" />
+          Delete
+        </button>
+
+        <slot name="afterButton" />
+      </div>
+      <div class="delete-confirm" v-else>
         <span>
           Are you sure ?
         </span>
@@ -42,8 +47,14 @@ export default {
   data() {
     return {
       hiding: false,
-      hideTimer: null
+      hideTimer: null,
+      deleting: false
     };
+  },
+  computed: {
+    transitionName() {
+      return this.deleting ? "fade" : "slide-fade-2";
+    }
   },
   methods: {
     hideDelay() {
@@ -61,16 +72,24 @@ export default {
       }
     },
     deleteConfirm() {
-      this.hide();
-      this.$emit("action");
+      this.hide(true, () => {
+        this.$emit("action");
+      });
     },
-    hide() {
-      if (!this.hiding) {
+    hide(noTransition, cb) {
+      if (noTransition) {
+        this.deleting = 0;
+        this.$emit("update:modelValue", false);
+        setTimeout(() => {
+          this.deleting = false;
+          cb();
+        }, 0);
+      } else if (!this.hiding) {
         this.hiding = true;
         setTimeout(() => {
           this.$emit("update:modelValue", false);
           this.hiding = false;
-        }, 800);
+        }, 700);
       }
     }
   }
@@ -83,6 +102,11 @@ export default {
   fill: var(--ruby);
   color: var(--ruby);
 }
+
+.buttons-wrapper {
+  display: flex;
+}
+
 button {
   cursor: pointer;
   appearance: none;

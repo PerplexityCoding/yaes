@@ -20,20 +20,22 @@
         </span>
       </div>
 
-      <button
-        class="edit-project-name"
-        @click="projectNameEditable = true"
-        v-if="!projectNameEditable && !deleteConfirm"
-      >
-        <EditText height="14px" width="14px" />
-        Edit
-      </button>
-
       <ConfirmationDeleteButton
         class="delete-project"
         v-model="deleteConfirm"
         @action="$emit('delete-project', projectId)"
-      />
+      >
+        <template #beforeButton>
+          <button
+            class="edit-project-name"
+            @click="projectNameEditable = true"
+            v-if="!projectNameEditable"
+          >
+            <EditText height="14px" width="14px" />
+            Edit
+          </button>
+        </template>
+      </ConfirmationDeleteButton>
     </header>
 
     <ul class="env-sortable" @sortupdate="onDrop">
