@@ -10,6 +10,10 @@ export function getComputedFactory(objectKey) {
         return option != null ? option : defaultValue;
       },
       set(value) {
+        if (this.$v && this.$v[key]) {
+          this.$v[key].$touch();
+        }
+
         value = value === "" ? undefined : value;
         this.updateComputed(
           subKey ? { [key]: { [subKey]: value } } : { [key]: value }

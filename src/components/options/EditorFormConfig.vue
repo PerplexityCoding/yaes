@@ -22,24 +22,19 @@
         class="right-pane"
         :class="{ 'right-pane-empty': !selectedEnvId && !newEnv }"
       >
-        <transition name="slide-fade">
-          <EditorFormEnvConfig
-            v-if="selectedEnv != null || newEnv != null"
-            :env="newEnv ? newEnv : selectedEnv"
-            :config="config"
-            :new-env="isNewEnv"
-            :project-name="selectedProject.name"
-            @delete-env="deleteEnv"
-            @clone-env="cloneEnv"
-            @update-env="updateEnv"
-            @cancel-new-env="cancelNewEnv"
-            @create-new-env="createNewEnv"
-          />
-        </transition>
-        <div
-          v-if="selectedEnvId == null && !transitioning && !newEnv"
-          class="empty-env"
-        >
+        <EditorFormConfigEnv
+          v-if="selectedEnv != null || newEnv != null"
+          :env="newEnv ? newEnv : selectedEnv"
+          :config="config"
+          :new-env="isNewEnv"
+          :project-name="selectedProject.name"
+          @delete-env="deleteEnv"
+          @clone-env="cloneEnv"
+          @update-env="updateEnv"
+          @cancel-new-env="cancelNewEnv"
+          @create-new-env="createNewEnv"
+        />
+        <div v-if="selectedEnvId == null && !newEnv" class="empty-env">
           No env currently selected. <br />
           Select one on the left side to edit
         </div>
@@ -54,7 +49,7 @@
 </template>
 
 <script>
-import EditorFormEnvConfig from "@/components/options/EditorFormConfigEnv";
+import EditorFormConfigEnv from "@/components/options/EditorFormConfigEnv";
 import EditorFormConfigProjects from "@/components/options/EditorFormConfigProjects";
 import EditorFormConfigGlobalOptions from "@/components/options/EditorFormConfigGlobalOptions";
 import {
@@ -81,7 +76,7 @@ export default {
   components: {
     EditorFormConfigGlobalOptions,
     EditorFormConfigProjects,
-    EditorFormEnvConfig
+    EditorFormConfigEnv
   },
   props: {
     config: {
@@ -91,7 +86,6 @@ export default {
   },
   data() {
     return {
-      transitioning: false,
       newEnv: null,
       isNewEnv: false,
       selectedEnvId: null,
@@ -125,7 +119,7 @@ export default {
         updateSortableEnvs();
       }, 0);
     },
-    updateEnv(env) {
+    updateEnv(env, options) {
       if (this.newEnv) {
         this.newEnv = {
           ...this.newEnv,
@@ -133,7 +127,7 @@ export default {
         };
       } else {
         const config = updateEnv(this.config, env);
-        this.updateConfig(config);
+        this.updateConfig(config, options);
       }
     },
     cloneEnv(envId) {
@@ -235,21 +229,15 @@ export default {
       if (data != null) {
         const { envId, projectId, newEnv } = data;
 
-        this.selectedEnvId = null;
-        this.transitioning = true;
-
-        setTimeout(() => {
-          this.selectedEnvId = envId;
-          if (projectId != null) {
-            this.selectedProjectId = projectId;
-          }
-          this.newEnv = newEnv;
-          this.transitioning = false;
-        }, 0);
+        this.selectedEnvId = envId;
+        if (projectId != null) {
+          this.selectedProjectId = projectId;
+        }
+        this.newEnv = newEnv;
 
         setTimeout(() => {
           this.isNewEnv = !!this.newEnv;
-        }, 10);
+        }, 0);
       } else {
         this.selectedEnvId = null;
         this.selectedProjectId = null;

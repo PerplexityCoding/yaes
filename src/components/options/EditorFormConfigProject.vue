@@ -167,7 +167,7 @@ export default {
     flex-direction: row;
     align-items: center;
     font-size: 15px;
-    background-color: var(--bg-grey-2);
+    background-color: rgba(var(--bg-grey-2), 0.3);
 
     .project-name {
       flex: 1;
@@ -249,6 +249,10 @@ export default {
 
     .project-name {
       color: var(--blue-2);
+    }
+
+    header {
+      background-color: rgba(var(--bg-grey-2), 0.8);
     }
   }
 

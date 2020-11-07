@@ -211,7 +211,7 @@ export default {
 
 .header {
   border-bottom: 1px solid var(--border-grey);
-  background-color: var(--bg-grey);
+  background-color: rgba(var(--bg-grey));
   color: var(--fg-black);
   padding: 7px;
   display: flex;
@@ -224,7 +224,7 @@ export default {
 
 .footer {
   border-top: 1px solid var(--border-grey);
-  background-color: var(--bg-grey);
+  background-color: rgba(var(--bg-grey));
   padding: 7px;
   display: flex;
   justify-content: space-between;

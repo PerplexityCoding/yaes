@@ -33,7 +33,18 @@
         </p>
         <div class="label-set">
           <label :for="$id('name')"> Name <b>*</b> </label>
-          <input ref="name" :id="$id('name')" type="text" v-model="name" />
+          <div>
+            <input
+              ref="name"
+              :id="$id('name')"
+              :class="{ error: $v.name.$error }"
+              type="text"
+              v-model="name"
+            />
+            <div class="error" v-if="$v.name.$error">
+              Name field is required.
+            </div>
+          </div>
         </div>
         <transition name="fade-in">
           <div class="label-set" v-if="!newEnv">
@@ -48,12 +59,18 @@
         </transition>
         <div class="label-set">
           <label :for="$id('url')"> Url <b>*</b> </label>
-          <input
-            :id="$id('url')"
-            type="text"
-            v-model="url"
-            placeholder="eg: https://www.ecosia.org"
-          />
+          <div>
+            <input
+              :class="{ error: $v.url.$error }"
+              :id="$id('url')"
+              type="text"
+              v-model="url"
+              placeholder="eg: https://www.ecosia.org"
+            />
+            <div class="error" v-if="$v.url.$error">
+              Url field is required and must have an url format.
+            </div>
+          </div>
         </div>
         <transition name="fade-in">
           <div v-if="!newEnv">
@@ -83,10 +100,7 @@
             Cancel
           </button>
 
-          <button
-            class="create-env-btn"
-            @click.prevent="$emit('create-new-env', env)"
-          >
+          <button class="create-env-btn" @click.prevent="createAndConfigure">
             <AddIcon height="18px" width="18px" /> Create and configure
           </button>
         </div>
@@ -152,6 +166,7 @@ import { removeUndefined } from "@/services/utils";
 import { DEFAULT_OPTIONS } from "@/services/business/storage";
 import ConfirmationDeleteButton from "@/components/options/form/ConfirmationDeleteButton";
 import AddIcon from "@/components/icons/Add";
+import { required, url } from "@vuelidate/validators";
 
 const computed = getComputedFactory("mergedEnv");
 
@@ -207,12 +222,13 @@ export default {
   ],
   computed: {
     mergedEnv() {
-      return this.env
+      const env = this.env
         ? deepmerge(
             deepmerge(deepmerge({}, DEFAULT_OPTIONS), this.config.options),
             this.env
           )
         : {};
+      return env;
     },
     name: computed("name"),
     shortName: computed("shortName"),
@@ -234,6 +250,12 @@ export default {
       }
       return false;
     }
+  },
+  validations() {
+    return {
+      name: { required },
+      url: { required, url }
+    };
   },
   methods: {
     updateComputed(data) {
@@ -261,6 +283,12 @@ export default {
       removeUndefined(newEnv);
 
       this.$emit("update-env", newEnv);
+    },
+    createAndConfigure() {
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        this.$emit("create-new-env", this.env);
+      }
     }
   }
 };
@@ -345,7 +373,7 @@ button {
 }
 
 .override-options {
-  border-top: 1px solid var(--bg-grey-2);
+  border-top: 1px solid rgba(var(--bg-grey-2));
   padding-top: 4px;
 
   .override-message {

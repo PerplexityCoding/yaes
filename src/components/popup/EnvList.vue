@@ -96,7 +96,7 @@ ul {
       cursor: pointer;
       display: flex;
       align-items: center;
-      background-color: var(--bg-grey);
+      background-color: rgba(var(--bg-grey));
       transition: background-color 0.7s ease;
       min-height: 37px;
       letter-spacing: 0.35px;

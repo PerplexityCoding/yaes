@@ -121,12 +121,13 @@ export default {
     },
 
     async saveConfig(config, { force, noSave } = {}) {
-      if (noSave) {
-        this.config = config;
+      if (!force && !config) {
         return;
       }
 
-      if (!force && !config) {
+      this.config = config;
+
+      if (noSave) {
         return;
       }
 
@@ -138,11 +139,10 @@ export default {
         return;
       }
       this.displaySaveInfo = true;
-      this.config = config;
 
       setTimeout(() => {
         this.displaySaveInfo = false;
-      }, 2000);
+      }, 3000);
     },
 
     downloadConfig() {
@@ -157,7 +157,7 @@ input[type="url"],
 input[type="text"] {
   outline: none;
   padding: 3px 4px 4px 4px;
-  border: 1px solid var(--bg-grey-2);
+  border: 1px solid rgba(var(--bg-grey-2));
   border-radius: 4px;
   color: var(--fg-black);
   background-color: var(--bg-white-off);
@@ -182,6 +182,21 @@ input::placeholder {
   opacity: 0.7;
 }
 
+.error {
+  color: var(--ruby);
+}
+
+input.error {
+  border-color: var(--ruby);
+  color: var(--fg-black);
+
+  &:active,
+  &:hover,
+  &:focus {
+    box-shadow: 0px 0px 1px 1px var(--ruby);
+  }
+}
+
 button,
 select {
   color: var(--fg-black);
@@ -191,12 +206,12 @@ select {
   padding: 4px;
   border-radius: 4px;
   background-color: var(--bg-white-off);
-  border: 1px solid var(--bg-grey-2);
+  border: 1px solid rgba(var(--bg-grey-2));
 }
 
 .label-set {
   display: flex;
-  align-items: center;
+  align-items: baseline;
 }
 
 fieldset {
@@ -218,7 +233,7 @@ fieldset {
 
 .box-elevation {
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
-  background-color: var(--bg-grey);
+  background-color: rgba(var(--bg-grey));
   border-radius: 4px;
   padding: 12px;
 }
