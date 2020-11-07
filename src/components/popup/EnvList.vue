@@ -83,7 +83,7 @@ ul {
     padding: 0;
 
     + li {
-      padding-top: 11px;
+      padding-top: 10px;
     }
 
     button {
@@ -98,13 +98,25 @@ ul {
       align-items: center;
       background-color: rgba(var(--bg-grey));
       transition: background-color 0.7s ease;
-      min-height: 37px;
+      min-height: 40px;
       letter-spacing: 0.35px;
       color: rgba(var(--fg-black));
       outline-color: rgba(var(--blue));
+      fill: rgba(var(--fg-black));
+
+      @media (prefers-color-scheme: dark) {
+        border: 1px solid rgba(var(--black-1));
+        background-color: rgba(var(--black-3));
+        color: rgba(var(--bg-white-off));
+        fill: rgba(var(--bg-white-off));
+      }
 
       &:hover {
         background-color: rgba(var(--bg-grey-hover));
+
+        @media (prefers-color-scheme: dark) {
+          background-color: rgba(var(--black-1), 0.8);
+        }
       }
 
       > .env-name {
@@ -117,6 +129,10 @@ ul {
         padding-left: 8px;
         font-weight: bold;
         background-color: rgba(var(--bg-yellow));
+
+        @media (prefers-color-scheme: dark) {
+          background-color: rgba(var(--black-3));
+        }
 
         .selected-pill {
           display: block;

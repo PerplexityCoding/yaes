@@ -150,6 +150,10 @@ export default {
   display: block;
   height: 40px;
   background-color: rgba(var(--bg-grey-hover));
+
+  @media (prefers-color-scheme: dark) {
+    background-color: rgba(var(--black-2));
+  }
 }
 </style>
 
@@ -170,6 +174,10 @@ export default {
     align-items: center;
     font-size: 15px;
     background-color: rgba(var(--bg-grey-2), 0.3);
+
+    @media (prefers-color-scheme: dark) {
+      background-color: rgba(var(--black-2));
+    }
 
     .project-name {
       flex: 1;
@@ -217,6 +225,10 @@ export default {
     padding: 0;
     border-bottom: 1px solid rgba(var(--border-grey));
 
+    @media (prefers-color-scheme: dark) {
+      border-bottom: 1px solid rgba(var(--black-2));
+    }
+
     .project-env {
       padding: 12px 8px;
       cursor: pointer;
@@ -228,6 +240,10 @@ export default {
 
       &:hover {
         background: rgba(var(--bg-grey-hover));
+
+        @media (prefers-color-scheme: dark) {
+          background-color: rgba(var(--black-1));
+        }
       }
 
       &:active {
@@ -238,8 +254,16 @@ export default {
     .selected-env {
       background: rgba(var(--border-grey));
 
+      @media (prefers-color-scheme: dark) {
+        background-color: rgba(var(--black-3));
+      }
+
       &:hover {
         background: rgba(var(--bg-grey-hover));
+
+        @media (prefers-color-scheme: dark) {
+          background-color: rgba(var(--black-3), 0.5);
+        }
       }
     }
   }
@@ -255,6 +279,10 @@ export default {
 
     header {
       background-color: rgba(var(--bg-grey-2), 0.8);
+
+      @media (prefers-color-scheme: dark) {
+        background-color: rgba(var(--black-1), 0.8);
+      }
     }
   }
 

@@ -181,6 +181,10 @@ export default {
   font-size: 0.75rem;
   outline-color: rgba(var(--blue));
 
+  @media (prefers-color-scheme: dark) {
+    color: rgba(var(--bg-white-off));
+  }
+
   &:hover {
     text-decoration: underline;
   }
@@ -194,6 +198,10 @@ export default {
     transform: rotate(90deg);
     fill: rgba(var(--fg-black));
     margin-right: 5px;
+
+    @media (prefers-color-scheme: dark) {
+      fill: rgba(var(--bg-white-off));
+    }
   }
 
   .arrow {
@@ -216,6 +224,12 @@ export default {
   padding: 7px;
   display: flex;
 
+  @media (prefers-color-scheme: dark) {
+    border-bottom: 1px solid rgba(var(--black-3));
+    background-color: rgba(var(--black-1));
+    color: rgba(var(--bg-white-off));
+  }
+
   span {
     flex: 1;
     text-align: center;
@@ -228,6 +242,12 @@ export default {
   padding: 7px;
   display: flex;
   justify-content: space-between;
+
+  @media (prefers-color-scheme: dark) {
+    border-top: 1px solid rgba(var(--black-3));
+    background-color: rgba(var(--black-1));
+    color: rgba(var(--bg-grey));
+  }
 
   a {
     color: rgba(var(--blue));

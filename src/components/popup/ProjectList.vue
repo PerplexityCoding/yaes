@@ -81,7 +81,7 @@ export default {
     padding: 0;
 
     + li {
-      padding-top: 11px;
+      padding-top: 10px;
     }
 
     button {
@@ -96,13 +96,23 @@ export default {
       align-items: center;
       background-color: rgba(var(--bg-yellow));
       transition: background-color 0.7s ease;
-      min-height: 37px;
+      min-height: 40px;
       letter-spacing: 0.35px;
       color: rgba(var(--fg-black));
       outline-color: rgba(var(--blue));
 
+      @media (prefers-color-scheme: dark) {
+        color: rgba(var(--bg-white-off));
+        border: 1px solid rgba(var(--black-1));
+        background-color: rgba(var(--black-3));
+      }
+
       &:hover {
         background-color: rgba(var(--bg-yellow-hover));
+
+        @media (prefers-color-scheme: dark) {
+          background-color: rgba(var(--black-3), 0.8);
+        }
       }
 
       > span {

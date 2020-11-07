@@ -368,12 +368,20 @@ button {
 
   &:hover {
     background: rgba(var(--bg-grey-hover));
+
+    @media (prefers-color-scheme: dark) {
+      background-color: rgba(var(--black-2));
+    }
   }
 }
 
 .override-options {
   border-top: 1px solid rgba(var(--bg-grey-2));
   padding-top: 4px;
+
+  @media (prefers-color-scheme: dark) {
+    border-top: 1px solid rgba(var(--black-2));
+  }
 
   .override-message {
     display: flex;

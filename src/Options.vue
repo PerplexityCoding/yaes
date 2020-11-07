@@ -236,6 +236,10 @@ fieldset {
   background-color: rgba(var(--bg-grey));
   border-radius: 4px;
   padding: 12px;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: #2b2b2b;
+  }
 }
 
 /* fade-in */
@@ -286,6 +290,10 @@ fieldset {
   max-width: 800px;
   margin: 0 auto;
   color: rgba(var(--fg-black));
+
+  @media (prefers-color-scheme: dark) {
+    color: rgba(var(--bg-white-off), 0.8);
+  }
 
   a {
     color: rgba(var(--blue));
