@@ -9,45 +9,51 @@ describe("ProjectList.vue", () => {
       name: "France",
       shortName: "FR",
       url: "https://www.google.fr/",
-      displayDomain: true
+      displayDomain: true,
     },
     {
       id: 1,
       name: "DE",
       url: "https://www.google.de/",
-      displayDomain: false
+      displayDomain: false,
     },
     {
       id: 2,
       shortName: "ES",
-      url: "https://www.google.es/"
+      url: "https://www.google.es/",
     },
     {
       id: 3,
       shortName: "ES",
-      url: "https://www.yah.es/"
-    }
+      url: "https://www.yah.es/",
+    },
   ];
 
   const projects = [
     {
       id: 0,
       name: "Google",
-      envs: [0, 1, 2]
+      envs: [0, 1, 2],
     },
     {
       id: 1,
       name: "Yah",
-      envs: [3]
-    }
+      envs: [3],
+    },
   ];
 
   function createDefaultWrapper() {
     const wrapper = mount(ProjectList, {
       props: {
         envs,
-        projects
-      }
+        projects,
+        openProjectId: -1,
+      },
+      listeners: {
+        "update:openProjectId": () => {
+          console.log("update");
+        },
+      },
     });
 
     return wrapper;
@@ -68,6 +74,10 @@ describe("ProjectList.vue", () => {
 
     const buttonsWrapper1 = buttonsWrapper[0];
     await buttonsWrapper1.find("button").trigger("click");
+    await waitFor();
+    expect(wrapper.emitted("update:openProjectId")[0][0]).toBe(0);
+
+    await wrapper.setProps({ openProjectId: 0 });
     await waitFor();
 
     expect(buttonsWrapper1.html()).toContain("www.google.fr");

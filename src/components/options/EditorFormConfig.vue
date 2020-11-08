@@ -63,12 +63,12 @@ import {
   newProject,
   addProject,
   getEnvById,
-  getProjectById
+  getProjectById,
 } from "@/services/business/bo/config";
 import deepmerge from "deepmerge";
 import {
   updateSortableEnvs,
-  updateSortableProjects
+  updateSortableProjects,
 } from "@/services/business/ui";
 
 export default {
@@ -76,20 +76,20 @@ export default {
   components: {
     EditorFormConfigGlobalOptions,
     EditorFormConfigProjects,
-    EditorFormConfigEnv
+    EditorFormConfigEnv,
   },
   props: {
     config: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data() {
     return {
       newEnv: null,
       isNewEnv: false,
       selectedEnvId: null,
-      selectedProjectId: null
+      selectedProjectId: null,
     };
   },
   emits: ["update:config"],
@@ -123,7 +123,7 @@ export default {
       if (this.newEnv) {
         this.newEnv = {
           ...this.newEnv,
-          ...env
+          ...env,
         };
       } else {
         const config = updateEnv(this.config, env);
@@ -140,7 +140,7 @@ export default {
     },
     deleteEnv(envId) {
       const projectEnvs = getProjectEnvs(this.config, this.selectedProjectId);
-      const envIdx = projectEnvs.findIndex(env => env.id === envId);
+      const envIdx = projectEnvs.findIndex((env) => env.id === envId);
 
       const config = deleteEnv(this.config, envId);
       this.updateConfig(config);
@@ -155,13 +155,13 @@ export default {
       this.updateProject({
         projectId,
         data: {
-          envs
-        }
+          envs,
+        },
       });
     },
     addNewProject() {
       const project = newProject(this.config, {
-        name: "New Project"
+        name: "New Project",
       });
       const config = addProject(this.config, project);
       this.updateConfig(config);
@@ -171,7 +171,7 @@ export default {
       const project = getProjectById(this.config, projectId);
       const updatedProject = {
         ...project,
-        ...data
+        ...data,
       };
       const config = updateProject(this.config, updatedProject);
       this.updateConfig(config);
@@ -192,7 +192,7 @@ export default {
       );
       this.updateConfig({
         ...this.config,
-        projects
+        projects,
       });
     },
     updateOptions(options) {
@@ -207,7 +207,7 @@ export default {
         const env = projectEnvs[envIdx] || projectEnvs[projectEnvs.length - 1];
 
         this.selectEnv({
-          envId: env.id
+          envId: env.id,
         });
       } else {
         this.selectEnv(null);
@@ -219,7 +219,7 @@ export default {
         const env = projectEnvs[0];
 
         this.selectEnv({
-          envId: env.id
+          envId: env.id,
         });
       } else {
         this.selectEnv(null);
@@ -244,7 +244,7 @@ export default {
         this.newEnv = null;
         this.isNewEnv = false;
       }
-    }
+    },
   },
   computed: {
     selectedEnv() {
@@ -252,8 +252,8 @@ export default {
     },
     selectedProject() {
       return getProjectById(this.config, this.selectedProjectId);
-    }
-  }
+    },
+  },
 };
 </script>
 

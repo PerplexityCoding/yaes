@@ -2,7 +2,6 @@ import {
   storageGet as chromeStorageGet,
   storageSet as chromeStorageSet,
   storageRemove as chromeStorageRemove,
-  storageClear as chromeStorageClear
 } from "@/services/chrome/storage";
 
 import deepmerge from "deepmerge";
@@ -11,64 +10,20 @@ import validateSchema from "./validate";
 
 import {
   checkUpdate,
-  ConfigUpdateStatus
+  ConfigUpdateStatus,
 } from "@/services/business/storage/migrate";
-
-export const DEFAULT_OPTIONS = {
-  displayDomain: false,
-  displayHeader: true,
-  displayFooter: true,
-  displaySeeProjectsLink: true,
-  displayRibbon: true,
-  displayBadge: true,
-  badgeOptions: {
-    backgroundColor: "#2677c9"
-  },
-  ribbonOptions: {
-    type: "corner-ribbon",
-    color: "white",
-    backgroundColor: "#2677c9",
-    position: "right"
-  },
-  colorScheme: "system"
-};
-
-export const INIT_DEFAULT_CONFIG = {
-  version: "1.1.0",
-  projects: [
-    {
-      id: 0,
-      name: "Default Project",
-      envs: []
-    }
-  ],
-  envs: [],
-  options: {}
-};
-
-function mergeOptionsInEnv(config) {
-  const envs = config?.envs?.map(env => {
-    return deepmerge(Object.assign({}, config.options), env);
-  });
-  return {
-    ...config,
-    envs
-  };
-}
-
-function mergeOptionsDefault(config) {
-  config.options = deepmerge(
-    deepmerge({}, DEFAULT_OPTIONS),
-    config.options || {}
-  );
-  return config;
-}
+import { INIT_DEFAULT_CONFIG } from "@/services/business/storage/defaults";
+import {
+  getAndAssembleConfig,
+  mergeOptionsDefault,
+  mergeOptionsInEnv,
+} from "@/services/business/storage/utils";
 
 async function migrateConfig(config, { mergeOptions } = {}) {
   let errors = null;
   let updatingConfig = deepmerge({}, config);
 
-  const updateStatus = checkUpdate(updatingConfig);
+  const updateStatus = await checkUpdate(updatingConfig);
 
   if (updateStatus === ConfigUpdateStatus.MIGRATION_SUCCESS) {
     config = updatingConfig;
@@ -81,7 +36,7 @@ async function migrateConfig(config, { mergeOptions } = {}) {
   }
 
   if (!errors) {
-    const validation = validateSchema(config);
+    const validation = await validateSchema(config);
     if (validation.status === false) {
       errors = errors || {};
       errors.validationFailed = true;
@@ -96,14 +51,14 @@ async function migrateConfig(config, { mergeOptions } = {}) {
 
   return {
     config,
-    errors
+    errors,
   };
 }
 
 async function migrate(migrateOptions = {}) {
   let values = await chromeStorageGet(null);
-  values = await migrateMonoConfig(values);
   let config = await getAndAssembleConfig(values);
+  config.envs = await removeUnrefEnvs(config);
 
   if (config != null) {
     return migrateConfig(config, migrateOptions);
@@ -112,21 +67,22 @@ async function migrate(migrateOptions = {}) {
     await setConfig(config);
 
     return {
-      config
+      config,
     };
   }
 }
 
-async function getConfig(
+async function getFixConfig(
   { mergeOptions, mergeDefault } = { mergeOptions: true, mergeDefault: true }
 ) {
   let errors = {};
 
   let values = await chromeStorageGet(null);
-  values = await migrateMonoConfig(values);
   let config = await getAndAssembleConfig(values);
+  config.envs = await removeUnrefEnvs(config);
 
   if (config != null) {
+    console.log(config);
     if (mergeDefault) {
       config = mergeOptionsDefault(config);
     }
@@ -141,59 +97,20 @@ async function getConfig(
 
   return {
     config,
-    errors
+    errors,
   };
-}
-
-async function migrateMonoConfig(values) {
-  if (values.config != null) {
-    const oldConfig = JSON.parse(values.config);
-    if (validateSchema(oldConfig).status) {
-      await chromeStorageClear();
-      await setConfig(oldConfig);
-    }
-    return await chromeStorageGet(null);
-  }
-  return values;
-}
-
-async function getAndAssembleConfig(values) {
-  try {
-    const config = {
-      options: values.options ? JSON.parse(values.options) : {},
-      projects: values.projects ? JSON.parse(values.projects) : [],
-      envs: await loadEnvs(values),
-      version: values.version
-    };
-
-    config.envs = await removeUnrefEnvs(config);
-
-    return config;
-  } catch (e) {
-    console.log(e);
-    return null;
-  }
-}
-
-async function loadEnvs(values) {
-  return Object.entries(values)
-    .filter(([key]) => /^env-[0-9]*$/.exec(key))
-    .reduce((acc, entry) => {
-      acc.push(JSON.parse(entry[1]));
-      return acc;
-    }, []);
 }
 
 async function removeUnrefEnvs(config) {
   const envIdsUsed = config.projects.reduce((acc, project) => {
-    project.envs.forEach(envId => {
+    project.envs.forEach((envId) => {
       acc[envId] = true;
     });
     return acc;
   }, {});
   const unusedEnvIds = config.envs
     .filter(({ id }) => !envIdsUsed[id])
-    .map(env => env.id);
+    .map((env) => env.id);
   const usedEnvs = config.envs.filter(({ id }) => envIdsUsed[id]);
 
   if (unusedEnvIds.length > 0) {
@@ -204,7 +121,7 @@ async function removeUnrefEnvs(config) {
 }
 
 async function setConfig(config, force = false) {
-  if (force || validateSchema(config).status) {
+  if (force || (await validateSchema(config)).status) {
     const envsById = config.envs.reduce((acc, env) => {
       acc[`env-${env.id}`] = JSON.stringify(env);
       return acc;
@@ -213,7 +130,7 @@ async function setConfig(config, force = false) {
       version: config.version,
       options: JSON.stringify(config.options),
       projects: JSON.stringify(config.projects),
-      ...envsById
+      ...envsById,
     });
     return true;
   }
@@ -221,15 +138,15 @@ async function setConfig(config, force = false) {
 }
 
 async function deleteEnvs(config, envs) {
-  if (validateSchema(config).status) {
+  if ((await validateSchema(config)).status) {
     if (!Array.isArray(envs)) {
       envs = [envs];
     }
-    const envsKey = envs.map(envId => `env-${envId}`);
+    const envsKey = envs.map((envId) => `env-${envId}`);
     await chromeStorageRemove(envsKey);
     return true;
   }
   return false;
 }
 
-export { setConfig, getConfig, migrate, migrateConfig, deleteEnvs };
+export { setConfig, getFixConfig, migrate, migrateConfig, deleteEnvs };

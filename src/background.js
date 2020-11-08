@@ -15,7 +15,7 @@ async function onInstalled() {
 }
 
 function onTabsActivatedUpdateBadge() {
-  window.chrome.tabs.onActivated.addListener(async activeInfo => {
+  window.chrome.tabs.onActivated.addListener(async (activeInfo) => {
     const tab = await getTab(activeInfo.tabId);
     if (tab) {
       updateBadgeTextFromEnv(tab.id, tab.url);

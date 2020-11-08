@@ -13,7 +13,7 @@
           v-if="projectNameEditable"
           :value="projectName"
           @focusout="projectNameEditable = false"
-          @input="e => updateProject({ name: e.target.value })"
+          @input="(e) => updateProject({ name: e.target.value })"
         />
         <span v-else>
           {{ projectName }}
@@ -46,7 +46,7 @@
         class="project-env"
         :class="{
           'selected-env':
-            selectedEnvId != null ? env.id === selectedEnvId : false
+            selectedEnvId != null ? env.id === selectedEnvId : false,
         }"
         @click="$emit('select-env', { envId: env.id, projectId })"
       >
@@ -83,32 +83,32 @@ export default {
   data() {
     return {
       deleteConfirm: false,
-      projectNameEditable: false
+      projectNameEditable: false,
     };
   },
   components: {
     CoreButton,
     DragList,
     ArrowRight,
-    ConfirmationDeleteButton
+    ConfirmationDeleteButton,
   },
   props: {
     projectId: {
       type: Number,
-      default: () => {}
+      default: () => {},
     },
     config: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
     selectedEnvId: {
       type: Number,
-      default: null
+      default: null,
     },
     selectedProjectId: {
       type: Number,
-      default: null
-    }
+      default: null,
+    },
   },
   mounted() {
     updateSortableEnvs();
@@ -118,7 +118,7 @@ export default {
     "new-env",
     "drop-env",
     "delete-project",
-    "update-project"
+    "update-project",
   ],
   computed: {
     projectEnvs() {
@@ -127,13 +127,13 @@ export default {
     projectName() {
       const project = getProjectById(this.config, this.projectId);
       return project.name;
-    }
+    },
   },
   methods: {
     updateProject(data) {
       this.$emit("update-project", {
         projectId: this.projectId,
-        data
+        data,
       });
     },
     onDrop(e) {
@@ -142,10 +142,10 @@ export default {
       this.$emit("drop-env", {
         projectId: this.projectId,
         origin,
-        destination
+        destination,
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

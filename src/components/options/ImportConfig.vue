@@ -1,9 +1,7 @@
 <template>
   <section class="import-config-section box-elevation">
     <div class="import-configuration">
-      <strong class="import-title">
-        Import configuration
-      </strong>
+      <strong class="import-title"> Import configuration </strong>
       <div class="import-methods">
         <div>
           <div class="label-set">
@@ -28,9 +26,7 @@
         </div>
         <div>
           <div class="label-set">
-            <label :for="$id('import-file')">
-              Using File
-            </label>
+            <label :for="$id('import-file')"> Using File </label>
             <CoreButton elevation @click="$refs.importFileInput.click()">
               Choose File
             </CoreButton>
@@ -60,9 +56,7 @@
     </div>
 
     <div class="import-configuration">
-      <strong>
-        Export configuration
-      </strong>
+      <strong> Export configuration </strong>
       <CoreButton elevation icon-name="Export" @click="downloadConfig">
         Export
       </CoreButton>
@@ -83,7 +77,7 @@ export default {
       configurationUrl: null,
       importConfigLoader: false,
       importUrlStatus: null,
-      importFileStatus: null
+      importFileStatus: null,
     };
   },
   emits: ["config-loaded", "config-load-failed", "download-config"],
@@ -114,7 +108,7 @@ export default {
       const reader = new FileReader();
       reader.readAsText(file, "UTF-8");
 
-      reader.onload = async event => {
+      reader.onload = async (event) => {
         const data = event.target.result;
         const success = await this.saveConfig(data);
         this.importFileStatus = success;
@@ -144,8 +138,8 @@ export default {
     resetErrors() {
       this.importFileStatus = null;
       this.importUrlStatus = null;
-    }
-  }
+    },
+  },
 };
 </script>
 

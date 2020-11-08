@@ -3,9 +3,9 @@ import Popup from "@/Popup.vue";
 import EnvList from "@/components/popup/EnvList";
 import { waitFor } from "@/services/utils";
 import { getCurrentTab, openChromeUrl } from "@/services/chrome/tabs";
-import { getConfig } from "@/services/business/storage";
+import { getConfig } from "@/services/business/storage/get";
 
-jest.mock("@/services/business/storage");
+jest.mock("@/services/business/storage/get");
 jest.mock("@/services/chrome/tabs");
 
 function mockStorageEnvGet() {
@@ -15,27 +15,27 @@ function mockStorageEnvGet() {
         {
           id: 0,
           name: "Default",
-          envs: [1, 2, 3]
-        }
+          envs: [1, 2, 3],
+        },
       ],
       envs: [
         {
           id: 1,
           name: "FR",
-          url: "https://www.google.fr/sdfsdf"
+          url: "https://www.google.fr/sdfsdf",
         },
         {
           id: 2,
           name: "DE",
-          url: "https://www.google.de/sdfsdf"
+          url: "https://www.google.de/sdfsdf",
         },
         {
           id: 3,
           name: "ES",
-          url: "https://www.google.es/"
-        }
-      ]
-    }
+          url: "https://www.google.es/",
+        },
+      ],
+    },
   });
 }
 

@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import JSONEditor from "jsoneditor/dist/jsoneditor.js";
 import { debounce } from "../../services/utils";
 import validateSchema from "../../schemas/config.schema.gen.js";
 
@@ -16,18 +15,19 @@ export default {
   props: {
     config: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data() {
     return {
       displaySaveInfo: false,
       editor: null,
-      errors: []
+      errors: [],
     };
   },
   emits: ["update:config"],
-  mounted() {
+  async mounted() {
+    const JSONEditor = (await import("jsoneditor/dist/jsoneditor.js")).default;
     this.editor = new JSONEditor(
       this.$refs.jsonEditor,
       {
@@ -38,11 +38,11 @@ export default {
             if (e.message.indexOf("Parse error on line") >= 0) {
               // contain invalid json data ignore
             } else {
-              console.log(e);
+              console.error(e);
             }
           }
         }, SAVE_DELAY),
-        onValidationError: errors => {
+        onValidationError: (errors) => {
           this.errors = errors;
         },
         onModeChange: () => {
@@ -50,7 +50,7 @@ export default {
             this.editor.validateSchema = validateSchema;
           }
         },
-        modes: ["tree", "code"]
+        modes: ["tree", "code"],
       },
       this.config
     );
@@ -62,13 +62,13 @@ export default {
   },
   methods: {
     saveConfig(config) {
-      if (!config || this.errors?.length > 0) {
+      if (!config || (this.errors && this.errors.length > 0)) {
         return;
       }
 
       this.$emit("update:config", config);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -77,10 +77,6 @@ export default {
 </style>
 
 <style lang="scss">
-@import "@/styles/variables.scss";
-@import "@/styles/transition.scss";
-@import "@/styles/loader.scss";
-
 #check-color {
   fill: rgba(var(--green)) !important;
 }

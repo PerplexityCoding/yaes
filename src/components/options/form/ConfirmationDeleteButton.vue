@@ -17,9 +17,7 @@
         <slot name="afterButton" />
       </div>
       <div class="delete-confirm" v-else>
-        <span>
-          Are you sure ?
-        </span>
+        <span> Are you sure ? </span>
         <CoreButton
           class="delete-confirm-btn button"
           elevation
@@ -43,25 +41,25 @@ export default {
   name: "ConfirmationDeleteButton",
   emits: ["update:modelValue", "action"],
   components: {
-    CoreButton
+    CoreButton,
   },
   props: {
     modelValue: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       hiding: false,
       hideTimer: null,
-      deleting: false
+      deleting: false,
     };
   },
   computed: {
     transitionName() {
       return this.deleting ? "fade" : "slide-fade-2";
-    }
+    },
   },
   methods: {
     hideDelay() {
@@ -98,8 +96,8 @@ export default {
           this.hiding = false;
         }, 700);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

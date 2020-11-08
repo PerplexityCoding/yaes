@@ -4,7 +4,7 @@ export default function migrate(config) {
   migrateBadge(options);
 
   config.projects = config.projects || [];
-  config.projects.forEach(project => (project.envs = project.envs || []));
+  config.projects.forEach((project) => (project.envs = project.envs || []));
 
   if (config.envs) {
     config.envs.forEach((env, idx) => {
@@ -20,7 +20,7 @@ export default function migrate(config) {
 }
 
 function migrateRibbon(obj) {
-  if (obj?.ribbon !== undefined) {
+  if (obj && obj.ribbon !== undefined) {
     obj.displayRibbon = !!obj.ribbon;
     if (typeof obj.ribbon === "object") {
       obj.ribbonOptions = obj.ribbon;
@@ -32,7 +32,7 @@ function migrateRibbon(obj) {
 }
 
 function migrateBadge(obj) {
-  if (obj?.badge !== undefined) {
+  if (obj && obj.badge !== undefined) {
     obj.displayBadge = !!obj.badge;
     if (typeof obj.badge === "object") {
       obj.badgeOptions = obj.badge;
@@ -50,15 +50,15 @@ function migrateId(env, idx) {
 function migrateEnvProject(config, env) {
   const projects = config.projects;
   const defaultProject = projects.find(
-    project => project.name === "Default Project"
+    (project) => project.name === "Default Project"
   ) || {
     name: "Default Project",
-    envs: []
+    envs: [],
   };
 
   if (env.project != null) {
     const project = projects.find(
-      project => project.id === env.project || project.name === env.project
+      (project) => project.id === env.project || project.name === env.project
     );
     if (project) {
       project.envs.push(env.id);

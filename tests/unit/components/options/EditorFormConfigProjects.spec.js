@@ -12,43 +12,43 @@ describe("EditorFormConfigProjects.vue", () => {
       {
         id: 0,
         name: "Project1",
-        envs: [2, 1]
+        envs: [2, 1],
       },
       {
         id: 1,
         name: "Project2",
-        envs: [3]
-      }
+        envs: [3],
+      },
     ],
     envs: [
       {
         id: 1,
         name: "FR",
-        url: "https://www.google.fr/sdfsdf"
+        url: "https://www.google.fr/sdfsdf",
       },
       {
         id: 2,
         name: "DE",
-        url: "https://www.google.de/sdfsdf"
+        url: "https://www.google.de/sdfsdf",
       },
       {
         id: 3,
         name: "ES",
-        url: "https://www.google.es/"
-      }
+        url: "https://www.google.es/",
+      },
     ],
-    options: {}
+    options: {},
   };
 
   function createDefaultWrapper() {
     const wrapper = mount(EditorFormConfigProjects, {
       props: {
         config: deepmerge({}, config),
-        selectedEnvId: 1
+        selectedEnvId: 1,
       },
       global: {
-        plugins: [UniqueId, VuelidatePlugin]
-      }
+        plugins: [UniqueId, VuelidatePlugin],
+      },
     });
 
     return wrapper;
@@ -76,17 +76,17 @@ describe("EditorFormConfigProjects.vue", () => {
 
     expectItem(projects[0], [
       {
-        name: "DE"
+        name: "DE",
       },
       {
-        name: "FR"
-      }
+        name: "FR",
+      },
     ]);
 
     expectItem(projects[1], [
       {
-        name: "ES"
-      }
+        name: "ES",
+      },
     ]);
   });
 
@@ -99,7 +99,7 @@ describe("EditorFormConfigProjects.vue", () => {
     const env = wrapper.emitted()["select-env"][0][0];
     expect(env).toEqual({
       envId: config.envs[1].id,
-      projectId: 0
+      projectId: 0,
     });
   });
 });

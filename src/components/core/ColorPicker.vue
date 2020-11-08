@@ -10,14 +10,14 @@ export default {
   props: {
     color: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   emits: ["update:color"],
   watch: {
     color(val) {
       this.pickr.setColor(val);
-    }
+    },
   },
   mounted() {
     this.pickr = Pickr.create({
@@ -38,7 +38,7 @@ export default {
         "rgba(139, 195, 74, 0.85)",
         "rgba(205, 220, 57, 0.9)",
         "rgba(255, 235, 59, 0.95)",
-        "rgba(255, 193, 7, 1)"
+        "rgba(255, 193, 7, 1)",
       ],
       components: {
         // Main components
@@ -48,14 +48,14 @@ export default {
 
         // Input / output Options
         interaction: {
-          hex: true
-        }
-      }
+          hex: true,
+        },
+      },
     })
-      .on("changestop", instance => {
+      .on("changestop", (instance) => {
         this.updateColor(instance.getColor());
       })
-      .on("swatchselect", color => {
+      .on("swatchselect", (color) => {
         this.updateColor(color);
       });
   },
@@ -68,8 +68,8 @@ export default {
   methods: {
     updateColor(color) {
       this.$emit("update:color", color.toHEXA().toString());
-    }
-  }
+    },
+  },
 };
 </script>
 

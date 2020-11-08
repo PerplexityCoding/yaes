@@ -6,9 +6,7 @@
       </span>
       <transition name="fade-in">
         <div v-if="!newEnv">
-          <span>
-            Environment settings
-          </span>
+          <span> Environment settings </span>
           <div class="env-btns">
             <ConfirmationDeleteButton
               v-model="deleteConfirm"
@@ -188,7 +186,7 @@ import { getComputedFactory } from "@/services/business/ui";
 import EditorFormRibbon from "@/components/options/form/EditorFormRibbon";
 import EditorFormBadge from "@/components/options/form/EditorFormBadge";
 import { removeUndefined } from "@/services/utils";
-import { DEFAULT_OPTIONS } from "@/services/business/storage";
+import { DEFAULT_OPTIONS } from "@/services/business/storage/defaults";
 import ConfirmationDeleteButton from "@/components/options/form/ConfirmationDeleteButton";
 import { required, url } from "@vuelidate/validators";
 import CoreButton from "@/components/core/Button";
@@ -202,30 +200,30 @@ export default {
     CoreButton,
     ConfirmationDeleteButton,
     EditorFormBadge,
-    EditorFormRibbon
+    EditorFormRibbon,
   },
   props: {
     newEnv: {
       type: Boolean,
-      default: false
+      default: false,
     },
     env: {
       type: Object,
-      required: true
+      required: true,
     },
     config: {
       type: Object,
-      required: true
+      required: true,
     },
     projectName: {
       type: String,
       required: false,
-      default: ""
-    }
+      default: "",
+    },
   },
   data() {
     return {
-      deleteConfirm: false
+      deleteConfirm: false,
     };
   },
   watch: {
@@ -235,14 +233,14 @@ export default {
         nameEl.focus();
         nameEl.setSelectionRange(0, nameEl.value.length);
       }
-    }
+    },
   },
   emits: [
     "update-env",
     "delete-env",
     "clone-env",
     "create-new-env",
-    "cancel-new-env"
+    "cancel-new-env",
   ],
   computed: {
     mergedEnv() {
@@ -273,21 +271,21 @@ export default {
         );
       }
       return false;
-    }
+    },
   },
   validations() {
     return {
       name: { required },
       url: { required, url },
       appendUrlParams: {
-        searchParams: value =>
+        searchParams: (value) =>
           !helpers.req(value) ||
-          !!value.match(/^([^=&]+=[^=&]+)(&[^=&]+=[^=&]+)*$/)
+          !!value.match(/^([^=&]+=[^=&]+)(&[^=&]+=[^=&]+)*$/),
       },
       removeUrlParams: {
-        listString: value =>
-          !helpers.req(value) || !!value.match(/^[^,]+(,[^,]+)*$/)
-      }
+        listString: (value) =>
+          !helpers.req(value) || !!value.match(/^[^,]+(,[^,]+)*$/),
+      },
     };
   },
   methods: {
@@ -302,7 +300,7 @@ export default {
         shortName,
         url,
         appendUrlParams,
-        removeUrlParams
+        removeUrlParams,
       } = this.env;
 
       const newEnv = {
@@ -311,7 +309,7 @@ export default {
         shortName,
         url,
         appendUrlParams,
-        removeUrlParams
+        removeUrlParams,
       };
       removeUndefined(newEnv);
 
@@ -322,8 +320,8 @@ export default {
       if (!this.$v.$invalid) {
         this.$emit("create-new-env", this.env);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

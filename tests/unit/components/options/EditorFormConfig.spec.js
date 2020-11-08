@@ -13,42 +13,42 @@ describe("EditorFormConfig.vue", () => {
       {
         id: 0,
         name: "Project1",
-        envs: [2, 1]
+        envs: [2, 1],
       },
       {
         id: 1,
         name: "Project2",
-        envs: [3]
-      }
+        envs: [3],
+      },
     ],
     envs: [
       {
         id: 1,
         name: "FR",
-        url: "https://www.google.fr/sdfsdf"
+        url: "https://www.google.fr/sdfsdf",
       },
       {
         id: 2,
         name: "DE",
-        url: "https://www.google.de/sdfsdf"
+        url: "https://www.google.de/sdfsdf",
       },
       {
         id: 3,
         name: "ES",
-        url: "https://www.google.es/"
-      }
+        url: "https://www.google.es/",
+      },
     ],
-    options: {}
+    options: {},
   };
 
   function createDefaultWrapper() {
     const wrapper = mount(EditorFormConfig, {
       props: {
-        config: deepmerge({}, config)
+        config: deepmerge({}, config),
       },
       global: {
-        plugins: [UniqueId, VuelidatePlugin]
-      }
+        plugins: [UniqueId, VuelidatePlugin],
+      },
     });
 
     return wrapper;
@@ -58,7 +58,7 @@ describe("EditorFormConfig.vue", () => {
     const updatedConfig = wrapper.emitted()["update:config"][0][0];
     expect(updatedConfig).toEqual({
       ...config,
-      ...newConfig
+      ...newConfig,
     });
   }
 
@@ -93,22 +93,22 @@ describe("EditorFormConfig.vue", () => {
         {
           id: 0,
           name: "Project1",
-          envs: [2, 1, 4]
+          envs: [2, 1, 4],
         },
         {
           id: 1,
           name: "Project2",
-          envs: [3]
-        }
+          envs: [3],
+        },
       ],
       envs: [
         ...config.envs,
         {
           id: 4,
           name: "My New Env",
-          url: "https://gogo.fr"
-        }
-      ]
+          url: "https://gogo.fr",
+        },
+      ],
     });
   });
 
@@ -132,22 +132,22 @@ describe("EditorFormConfig.vue", () => {
         {
           id: 0,
           name: "Project1",
-          envs: [2, 1]
+          envs: [2, 1],
         },
         {
           id: 1,
           name: "Project2",
-          envs: [3, 4]
-        }
+          envs: [3, 4],
+        },
       ],
       envs: [
         ...config.envs,
         {
           id: 4,
           name: "My New Env 2",
-          url: "https://gogo2.fr"
-        }
-      ]
+          url: "https://gogo2.fr",
+        },
+      ],
     });
   });
 
@@ -167,36 +167,36 @@ describe("EditorFormConfig.vue", () => {
         {
           id: 0,
           name: "Project1",
-          envs: [2, 1, 4]
+          envs: [2, 1, 4],
         },
         {
           id: 1,
           name: "Project2",
-          envs: [3]
-        }
+          envs: [3],
+        },
       ],
       envs: [
         {
           id: 1,
           name: "FR",
-          url: "https://www.google.fr/sdfsdf"
+          url: "https://www.google.fr/sdfsdf",
         },
         {
           id: 2,
           name: "DE",
-          url: "https://www.google.de/sdfsdf"
+          url: "https://www.google.de/sdfsdf",
         },
         {
           id: 3,
           name: "ES",
-          url: "https://www.google.es/"
+          url: "https://www.google.es/",
         },
         {
           id: 4,
           name: "DE",
-          url: "https://www.google.de/sdfsdf"
-        }
-      ]
+          url: "https://www.google.de/sdfsdf",
+        },
+      ],
     });
   });
 
@@ -221,26 +221,26 @@ describe("EditorFormConfig.vue", () => {
         {
           id: 0,
           name: "Project1",
-          envs: [1]
+          envs: [1],
         },
         {
           id: 1,
           name: "Project2",
-          envs: [3]
-        }
+          envs: [3],
+        },
       ],
       envs: [
         {
           id: 1,
           name: "FR",
-          url: "https://www.google.fr/sdfsdf"
+          url: "https://www.google.fr/sdfsdf",
         },
         {
           id: 3,
           name: "ES",
-          url: "https://www.google.es/"
-        }
-      ]
+          url: "https://www.google.es/",
+        },
+      ],
     });
   });
 
@@ -256,9 +256,9 @@ describe("EditorFormConfig.vue", () => {
         {
           id: 2,
           name: "New Project",
-          envs: []
-        }
-      ]
+          envs: [],
+        },
+      ],
     });
   });
 
@@ -277,16 +277,16 @@ describe("EditorFormConfig.vue", () => {
         {
           id: 1,
           name: "Project2",
-          envs: [3]
-        }
+          envs: [3],
+        },
       ],
       envs: [
         {
           id: 3,
           name: "ES",
-          url: "https://www.google.es/"
-        }
-      ]
+          url: "https://www.google.es/",
+        },
+      ],
     });
   });
 
@@ -305,21 +305,21 @@ describe("EditorFormConfig.vue", () => {
         {
           id: 0,
           name: "Project1",
-          envs: [2, 1]
-        }
+          envs: [2, 1],
+        },
       ],
       envs: [
         {
           id: 1,
           name: "FR",
-          url: "https://www.google.fr/sdfsdf"
+          url: "https://www.google.fr/sdfsdf",
         },
         {
           id: 2,
           name: "DE",
-          url: "https://www.google.de/sdfsdf"
-        }
-      ]
+          url: "https://www.google.de/sdfsdf",
+        },
+      ],
     });
   });
 
@@ -330,12 +330,12 @@ describe("EditorFormConfig.vue", () => {
     button.trigger("sortupdate", {
       detail: {
         origin: {
-          index: 0
+          index: 0,
         },
         destination: {
-          index: 1
-        }
-      }
+          index: 1,
+        },
+      },
     });
 
     checkUpdateConfig(wrapper, {
@@ -343,14 +343,14 @@ describe("EditorFormConfig.vue", () => {
         {
           id: 0,
           name: "Project1",
-          envs: [1, 2]
+          envs: [1, 2],
         },
         {
           id: 1,
           name: "Project2",
-          envs: [3]
-        }
-      ]
+          envs: [3],
+        },
+      ],
     });
   });
 
@@ -361,12 +361,12 @@ describe("EditorFormConfig.vue", () => {
     elem.trigger("sortupdate", {
       detail: {
         origin: {
-          index: 0
+          index: 0,
         },
         destination: {
-          index: 1
-        }
-      }
+          index: 1,
+        },
+      },
     });
 
     checkUpdateConfig(wrapper, {
@@ -374,14 +374,14 @@ describe("EditorFormConfig.vue", () => {
         {
           id: 1,
           name: "Project2",
-          envs: [3]
+          envs: [3],
         },
         {
           id: 0,
           name: "Project1",
-          envs: [2, 1]
-        }
-      ]
+          envs: [2, 1],
+        },
+      ],
     });
   });
 
@@ -400,14 +400,14 @@ describe("EditorFormConfig.vue", () => {
         {
           id: 0,
           name: "ProjectX",
-          envs: [2, 1]
+          envs: [2, 1],
         },
         {
           id: 1,
           name: "Project2",
-          envs: [3]
-        }
-      ]
+          envs: [3],
+        },
+      ],
     });
   });
 });

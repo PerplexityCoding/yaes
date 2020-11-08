@@ -11,15 +11,15 @@
             :envs="currentEnvs"
             :current-env="currentEnv"
             @switch-env="
-              env => (currentEnv ? switchEnv(env) : redirectEnv(env))
+              (env) => (currentEnv ? switchEnv(env) : redirectEnv(env))
             "
           />
 
           <button
             v-if="
               projects &&
-                projects.length > 1 &&
-                options.displaySeeProjectsLink !== false
+              projects.length > 1 &&
+              options.displaySeeProjectsLink !== false
             "
             class="switch-env-btn right"
             @click="mode = 'projects'"
@@ -37,6 +37,7 @@
         <ProjectList
           :projects="projects"
           :envs="envs"
+          v-model:openProjectId="openProjectId"
           @redirect-env="redirectEnv"
         />
 
@@ -67,24 +68,25 @@ import ArrowRight from "./components/icons/ArrowRight";
 import {
   getCurrentTab,
   openChromeUrl,
-  openOptionsPage
+  openOptionsPage,
 } from "./services/chrome/tabs";
 import { switchBaseUrl, getCurrentEnv } from "./services/business/url";
-import { getConfig } from "./services/business/storage";
-import { isDarkMode } from "@/services/business/ui";
+import { getConfig } from "./services/business/storage/get";
+import { isDarkMode } from "@/services/business/utils";
 
 export default {
   name: "Popup",
   components: { EnvList, ProjectList, ArrowRight },
   data() {
     return {
+      openProjectId: -1,
       envs: null,
       mode: null,
       projects: null,
       currentEnv: null,
       currentEnvs: null,
       loaded: false,
-      options: {}
+      options: {},
     };
   },
   async created() {
@@ -95,18 +97,19 @@ export default {
       const { envs, projects, options } = config;
 
       const currentEnv = getCurrentEnv(currentTab.url, config);
-      const mapEnvId = localEnvs => {
-        return localEnvs.map(envId => envs.find(env => env.id === envId));
+      const mapEnvId = (localEnvs) => {
+        return localEnvs.map((envId) => envs.find((env) => env.id === envId));
       };
 
       let currentEnvs = null;
       if (currentEnv) {
         const currentProject = projects.find(
-          project => project.envs.find(envId => envId === currentEnv.id) != null
+          (project) =>
+            project.envs.find((envId) => envId === currentEnv.id) != null
         );
         currentEnvs = mapEnvId(currentProject.envs);
       } else {
-        if (projects?.length === 1) {
+        if (projects && projects.length === 1) {
           currentEnvs = mapEnvId(projects[0].envs);
         } else if (!projects) {
           currentEnvs = envs;
@@ -125,15 +128,15 @@ export default {
   },
   computed: {
     darkMode() {
-      return isDarkMode(this.options);
-    }
+      return isDarkMode(this.options.colorScheme);
+    },
   },
   methods: {
     async switchEnv({ env, newTab }) {
       const currentTab = await getCurrentTab();
       const newUrl = switchBaseUrl(currentTab.url, env.url, {
         appendUrlParams: env.appendUrlParams,
-        removeUrlParams: env.removeUrlParams
+        removeUrlParams: env.removeUrlParams,
       });
       openChromeUrl(currentTab, newUrl, newTab);
     },
@@ -141,20 +144,53 @@ export default {
       const currentTab = await getCurrentTab();
       const newUrl = switchBaseUrl(env.url, env.url, {
         appendUrlParams: env.appendUrlParams,
-        removeUrlParams: env.removeUrlParams
+        removeUrlParams: env.removeUrlParams,
       });
       openChromeUrl(currentTab, newUrl, newTab);
     },
     openOptionsPage() {
       openOptionsPage();
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss">
 @import "@/styles/variables.scss";
 @import "@/styles/icons.scss";
+
+.list-button {
+  appearance: none;
+  border-radius: 5px;
+  border: 1px solid rgba(var(--border-grey));
+  padding: 5px 8px 5px 15px;
+  flex: 1;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  background-color: rgba(var(--bg-grey));
+  transition: background-color 0.7s ease;
+  min-height: 40px;
+  letter-spacing: 0.35px;
+  color: rgba(var(--fg-black));
+  outline-color: rgba(var(--blue));
+
+  @at-root .dark-mode & {
+    color: rgba(var(--bg-white-off));
+    fill: rgba(var(--bg-white-off));
+    border: 1px solid rgba(var(--black-1));
+    background-color: rgba(var(--black-3));
+  }
+
+  &:hover {
+    background-color: rgba(var(--bg-grey-hover));
+
+    @at-root .dark-mode & {
+      background-color: rgba(var(--black-3), 0.8);
+    }
+  }
+}
 </style>
 
 <style lang="scss" scoped>

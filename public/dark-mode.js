@@ -1,4 +1,4 @@
-window.chrome.storage.sync.get("options", data => {
+window.chrome.storage.sync.get("options", (data) => {
   let options = data && data.options ? JSON.parse(data.options) : {};
   let { colorScheme } = options;
 

@@ -1,4 +1,4 @@
-import { getConfig } from "@/services/business/storage";
+import { getConfig } from "@/services/business/storage/get";
 import { getCurrentEnv } from "@/services/business/url";
 import renderRibbon from "./components/Ribbon.js";
 

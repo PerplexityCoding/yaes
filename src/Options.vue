@@ -8,9 +8,7 @@
 
       <div class="title">
         <h2>
-          <span @click="envClick++">
-            Environments
-          </span>
+          <span @click="envClick++"> Environments </span>
           <div class="dev-buttons" v-if="envClick > 5">
             <button class="save-btn" @click="forceSave">force save</button>
 
@@ -55,9 +53,7 @@
         @update:config="saveConfig"
       />
 
-      <h2>
-        Import / Export
-      </h2>
+      <h2>Import / Export</h2>
 
       <ImportConfig
         @config-loaded="saveImportedConfig"
@@ -68,14 +64,13 @@
 </template>
 
 <script>
-import { getConfig, setConfig } from "./services/business/storage";
+import { getFixConfig, setConfig } from "./services/business/storage";
 import CheckIcon from "./components/icons/CheckIcon";
 import DeleteIcon from "./components/icons/Delete";
 import ImportConfig from "@/components/options/ImportConfig";
-import EditorJsonConfig from "@/components/options/EditorJsonConfig";
 import EditorFormConfig from "@/components/options/EditorFormConfig";
 import { downloadAsJson } from "@/services/utils";
-import { isDarkMode } from "@/services/business/ui";
+import { isDarkMode } from "@/services/business/utils";
 
 export default {
   name: "OptionsPage",
@@ -86,29 +81,29 @@ export default {
       config: false,
       displaySaveInfo: false,
       loadingError: false,
-      errorMessage: null
+      errorMessage: null,
     };
   },
   components: {
     EditorFormConfig,
-    EditorJsonConfig,
+    EditorJsonConfig: () => import("@/components/options/EditorJsonConfig"),
     ImportConfig,
     CheckIcon,
-    DeleteIcon
+    DeleteIcon,
   },
   async created() {
     this.config = await this.getOrInitConfig();
   },
   computed: {
     darkMode() {
-      return isDarkMode(this.config.options);
-    }
+      return isDarkMode(this.config.options.colorScheme);
+    },
   },
   methods: {
     async getOrInitConfig() {
-      const { config, errors } = await getConfig({
+      const { config, errors } = await getFixConfig({
         mergeOptions: false,
-        mergeDefault: false
+        mergeDefault: false,
       });
       if (errors && (errors.migrationFailed || errors.validationFailed)) {
         console.error(errors);
@@ -153,12 +148,16 @@ export default {
 
     downloadConfig() {
       downloadAsJson(this.config);
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss">
+@import "@/styles/variables.scss";
+@import "@/styles/transition.scss";
+@import "@/styles/loader.scss";
+
 input[type="url"],
 input[type="text"] {
   outline: none;

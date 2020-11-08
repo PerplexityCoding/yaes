@@ -37,12 +37,12 @@ export default {
   props: {
     env: {
       type: Object,
-      default: undefined
+      default: undefined,
     },
     option: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   emits: ["update:option"],
   computed: {
@@ -55,13 +55,13 @@ export default {
           ? env.badgeOptions.backgroundColor === undefined
           : true
         : false;
-    }
+    },
   },
   methods: {
     updateComputed(data) {
       this.$emit("update:option", data);
-    }
-  }
+    },
+  },
 };
 </script>
 

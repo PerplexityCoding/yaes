@@ -1,8 +1,6 @@
 <template>
   <div class="options-selector">
-    <h2>
-      Global Options
-    </h2>
+    <h2>Global Options</h2>
 
     <form class="box-elevation">
       <div class="left-col">
@@ -55,9 +53,9 @@
         <div class="label-set" color-scheme>
           <label :for="$id('color-scheme')">Color Scheme</label>
           <select :id="$id('color-scheme')" v-model="colorScheme">
-            <option value="system"> System preferences </option>
-            <option value="light"> Light </option>
-            <option value="dark"> Dark </option>
+            <option value="system">System preferences</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
           </select>
         </div>
       </fieldset>
@@ -81,7 +79,7 @@ import deepmerge from "deepmerge";
 import { getComputedFactory } from "@/services/business/ui";
 import EditorFormRibbon from "@/components/options/form/EditorFormRibbon";
 import EditorFormBadge from "@/components/options/form/EditorFormBadge";
-import { DEFAULT_OPTIONS } from "@/services/business/storage";
+import { DEFAULT_OPTIONS } from "@/services/business/storage/defaults";
 import CoreButton from "@/components/core/Button";
 
 const computed = getComputedFactory("mergedOptions");
@@ -92,8 +90,8 @@ export default {
   props: {
     options: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   mounted() {},
   emits: ["update:options"],
@@ -112,7 +110,7 @@ export default {
     },
     hasOptions() {
       return Object.keys(this.options).length > 0;
-    }
+    },
   },
   methods: {
     resetToDefaultOptions() {
@@ -120,8 +118,8 @@ export default {
     },
     updateComputed(data) {
       this.$emit("update:options", deepmerge({ ...this.options }, data));
-    }
-  }
+    },
+  },
 };
 </script>
 

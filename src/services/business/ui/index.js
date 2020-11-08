@@ -18,7 +18,7 @@ export function getComputedFactory(objectKey) {
         this.updateComputed(
           subKey ? { [key]: { [subKey]: value } } : { [key]: value }
         );
-      }
+      },
     };
   };
 }
@@ -33,10 +33,4 @@ export function updateSortableProjects(options) {
   setTimeout(() => {
     sortable(".project-sortable", options);
   }, 0);
-}
-
-export function isDarkMode(options) {
-  return options.colorScheme !== "system"
-    ? options.colorScheme === "dark"
-    : window.matchMedia("(prefers-color-scheme: dark)").matches;
 }

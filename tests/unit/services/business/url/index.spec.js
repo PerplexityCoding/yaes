@@ -9,26 +9,26 @@ describe("Url", () => {
         displayRibbon: true,
         ribbonOptions: {
           color: "#2519c7",
-          type: "square-ribbon"
+          type: "square-ribbon",
         },
         displayBadge: true,
-        displayDomain: true
+        displayDomain: true,
       },
       {
         shortName: "DE",
         name: "Germany",
         url: "https://www.google.de/",
-        ribbon: false
-      }
+        ribbon: false,
+      },
     ],
     options: {
       ribbonOptions: {
         color: "red",
-        position: "left"
+        position: "left",
       },
       displayBadge: false,
-      displayDomain: true
-    }
+      displayDomain: true,
+    },
   };
 
   it("get Current Env", async () => {
@@ -38,7 +38,7 @@ describe("Url", () => {
       shortName: "DE",
       name: "Germany",
       url: "https://www.google.de/",
-      ribbon: false
+      ribbon: false,
     });
   });
 

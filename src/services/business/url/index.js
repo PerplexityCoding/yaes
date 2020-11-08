@@ -12,14 +12,14 @@ export function switchBaseUrl(
   if (appendUrlParams) {
     const newSearchParams = new URLSearchParams(appendUrlParams);
 
-    newSearchParams.forEach(function(value, key) {
+    newSearchParams.forEach(function (value, key) {
       searchParams.set(key, value);
     });
   }
 
   if (removeUrlParams) {
     const removeUrlParamsList = removeUrlParams.split(",");
-    removeUrlParamsList.forEach(key => {
+    removeUrlParamsList.forEach((key) => {
       searchParams.delete(key.trim());
     });
   }

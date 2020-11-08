@@ -14,24 +14,24 @@ describe("Migrate", () => {
             ribbon: {
               backgroundColor: "#2519c7",
               color: "pink",
-              type: "corner-ribbon"
+              type: "corner-ribbon",
             },
             badge: {
-              backgroundColor: "#159752"
-            }
+              backgroundColor: "#159752",
+            },
           },
           {
             badge: false,
-            ribbon: false
+            ribbon: false,
           },
           {
             badge: true,
-            ribbon: true
+            ribbon: true,
           },
           {
-            name: "Germany"
-          }
-        ]
+            name: "Germany",
+          },
+        ],
       },
       {
         version: "1.1.0",
@@ -39,38 +39,38 @@ describe("Migrate", () => {
           {
             id: 0,
             name: "Default Project",
-            envs: [0, 1, 2, 3]
-          }
+            envs: [0, 1, 2, 3],
+          },
         ],
         envs: [
           {
             id: 0,
             badgeOptions: {
-              backgroundColor: "#159752"
+              backgroundColor: "#159752",
             },
             displayBadge: true,
             displayRibbon: true,
             ribbonOptions: {
               backgroundColor: "#2519c7",
               color: "pink",
-              type: "corner-ribbon"
-            }
+              type: "corner-ribbon",
+            },
           },
           {
             id: 1,
             displayBadge: false,
-            displayRibbon: false
+            displayRibbon: false,
           },
           {
             id: 2,
             displayBadge: true,
-            displayRibbon: true
+            displayRibbon: true,
           },
           {
             id: 3,
-            name: "Germany"
-          }
-        ]
+            name: "Germany",
+          },
+        ],
       }
     );
   });
@@ -80,32 +80,32 @@ describe("Migrate", () => {
       {
         projects: [
           {
-            id: "G"
+            id: "G",
           },
           {
-            name: "K"
+            name: "K",
           },
           {
-            name: "F"
-          }
+            name: "F",
+          },
         ],
         envs: [
           {
             name: "123",
-            project: "G"
+            project: "G",
           },
           {
             name: "456",
-            project: "H"
+            project: "H",
           },
           {
             name: "753",
-            project: "F"
+            project: "F",
           },
           {
-            name: "789"
-          }
-        ]
+            name: "789",
+          },
+        ],
       },
       {
         version: "1.1.0",
@@ -113,47 +113,47 @@ describe("Migrate", () => {
           {
             id: 0,
             name: "G",
-            envs: [0]
+            envs: [0],
           },
           {
             id: 1,
             name: "K",
-            envs: []
+            envs: [],
           },
           {
             id: 2,
             name: "F",
-            envs: [2]
+            envs: [2],
           },
           {
             id: 3,
             name: "H",
-            envs: [1]
+            envs: [1],
           },
           {
             id: 4,
             name: "Default Project",
-            envs: [3]
-          }
+            envs: [3],
+          },
         ],
         envs: [
           {
             id: 0,
-            name: "123"
+            name: "123",
           },
           {
             id: 1,
-            name: "456"
+            name: "456",
           },
           {
             id: 2,
-            name: "753"
+            name: "753",
           },
           {
             id: 3,
-            name: "789"
-          }
-        ]
+            name: "789",
+          },
+        ],
       }
     );
   });
@@ -165,12 +165,12 @@ describe("Migrate", () => {
           ribbon: {
             backgroundColor: "#2519c7",
             color: "pink",
-            type: "corner-ribbon"
+            type: "corner-ribbon",
           },
           badge: {
-            backgroundColor: "#2519c7"
-          }
-        }
+            backgroundColor: "#2519c7",
+          },
+        },
       },
       {
         version: "1.1.0",
@@ -180,13 +180,13 @@ describe("Migrate", () => {
           ribbonOptions: {
             backgroundColor: "#2519c7",
             color: "pink",
-            type: "corner-ribbon"
+            type: "corner-ribbon",
           },
           displayBadge: true,
           badgeOptions: {
-            backgroundColor: "#2519c7"
-          }
-        }
+            backgroundColor: "#2519c7",
+          },
+        },
       }
     );
   });
@@ -196,16 +196,16 @@ describe("Migrate", () => {
       {
         options: {
           ribbon: true,
-          badge: true
-        }
+          badge: true,
+        },
       },
       {
         version: "1.1.0",
         projects: [],
         options: {
           displayRibbon: true,
-          displayBadge: true
-        }
+          displayBadge: true,
+        },
       }
     );
   });
@@ -215,16 +215,16 @@ describe("Migrate", () => {
       {
         options: {
           ribbon: false,
-          badge: false
-        }
+          badge: false,
+        },
       },
       {
         version: "1.1.0",
         projects: [],
         options: {
           displayRibbon: false,
-          displayBadge: false
-        }
+          displayBadge: false,
+        },
       }
     );
   });
@@ -234,16 +234,16 @@ describe("Migrate", () => {
       {
         options: {
           displayRibbon: false,
-          displayBadge: true
-        }
+          displayBadge: true,
+        },
       },
       {
         projects: [],
         version: "1.1.0",
         options: {
           displayRibbon: false,
-          displayBadge: true
-        }
+          displayBadge: true,
+        },
       },
       false
     );

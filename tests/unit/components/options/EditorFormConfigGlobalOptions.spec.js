@@ -8,17 +8,17 @@ import { VuelidatePlugin } from "@vuelidate/core";
 describe("EditorFormConfigGlobalOptions.vue", () => {
   const options = {
     displayBadge: false,
-    displayRibbon: false
+    displayRibbon: false,
   };
 
   function createDefaultWrapper() {
     const wrapper = mount(EditorFormConfigGlobalOptions, {
       props: {
-        options: deepmerge({}, options)
+        options: deepmerge({}, options),
       },
       global: {
-        plugins: [UniqueId, VuelidatePlugin]
-      }
+        plugins: [UniqueId, VuelidatePlugin],
+      },
     });
 
     return wrapper;
@@ -38,11 +38,12 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
 
     const hasAttribute = (label, attribute) =>
       expect(label.attributes()[attribute]).toBe("");
-    const isCheckbox = label =>
+    const isCheckbox = (label) =>
       expect(label.find("input[type=checkbox]").exists()).toBe(true);
-    const isColorSelector = label =>
+    const isColorSelector = (label) =>
       expect(label.html()).toContain("pcr-button");
-    const isSelect = label => expect(label.find("select").exists()).toBe(true);
+    const isSelect = (label) =>
+      expect(label.find("select").exists()).toBe(true);
 
     let i = 0;
     let label = labels[i++];

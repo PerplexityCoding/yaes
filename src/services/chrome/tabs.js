@@ -1,14 +1,14 @@
 export function getCurrentTab() {
-  return new Promise(success => {
-    window.chrome.tabs.query({ currentWindow: true, active: true }, tabs => {
+  return new Promise((success) => {
+    window.chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
       success(tabs[0]);
     });
   });
 }
 
 export function getTab(tabId) {
-  return new Promise(success => {
-    window.chrome.tabs.get(tabId, tab => {
+  return new Promise((success) => {
+    window.chrome.tabs.get(tabId, (tab) => {
       success(tab);
     });
   });
@@ -18,7 +18,7 @@ export function openChromeUrl(tab, url, inNewTab) {
   if (inNewTab) {
     window.chrome.tabs.create({
       url,
-      active: false
+      active: false,
     });
   } else {
     window.chrome.tabs.update(tab.id, { url });
