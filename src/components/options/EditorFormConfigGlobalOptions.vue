@@ -1,7 +1,7 @@
 <template>
   <div class="options-selector">
     <h2>
-      Options
+      Global Options
     </h2>
 
     <form class="box-elevation">

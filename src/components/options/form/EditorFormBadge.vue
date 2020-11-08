@@ -16,13 +16,7 @@
     <div class="label-set" badge-bg-color>
       <label
         class="badge-bg-color"
-        :class="{
-          defaulted: env
-            ? env.badgeOptions
-              ? env.badgeOptions.backgroundColor === undefined
-              : true
-            : false
-        }"
+        :class="{ defaulted: isBadgeDefaultBgColor }"
       >
         <ColorPicker v-model:color="badgeBgColor" />
         <span>Background Color</span>
@@ -53,7 +47,15 @@ export default {
   emits: ["update:option"],
   computed: {
     displayBadge: computed("displayBadge"),
-    badgeBgColor: computed("badgeOptions", "backgroundColor", "#FF00FF")
+    badgeBgColor: computed("badgeOptions", "backgroundColor"),
+    isBadgeDefaultBgColor() {
+      const { env } = this;
+      return env
+        ? env.badgeOptions
+          ? env.badgeOptions.backgroundColor === undefined
+          : true
+        : false;
+    }
   },
   methods: {
     updateComputed(data) {

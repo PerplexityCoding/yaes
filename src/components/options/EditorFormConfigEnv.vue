@@ -79,21 +79,33 @@
           <div v-if="!newEnv">
             <div class="label-set">
               <label :for="$id('append-url-params')"> Append url params </label>
-              <input
-                :id="$id('append-url-params')"
-                type="text"
-                v-model="appendUrlParams"
-                placeholder="eg: search=true&query=dev&..."
-              />
+              <div>
+                <input
+                  :class="{ error: $v.appendUrlParams.$error }"
+                  :id="$id('append-url-params')"
+                  type="text"
+                  v-model="appendUrlParams"
+                  placeholder="eg: search=true&query=dev&..."
+                />
+                <div class="error" v-if="$v.appendUrlParams.$error">
+                  Append url params is not valid. (eg: search=true&query=dev )
+                </div>
+              </div>
             </div>
             <div class="label-set">
               <label :for="$id('remove-url-params')"> Remove url params </label>
-              <input
-                :id="$id('remove-url-params')"
-                type="text"
-                v-model="removeUrlParams"
-                placeholder="eg: search,query,..."
-              />
+              <div>
+                <input
+                  :id="$id('remove-url-params')"
+                  :class="{ error: $v.removeUrlParams.$error }"
+                  type="text"
+                  v-model="removeUrlParams"
+                  placeholder="eg: search,query,..."
+                />
+                <div class="error" v-if="$v.removeUrlParams.$error">
+                  Remove url params is not valid. (eg: search,query )
+                </div>
+              </div>
             </div>
           </div>
         </transition>
@@ -121,7 +133,7 @@
         <div class="override-options" v-if="!newEnv">
           <div class="override-message">
             <span>
-              Overrides default options for this environment <br />
+              Overrides global options for this environment <br />
               <i>Fields with * are using global options, change to override</i>
             </span>
             <CoreButton
@@ -180,6 +192,7 @@ import { DEFAULT_OPTIONS } from "@/services/business/storage";
 import ConfirmationDeleteButton from "@/components/options/form/ConfirmationDeleteButton";
 import { required, url } from "@vuelidate/validators";
 import CoreButton from "@/components/core/Button";
+import { helpers } from "@vuelidate/validators";
 
 const computed = getComputedFactory("mergedEnv");
 
@@ -246,7 +259,7 @@ export default {
     url: computed("url"),
     appendUrlParams: computed("appendUrlParams", null),
     removeUrlParams: computed("removeUrlParams", null),
-    displayDomain: computed("displayDomain", null, true),
+    displayDomain: computed("displayDomain", null),
     hasOverrides() {
       const env = this.env;
       if (env) {
@@ -265,7 +278,16 @@ export default {
   validations() {
     return {
       name: { required },
-      url: { required, url }
+      url: { required, url },
+      appendUrlParams: {
+        searchParams: value =>
+          !helpers.req(value) ||
+          !!value.match(/^([^=&]+=[^=&]+)(&[^=&]+=[^=&]+)*$/)
+      },
+      removeUrlParams: {
+        listString: value =>
+          !helpers.req(value) || !!value.match(/^[^,]+(,[^,]+)*$/)
+      }
     };
   },
   methods: {
@@ -347,6 +369,7 @@ h3 {
     > div {
       display: flex;
       flex: 1;
+      flex-direction: column;
     }
 
     input {

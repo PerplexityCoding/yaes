@@ -87,10 +87,10 @@ export default {
   emits: ["update:option"],
   computed: {
     displayRibbon: computed("displayRibbon"),
-    ribbonColor: computed("ribbonOptions", "color", "white"),
-    ribbonBgColor: computed("ribbonOptions", "backgroundColor", "#2f2f2f"),
-    ribbonPosition: computed("ribbonOptions", "position", "right"),
-    ribbonType: computed("ribbonOptions", "type", "corner-ribbon")
+    ribbonColor: computed("ribbonOptions", "color"),
+    ribbonBgColor: computed("ribbonOptions", "backgroundColor"),
+    ribbonPosition: computed("ribbonOptions", "position"),
+    ribbonType: computed("ribbonOptions", "type")
   },
   methods: {
     updateComputed(data) {

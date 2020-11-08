@@ -1,13 +1,13 @@
 import sortable from "html5sortable/dist/html5sortable.cjs";
 
 export function getComputedFactory(objectKey) {
-  return (key, subKey, defaultValue) => {
+  return (key, subKey) => {
     return {
       get() {
         const firstOption = this[objectKey][key];
         const option =
           subKey && firstOption != null ? firstOption[subKey] : firstOption;
-        return option != null ? option : defaultValue;
+        return option != null ? option : "";
       },
       set(value) {
         if (this.$v && this.$v[key]) {
