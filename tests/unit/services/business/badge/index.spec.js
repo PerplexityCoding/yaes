@@ -3,10 +3,10 @@ import {
   setBadgeText
 } from "@/services/chrome/browserAction";
 import { updateBadgeTextFromEnv } from "@/services/business/badge";
-import { getConfig } from "@/services/business/storage";
+import { getConfig } from "@/services/business/storage/get";
 import { waitFor } from "../../../../../src/services/utils";
 
-jest.mock("@/services/business/storage");
+jest.mock("@/services/business/storage/get");
 jest.mock("@/services/chrome/browserAction");
 
 describe("Badge", () => {

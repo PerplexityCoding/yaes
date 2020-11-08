@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import JSONEditor from "jsoneditor/dist/jsoneditor.js";
 import { debounce } from "../../services/utils";
 import validateSchema from "../../schemas/config.schema.gen.js";
 
@@ -27,7 +26,8 @@ export default {
     };
   },
   emits: ["update:config"],
-  mounted() {
+  async mounted() {
+    const JSONEditor = (await import("jsoneditor/dist/jsoneditor.js")).default;
     this.editor = new JSONEditor(
       this.$refs.jsonEditor,
       {
@@ -38,7 +38,7 @@ export default {
             if (e.message.indexOf("Parse error on line") >= 0) {
               // contain invalid json data ignore
             } else {
-              console.log(e);
+              console.error(e);
             }
           }
         }, SAVE_DELAY),
@@ -77,10 +77,6 @@ export default {
 </style>
 
 <style lang="scss">
-@import "@/styles/variables.scss";
-@import "@/styles/transition.scss";
-@import "@/styles/loader.scss";
-
 #check-color {
   fill: rgba(var(--green)) !important;
 }

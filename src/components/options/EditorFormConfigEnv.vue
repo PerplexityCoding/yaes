@@ -188,7 +188,7 @@ import { getComputedFactory } from "@/services/business/ui";
 import EditorFormRibbon from "@/components/options/form/EditorFormRibbon";
 import EditorFormBadge from "@/components/options/form/EditorFormBadge";
 import { removeUndefined } from "@/services/utils";
-import { DEFAULT_OPTIONS } from "@/services/business/storage";
+import { DEFAULT_OPTIONS } from "@/services/business/storage/defaults";
 import ConfirmationDeleteButton from "@/components/options/form/ConfirmationDeleteButton";
 import { required, url } from "@vuelidate/validators";
 import CoreButton from "@/components/core/Button";

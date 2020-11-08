@@ -1,4 +1,4 @@
-import { getConfig } from "@/services/business/storage";
+import { getFixConfig } from "@/services/business/storage";
 import { mount } from "@vue/test-utils";
 import Options from "@/Options.vue";
 import { waitFor } from "@/services/utils";
@@ -39,7 +39,7 @@ describe("Options.vue", () => {
   };
 
   function mockStorageEnvGet() {
-    getConfig.mockReturnValue({ config });
+    getFixConfig.mockReturnValue({ config });
   }
 
   it("should display the projects and envs", async () => {

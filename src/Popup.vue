@@ -70,8 +70,8 @@ import {
   openOptionsPage
 } from "./services/chrome/tabs";
 import { switchBaseUrl, getCurrentEnv } from "./services/business/url";
-import { getConfig } from "./services/business/storage";
-import { isDarkMode } from "@/services/business/ui";
+import { getConfig } from "./services/business/storage/get";
+import { isDarkMode } from "@/services/business/utils";
 
 export default {
   name: "Popup",

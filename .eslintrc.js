@@ -18,11 +18,13 @@ module.exports = {
   overrides: [
     {
       files: [
+        "*.config.js",
         "**/__tests__/*.{j,t}s?(x)",
         "**/tests/unit/**/*.spec.{j,t}s?(x)",
         "**/__mocks__/*.js"
       ],
       env: {
+        node: true,
         jest: true
       }
     }

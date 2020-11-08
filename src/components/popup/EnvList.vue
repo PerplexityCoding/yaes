@@ -44,9 +44,6 @@ export default {
   },
   components: { ArrowRight },
   emits: ["switch-env"],
-  data() {
-    return {};
-  },
   methods: {
     equalsEnv(env1, env2) {
       if (!env1 || !env2) {

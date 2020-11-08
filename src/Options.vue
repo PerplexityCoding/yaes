@@ -68,14 +68,13 @@
 </template>
 
 <script>
-import { getConfig, setConfig } from "./services/business/storage";
+import { getFixConfig, setConfig } from "./services/business/storage";
 import CheckIcon from "./components/icons/CheckIcon";
 import DeleteIcon from "./components/icons/Delete";
 import ImportConfig from "@/components/options/ImportConfig";
-import EditorJsonConfig from "@/components/options/EditorJsonConfig";
 import EditorFormConfig from "@/components/options/EditorFormConfig";
 import { downloadAsJson } from "@/services/utils";
-import { isDarkMode } from "@/services/business/ui";
+import { isDarkMode } from "@/services/business/utils";
 
 export default {
   name: "OptionsPage",
@@ -91,7 +90,7 @@ export default {
   },
   components: {
     EditorFormConfig,
-    EditorJsonConfig,
+    EditorJsonConfig: () => import("@/components/options/EditorJsonConfig"),
     ImportConfig,
     CheckIcon,
     DeleteIcon
@@ -106,7 +105,7 @@ export default {
   },
   methods: {
     async getOrInitConfig() {
-      const { config, errors } = await getConfig({
+      const { config, errors } = await getFixConfig({
         mergeOptions: false,
         mergeDefault: false
       });
@@ -159,6 +158,10 @@ export default {
 </script>
 
 <style lang="scss">
+@import "@/styles/variables.scss";
+@import "@/styles/transition.scss";
+@import "@/styles/loader.scss";
+
 input[type="url"],
 input[type="text"] {
   outline: none;
