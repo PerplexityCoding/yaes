@@ -9,11 +9,11 @@
           :project-id="project.id"
           :selected-env-id="selectedEnvId"
           :selected-project-id="selectedProjectId"
-          @select-env="data => $emit('select-env', data)"
-          @delete-project="data => $emit('delete-project', data)"
-          @new-env="data => $emit('new-env', data)"
-          @drop-env="data => $emit('drop-env', data)"
-          @update-project="data => $emit('update-project', data)"
+          @select-env="(data) => $emit('select-env', data)"
+          @delete-project="(data) => $emit('delete-project', data)"
+          @new-env="(data) => $emit('new-env', data)"
+          @drop-env="(data) => $emit('drop-env', data)"
+          @update-project="(data) => $emit('update-project', data)"
         />
       </ul>
     </div>
@@ -45,27 +45,27 @@ export default {
   components: { CoreButton, EditorFormConfigProject },
   data() {
     return {
-      collapsed: false
+      collapsed: false,
     };
   },
   props: {
     config: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
     selectedEnvId: {
       type: Number,
-      default: null
+      default: null,
     },
     selectedProjectId: {
       type: Number,
-      default: null
-    }
+      default: null,
+    },
   },
   mounted() {
     setTimeout(() => {
       updateSortableProjects({
-        handle: ".project-sortable-handle"
+        handle: ".project-sortable-handle",
       });
     }, 100);
   },
@@ -76,7 +76,7 @@ export default {
     "drop-env",
     "new-project",
     "update-project",
-    "drop-project"
+    "drop-project",
   ],
   methods: {
     onDrop(e) {
@@ -84,13 +84,13 @@ export default {
       const { origin, destination } = detail;
       this.$emit("drop-project", { origin, destination });
       this.collapsed = false;
-    }
+    },
   },
   computed: {
     hasProjects() {
       return this.config.projects && this.config.projects.length > 0;
-    }
-  }
+    },
+  },
 };
 </script>
 

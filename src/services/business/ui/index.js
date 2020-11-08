@@ -18,7 +18,7 @@ export function getComputedFactory(objectKey) {
         this.updateComputed(
           subKey ? { [key]: { [subKey]: value } } : { [key]: value }
         );
-      }
+      },
     };
   };
 }

@@ -9,45 +9,45 @@ describe("ProjectList.vue", () => {
       name: "France",
       shortName: "FR",
       url: "https://www.google.fr/",
-      displayDomain: true
+      displayDomain: true,
     },
     {
       id: 1,
       name: "DE",
       url: "https://www.google.de/",
-      displayDomain: false
+      displayDomain: false,
     },
     {
       id: 2,
       shortName: "ES",
-      url: "https://www.google.es/"
+      url: "https://www.google.es/",
     },
     {
       id: 3,
       shortName: "ES",
-      url: "https://www.yah.es/"
-    }
+      url: "https://www.yah.es/",
+    },
   ];
 
   const projects = [
     {
       id: 0,
       name: "Google",
-      envs: [0, 1, 2]
+      envs: [0, 1, 2],
     },
     {
       id: 1,
       name: "Yah",
-      envs: [3]
-    }
+      envs: [3],
+    },
   ];
 
   function createDefaultWrapper() {
     const wrapper = mount(ProjectList, {
       props: {
         envs,
-        projects
-      }
+        projects,
+      },
     });
 
     return wrapper;

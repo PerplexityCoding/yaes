@@ -7,30 +7,30 @@ describe("EnvList.vue", () => {
       name: "France",
       shortName: "FR",
       url: "https://www.google.fr/",
-      displayDomain: true
+      displayDomain: true,
     },
     {
       name: "DE",
       url: "https://www.google.de/",
-      displayDomain: false
+      displayDomain: false,
     },
     {
       shortName: "ES",
-      url: "https://www.google.es/"
-    }
+      url: "https://www.google.es/",
+    },
   ];
 
   function createDefaultWrapper() {
     const currentEnv = {
       name: "DE",
-      url: "https://www.google.de/"
+      url: "https://www.google.de/",
     };
 
     const wrapper = shallowMount(EnvList, {
       props: {
         envs,
-        currentEnv
-      }
+        currentEnv,
+      },
     });
 
     return wrapper;

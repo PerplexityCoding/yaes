@@ -8,9 +8,7 @@
 
       <div class="title">
         <h2>
-          <span @click="envClick++">
-            Environments
-          </span>
+          <span @click="envClick++"> Environments </span>
           <div class="dev-buttons" v-if="envClick > 5">
             <button class="save-btn" @click="forceSave">force save</button>
 
@@ -55,9 +53,7 @@
         @update:config="saveConfig"
       />
 
-      <h2>
-        Import / Export
-      </h2>
+      <h2>Import / Export</h2>
 
       <ImportConfig
         @config-loaded="saveImportedConfig"
@@ -85,7 +81,7 @@ export default {
       config: false,
       displaySaveInfo: false,
       loadingError: false,
-      errorMessage: null
+      errorMessage: null,
     };
   },
   components: {
@@ -93,21 +89,21 @@ export default {
     EditorJsonConfig: () => import("@/components/options/EditorJsonConfig"),
     ImportConfig,
     CheckIcon,
-    DeleteIcon
+    DeleteIcon,
   },
   async created() {
     this.config = await this.getOrInitConfig();
   },
   computed: {
     darkMode() {
-      return isDarkMode(this.config.options);
-    }
+      return isDarkMode(this.config.options.colorScheme);
+    },
   },
   methods: {
     async getOrInitConfig() {
       const { config, errors } = await getFixConfig({
         mergeOptions: false,
-        mergeDefault: false
+        mergeDefault: false,
       });
       if (errors && (errors.migrationFailed || errors.validationFailed)) {
         console.error(errors);
@@ -152,8 +148,8 @@ export default {
 
     downloadConfig() {
       downloadAsJson(this.config);
-    }
-  }
+    },
+  },
 };
 </script>
 

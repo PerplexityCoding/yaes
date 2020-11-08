@@ -1,6 +1,6 @@
 import {
   setBadgeBackgroundColor,
-  setBadgeText
+  setBadgeText,
 } from "@/services/chrome/browserAction";
 import { updateBadgeTextFromEnv } from "@/services/business/badge";
 import { getConfig } from "@/services/business/storage/get";
@@ -18,15 +18,21 @@ describe("Badge", () => {
         displayRibbon: true,
         ribbonOptions: {
           color: "#2519c7",
-          type: "square-ribbon"
+          type: "square-ribbon",
         },
         displayBadge: true,
-        displayDomain: true
+        displayDomain: true,
+        badgeOptions: {
+          backgroundColor: "#2677c9",
+        },
       },
       {
         name: "Germany",
         url: "https://www.google.de/",
-        displayRibbon: false
+        displayRibbon: false,
+        badgeOptions: {
+          backgroundColor: "#2677c9",
+        },
       },
       {
         name: "Spain",
@@ -35,25 +41,31 @@ describe("Badge", () => {
         displayRibbon: false,
         displayBadge: true,
         badgeOptions: {
-          backgroundColor: "red"
-        }
+          backgroundColor: "#2677c9",
+        },
       },
       {
         name: "Other",
         shortName: "OH",
         url: "https://www.google.oh/",
-        displayBadge: false
-      }
+        displayBadge: false,
+        badgeOptions: {
+          backgroundColor: "#2677c9",
+        },
+      },
     ],
     options: {
       displayRibbon: true,
       ribbonOptions: {
-        color: "red",
-        position: "left"
+        color: "#2677c9",
+        position: "left",
       },
       displayBadge: true,
-      displayDomain: true
-    }
+      displayDomain: true,
+      badgeOptions: {
+        backgroundColor: "#2677c9",
+      },
+    },
   };
 
   afterEach(() => {
@@ -88,7 +100,7 @@ describe("Badge", () => {
     await updateBadgeTextFromEnv(2, "https://www.google.es");
     await waitFor();
     expect(setBadgeText).toHaveBeenCalledWith(2, "SP");
-    expect(setBadgeBackgroundColor).toHaveBeenCalledWith(2, "red");
+    expect(setBadgeBackgroundColor).toHaveBeenCalledWith(2, "#2677c9");
   });
 
   it("updateBadgeTextFromEnv with badge false", async () => {

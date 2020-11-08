@@ -29,18 +29,18 @@ export default {
     envs: {
       type: Array,
       required: true,
-      validator: a =>
+      validator: (a) =>
         a.reduce(
           (acc, o) => acc && (o.name != null || o.shortName != null),
           true
-        )
+        ),
     },
     currentEnv: {
       type: Object,
       required: false,
       default: null,
-      validator: o => !o || o.name != null || o.shortName != null
-    }
+      validator: (o) => !o || o.name != null || o.shortName != null,
+    },
   },
   components: { ArrowRight },
   emits: ["switch-env"],
@@ -56,8 +56,8 @@ export default {
     },
     switchEnv(env, newTab) {
       this.$emit("switch-env", { env, newTab });
-    }
-  }
+    },
+  },
 };
 </script>
 

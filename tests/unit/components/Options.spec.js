@@ -15,27 +15,27 @@ describe("Options.vue", () => {
       {
         id: 0,
         name: "Project name test",
-        envs: [1, 2, 3]
-      }
+        envs: [1, 2, 3],
+      },
     ],
     envs: [
       {
         id: 1,
         name: "FR",
-        url: "https://www.google.fr/sdfsdf"
+        url: "https://www.google.fr/sdfsdf",
       },
       {
         id: 2,
         name: "DE",
-        url: "https://www.google.de/sdfsdf"
+        url: "https://www.google.de/sdfsdf",
       },
       {
         id: 3,
         name: "ES",
-        url: "https://www.google.es/"
-      }
+        url: "https://www.google.es/",
+      },
     ],
-    options: {}
+    options: {},
   };
 
   function mockStorageEnvGet() {
@@ -47,8 +47,8 @@ describe("Options.vue", () => {
 
     const wrapper = mount(Options, {
       global: {
-        plugins: [UniqueId, VuelidatePlugin]
-      }
+        plugins: [UniqueId, VuelidatePlugin],
+      },
     });
     await waitFor();
 

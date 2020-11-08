@@ -1,7 +1,7 @@
 <template>
   <button
     :class="{ [variation]: variation, elevation }"
-    @click="e => $emit('click', e)"
+    @click="(e) => $emit('click', e)"
   >
     <component v-if="iconName" :is="iconName" height="18px" width="18px" />
     <slot />
@@ -16,22 +16,23 @@ export default {
   props: {
     iconName: {
       type: String,
-      default: null
+      default: null,
     },
     variation: {
       type: String,
       default: null,
-      validator: s => s.indexOf("negative") >= 0 || s.indexOf("positive") >= 0
+      validator: (s) =>
+        s.indexOf("negative") >= 0 || s.indexOf("positive") >= 0,
     },
     elevation: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emits: ["click"],
   components: {
-    ...icons
-  }
+    ...icons,
+  },
 };
 </script>
 

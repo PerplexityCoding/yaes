@@ -3,7 +3,7 @@ import { INIT_DEFAULT_CONFIG } from "@/services/business/storage/defaults";
 import {
   getAndAssembleConfig,
   mergeOptionsDefault,
-  mergeOptionsInEnv
+  mergeOptionsInEnv,
 } from "@/services/business/storage/utils";
 
 export async function getConfig(
@@ -28,6 +28,6 @@ export async function getConfig(
 
   return {
     config,
-    errors
+    errors,
   };
 }

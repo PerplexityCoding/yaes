@@ -15,14 +15,14 @@ export default {
   props: {
     config: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data() {
     return {
       displaySaveInfo: false,
       editor: null,
-      errors: []
+      errors: [],
     };
   },
   emits: ["update:config"],
@@ -42,7 +42,7 @@ export default {
             }
           }
         }, SAVE_DELAY),
-        onValidationError: errors => {
+        onValidationError: (errors) => {
           this.errors = errors;
         },
         onModeChange: () => {
@@ -50,7 +50,7 @@ export default {
             this.editor.validateSchema = validateSchema;
           }
         },
-        modes: ["tree", "code"]
+        modes: ["tree", "code"],
       },
       this.config
     );
@@ -62,13 +62,13 @@ export default {
   },
   methods: {
     saveConfig(config) {
-      if (!config || this.errors?.length > 0) {
+      if (!config || (this.errors && this.errors.length > 0)) {
         return;
       }
 
       this.$emit("update:config", config);
-    }
-  }
+    },
+  },
 };
 </script>
 

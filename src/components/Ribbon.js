@@ -1,5 +1,3 @@
-import { getContrast } from "../services/utils";
-
 const ribbonCss = `
   .corner-ribbon {
     width: 225px;
@@ -69,18 +67,18 @@ function renderRibbonHtml(config, env) {
   const elem = document.createElement("div");
   elem.setAttribute("id", "ribbon");
 
-  const ribbonOptions = env?.ribbonOptions;
-  const backgroundColor = ribbonOptions?.backgroundColor || "#2f2f2f";
-  const position = ribbonOptions?.position || "right";
-  const type = ribbonOptions?.type || "corner-ribbon";
-  const color = ribbonOptions?.color || getContrast(backgroundColor);
+  const ribbonOptions = env.ribbonOptions;
+  const backgroundColor = ribbonOptions.backgroundColor;
+  const position = ribbonOptions.position;
+  const type = ribbonOptions.type;
+  const color = ribbonOptions.color;
 
   elem.innerHTML = ribbonH({
     name: env.name || env.shortName,
     position,
     backgroundColor,
     type,
-    color
+    color,
   });
   elem.addEventListener("click", () => {
     elem.remove();

@@ -2,27 +2,27 @@ import { getNextEnvId, getNextProjectId } from "@/services/business/ids";
 import { updateArray } from "@/services/utils";
 
 function findIndex(objId) {
-  return array => array.findIndex(o => o.id === objId);
+  return (array) => array.findIndex((o) => o.id === objId);
 }
 
 export function newProject(config, data) {
   return {
     id: getNextProjectId(config.projects),
     envs: [],
-    ...data
+    ...data,
   };
 }
 
 export function addProject(config, project) {
   return {
     ...config,
-    projects: [...config.projects, project]
+    projects: [...config.projects, project],
   };
 }
 
 export function deleteProject(config, projectId) {
   const project = getProjectById(config, projectId);
-  const envs = config.envs.filter(env => project.envs.indexOf(env.id) < 0);
+  const envs = config.envs.filter((env) => project.envs.indexOf(env.id) < 0);
   const projects = updateArray(
     config.projects,
     findIndex(projectId),
@@ -31,21 +31,25 @@ export function deleteProject(config, projectId) {
   return {
     ...config,
     envs,
-    projects
+    projects,
   };
 }
 
 export function updateProject(config, project) {
   return {
     ...config,
-    projects: updateArray(config.projects, findIndex(project.id), () => project)
+    projects: updateArray(
+      config.projects,
+      findIndex(project.id),
+      () => project
+    ),
   };
 }
 
 export function newEnv(config, data) {
   return {
     ...data,
-    id: getNextEnvId(config.envs)
+    id: getNextEnvId(config.envs),
   };
 }
 
@@ -55,14 +59,14 @@ export function addEnv(config, projectId, env) {
   const project = getProjectById(config, projectId);
   const projects = updateArray(config.projects, findIndex(projectId), () => ({
     ...project,
-    envs: [...project.envs, env.id]
+    envs: [...project.envs, env.id],
   }));
   const envs = [...configEnvs, env];
 
   return {
     ...config,
     projects,
-    envs
+    envs,
   };
 }
 
@@ -72,33 +76,35 @@ export function deleteEnv(config, envId) {
 
   return {
     ...config,
-    projects: projects.map(project => ({
+    projects: projects.map((project) => ({
       ...project,
-      envs: project.envs.filter(currentEnvId => currentEnvId !== envId)
+      envs: project.envs.filter((currentEnvId) => currentEnvId !== envId),
     })),
-    envs: updateArray(envs, findIndex(envId), () => null)
+    envs: updateArray(envs, findIndex(envId), () => null),
   };
 }
 
 export function updateEnv(config, env) {
   return {
     ...config,
-    envs: updateArray(config.envs, findIndex(env.id), () => env)
+    envs: updateArray(config.envs, findIndex(env.id), () => env),
   };
 }
 
 export function getProjectEnvs(config, projectId) {
   const project = getProjectById(config, projectId);
   if (project.envs && project.envs.length > 0) {
-    return project.envs.map(envId => config.envs.find(env => env.id === envId));
+    return project.envs.map((envId) =>
+      config.envs.find((env) => env.id === envId)
+    );
   }
   return [];
 }
 
 export function getProjectById(config, projectId) {
-  return config.projects.find(project => project.id === projectId);
+  return config.projects.find((project) => project.id === projectId);
 }
 
 export function getEnvById(config, envId) {
-  return config.envs.find(env => env.id === envId);
+  return config.envs.find((env) => env.id === envId);
 }

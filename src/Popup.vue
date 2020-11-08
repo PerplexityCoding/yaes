@@ -11,15 +11,15 @@
             :envs="currentEnvs"
             :current-env="currentEnv"
             @switch-env="
-              env => (currentEnv ? switchEnv(env) : redirectEnv(env))
+              (env) => (currentEnv ? switchEnv(env) : redirectEnv(env))
             "
           />
 
           <button
             v-if="
               projects &&
-                projects.length > 1 &&
-                options.displaySeeProjectsLink !== false
+              projects.length > 1 &&
+              options.displaySeeProjectsLink !== false
             "
             class="switch-env-btn right"
             @click="mode = 'projects'"
@@ -67,7 +67,7 @@ import ArrowRight from "./components/icons/ArrowRight";
 import {
   getCurrentTab,
   openChromeUrl,
-  openOptionsPage
+  openOptionsPage,
 } from "./services/chrome/tabs";
 import { switchBaseUrl, getCurrentEnv } from "./services/business/url";
 import { getConfig } from "./services/business/storage/get";
@@ -84,7 +84,7 @@ export default {
       currentEnv: null,
       currentEnvs: null,
       loaded: false,
-      options: {}
+      options: {},
     };
   },
   async created() {
@@ -95,18 +95,19 @@ export default {
       const { envs, projects, options } = config;
 
       const currentEnv = getCurrentEnv(currentTab.url, config);
-      const mapEnvId = localEnvs => {
-        return localEnvs.map(envId => envs.find(env => env.id === envId));
+      const mapEnvId = (localEnvs) => {
+        return localEnvs.map((envId) => envs.find((env) => env.id === envId));
       };
 
       let currentEnvs = null;
       if (currentEnv) {
         const currentProject = projects.find(
-          project => project.envs.find(envId => envId === currentEnv.id) != null
+          (project) =>
+            project.envs.find((envId) => envId === currentEnv.id) != null
         );
         currentEnvs = mapEnvId(currentProject.envs);
       } else {
-        if (projects?.length === 1) {
+        if (projects && projects.length === 1) {
           currentEnvs = mapEnvId(projects[0].envs);
         } else if (!projects) {
           currentEnvs = envs;
@@ -125,15 +126,15 @@ export default {
   },
   computed: {
     darkMode() {
-      return isDarkMode(this.options);
-    }
+      return isDarkMode(this.options.colorScheme);
+    },
   },
   methods: {
     async switchEnv({ env, newTab }) {
       const currentTab = await getCurrentTab();
       const newUrl = switchBaseUrl(currentTab.url, env.url, {
         appendUrlParams: env.appendUrlParams,
-        removeUrlParams: env.removeUrlParams
+        removeUrlParams: env.removeUrlParams,
       });
       openChromeUrl(currentTab, newUrl, newTab);
     },
@@ -141,14 +142,14 @@ export default {
       const currentTab = await getCurrentTab();
       const newUrl = switchBaseUrl(env.url, env.url, {
         appendUrlParams: env.appendUrlParams,
-        removeUrlParams: env.removeUrlParams
+        removeUrlParams: env.removeUrlParams,
       });
       openChromeUrl(currentTab, newUrl, newTab);
     },
     openOptionsPage() {
       openOptionsPage();
-    }
-  }
+    },
+  },
 };
 </script>
 

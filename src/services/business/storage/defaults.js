@@ -4,11 +4,11 @@ export const INIT_DEFAULT_CONFIG = {
     {
       id: 0,
       name: "Default Project",
-      envs: []
-    }
+      envs: [],
+    },
   ],
   envs: [],
-  options: {}
+  options: {},
 };
 
 export const DEFAULT_OPTIONS = {
@@ -19,13 +19,13 @@ export const DEFAULT_OPTIONS = {
   displayRibbon: true,
   displayBadge: true,
   badgeOptions: {
-    backgroundColor: "#2677c9"
+    backgroundColor: "#2677c9",
   },
   ribbonOptions: {
     type: "corner-ribbon",
     color: "white",
     backgroundColor: "#2677c9",
-    position: "right"
+    position: "right",
   },
-  colorScheme: "system"
+  colorScheme: "system",
 };

@@ -1,7 +1,7 @@
 import {
   storageGet as chromeStorageGet,
   storageSet as chromeStorageSet,
-  storageRemove as chromeStorageRemove
+  storageRemove as chromeStorageRemove,
 } from "@/services/chrome/storage";
 
 import deepmerge from "deepmerge";
@@ -10,13 +10,13 @@ import validateSchema from "./validate";
 
 import {
   checkUpdate,
-  ConfigUpdateStatus
+  ConfigUpdateStatus,
 } from "@/services/business/storage/migrate";
 import { INIT_DEFAULT_CONFIG } from "@/services/business/storage/defaults";
 import {
   getAndAssembleConfig,
   mergeOptionsDefault,
-  mergeOptionsInEnv
+  mergeOptionsInEnv,
 } from "@/services/business/storage/utils";
 
 async function migrateConfig(config, { mergeOptions } = {}) {
@@ -51,7 +51,7 @@ async function migrateConfig(config, { mergeOptions } = {}) {
 
   return {
     config,
-    errors
+    errors,
   };
 }
 
@@ -67,7 +67,7 @@ async function migrate(migrateOptions = {}) {
     await setConfig(config);
 
     return {
-      config
+      config,
     };
   }
 }
@@ -82,6 +82,7 @@ async function getFixConfig(
   config.envs = await removeUnrefEnvs(config);
 
   if (config != null) {
+    console.log(config);
     if (mergeDefault) {
       config = mergeOptionsDefault(config);
     }
@@ -96,20 +97,20 @@ async function getFixConfig(
 
   return {
     config,
-    errors
+    errors,
   };
 }
 
 async function removeUnrefEnvs(config) {
   const envIdsUsed = config.projects.reduce((acc, project) => {
-    project.envs.forEach(envId => {
+    project.envs.forEach((envId) => {
       acc[envId] = true;
     });
     return acc;
   }, {});
   const unusedEnvIds = config.envs
     .filter(({ id }) => !envIdsUsed[id])
-    .map(env => env.id);
+    .map((env) => env.id);
   const usedEnvs = config.envs.filter(({ id }) => envIdsUsed[id]);
 
   if (unusedEnvIds.length > 0) {
@@ -129,7 +130,7 @@ async function setConfig(config, force = false) {
       version: config.version,
       options: JSON.stringify(config.options),
       projects: JSON.stringify(config.projects),
-      ...envsById
+      ...envsById,
     });
     return true;
   }
@@ -141,7 +142,7 @@ async function deleteEnvs(config, envs) {
     if (!Array.isArray(envs)) {
       envs = [envs];
     }
-    const envsKey = envs.map(envId => `env-${envId}`);
+    const envsKey = envs.map((envId) => `env-${envId}`);
     await chromeStorageRemove(envsKey);
     return true;
   }

@@ -12,12 +12,12 @@ export async function getAndAssembleConfig(values) {
       options: values.options ? JSON.parse(values.options) : {},
       projects: values.projects ? JSON.parse(values.projects) : [],
       envs: await loadEnvs(values),
-      version: values.version
+      version: values.version,
     };
 
     return config;
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return null;
   }
 }
@@ -32,11 +32,11 @@ async function loadEnvs(values) {
 }
 
 export function mergeOptionsInEnv(config) {
-  const envs = config?.envs?.map(env => {
+  const envs = config.envs.map((env) => {
     return deep(Object.assign({}, config.options), env);
   });
   return {
     ...config,
-    envs
+    envs,
   };
 }

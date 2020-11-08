@@ -1,16 +1,16 @@
 export default {
-  install: app => {
+  install: (app) => {
     let uuid = 0;
     app.mixin({
-      beforeCreate: function() {
+      beforeCreate: function () {
         this.uuid = uuid.toString();
         uuid += 1;
-      }
+      },
     });
 
     // Generate a component-scoped id
-    app.config.globalProperties.$id = function(id) {
+    app.config.globalProperties.$id = function (id) {
       return "uid-" + this.uuid + "-" + id;
     };
-  }
+  },
 };

@@ -4,19 +4,19 @@ import validateSchema from "@/services/business/storage/validate";
 async function migrateVersion(config, fromVersion, toVersion) {
   const beforeValidation = validateSchema(config, fromVersion);
   if (!beforeValidation.status) {
-    console.log("before validation", config);
+    // console.log("before validation", config);
     console.error(beforeValidation.errors);
     return false;
   }
   try {
     migrate(config, toVersion);
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return false;
   }
   const afterValidation = await validateSchema(config, toVersion);
   if (!afterValidation.status) {
-    console.log("after validation", config);
+    // console.log("after validation", config);
     console.error(afterValidation.errors);
     return false;
   }
@@ -27,7 +27,7 @@ async function migrateVersion(config, fromVersion, toVersion) {
 export const ConfigUpdateStatus = {
   MIGRATION_FAILED: 0,
   MIGRATION_SUCCESS: 1,
-  NO_MIGRATION: 3
+  NO_MIGRATION: 3,
 };
 
 export async function checkUpdate(config) {

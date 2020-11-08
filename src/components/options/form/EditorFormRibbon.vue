@@ -17,7 +17,7 @@
         <label
           class="color-selector"
           :class="{
-            defaulted: isDefaulted('backgroundColor')
+            defaulted: isDefaulted('backgroundColor'),
           }"
         >
           <ColorPicker v-model:color="ribbonBgColor" />
@@ -28,7 +28,7 @@
         <label
           class="color-selector"
           :class="{
-            defaulted: isDefaulted('color')
+            defaulted: isDefaulted('color'),
           }"
         >
           <ColorPicker v-model:color="ribbonColor" />
@@ -38,27 +38,27 @@
       <div
         class="label-set input-selector"
         :class="{
-          defaulted: isDefaulted('position')
+          defaulted: isDefaulted('position'),
         }"
         ribbon-position
       >
         <label :for="$id('ribbon-position')">Position</label>
         <select :id="$id('ribbon-position')" v-model="ribbonPosition">
-          <option value="left"> left </option>
-          <option value="right"> right </option>
+          <option value="left">left</option>
+          <option value="right">right</option>
         </select>
       </div>
       <div
         class="label-set input-selector"
         :class="{
-          defaulted: isDefaulted('type')
+          defaulted: isDefaulted('type'),
         }"
         ribbon-type
       >
         <label :for="$id('ribbon-type')">Type</label>
         <select :id="$id('ribbon-type')" v-model="ribbonType">
-          <option value="corner-ribbon"> Corner </option>
-          <option value="square-ribbon"> Square </option>
+          <option value="corner-ribbon">Corner</option>
+          <option value="square-ribbon">Square</option>
         </select>
       </div>
     </div>
@@ -77,12 +77,12 @@ export default {
   props: {
     env: {
       type: Object,
-      default: undefined
+      default: undefined,
     },
     option: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   emits: ["update:option"],
   computed: {
@@ -90,7 +90,7 @@ export default {
     ribbonColor: computed("ribbonOptions", "color"),
     ribbonBgColor: computed("ribbonOptions", "backgroundColor"),
     ribbonPosition: computed("ribbonOptions", "position"),
-    ribbonType: computed("ribbonOptions", "type")
+    ribbonType: computed("ribbonOptions", "type"),
   },
   methods: {
     updateComputed(data) {
@@ -102,8 +102,8 @@ export default {
           ? this.env.ribbonOptions[key] === undefined
           : true
         : false;
-    }
-  }
+    },
+  },
 };
 </script>
 

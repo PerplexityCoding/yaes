@@ -19,5 +19,5 @@ export {
   EditText,
   Export,
   GoBack,
-  Import
+  Import,
 };

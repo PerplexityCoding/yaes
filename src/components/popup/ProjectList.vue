@@ -14,7 +14,7 @@
         <div class="project-envs" v-if="isOpened(project)">
           <EnvList
             :envs="projectEnvs(project)"
-            @switch-env="data => $emit('redirect-env', data)"
+            @switch-env="(data) => $emit('redirect-env', data)"
           />
         </div>
       </div>
@@ -34,22 +34,22 @@ export default {
     projects: {
       type: Array,
       required: true,
-      validator: a =>
-        a.reduce((acc, o) => acc && (o.name != null || o.id != null), true)
+      validator: (a) =>
+        a.reduce((acc, o) => acc && (o.name != null || o.id != null), true),
     },
     envs: {
       type: Array,
       required: true,
-      validator: a =>
+      validator: (a) =>
         a.reduce(
           (acc, o) => acc && (o.name != null || o.shortName != null),
           true
-        )
-    }
+        ),
+    },
   },
   data() {
     return {
-      openProjectId: null
+      openProjectId: null,
     };
   },
   methods: {
@@ -61,9 +61,11 @@ export default {
         this.openProjectId === project.id ? null : project.id;
     },
     projectEnvs(project) {
-      return project.envs.map(envId => this.envs.find(env => env.id === envId));
-    }
-  }
+      return project.envs.map((envId) =>
+        this.envs.find((env) => env.id === envId)
+      );
+    },
+  },
 };
 </script>
 
