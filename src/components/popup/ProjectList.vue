@@ -89,6 +89,12 @@ export default {
     }
 
     .list-button {
+      background-color: rgba(var(--bg-grey-2), 0.8);
+
+      @at-root .dark-mode & {
+        background-color: rgba(var(--black-1), 0.8);
+      }
+
       > span {
         flex: 1;
       }

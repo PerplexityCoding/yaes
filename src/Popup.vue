@@ -174,7 +174,12 @@ export default {
   min-height: 40px;
   letter-spacing: 0.35px;
   color: rgba(var(--fg-black));
-  outline-color: rgba(var(--blue));
+
+  &:focus,
+  &:active {
+    box-shadow: 0 0 0 1px rgba(var(--blue));
+    outline: none;
+  }
 
   @at-root .dark-mode & {
     color: rgba(var(--bg-white-off));
