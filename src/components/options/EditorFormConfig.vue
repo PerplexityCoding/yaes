@@ -289,7 +289,7 @@ export default {
     border-radius: 0 4px 4px 0;
     box-shadow: inset 6px 0px 10px -10px rgba(0, 0, 0, 0.55);
 
-    @media (prefers-color-scheme: dark) {
+    @at-root .dark-mode & {
       background-color: rgba(var(--black-1));
     }
 

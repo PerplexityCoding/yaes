@@ -34,7 +34,7 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
 
     const labels = wrapper.findAll(".label-set");
     await waitFor();
-    expect(labels).toHaveLength(11);
+    expect(labels).toHaveLength(12);
 
     const hasAttribute = (label, attribute) =>
       expect(label.attributes()[attribute]).toBe("");
@@ -88,6 +88,10 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
     label = labels[i++];
     hasAttribute(label, "display-projects-links");
     isCheckbox(label);
+
+    label = labels[i++];
+    hasAttribute(label, "color-scheme");
+    isSelect(label);
   });
 
   it.each`

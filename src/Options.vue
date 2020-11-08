@@ -1,5 +1,5 @@
 <template>
-  <div class="options">
+  <div v-if="config" class="options" :class="{ 'dark-mode': darkMode }">
     <section>
       <h1>
         <img src="/assets/images/favicon-32x32.png" />
@@ -75,6 +75,7 @@ import ImportConfig from "@/components/options/ImportConfig";
 import EditorJsonConfig from "@/components/options/EditorJsonConfig";
 import EditorFormConfig from "@/components/options/EditorFormConfig";
 import { downloadAsJson } from "@/services/utils";
+import { isDarkMode } from "@/services/business/ui";
 
 export default {
   name: "OptionsPage",
@@ -97,6 +98,11 @@ export default {
   },
   async created() {
     this.config = await this.getOrInitConfig();
+  },
+  computed: {
+    darkMode() {
+      return isDarkMode(this.config.options);
+    }
   },
   methods: {
     async getOrInitConfig() {
@@ -237,7 +243,7 @@ fieldset {
   border-radius: 4px;
   padding: 12px;
 
-  @media (prefers-color-scheme: dark) {
+  @at-root .dark-mode & {
     background-color: #2b2b2b;
   }
 }
@@ -287,12 +293,13 @@ fieldset {
 
 <style lang="scss" scoped>
 .options {
+  color: rgba(var(--fg-black));
   max-width: 800px;
   margin: 0 auto;
-  color: rgba(var(--fg-black));
 
-  @media (prefers-color-scheme: dark) {
+  @at-root .dark-mode#{&} {
     color: rgba(var(--bg-white-off), 0.8);
+    background-color: #0e0e0e;
   }
 
   a {

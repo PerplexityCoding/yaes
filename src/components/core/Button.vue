@@ -48,7 +48,7 @@ button {
   color: rgba(var(--fg-black));
   fill: rgba(var(--fg-black));
 
-  @media (prefers-color-scheme: dark) {
+  @at-root .dark-mode & {
     color: rgba(var(--bg-white-off));
     fill: rgba(var(--bg-white-off));
   }
@@ -56,7 +56,7 @@ button {
   &.elevation {
     border: 1px solid rgba(var(--black-2), 0.1);
 
-    @media (prefers-color-scheme: dark) {
+    @at-root .dark-mode & {
       border: 1px solid rgba(var(--black-2));
     }
   }
@@ -78,7 +78,7 @@ button {
   &:hover {
     background: rgba(var(--bg-grey-hover));
 
-    @media (prefers-color-scheme: dark) {
+    @at-root .dark-mode & {
       background-color: rgba(var(--black-2));
     }
   }

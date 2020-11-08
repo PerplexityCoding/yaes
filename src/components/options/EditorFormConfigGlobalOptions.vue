@@ -52,6 +52,14 @@
             >Display see projects link</label
           >
         </div>
+        <div class="label-set" color-scheme>
+          <label :for="$id('color-scheme')">Color Scheme</label>
+          <select :id="$id('color-scheme')" v-model="colorScheme">
+            <option value="system"> System preferences </option>
+            <option value="light"> Light </option>
+            <option value="dark"> Dark </option>
+          </select>
+        </div>
       </fieldset>
 
       <div class="third-col">
@@ -94,6 +102,7 @@ export default {
     displayHeader: computed("displayHeader"),
     displayFooter: computed("displayFooter"),
     displaySeeProjectsLink: computed("displaySeeProjectsLink"),
+    colorScheme: computed("colorScheme"),
     mergedOptions() {
       const options = deepmerge(
         deepmerge({}, DEFAULT_OPTIONS),
@@ -145,6 +154,10 @@ export default {
 
     .label-set {
       margin-bottom: 8px;
+
+      select {
+        margin-left: 8px;
+      }
     }
   }
 

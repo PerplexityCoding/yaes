@@ -29,7 +29,8 @@ export const DEFAULT_OPTIONS = {
     color: "white",
     backgroundColor: "#2677c9",
     position: "right"
-  }
+  },
+  colorScheme: "system"
 };
 
 export const INIT_DEFAULT_CONFIG = {

@@ -396,7 +396,7 @@ b {
   border-top: 1px solid rgba(var(--bg-grey-2));
   padding-top: 4px;
 
-  @media (prefers-color-scheme: dark) {
+  @at-root .dark-mode & {
     border-top: 1px solid rgba(var(--black-2));
   }
 

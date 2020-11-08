@@ -104,7 +104,7 @@ ul {
       outline-color: rgba(var(--blue));
       fill: rgba(var(--fg-black));
 
-      @media (prefers-color-scheme: dark) {
+      @at-root .dark-mode & {
         border: 1px solid rgba(var(--black-1));
         background-color: rgba(var(--black-3));
         color: rgba(var(--bg-white-off));
@@ -114,7 +114,7 @@ ul {
       &:hover {
         background-color: rgba(var(--bg-grey-hover));
 
-        @media (prefers-color-scheme: dark) {
+        @at-root .dark-mode & {
           background-color: rgba(var(--black-1), 0.8);
         }
       }
@@ -130,7 +130,7 @@ ul {
         font-weight: bold;
         background-color: rgba(var(--bg-grey));
 
-        @media (prefers-color-scheme: dark) {
+        @at-root .dark-mode & {
           background-color: rgba(var(--black-3));
         }
 

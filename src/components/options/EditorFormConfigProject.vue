@@ -155,7 +155,7 @@ export default {
   height: 40px;
   background-color: rgba(var(--bg-grey-hover));
 
-  @media (prefers-color-scheme: dark) {
+  @at-root .dark-mode & {
     background-color: rgba(var(--black-2));
   }
 }
@@ -179,7 +179,7 @@ export default {
     font-size: 15px;
     background-color: rgba(var(--bg-grey-2), 0.3);
 
-    @media (prefers-color-scheme: dark) {
+    @at-root .dark-mode & {
       background-color: rgba(var(--black-2));
     }
 
@@ -225,7 +225,7 @@ export default {
     padding: 0;
     border-bottom: 1px solid rgba(var(--border-grey));
 
-    @media (prefers-color-scheme: dark) {
+    @at-root .dark-mode & {
       border-bottom: 1px solid rgba(var(--black-2));
     }
 
@@ -241,7 +241,7 @@ export default {
       &:hover {
         background: rgba(var(--bg-grey-hover));
 
-        @media (prefers-color-scheme: dark) {
+        @at-root .dark-mode & {
           background-color: rgba(var(--black-1));
         }
       }
@@ -254,14 +254,14 @@ export default {
     .selected-env {
       background: rgba(var(--border-grey));
 
-      @media (prefers-color-scheme: dark) {
+      @at-root .dark-mode & {
         background-color: rgba(var(--black-3));
       }
 
       &:hover {
         background: rgba(var(--bg-grey-hover));
 
-        @media (prefers-color-scheme: dark) {
+        @at-root .dark-mode & {
           background-color: rgba(var(--black-3), 0.5);
         }
       }
@@ -280,7 +280,7 @@ export default {
     header {
       background-color: rgba(var(--bg-grey-2), 0.8);
 
-      @media (prefers-color-scheme: dark) {
+      @at-root .dark-mode & {
         background-color: rgba(var(--black-1), 0.8);
       }
     }

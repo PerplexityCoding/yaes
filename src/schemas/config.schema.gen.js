@@ -798,7 +798,7 @@ var validate = (function() {
         var errs__0 = errors;
         var valid1 = true;
         for (var key0 in data) {
-          var isAdditional0 = !(false || key0 == 'displayRibbon' || key0 == 'ribbonOptions' || key0 == 'displayBadge' || key0 == 'badgeOptions' || key0 == 'displayDomain' || key0 == 'displayHeader' || key0 == 'displayFooter' || key0 == 'displaySeeProjectsLink');
+          var isAdditional0 = !(false || validate.schema.properties.hasOwnProperty(key0));
           if (isAdditional0) {
             valid1 = false;
             validate.errors = [{
@@ -1164,7 +1164,48 @@ var validate = (function() {
                           }
                           var valid1 = errors === errs_1;
                         }
-                        if (valid1) {}
+                        if (valid1) {
+                          var data1 = data.colorScheme;
+                          if (data1 === undefined) {
+                            valid1 = true;
+                          } else {
+                            var errs_1 = errors;
+                            if (typeof data1 !== "string") {
+                              validate.errors = [{
+                                keyword: 'type',
+                                dataPath: (dataPath || '') + '.colorScheme',
+                                schemaPath: '#/properties/colorScheme/type',
+                                params: {
+                                  type: 'string'
+                                },
+                                message: 'should be string'
+                              }];
+                              return false;
+                            }
+                            var schema1 = validate.schema.properties.colorScheme.enum;
+                            var valid1;
+                            valid1 = false;
+                            for (var i1 = 0; i1 < schema1.length; i1++)
+                              if (equal(data1, schema1[i1])) {
+                                valid1 = true;
+                                break;
+                              } if (!valid1) {
+                              validate.errors = [{
+                                keyword: 'enum',
+                                dataPath: (dataPath || '') + '.colorScheme',
+                                schemaPath: '#/properties/colorScheme/enum',
+                                params: {
+                                  allowedValues: schema1
+                                },
+                                message: 'should be equal to one of the allowed values'
+                              }];
+                              return false;
+                            } else {}
+                            if (errors === errs_1) {}
+                            var valid1 = errors === errs_1;
+                          }
+                          if (valid1) {}
+                        }
                       }
                     }
                   }
@@ -1225,6 +1266,11 @@ var validate = (function() {
       "displaySeeProjectsLink": {
         "type": "boolean",
         "default": true
+      },
+      "colorScheme": {
+        "type": "string",
+        "default": true,
+        "enum": ["dark", "light", "system"]
       }
     },
     "additionalProperties": false
@@ -1729,6 +1775,11 @@ validate.schema = {
         "displaySeeProjectsLink": {
           "type": "boolean",
           "default": true
+        },
+        "colorScheme": {
+          "type": "string",
+          "default": true,
+          "enum": ["dark", "light", "system"]
         }
       },
       "additionalProperties": false

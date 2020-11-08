@@ -101,7 +101,7 @@ export default {
       color: rgba(var(--fg-black));
       outline-color: rgba(var(--blue));
 
-      @media (prefers-color-scheme: dark) {
+      @at-root .dark-mode & {
         color: rgba(var(--bg-white-off));
         border: 1px solid rgba(var(--black-1));
         background-color: rgba(var(--black-3));
@@ -110,7 +110,7 @@ export default {
       &:hover {
         background-color: rgba(var(--bg-grey-hover));
 
-        @media (prefers-color-scheme: dark) {
+        @at-root .dark-mode & {
           background-color: rgba(var(--black-3), 0.8);
         }
       }

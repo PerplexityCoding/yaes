@@ -1,5 +1,5 @@
 <template>
-  <section class="popin" v-if="loaded">
+  <section class="popin" v-if="loaded" :class="{ 'dark-mode': darkMode }">
     <header v-if="options.displayHeader !== false" class="header">
       <img src="assets/images/favicon-16x16.png" />
       <span> Yet Another Env Switcher </span>
@@ -71,6 +71,7 @@ import {
 } from "./services/chrome/tabs";
 import { switchBaseUrl, getCurrentEnv } from "./services/business/url";
 import { getConfig } from "./services/business/storage";
+import { isDarkMode } from "@/services/business/ui";
 
 export default {
   name: "Popup",
@@ -121,6 +122,11 @@ export default {
     }
 
     this.loaded = true;
+  },
+  computed: {
+    darkMode() {
+      return isDarkMode(this.options);
+    }
   },
   methods: {
     async switchEnv({ env, newTab }) {
@@ -181,7 +187,7 @@ export default {
   font-size: 0.75rem;
   outline-color: rgba(var(--blue));
 
-  @media (prefers-color-scheme: dark) {
+  @at-root .dark-mode & {
     color: rgba(var(--bg-white-off));
   }
 
@@ -199,7 +205,7 @@ export default {
     fill: rgba(var(--fg-black));
     margin-right: 5px;
 
-    @media (prefers-color-scheme: dark) {
+    @at-root .dark-mode & {
       fill: rgba(var(--bg-white-off));
     }
   }
@@ -228,7 +234,7 @@ export default {
   padding: 7px;
   display: flex;
 
-  @media (prefers-color-scheme: dark) {
+  @at-root .dark-mode & {
     border-bottom: 1px solid rgba(var(--black-3));
     background-color: rgba(var(--black-1));
     color: rgba(var(--bg-white-off));
@@ -247,7 +253,7 @@ export default {
   display: flex;
   justify-content: space-between;
 
-  @media (prefers-color-scheme: dark) {
+  @at-root .dark-mode & {
     border-top: 1px solid rgba(var(--black-3));
     background-color: rgba(var(--black-1));
     color: rgba(var(--bg-grey));
