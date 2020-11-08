@@ -214,6 +214,10 @@ export default {
     .arrow {
       transform: rotate(0deg);
     }
+
+    svg {
+      margin-right: 10px;
+    }
   }
 }
 

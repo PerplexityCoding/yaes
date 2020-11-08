@@ -94,7 +94,7 @@ export default {
       cursor: pointer;
       display: flex;
       align-items: center;
-      background-color: rgba(var(--bg-yellow));
+      background-color: rgba(var(--bg-grey));
       transition: background-color 0.7s ease;
       min-height: 40px;
       letter-spacing: 0.35px;
@@ -108,7 +108,7 @@ export default {
       }
 
       &:hover {
-        background-color: rgba(var(--bg-yellow-hover));
+        background-color: rgba(var(--bg-grey-hover));
 
         @media (prefers-color-scheme: dark) {
           background-color: rgba(var(--black-3), 0.8);

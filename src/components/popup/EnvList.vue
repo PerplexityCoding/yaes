@@ -128,7 +128,7 @@ ul {
         border-left-width: 7px;
         padding-left: 8px;
         font-weight: bold;
-        background-color: rgba(var(--bg-yellow));
+        background-color: rgba(var(--bg-grey));
 
         @media (prefers-color-scheme: dark) {
           background-color: rgba(var(--black-3));
