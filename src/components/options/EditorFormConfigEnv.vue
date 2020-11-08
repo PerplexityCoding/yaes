@@ -344,6 +344,11 @@ h3 {
       padding-right: 16px;
     }
 
+    > div {
+      display: flex;
+      flex: 1;
+    }
+
     input {
       flex: 1;
     }

@@ -115,7 +115,7 @@ export default {
 .delete-confirm {
   display: flex;
   align-items: baseline;
-  min-height: 36px;
+  min-height: 34px;
 
   > span {
     margin-right: 4px;

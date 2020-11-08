@@ -283,7 +283,7 @@ export default {
   }
 
   .right-pane {
-    padding: 4px 16px 12px 16px;
+    padding: 12px 16px 16px 20px;
     display: flex;
     background-color: rgba(var(--border-grey));
     border-radius: 0 4px 4px 0;

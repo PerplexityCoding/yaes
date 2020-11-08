@@ -5,7 +5,7 @@ import Clone from "@/components/icons/Clone";
 import Delete from "./Delete.vue";
 import DragList from "./DragList.vue";
 import EditText from "@/components/icons/EditText";
-import Export from "@/components/icons/EditText";
+import Export from "@/components/icons/Export";
 import GoBack from "@/components/icons/GoBack";
 import Import from "@/components/icons/Import";
 

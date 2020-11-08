@@ -28,20 +28,33 @@
         </div>
         <div>
           <div class="label-set">
-            <label :for="$id('import-file')"> Using File </label>
+            <label :for="$id('import-file')">
+              Using File
+            </label>
+            <CoreButton elevation @click="$refs.importFileInput.click()">
+              Choose File
+            </CoreButton>
             <input
+              ref="importFileInput"
               :id="$id('import-file')"
               type="file"
               accept=".json"
               @change="importFile"
             />
+
+            <span
+              class="import-failed-message"
+              v-if="importFileStatus === false"
+            >
+              Import file failed
+            </span>
+            <span
+              class="import-success-message"
+              v-if="importFileStatus === true"
+            >
+              Import file successful
+            </span>
           </div>
-          <span class="import-failed-message" v-if="importFileStatus === false">
-            Import file failed
-          </span>
-          <span class="import-success-message" v-if="importFileStatus === true">
-            Import file successful
-          </span>
         </div>
       </div>
     </div>
@@ -53,6 +66,7 @@
       <CoreButton elevation icon-name="Export" @click="downloadConfig">
         Export
       </CoreButton>
+      <span>Tips:</span>
       <a href="https://gist.github.com/" target="_blank">Share it on gist</a>
     </div>
   </section>
@@ -145,6 +159,10 @@ export default {
 .import-config-section {
   padding-top: 16px;
 
+  a {
+    color: rgba(var(--blue));
+  }
+
   .import-configuration {
     display: flex;
     padding-bottom: 16px;
@@ -185,6 +203,10 @@ export default {
         input {
           flex: 1;
           margin-right: 8px;
+        }
+
+        input[type="file"] {
+          display: none;
         }
 
         label {
