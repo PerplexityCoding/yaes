@@ -26,14 +26,15 @@
         @action="$emit('delete-project', projectId)"
       >
         <template #beforeButton>
-          <button
-            class="edit-project-name"
-            @click="projectNameEditable = true"
+          <CoreButton
             v-if="!projectNameEditable"
+            elevation
+            class="edit-project-name"
+            icon-name="EditText"
+            @click="projectNameEditable = true"
           >
-            <EditText height="14px" width="14px" />
             Edit
-          </button>
+          </CoreButton>
         </template>
       </ConfirmationDeleteButton>
     </header>
@@ -57,9 +58,14 @@
     </ul>
 
     <div class="action-buttons">
-      <button class="add-new-env" @click="$emit('new-env', projectId)">
-        <AddIcon height="18px" width="18px" /> Add new env
-      </button>
+      <CoreButton
+        icon-name="Add"
+        class="add-new-env"
+        variation="positive"
+        @click="$emit('new-env', projectId)"
+      >
+        Add new env
+      </CoreButton>
     </div>
   </li>
 </template>
@@ -67,11 +73,10 @@
 <script>
 import { getProjectById, getProjectEnvs } from "@/services/business/bo/config";
 import DragList from "@/components/icons/DragList";
-import EditText from "@/components/icons/EditText";
 import ArrowRight from "@/components/icons/ArrowRight";
-import AddIcon from "@/components/icons/Add";
 import { updateSortableEnvs } from "@/services/business/ui";
 import ConfirmationDeleteButton from "@/components/options/form/ConfirmationDeleteButton";
+import CoreButton from "@/components/core/Button";
 
 export default {
   name: "EditorFormConfigProject",
@@ -82,9 +87,8 @@ export default {
     };
   },
   components: {
-    AddIcon,
+    CoreButton,
     DragList,
-    EditText,
     ArrowRight,
     ConfirmationDeleteButton
   },
@@ -201,10 +205,6 @@ export default {
 
     .edit-project-name {
       display: none;
-      appearance: none;
-      background: none;
-      border: none;
-      cursor: pointer;
     }
 
     .project-sortable-handle {
@@ -286,33 +286,9 @@ export default {
     }
   }
 
-  button {
-    cursor: pointer;
-    appearance: none;
-    border: none;
-    display: flex;
-    align-items: center;
-    background: none;
-    padding: 8px;
-    border-radius: 4px;
-
-    svg {
-      margin-right: 4px;
-    }
-
-    &:hover {
-      background: rgba(var(--bg-grey-hover));
-    }
-  }
-
   .action-buttons {
     display: flex;
     padding: 4px;
-
-    .add-new-env {
-      fill: rgba(var(--green));
-      color: rgba(var(--green));
-    }
   }
 }
 </style>

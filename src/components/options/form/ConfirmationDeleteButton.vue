@@ -4,13 +4,15 @@
       <div class="buttons-wrapper" v-if="!modelValue">
         <slot name="beforeButton" />
 
-        <button
-          class="delete-btn"
+        <CoreButton
+          elevation
+          class="delete-btn button"
+          icon-name="Delete"
+          variation="negative"
           @click="$emit('update:modelValue', !modelValue)"
         >
-          <DeleteIcon height="18px" width="18px" />
           Delete
-        </button>
+        </CoreButton>
 
         <slot name="afterButton" />
       </div>
@@ -18,25 +20,30 @@
         <span>
           Are you sure ?
         </span>
-        <button class="delete-confirm-btn" @click="deleteConfirm">
+        <CoreButton
+          class="delete-confirm-btn button"
+          elevation
+          variation="negative"
+          @click="deleteConfirm"
+        >
           Yes
-        </button>
-        <button ref="no" @click="hide">
+        </CoreButton>
+        <CoreButton class="button" elevation ref="no" @click="hide">
           No
-        </button>
+        </CoreButton>
       </div>
     </transition>
   </div>
 </template>
 
 <script>
-import DeleteIcon from "@/components/icons/Delete";
+import CoreButton from "@/components/core/Button";
 
 export default {
   name: "ConfirmationDeleteButton",
   emits: ["update:modelValue", "action"],
   components: {
-    DeleteIcon
+    CoreButton
   },
   props: {
     modelValue: {
@@ -97,39 +104,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.delete-btn,
-.delete-confirm-btn {
-  fill: rgba(var(--ruby));
-  color: rgba(var(--ruby));
-}
-
 .buttons-wrapper {
   display: flex;
 }
 
-button {
-  cursor: pointer;
-  appearance: none;
-  border: none;
-  display: flex;
-  align-items: center;
-  background: none;
-  padding: 8px;
-  border-radius: 4px;
-
-  svg {
-    margin-right: 4px;
-  }
-
-  &:hover {
-    background: rgba(var(--bg-grey-hover));
-  }
+.button {
+  margin-left: 8px;
 }
 
 .delete-confirm {
   display: flex;
   align-items: baseline;
-  min-height: 34px;
+  min-height: 36px;
 
   > span {
     margin-right: 4px;

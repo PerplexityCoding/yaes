@@ -15,10 +15,14 @@
               @action="$emit('delete-env', env.id)"
             >
               <template #beforeButton>
-                <button class="clone-env" @click="$emit('clone-env', env.id)">
-                  <CloneIcon height="18px" width="18px" />
+                <CoreButton
+                  elevation
+                  class="clone-env"
+                  icon-name="Clone"
+                  @click="$emit('clone-env', env.id)"
+                >
                   Clone
-                </button>
+                </CoreButton>
               </template>
             </ConfirmationDeleteButton>
           </div>
@@ -95,13 +99,21 @@
         </transition>
 
         <div v-if="newEnv" class="create-btns">
-          <button class="cancel-btn" @click.prevent="$emit('cancel-new-env')">
+          <CoreButton
+            class="cancel-btn"
+            @click.prevent="$emit('cancel-new-env')"
+          >
             Cancel
-          </button>
+          </CoreButton>
 
-          <button class="create-env-btn" @click.prevent="createAndConfigure">
-            <AddIcon height="18px" width="18px" /> Create and configure
-          </button>
+          <CoreButton
+            icon-name="Add"
+            variation="positive"
+            class="create-env-btn"
+            @click.prevent="createAndConfigure"
+          >
+            Create and configure
+          </CoreButton>
         </div>
       </fieldset>
 
@@ -112,10 +124,14 @@
               Overrides default options for this environment <br />
               <i>Fields with * are using global options, change to override</i>
             </span>
-            <button @click.prevent="resetToGlobalOptions" v-if="hasOverrides">
-              <GoBack height="18px" width="18px" />
+            <CoreButton
+              elevation
+              icon-name="GoBack"
+              @click.prevent="resetToGlobalOptions"
+              v-if="hasOverrides"
+            >
               Reset
-            </button>
+            </CoreButton>
           </div>
 
           <EditorFormBadge
@@ -159,25 +175,21 @@ import deepmerge from "deepmerge";
 import { getComputedFactory } from "@/services/business/ui";
 import EditorFormRibbon from "@/components/options/form/EditorFormRibbon";
 import EditorFormBadge from "@/components/options/form/EditorFormBadge";
-import CloneIcon from "@/components/icons/Clone";
-import GoBack from "@/components/icons/GoBack";
 import { removeUndefined } from "@/services/utils";
 import { DEFAULT_OPTIONS } from "@/services/business/storage";
 import ConfirmationDeleteButton from "@/components/options/form/ConfirmationDeleteButton";
-import AddIcon from "@/components/icons/Add";
 import { required, url } from "@vuelidate/validators";
+import CoreButton from "@/components/core/Button";
 
 const computed = getComputedFactory("mergedEnv");
 
 export default {
   name: "EditorFormConfigEnv",
   components: {
+    CoreButton,
     ConfirmationDeleteButton,
     EditorFormBadge,
-    EditorFormRibbon,
-    CloneIcon,
-    GoBack,
-    AddIcon
+    EditorFormRibbon
   },
   props: {
     newEnv: {
@@ -352,29 +364,6 @@ b {
   margin-top: 8px;
 }
 
-button {
-  cursor: pointer;
-  appearance: none;
-  border: none;
-  display: flex;
-  align-items: center;
-  background: none;
-  padding: 8px;
-  border-radius: 4px;
-
-  svg {
-    margin-right: 4px;
-  }
-
-  &:hover {
-    background: rgba(var(--bg-grey-hover));
-
-    @media (prefers-color-scheme: dark) {
-      background-color: rgba(var(--black-2));
-    }
-  }
-}
-
 .override-options {
   border-top: 1px solid rgba(var(--bg-grey-2));
   padding-top: 4px;
@@ -399,10 +388,6 @@ button {
   }
 }
 
-.clone-env {
-  fill: rgba(var(--fg-black));
-}
-
 .side-panel {
   width: 100%;
 }
@@ -414,10 +399,5 @@ button {
 .create-btns {
   display: flex;
   justify-content: flex-end;
-
-  .create-env-btn {
-    fill: rgba(var(--green));
-    color: rgba(var(--green));
-  }
 }
 </style>

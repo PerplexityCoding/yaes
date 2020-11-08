@@ -15,9 +15,9 @@
               v-model="configurationUrl"
             />
           </div>
-          <button @click="importConfig">
-            <ImportIcon width="16px" height="16px" /> <span> import </span>
-          </button>
+          <CoreButton elevation icon-name="Import" @click="importConfig">
+            import
+          </CoreButton>
           <span class="import-failed-message" v-if="importUrlStatus === false">
             Import from url failed
           </span>
@@ -50,9 +50,9 @@
       <strong>
         Export configuration
       </strong>
-      <button @click="downloadConfig">
-        <ExportIcon width="16px" height="16px" /> <span> export </span>
-      </button>
+      <CoreButton elevation icon-name="Export" @click="downloadConfig">
+        Export
+      </CoreButton>
       <a href="https://gist.github.com/" target="_blank">Share it on gist</a>
     </div>
   </section>
@@ -60,8 +60,7 @@
 
 <script>
 import { migrateConfig } from "@/services/business/storage";
-import ImportIcon from "@/components/icons/Import";
-import ExportIcon from "@/components/icons/Export";
+import CoreButton from "@/components/core/Button";
 
 export default {
   name: "ImportConfig",
@@ -74,7 +73,7 @@ export default {
     };
   },
   emits: ["config-loaded", "config-load-failed", "download-config"],
-  components: { ImportIcon, ExportIcon },
+  components: { CoreButton },
   methods: {
     async importConfig() {
       if (this.configurationUrl) {
@@ -138,11 +137,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/variables.scss";
-
-button {
-  display: flex;
-  align-items: center;
-}
 
 .loader {
   margin-left: 4px;

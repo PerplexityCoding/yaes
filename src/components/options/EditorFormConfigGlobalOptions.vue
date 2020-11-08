@@ -55,10 +55,14 @@
       </fieldset>
 
       <div class="third-col">
-        <button @click.prevent="resetToDefaultOptions" v-show="hasOptions">
-          <GoBack height="18px" width="18px" />
+        <CoreButton
+          elevation
+          icon-name="GoBack"
+          @click.prevent="resetToDefaultOptions"
+          v-show="hasOptions"
+        >
           Reset
-        </button>
+        </CoreButton>
       </div>
     </form>
   </div>
@@ -70,13 +74,13 @@ import { getComputedFactory } from "@/services/business/ui";
 import EditorFormRibbon from "@/components/options/form/EditorFormRibbon";
 import EditorFormBadge from "@/components/options/form/EditorFormBadge";
 import { DEFAULT_OPTIONS } from "@/services/business/storage";
-import GoBack from "@/components/icons/GoBack";
+import CoreButton from "@/components/core/Button";
 
 const computed = getComputedFactory("mergedOptions");
 
 export default {
   name: "EditorFormConfigGlobalOptions",
-  components: { EditorFormBadge, EditorFormRibbon, GoBack },
+  components: { CoreButton, EditorFormBadge, EditorFormRibbon },
   props: {
     options: {
       type: Object,
@@ -151,23 +155,7 @@ export default {
   }
 
   button {
-    cursor: pointer;
-    appearance: none;
-    border: none;
-    display: flex;
-    align-items: center;
-    background: none;
-    padding: 8px;
-    border-radius: 4px;
     float: right;
-
-    svg {
-      margin-right: 4px;
-    }
-
-    &:hover {
-      background: rgba(var(--bg-grey-hover));
-    }
   }
 }
 </style>

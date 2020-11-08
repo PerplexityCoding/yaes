@@ -23,22 +23,26 @@
     </h3>
 
     <footer>
-      <button class="new-project" @click="$emit('new-project')">
-        <AddIcon height="18px" width="18px" />
+      <CoreButton
+        icon-name="Add"
+        variation="positive"
+        class="new-project"
+        @click="$emit('new-project')"
+      >
         Add new project
-      </button>
+      </CoreButton>
     </footer>
   </div>
 </template>
 
 <script>
 import EditorFormConfigProject from "@/components/options/EditorFormConfigProject";
-import AddIcon from "@/components/icons/Add";
 import { updateSortableProjects } from "@/services/business/ui";
+import CoreButton from "@/components/core/Button";
 
 export default {
   name: "EditorFormConfigProjects",
-  components: { EditorFormConfigProject, AddIcon },
+  components: { CoreButton, EditorFormConfigProject },
   data() {
     return {
       collapsed: false
@@ -111,31 +115,6 @@ h3 {
 
 footer {
   padding: 4px;
-
-  button {
-    cursor: pointer;
-    appearance: none;
-    border: none;
-    display: flex;
-    align-items: center;
-    background: none;
-    padding: 8px;
-    line-height: 20px;
-    border-radius: 4px;
-
-    svg {
-      margin-right: 4px;
-    }
-
-    &:hover {
-      background: rgba(var(--bg-grey-hover));
-    }
-  }
-
-  .new-project {
-    fill: rgba(var(--green));
-    color: rgba(var(--green));
-  }
 }
 
 .has-projects {
