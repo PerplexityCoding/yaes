@@ -3,7 +3,8 @@
     <li v-for="project in projects" :key="project.id">
       <div class="project-btn-wrapper">
         <button
-          @click="toogleAccordeon(project)"
+          @click="toggleAccordeon(project)"
+          class="list-button"
           :class="{ 'is-opened': isOpened(project) }"
         >
           <span>
@@ -29,8 +30,12 @@ import ArrowRight from "../icons/ArrowRight";
 export default {
   name: "ProjectList",
   components: { EnvList, ArrowRight },
-  emits: ["redirect-env"],
+  emits: ["redirect-env", "update:openProjectId"],
   props: {
+    openProjectId: {
+      type: Number,
+      required: true,
+    },
     projects: {
       type: Array,
       required: true,
@@ -47,18 +52,15 @@ export default {
         ),
     },
   },
-  data() {
-    return {
-      openProjectId: null,
-    };
-  },
   methods: {
     isOpened(project) {
       return this.openProjectId === project.id;
     },
-    toogleAccordeon(project) {
-      this.openProjectId =
-        this.openProjectId === project.id ? null : project.id;
+    toggleAccordeon(project) {
+      this.$emit(
+        "update:openProjectId",
+        this.openProjectId === project.id ? -1 : project.id
+      );
     },
     projectEnvs(project) {
       return project.envs.map((envId) =>
@@ -86,37 +88,7 @@ export default {
       padding-top: 10px;
     }
 
-    button {
-      appearance: none;
-      border-radius: 5px;
-      border: 1px solid rgba(var(--border-grey));
-      padding: 5px 8px 5px 10px;
-      flex: 1;
-      text-align: left;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      background-color: rgba(var(--bg-grey));
-      transition: background-color 0.7s ease;
-      min-height: 40px;
-      letter-spacing: 0.35px;
-      color: rgba(var(--fg-black));
-      outline-color: rgba(var(--blue));
-
-      @at-root .dark-mode & {
-        color: rgba(var(--bg-white-off));
-        border: 1px solid rgba(var(--black-1));
-        background-color: rgba(var(--black-3));
-      }
-
-      &:hover {
-        background-color: rgba(var(--bg-grey-hover));
-
-        @at-root .dark-mode & {
-          background-color: rgba(var(--black-3), 0.8);
-        }
-      }
-
+    .list-button {
       > span {
         flex: 1;
       }

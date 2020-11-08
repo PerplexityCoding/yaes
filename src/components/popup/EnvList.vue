@@ -2,6 +2,7 @@
   <ul class="env-list">
     <li v-for="env in envs" :key="env.url">
       <button
+        class="list-button"
         :class="{ selected: equalsEnv(env, currentEnv) }"
         @click.middle.exact="switchEnv(env, true)"
         @click.ctrl.exact="switchEnv(env, true)"
@@ -83,34 +84,8 @@ ul {
       padding-top: 10px;
     }
 
-    button {
-      appearance: none;
-      border-radius: 5px;
-      border: 1px solid rgba(var(--border-grey));
-      padding: 5px 8px 5px 15px;
-      flex: 1;
-      text-align: left;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      background-color: rgba(var(--bg-grey));
-      transition: background-color 0.7s ease;
-      min-height: 40px;
-      letter-spacing: 0.35px;
-      color: rgba(var(--fg-black));
-      outline-color: rgba(var(--blue));
-      fill: rgba(var(--fg-black));
-
-      @at-root .dark-mode & {
-        border: 1px solid rgba(var(--black-1));
-        background-color: rgba(var(--black-3));
-        color: rgba(var(--bg-white-off));
-        fill: rgba(var(--bg-white-off));
-      }
-
+    .list-button {
       &:hover {
-        background-color: rgba(var(--bg-grey-hover));
-
         @at-root .dark-mode & {
           background-color: rgba(var(--black-1), 0.8);
         }

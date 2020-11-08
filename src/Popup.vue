@@ -37,6 +37,7 @@
         <ProjectList
           :projects="projects"
           :envs="envs"
+          v-model:openProjectId="openProjectId"
           @redirect-env="redirectEnv"
         />
 
@@ -78,6 +79,7 @@ export default {
   components: { EnvList, ProjectList, ArrowRight },
   data() {
     return {
+      openProjectId: -1,
       envs: null,
       mode: null,
       projects: null,
@@ -156,6 +158,39 @@ export default {
 <style lang="scss">
 @import "@/styles/variables.scss";
 @import "@/styles/icons.scss";
+
+.list-button {
+  appearance: none;
+  border-radius: 5px;
+  border: 1px solid rgba(var(--border-grey));
+  padding: 5px 8px 5px 15px;
+  flex: 1;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  background-color: rgba(var(--bg-grey));
+  transition: background-color 0.7s ease;
+  min-height: 40px;
+  letter-spacing: 0.35px;
+  color: rgba(var(--fg-black));
+  outline-color: rgba(var(--blue));
+
+  @at-root .dark-mode & {
+    color: rgba(var(--bg-white-off));
+    fill: rgba(var(--bg-white-off));
+    border: 1px solid rgba(var(--black-1));
+    background-color: rgba(var(--black-3));
+  }
+
+  &:hover {
+    background-color: rgba(var(--bg-grey-hover));
+
+    @at-root .dark-mode & {
+      background-color: rgba(var(--black-3), 0.8);
+    }
+  }
+}
 </style>
 
 <style lang="scss" scoped>
