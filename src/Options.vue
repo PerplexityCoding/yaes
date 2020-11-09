@@ -293,6 +293,15 @@ fieldset {
   transform: translateX(30px);
   opacity: 0;
 }
+
+.pickr .pcr-button {
+  transition: none;
+
+  &:after,
+  &:before {
+    border-radius: 4px;
+  }
+}
 </style>
 
 <style lang="scss" scoped>

@@ -107,15 +107,6 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.pickr .pcr-button {
-  &:after,
-  &:before {
-    border-radius: 4px;
-  }
-}
-</style>
-
 <style scoped lang="scss">
 .input-selector {
   margin: 8px 0 0 24px;
