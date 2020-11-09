@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from "vue";
 import { getFixConfig, setConfig } from "./services/business/storage";
 import CheckIcon from "./components/icons/CheckIcon";
 import DeleteIcon from "./components/icons/Delete";
@@ -71,6 +72,10 @@ import ImportConfig from "@/components/options/ImportConfig";
 import EditorFormConfig from "@/components/options/EditorFormConfig";
 import { downloadAsJson } from "@/services/utils";
 import { isDarkMode } from "@/services/business/utils";
+
+const EditorJsonConfig = defineAsyncComponent(() =>
+  import("@/components/options/EditorJsonConfig")
+);
 
 export default {
   name: "OptionsPage",
@@ -86,7 +91,7 @@ export default {
   },
   components: {
     EditorFormConfig,
-    EditorJsonConfig: () => import("@/components/options/EditorJsonConfig"),
+    EditorJsonConfig,
     ImportConfig,
     CheckIcon,
     DeleteIcon,

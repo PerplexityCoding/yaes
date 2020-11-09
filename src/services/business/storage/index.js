@@ -82,7 +82,6 @@ async function getFixConfig(
   config.envs = await removeUnrefEnvs(config);
 
   if (config != null) {
-    console.log(config);
     if (mergeDefault) {
       config = mergeOptionsDefault(config);
     }
