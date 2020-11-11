@@ -7,6 +7,7 @@ import { getConfig } from "@/services/business/storage/get";
 import { waitFor } from "../../../../../src/services/utils";
 
 jest.mock("@/services/business/storage/get");
+jest.mock("@/services/chrome/storage");
 jest.mock("@/services/chrome/browserAction");
 
 describe("Badge", () => {

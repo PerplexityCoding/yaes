@@ -11,3 +11,7 @@ Object.defineProperty(window, "matchMedia", {
     dispatchEvent: jest.fn(),
   })),
 });
+
+window.requestIdleCallback = (cb) => {
+  cb();
+};
