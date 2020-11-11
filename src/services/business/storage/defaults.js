@@ -28,4 +28,5 @@ export const DEFAULT_OPTIONS = {
     position: "right",
   },
   colorScheme: "system",
+  allowBugTrackerReporting: true,
 };

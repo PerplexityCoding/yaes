@@ -5,11 +5,13 @@ import {
   setBadgeBackgroundColor,
   setBadgeText,
 } from "@/services/chrome/browserAction";
+import { loadSentry } from "@/services/sentry/loader";
 
 export async function updateBadgeTextFromEnv(tabId, url) {
   const { config } = await getConfig();
   const env = getCurrentEnv(url, config);
   if (env != null && env.displayBadge !== false) {
+    loadSentry();
     const color = env.badgeOptions.backgroundColor;
     setBadgeBackgroundColor(tabId, color);
 

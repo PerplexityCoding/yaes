@@ -58,6 +58,22 @@
             <option value="dark">Dark</option>
           </select>
         </div>
+        <div class="label-set" allow-tracking>
+          <input
+            :id="$id('allow-tracking')"
+            type="checkbox"
+            v-model="allowBugTrackerReporting"
+          />
+          <label :for="$id('allow-tracking')">
+            Allow bugs to be reported <br />
+            <i>No personal information are collected. Not now Not ever.</i>
+            <br />
+            <i
+              >Please consider keeping it on, as it is every useful to improve
+              the quality of this extension.</i
+            >
+          </label>
+        </div>
       </fieldset>
 
       <div class="third-col">
@@ -101,6 +117,7 @@ export default {
     displayFooter: computed("displayFooter"),
     displaySeeProjectsLink: computed("displaySeeProjectsLink"),
     colorScheme: computed("colorScheme"),
+    allowBugTrackerReporting: computed("allowBugTrackerReporting"),
     mergedOptions() {
       const options = deepmerge(
         deepmerge({}, DEFAULT_OPTIONS),
@@ -134,11 +151,11 @@ export default {
   }
 
   .right-col {
-    flex: 2;
+    flex: 3;
   }
 
   .left-col {
-    flex: 3;
+    flex: 4;
   }
 
   .third-col {

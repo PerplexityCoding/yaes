@@ -1204,7 +1204,27 @@ var validate = (function() {
                             if (errors === errs_1) {}
                             var valid1 = errors === errs_1;
                           }
-                          if (valid1) {}
+                          if (valid1) {
+                            if (data.allowBugTrackerReporting === undefined) {
+                              valid1 = true;
+                            } else {
+                              var errs_1 = errors;
+                              if (typeof data.allowBugTrackerReporting !== "boolean") {
+                                validate.errors = [{
+                                  keyword: 'type',
+                                  dataPath: (dataPath || '') + '.allowBugTrackerReporting',
+                                  schemaPath: '#/properties/allowBugTrackerReporting/type',
+                                  params: {
+                                    type: 'boolean'
+                                  },
+                                  message: 'should be boolean'
+                                }];
+                                return false;
+                              }
+                              var valid1 = errors === errs_1;
+                            }
+                            if (valid1) {}
+                          }
                         }
                       }
                     }
@@ -1269,8 +1289,11 @@ var validate = (function() {
       },
       "colorScheme": {
         "type": "string",
-        "default": true,
         "enum": ["dark", "light", "system"]
+      },
+      "allowBugTrackerReporting": {
+        "type": "boolean",
+        "default": true
       }
     },
     "additionalProperties": false
@@ -1778,8 +1801,11 @@ validate.schema = {
         },
         "colorScheme": {
           "type": "string",
-          "default": true,
           "enum": ["dark", "light", "system"]
+        },
+        "allowBugTrackerReporting": {
+          "type": "boolean",
+          "default": true
         }
       },
       "additionalProperties": false

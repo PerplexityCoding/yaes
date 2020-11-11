@@ -148,12 +148,15 @@
         },
         "colorScheme": {
           "type": "string",
-          "default": true,
           "enum": [
             "dark",
             "light",
             "system"
           ]
+        },
+        "allowBugTrackerReporting": {
+          "type": "boolean",
+          "default": true
         }
       },
       "additionalProperties": false

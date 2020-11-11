@@ -1,3 +1,33 @@
+const webpack = require("webpack");
+const SentryWebpackPlugin = require("@sentry/webpack-plugin");
+
+const isDevelopment = process.env.NODE_ENV === "development";
+const isReleasing = !!process.env.VERSION;
+
+const sentryRelease = `yaes@${process.env.npm_package_version}`;
+
+const webpackPlugins = [
+  new webpack.EnvironmentPlugin({
+    SENTRY_RELEASE: sentryRelease,
+  }),
+];
+
+if (isReleasing) {
+  webpackPlugins.push(
+    new SentryWebpackPlugin({
+      // sentry-cli configuration
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      org: "magl",
+      project: "yaes",
+
+      // webpack specific configuration
+      release: sentryRelease,
+      include: "./dist",
+      ignore: ["node_modules", "vue.config.js"],
+    })
+  );
+}
+
 module.exports = {
   pages: {
     popup: {
@@ -23,7 +53,8 @@ module.exports = {
     },
   },
   configureWebpack: {
-    devtool: "cheap-module-source-map",
+    devtool: isDevelopment ? "cheap-module-source-map" : "source-map",
+    plugins: webpackPlugins,
   },
   chainWebpack: (config) => {
     // config.module.rule("js").uses.delete("babel-loader");
