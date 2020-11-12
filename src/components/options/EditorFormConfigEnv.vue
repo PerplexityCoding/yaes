@@ -232,6 +232,7 @@ export default {
       if (val && nameEl) {
         nameEl.focus();
         nameEl.setSelectionRange(0, nameEl.value.length);
+        this.$v.$reset();
       }
     },
   },
