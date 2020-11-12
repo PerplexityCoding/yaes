@@ -56,11 +56,6 @@ export default {
       deleting: false,
     };
   },
-  computed: {
-    transitionName() {
-      return this.deleting ? "fade" : "slide-fade-2";
-    },
-  },
   methods: {
     hideDelay() {
       if (!this.hideTimer) {
@@ -87,7 +82,9 @@ export default {
         this.$emit("update:modelValue", false);
         setTimeout(() => {
           this.deleting = false;
-          cb();
+          if (cb) {
+            cb();
+          }
         }, 0);
       } else if (!this.hiding) {
         this.hiding = true;
