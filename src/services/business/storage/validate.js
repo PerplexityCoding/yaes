@@ -1,8 +1,8 @@
 export default async function validate(config, version) {
   let result = {};
 
-  if (config.version) {
-    version = version || config.version || "1.0.0";
+  if (config) {
+    version = version || config.version || "1.1.1";
   }
 
   switch (version) {
@@ -27,7 +27,7 @@ export default async function validate(config, version) {
     default:
       // eslint-disable-next-line no-case-declarations
       const validateCurrent = (
-        await import("../../../schemas/config.schema.gen.js")
+        await import("../../../schemas/1.1.1/config.schema.gen.js")
       ).default;
       result.status = validateCurrent(config);
       result.errors = validateCurrent.errors;

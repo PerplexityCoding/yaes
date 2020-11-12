@@ -6,7 +6,7 @@
 
 <script>
 import { debounce } from "../../services/utils";
-import validateSchema from "../../schemas/config.schema.gen.js";
+import validateSchema from "../../schemas/1.1.1/config.schema.gen.js";
 
 const SAVE_DELAY = 500;
 

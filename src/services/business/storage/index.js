@@ -57,13 +57,13 @@ async function migrateConfig(config, { mergeOptions } = {}) {
 
 async function migrate(migrateOptions = {}) {
   let values = await chromeStorageGet(null);
-  let config = await getAndAssembleConfig(values);
-  config.envs = await removeUnrefEnvs(config);
+  if (values != null && values.version != null) {
+    let config = await getAndAssembleConfig(values);
+    config.envs = await removeUnrefEnvs(config);
 
-  if (config != null) {
     return migrateConfig(config, migrateOptions);
   } else {
-    config = { ...INIT_DEFAULT_CONFIG };
+    const config = { ...INIT_DEFAULT_CONFIG };
     await setConfig(config);
 
     return {

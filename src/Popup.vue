@@ -50,6 +50,7 @@
           link.
         </div>
       </div>
+      <div v-else class="info">No environment has been found</div>
     </section>
     <footer v-if="options.displayFooter !== false" class="footer">
       <a href="#/options" @click="openOptionsPage"> Edit Configuration </a>

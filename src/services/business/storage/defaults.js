@@ -1,5 +1,5 @@
 export const INIT_DEFAULT_CONFIG = {
-  version: "1.1.0",
+  version: "1.1.1",
   projects: [
     {
       id: 0,
