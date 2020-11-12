@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "cli": "vue-cli-service",
-    "serve": "vue-cli-service serve",
     "test:unit": "jest",
     "test:unit:watch": "jest --watchAll",
     "lint": "vue-cli-service lint",

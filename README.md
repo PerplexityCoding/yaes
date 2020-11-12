@@ -1,18 +1,29 @@
 # yaes : Yet Another Environment Switcher
 
+This is another environment switcher
+
+# Feature
+- Quickly switch between your environments or other configured projects
+- Display ribbon on your current environment
+- Display badge on your current environment
+- Easily configurable :
+  - create projects and environments
+  - reorder projects and environments
+  - override options by environment
+
 ## Project setup
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
 ### Compiles and minifies for production
 ```
 npm run build
+```
+
+### Dev
+```
+npm run build:app:watch
 ```
 
 ### Run your unit tests
@@ -26,12 +37,12 @@ npm run lint
 ```
 
 ### Release
+
 VERSION=x.y.z npm run release
 
 # Icons
 
-Icons made by <a href="https://www.flaticon.com/authors/dinosoftlabs" title="DinosoftLabs">DinosoftLabs</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
-Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+http://svgicons.sparkk.fr/
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
