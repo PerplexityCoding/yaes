@@ -6,6 +6,7 @@ import Options from "./Options.vue";
 import { createApp } from "vue";
 import uniqueId from "./utils/plugins/unique-id";
 import { VuelidatePlugin } from "@vuelidate/core";
+import "intro.js/minified/introjs.min.css";
 
 loadSentry();
 

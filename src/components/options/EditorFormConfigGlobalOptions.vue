@@ -2,7 +2,10 @@
   <div class="options-selector">
     <h2>Global Options</h2>
 
-    <form class="box-elevation">
+    <form
+      class="box-elevation"
+      data-intro="This is where you configure your global options. Some options can be overrode per environment."
+    >
       <div class="left-col">
         <EditorFormBadge
           :option="mergedOptions"
@@ -78,10 +81,11 @@
 
       <div class="third-col">
         <CoreButton
+          v-show="hasOptions"
           elevation
           icon-name="GoBack"
           @click.prevent="resetToDefaultOptions"
-          v-show="hasOptions"
+          data-hint="Reset all options with default global options"
         >
           Reset
         </CoreButton>

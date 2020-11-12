@@ -28,6 +28,7 @@
         variation="positive"
         class="new-project"
         @click="$emit('new-project')"
+        data-hint="Add fresh empty project. You can add new env after."
       >
         Add new project
       </CoreButton>

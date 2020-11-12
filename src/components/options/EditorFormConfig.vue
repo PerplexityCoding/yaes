@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="editor-form box-elevation">
+    <div
+      class="editor-form box-elevation"
+      data-intro="You can add, delete, drag&drop and edit your projects and environments here."
+    >
       <div class="left-pane">
         <div v-if="isNewEnv" class="blocking-mask"></div>
         <EditorFormConfigProjects

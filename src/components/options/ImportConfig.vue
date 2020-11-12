@@ -1,5 +1,8 @@
 <template>
-  <section class="import-config-section box-elevation">
+  <section
+    class="import-config-section box-elevation"
+    data-intro="This is where you can import and export your configuration. You can export and share them for instance on gist."
+  >
     <div class="import-configuration">
       <strong class="import-title"> Import configuration </strong>
       <div class="import-methods">
