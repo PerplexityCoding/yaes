@@ -45,10 +45,10 @@
           <ArrowRight class="arrow" height="12px" width="12px" />
           <span>See current env</span>
         </button>
-      </div>
-      <div v-else class="info">
-        No environment has been found with this domain name. Click on following
-        link to continue.
+        <div v-else class="info">
+          No environments has been configured yet. Click on edit configuration
+          link.
+        </div>
       </div>
     </section>
     <footer v-if="options.displayFooter !== false" class="footer">
@@ -201,13 +201,17 @@ export default {
 <style lang="scss" scoped>
 .popin {
   min-width: 270px;
-  min-height: 100px;
   display: flex;
   flex-direction: column;
 }
 
 .info {
   flex: 1;
+  color: rgba(var(--fg-black));
+
+  @at-root .dark-mode & {
+    color: rgba(var(--bg-white-off));
+  }
 }
 
 .body {
