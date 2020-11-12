@@ -120,6 +120,10 @@ footer {
 .has-projects {
   footer {
     border-top: 1px solid rgba(var(--border-grey));
+
+    @at-root .dark-mode & {
+      border-color: rgba(var(--black-2), 1);
+    }
   }
 }
 </style>

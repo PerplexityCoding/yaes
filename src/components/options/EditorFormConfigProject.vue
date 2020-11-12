@@ -39,7 +39,7 @@
       </ConfirmationDeleteButton>
     </header>
 
-    <ul class="env-sortable" @sortupdate="onDrop">
+    <ul v-if="projectEnvs.length > 0" class="env-sortable" @sortupdate="onDrop">
       <li
         v-for="env of projectEnvs"
         :key="'env-' + env.id"
@@ -56,6 +56,10 @@
         <ArrowRight height="14px" width="14px" />
       </li>
     </ul>
+    <h3 v-else>
+      There is currently no envs configured for this project. <br />
+      Click on "Add new env" button to add one.
+    </h3>
 
     <div class="action-buttons">
       <CoreButton
@@ -284,6 +288,10 @@ export default {
         background-color: rgba(var(--black-1), 0.8);
       }
     }
+  }
+
+  h3 {
+    padding: 16px 8px;
   }
 
   .action-buttons {
