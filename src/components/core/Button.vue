@@ -70,6 +70,11 @@ button {
   &.positive {
     color: rgba(var(--green));
     fill: rgba(var(--green));
+
+    @at-root .dark-mode & {
+      color: rgba(var(--green-apple));
+      fill: rgba(var(--green-apple));
+    }
   }
 
   svg {

@@ -217,6 +217,10 @@ export default {
     .import-success-message {
       color: rgba(var(--green));
       margin-left: 8px;
+
+      @at-root .dark-mode & {
+        color: rgba(var(--green-apple));
+      }
     }
   }
 }

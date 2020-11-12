@@ -34,17 +34,23 @@
         </div>
       </div>
       <div v-else-if="mode === 'projects'">
-        <ProjectList
-          :projects="projects"
-          :envs="envs"
-          v-model:openProjectId="openProjectId"
-          @redirect-env="redirectEnv"
-        />
+        <div v-if="projects && projects.length > 0">
+          <ProjectList
+            :projects="projects"
+            :envs="envs"
+            v-model:openProjectId="openProjectId"
+            @redirect-env="redirectEnv"
+          />
 
-        <button v-if="currentEnv" class="switch-env-btn" @click="mode = 'envs'">
-          <ArrowRight class="arrow" height="12px" width="12px" />
-          <span>See current env</span>
-        </button>
+          <button
+            v-if="currentEnv"
+            class="switch-env-btn"
+            @click="mode = 'envs'"
+          >
+            <ArrowRight class="arrow" height="12px" width="12px" />
+            <span>See current env</span>
+          </button>
+        </div>
         <div v-else class="info">
           No environments has been configured yet. Click on edit configuration
           link.

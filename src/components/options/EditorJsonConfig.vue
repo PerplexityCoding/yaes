@@ -76,12 +76,6 @@ export default {
 /* global styles */
 </style>
 
-<style lang="scss">
-#check-color {
-  fill: rgba(var(--green)) !important;
-}
-</style>
-
 <style scoped lang="scss">
 .config {
   flex: 1;

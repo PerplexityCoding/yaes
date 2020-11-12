@@ -302,6 +302,14 @@ fieldset {
     border-radius: 4px;
   }
 }
+
+#check-color {
+  fill: rgba(var(--green)) !important;
+
+  @at-root .dark-mode & {
+    fill: rgba(var(--green-apple));
+  }
+}
 </style>
 
 <style lang="scss" scoped>
@@ -373,6 +381,11 @@ fieldset {
     padding: 5px 10px;
     margin-top: 5px;
     font-weight: bold;
+
+    @at-root .dark-mode#{&} {
+      color: rgba(var(--green-apple));
+      fill: rgba(var(--green-apple));
+    }
   }
 
   .error {

@@ -1,37 +1,7 @@
 <template>
-  <svg
-    width="18px"
-    height="14px"
-    viewBox="0 0 18 14"
-    version="1.1"
-    xmlns="http://www.w3.org/2000/svg"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-  >
-    <title>check</title>
-    <g
-      id="Icons"
-      stroke="none"
-      stroke-width="1"
-      fill="none"
-      fill-rule="evenodd"
-    >
-      <g id="Two-Tone" transform="translate(-239.000000, -3437.000000)">
-        <g id="Navigation" transform="translate(100.000000, 3378.000000)">
-          <g
-            id="Two-Tone-/-Navigation-/-check"
-            transform="translate(136.000000, 54.000000)"
-          >
-            <g>
-              <polygon id="Path" points="0 0 24 0 24 24 0 24"></polygon>
-              <polygon
-                id="check-color"
-                fill="#1D1D1D"
-                points="9 16.17 4.83 12 3.41 13.41 9 19 21 7 19.59 5.59"
-              ></polygon>
-            </g>
-          </g>
-        </g>
-      </g>
-    </g>
+  <svg class="svg-icon" viewBox="0 0 20 20">
+    <path
+      d="M7.629,14.566c0.125,0.125,0.291,0.188,0.456,0.188c0.164,0,0.329-0.062,0.456-0.188l8.219-8.221c0.252-0.252,0.252-0.659,0-0.911c-0.252-0.252-0.659-0.252-0.911,0l-7.764,7.763L4.152,9.267c-0.252-0.251-0.66-0.251-0.911,0c-0.252,0.252-0.252,0.66,0,0.911L7.629,14.566z"
+    ></path>
   </svg>
 </template>
