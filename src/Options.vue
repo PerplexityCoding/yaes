@@ -1,7 +1,9 @@
 <template>
   <div v-if="config" class="options" :class="{ 'dark-mode': darkMode }">
     <section>
-      <h1>
+      <h1
+        data-intro="Hello, this is Yaes Configuration page. Nobody like a tutorial, so let's get it over with."
+      >
         <img src="/assets/images/favicon-32x32.png" />
         YAES - Configuration Page
       </h1>
@@ -72,6 +74,7 @@ import ImportConfig from "@/components/options/ImportConfig";
 import EditorFormConfig from "@/components/options/EditorFormConfig";
 import { downloadAsJson } from "@/services/utils";
 import { isDarkMode } from "@/services/business/utils";
+import introJs from "intro.js";
 
 const EditorJsonConfig = defineAsyncComponent(() =>
   import("@/components/options/EditorJsonConfig")
@@ -98,6 +101,16 @@ export default {
   },
   async created() {
     this.config = await this.getOrInitConfig();
+
+    if (this.config.envs.length === 0) {
+      setTimeout(() => {
+        introJs()
+          .start()
+          .onexit(() => {
+            introJs().addHints();
+          });
+      }, 0);
+    }
   },
   computed: {
     darkMode() {
@@ -114,6 +127,7 @@ export default {
         console.error(errors);
         this.loadingError = true;
       }
+
       return config;
     },
 

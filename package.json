@@ -1,6 +1,6 @@
 {
   "name": "yaes",
-  "version": "1.11.0",
+  "version": "1.12.0",
   "private": true,
   "scripts": {
     "cli": "vue-cli-service",
@@ -23,6 +23,7 @@
     "@simonwep/pickr": "^1.7.4",
     "core-js": "^3.7.0",
     "html5sortable": "^0.9.18",
+    "intro.js": "^3.0.1",
     "vue": "^3.0.2"
   },
   "devDependencies": {

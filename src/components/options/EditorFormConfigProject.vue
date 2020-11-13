@@ -67,6 +67,7 @@
         class="add-new-env"
         variation="positive"
         @click="$emit('new-env', projectId)"
+        data-hint="Try to add a new env. It will be attached to the project."
       >
         Add new env
       </CoreButton>
