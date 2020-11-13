@@ -49,11 +49,6 @@ describe("ProjectList.vue", () => {
         projects,
         openProjectId: -1,
       },
-      listeners: {
-        "update:openProjectId": () => {
-          console.log("update");
-        },
-      },
     });
 
     return wrapper;
@@ -74,8 +69,6 @@ describe("ProjectList.vue", () => {
 
     const buttonsWrapper1 = buttonsWrapper[0];
     await buttonsWrapper1.find("button").trigger("click");
-    await waitFor();
-    expect(wrapper.emitted("update:openProjectId")[0][0]).toBe(0);
 
     await wrapper.setProps({ openProjectId: 0 });
     await waitFor();

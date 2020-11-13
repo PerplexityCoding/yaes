@@ -65,3 +65,9 @@ export function removeUndefined(o) {
     }
   });
 }
+
+export function arrayValidator(fn) {
+  return (a) => {
+    return a.reduce((acc, o) => acc && fn(o), true);
+  };
+}

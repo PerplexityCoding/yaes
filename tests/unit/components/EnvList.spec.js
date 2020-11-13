@@ -1,20 +1,24 @@
-import { shallowMount } from "@vue/test-utils";
+import { mount } from "@vue/test-utils";
 import EnvList from "@/components/popup/EnvList.vue";
 
 describe("EnvList.vue", () => {
   const envs = [
     {
+      id: 0,
       name: "France",
       shortName: "FR",
       url: "https://www.google.fr/",
       displayDomain: true,
     },
     {
+      id: 1,
       name: "DE",
       url: "https://www.google.de/",
       displayDomain: false,
     },
     {
+      id: 2,
+      name: "Spain",
       shortName: "ES",
       url: "https://www.google.es/",
     },
@@ -22,11 +26,12 @@ describe("EnvList.vue", () => {
 
   function createDefaultWrapper() {
     const currentEnv = {
+      id: 1,
       name: "DE",
       url: "https://www.google.de/",
     };
 
-    const wrapper = shallowMount(EnvList, {
+    const wrapper = mount(EnvList, {
       props: {
         envs,
         currentEnv,
@@ -48,7 +53,7 @@ describe("EnvList.vue", () => {
     expect(buttons[1].classes()).toContain("selected");
     expect(buttons[1].text()).not.toContain("www.google.de");
 
-    expect(buttons[2].text()).toContain("ES");
+    expect(buttons[2].text()).toContain("Spain");
     expect(buttons[2].text()).not.toContain("www.google.es");
   });
 

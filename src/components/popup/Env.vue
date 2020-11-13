@@ -1,39 +1,50 @@
 <template>
-  <ul class="env-list">
-    <li v-for="env in envs" :key="env.url">
-      <Env
-        :env="env"
-        :is-selected="equalsEnv(env, currentEnv)"
-        @switch-env="(data) => $emit('switch-env', data)"
-      />
-    </li>
-  </ul>
+  <button
+    class="list-button"
+    :class="{ selected: isSelected }"
+    @click.middle.exact="switchEnv(env, true)"
+    @click.ctrl.exact="switchEnv(env, true)"
+    @click.exact="switchEnv(env)"
+  >
+    <span class="env-name">
+      {{ env.name || env.shortName }}
+      <div class="domain" v-if="env.displayDomain && env.url">
+        {{ hostname(env) }}
+      </div>
+    </span>
+    <span v-if="isSelected" class="selected-pill" />
+    <ArrowRight v-else height="14px" width="14px" />
+  </button>
 </template>
 
 <script>
-import Env from "./Env";
+import ArrowRight from "../icons/ArrowRight";
 import { defineComponent } from "vue";
-import { equalsEnv, isValidEnv } from "@/services/business/bo/env";
+import { hostnameFromEnv, isValidEnv } from "@/services/business/bo/env";
 
 export default defineComponent({
-  name: "EnvList",
+  name: "Env",
   props: {
-    envs: {
-      type: Array,
-      required: true,
-    },
-    currentEnv: {
+    env: {
       type: Object,
-      required: false,
-      default: null,
+      required: true,
       validator: isValidEnv,
     },
+    isSelected: {
+      type: Boolean,
+      default: false,
+    },
   },
-  components: { Env },
+  components: { ArrowRight },
   emits: ["switch-env"],
-  setup() {
+  setup(props, context) {
+    const switchEnv = (env, newTab) => {
+      context.emit("switch-env", { env, newTab });
+    };
+
     return {
-      equalsEnv,
+      hostname: hostnameFromEnv,
+      switchEnv,
     };
   },
 });

@@ -1,64 +1,54 @@
 <template>
-  <section class="popin" v-if="loaded" :class="{ 'dark-mode': darkMode }">
-    <header v-if="options.displayHeader !== false" class="header">
+  <section v-if="loaded" class="popin" :class="{ 'dark-mode': darkMode }">
+    <header v-if="config.options.displayHeader !== false" class="header">
       <img src="assets/images/favicon-16x16.png" />
       <span> Yet Another Env Switcher </span>
     </header>
     <section class="body">
       <div v-if="mode === 'envs'">
-        <div v-if="currentEnvs && currentEnvs.length > 0">
+        <div v-if="config.currentEnvs && config.currentEnvs.length > 0">
           <EnvList
-            :envs="currentEnvs"
-            :current-env="currentEnv"
-            @switch-env="
-              (env) => (currentEnv ? switchEnv(env) : redirectEnv(env))
-            "
+            :envs="config.currentEnvs"
+            :current-env="config.currentEnv"
+            @switch-env="(o) => changeBaseUrlEnv(o, !!config.currentEnv)"
           />
 
           <button
             v-if="
-              projects &&
-              projects.length > 1 &&
-              options.displaySeeProjectsLink !== false
+              config.projects &&
+              config.projects.length > 1 &&
+              config.options.displaySeeProjectsLink !== false
             "
             class="switch-env-btn right"
-            @click="mode = 'projects'"
+            @click="changeMode('projects')"
           >
             <span>See projects</span>
             <ArrowRight class="arrow" height="12px" width="12px" />
           </button>
         </div>
-        <div v-else class="info">
-          No environments has been configured yet. Click on edit configuration
-          link.
-        </div>
       </div>
       <div v-else-if="mode === 'projects'">
-        <div v-if="projects && projects.length > 0">
-          <ProjectList
-            :projects="projects"
-            :envs="envs"
-            v-model:openProjectId="openProjectId"
-            @redirect-env="redirectEnv"
-          />
+        <ProjectList
+          :projects="config.projects"
+          :envs="config.envs"
+          @redirect-env="(o) => changeBaseUrlEnv(o, false)"
+        />
 
-          <button
-            v-if="currentEnv"
-            class="switch-env-btn"
-            @click="mode = 'envs'"
-          >
-            <ArrowRight class="arrow" height="12px" width="12px" />
-            <span>See current env</span>
-          </button>
-        </div>
-        <div v-else class="info">
-          No environments has been configured yet. Click on edit configuration
-          link.
-        </div>
+        <button
+          v-if="config.currentEnv"
+          class="switch-env-btn"
+          @click="changeMode('envs')"
+        >
+          <ArrowRight class="arrow" height="12px" width="12px" />
+          <span>See current env</span>
+        </button>
       </div>
-      <div v-else class="info">No environment has been found</div>
+      <div v-else class="info">
+        No environments has been configured yet. Click on edit configuration
+        link.
+      </div>
     </section>
-    <footer v-if="options.displayFooter !== false" class="footer">
+    <footer v-if="config.options.displayFooter !== false" class="footer">
       <a href="#/options" @click="openOptionsPage"> Edit Configuration </a>
       <a href="https://github.com/ymenard-dev/yaes" target="_blank">
         Homepage
@@ -68,6 +58,7 @@
 </template>
 
 <script>
+import { defineComponent, computed, ref } from "vue";
 import EnvList from "./components/popup/EnvList";
 import ProjectList from "./components/popup/ProjectList";
 import ArrowRight from "./components/icons/ArrowRight";
@@ -80,86 +71,89 @@ import {
 import { switchBaseUrl, getCurrentEnv } from "./services/business/url";
 import { getConfig } from "./services/business/storage/get";
 import { isDarkMode } from "@/services/business/utils";
+import {
+  findProjectByEnvId,
+  mapProjectEnvs,
+} from "@/services/business/bo/project";
 
-export default {
+function changeBaseUrlEnv(currentTab) {
+  return async ({ env, newTab }, switchOption) => {
+    const baseUrl = switchOption ? currentTab.value.url : env.url;
+    const newUrl = switchBaseUrl(baseUrl, env.url, {
+      appendUrlParams: env.appendUrlParams,
+      removeUrlParams: env.removeUrlParams,
+    });
+    openChromeUrl(currentTab.value, newUrl, newTab);
+  };
+}
+
+async function useCurrentTab() {
+  const currentTab = await getCurrentTab();
+  return currentTab;
+}
+
+async function useConfig(currentTabUrl) {
+  const { config } = await getConfig();
+  const { envs, projects, options } = config;
+  const currentEnv = getCurrentEnv(currentTabUrl, config);
+
+  let currentEnvs = null;
+  if (currentEnv) {
+    const currentProject = findProjectByEnvId(projects, currentEnv.id);
+    currentEnvs = mapProjectEnvs(currentProject, envs);
+  } else {
+    if (projects && projects.length === 1) {
+      currentEnvs = mapProjectEnvs(projects[0], envs);
+    }
+  }
+
+  return {
+    currentEnv: currentEnv,
+    currentEnvs: currentEnvs,
+    envs: envs,
+    projects: projects,
+    options: options || {},
+  };
+}
+
+async function useAsyncSetup(config, currentTab, mode, loaded) {
+  currentTab.value = await useCurrentTab();
+
+  const localConfig = await useConfig(currentTab.value.url);
+  Object.assign(config, localConfig);
+
+  mode.value =
+    config.currentEnv || (config.currentEnvs && config.currentEnvs.length > 0)
+      ? "envs"
+      : config.projects && config.projects.length > 0
+      ? "projects"
+      : "";
+
+  loaded.value = true;
+}
+
+export default defineComponent({
   name: "Popup",
   components: { EnvList, ProjectList, ArrowRight },
-  data() {
+  setup() {
+    const loaded = ref(false);
+    const mode = ref("");
+    const config = {};
+    const currentTab = {};
+
+    useAsyncSetup(config, currentTab, mode, loaded);
+
     return {
-      openProjectId: -1,
-      envs: null,
-      mode: null,
-      projects: null,
-      currentEnv: null,
-      currentEnvs: null,
-      loaded: false,
-      options: {},
+      darkMode: computed(() => isDarkMode(config.options.colorScheme)),
+      openOptionsPage,
+      changeBaseUrlEnv: changeBaseUrlEnv(currentTab),
+      changeMode: (newMode) => (mode.value = newMode),
+      loaded,
+      config,
+      mode,
     };
   },
-  async created() {
-    const currentTab = await getCurrentTab();
-
-    const { config } = await getConfig();
-    if (config) {
-      const { envs, projects, options } = config;
-
-      const currentEnv = getCurrentEnv(currentTab.url, config);
-      const mapEnvId = (localEnvs) => {
-        return localEnvs.map((envId) => envs.find((env) => env.id === envId));
-      };
-
-      let currentEnvs = null;
-      if (currentEnv) {
-        const currentProject = projects.find(
-          (project) =>
-            project.envs.find((envId) => envId === currentEnv.id) != null
-        );
-        currentEnvs = mapEnvId(currentProject.envs);
-      } else {
-        if (projects && projects.length === 1) {
-          currentEnvs = mapEnvId(projects[0].envs);
-        } else if (!projects) {
-          currentEnvs = envs;
-        }
-      }
-
-      this.mode = currentEnv || currentEnvs ? "envs" : "projects";
-      this.currentEnv = currentEnv;
-      this.currentEnvs = currentEnvs;
-      this.envs = envs;
-      this.projects = projects;
-      this.options = options || {};
-    }
-
-    this.loaded = true;
-  },
-  computed: {
-    darkMode() {
-      return isDarkMode(this.options.colorScheme);
-    },
-  },
-  methods: {
-    async switchEnv({ env, newTab }) {
-      const currentTab = await getCurrentTab();
-      const newUrl = switchBaseUrl(currentTab.url, env.url, {
-        appendUrlParams: env.appendUrlParams,
-        removeUrlParams: env.removeUrlParams,
-      });
-      openChromeUrl(currentTab, newUrl, newTab);
-    },
-    async redirectEnv({ env, newTab }) {
-      const currentTab = await getCurrentTab();
-      const newUrl = switchBaseUrl(env.url, env.url, {
-        appendUrlParams: env.appendUrlParams,
-        removeUrlParams: env.removeUrlParams,
-      });
-      openChromeUrl(currentTab, newUrl, newTab);
-    },
-    openOptionsPage() {
-      openOptionsPage();
-    },
-  },
-};
+});
 </script>
 
 <style lang="scss">
@@ -285,6 +279,11 @@ export default {
   color: rgba(var(--fg-black));
   padding: 7px;
   display: flex;
+
+  > img {
+    width: 16px;
+    height: 16px;
+  }
 
   @at-root .dark-mode & {
     border-bottom: 1px solid rgba(var(--black-3));

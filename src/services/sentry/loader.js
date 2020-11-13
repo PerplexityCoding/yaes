@@ -42,7 +42,9 @@ export async function loadSentry() {
 function asyncLoadSentry() {
   setTimeout(async () => {
     try {
-      const { logVueError, Sentry, initSentry } = await import("./sentry");
+      const { logVueError, Sentry, initSentry } = await import(
+        /* webpackChunkName: "sentry" */ "./sentry"
+      );
       initSentry();
 
       Sentry.onLoad(() => {

@@ -1,3 +1,5 @@
+import { hostnameFromEnv } from "@/services/business/bo/env";
+
 export function switchBaseUrl(
   currentUrl,
   newBaseUrl,
@@ -72,7 +74,7 @@ export function getCurrentEnv(url, config) {
 function getEnvsByDomain(config) {
   const envs = config.envs;
   return envs.reduce((result, env) => {
-    const envHostname = new URL(env.url).hostname;
+    const envHostname = hostnameFromEnv(env);
     result[envHostname] = result[envHostname] || [];
     result[envHostname].push(env);
     return result;

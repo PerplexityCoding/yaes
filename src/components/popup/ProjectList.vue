@@ -1,74 +1,45 @@
 <template>
   <ul class="project-list">
     <li v-for="project in projects" :key="project.id">
-      <div class="project-btn-wrapper">
-        <button
-          @click="toggleAccordeon(project)"
-          class="list-button"
-          :class="{ 'is-opened': isOpened(project) }"
-        >
-          <span>
-            {{ project.name || project.id }}
-          </span>
-          <ArrowRight height="14px" width="14px" />
-        </button>
-        <div class="project-envs" v-if="isOpened(project)">
-          <EnvList
-            :envs="projectEnvs(project)"
-            @switch-env="(data) => $emit('redirect-env', data)"
-          />
-        </div>
-      </div>
+      <Project
+        :project="project"
+        :envs="envs"
+        v-model:open-project-id="openProjectId"
+        @redirect-env="(data) => $emit('redirect-env', data)"
+      />
     </li>
   </ul>
 </template>
 
 <script>
-import EnvList from "./EnvList";
-import ArrowRight from "../icons/ArrowRight";
+import { ref, defineComponent } from "vue";
+import { isValidProject } from "@/services/business/bo/project";
+import Project from "./Project";
+import { isValidEnv } from "@/services/business/bo/env";
+import { arrayValidator } from "@/services/utils";
 
-export default {
+export default defineComponent({
   name: "ProjectList",
-  components: { EnvList, ArrowRight },
+  components: { Project },
   emits: ["redirect-env", "update:openProjectId"],
   props: {
-    openProjectId: {
-      type: Number,
-      required: true,
-    },
     projects: {
       type: Array,
       required: true,
-      validator: (a) =>
-        a.reduce((acc, o) => acc && (o.name != null || o.id != null), true),
+      validator: arrayValidator(isValidProject),
     },
     envs: {
       type: Array,
       required: true,
-      validator: (a) =>
-        a.reduce(
-          (acc, o) => acc && (o.name != null || o.shortName != null),
-          true
-        ),
+      validator: arrayValidator(isValidEnv),
     },
   },
-  methods: {
-    isOpened(project) {
-      return this.openProjectId === project.id;
-    },
-    toggleAccordeon(project) {
-      this.$emit(
-        "update:openProjectId",
-        this.openProjectId === project.id ? -1 : project.id
-      );
-    },
-    projectEnvs(project) {
-      return project.envs.map((envId) =>
-        this.envs.find((env) => env.id === envId)
-      );
-    },
+  setup() {
+    return {
+      openProjectId: ref(-1),
+    };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

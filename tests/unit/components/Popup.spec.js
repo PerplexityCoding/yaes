@@ -4,6 +4,7 @@ import EnvList from "@/components/popup/EnvList";
 import { waitFor } from "@/services/utils";
 import { getCurrentTab, openChromeUrl } from "@/services/chrome/tabs";
 import { getConfig } from "@/services/business/storage/get";
+import { INIT_DEFAULT_CONFIG } from "@/services/business/storage/defaults";
 
 jest.mock("@/services/business/storage/get");
 jest.mock("@/services/chrome/tabs");
@@ -40,7 +41,7 @@ function mockStorageEnvGet() {
 }
 
 function mockStorageEnvGetBadData() {
-  getConfig.mockReturnValue({ hasErrors: true });
+  getConfig.mockReturnValue({ config: { ...INIT_DEFAULT_CONFIG } });
 }
 
 describe("Popup.vue", () => {
@@ -109,7 +110,9 @@ describe("Popup.vue", () => {
     const wrapper = mount(Popup);
     await waitFor();
 
-    expect(wrapper.html()).toContain("No environment has been found");
+    expect(wrapper.html()).toContain(
+      "No environments has been configured yet. Click on edit configuration link."
+    );
     consoleError.mockRestore();
   });
 });

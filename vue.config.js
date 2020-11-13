@@ -92,5 +92,10 @@ module.exports = {
         },
       },
     });
+
+    config.plugin("prefetch-popup").tap((options) => {
+      options[0].fileBlacklist = [/\.map$/, /vendors~sentry/];
+      return options;
+    });
   },
 };

@@ -1,12 +1,6 @@
 export const INIT_DEFAULT_CONFIG = {
   version: "1.1.1",
-  projects: [
-    {
-      id: 0,
-      name: "Default Project",
-      envs: [],
-    },
-  ],
+  projects: [],
   envs: [],
   options: {},
 };
