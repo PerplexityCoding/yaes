@@ -41,6 +41,7 @@
               :class="{ error: $v.name.$error }"
               type="text"
               v-model="name"
+              @keypress.stop.prevent.enter="createAndConfigure"
             />
             <div class="error" v-if="$v.name.$error">
               Name field is required.
@@ -67,6 +68,7 @@
               type="text"
               v-model="url"
               placeholder="eg: https://www.ecosia.org"
+              @keypress.stop.prevent.enter="createAndConfigure"
             />
             <div class="error" v-if="$v.url.$error">
               Url field is required and must have an url format.
@@ -317,9 +319,11 @@ export default {
       this.$emit("update-env", newEnv);
     },
     createAndConfigure() {
-      this.$v.$touch();
-      if (!this.$v.$invalid) {
-        this.$emit("create-new-env", this.env);
+      if (this.newEnv) {
+        this.$v.$touch();
+        if (!this.$v.$invalid) {
+          this.$emit("create-new-env", this.env);
+        }
       }
     },
   },
