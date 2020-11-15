@@ -1,5 +1,8 @@
 import deep from "deepmerge";
-import { DEFAULT_OPTIONS } from "@/services/business/storage/defaults";
+import {
+  DEFAULT_OPTIONS,
+  INIT_DEFAULT_CONFIG,
+} from "@/services/business/storage/defaults";
 
 export function mergeOptionsDefault(config) {
   config.options = deep(deep({}, DEFAULT_OPTIONS), config.options || {});
@@ -12,7 +15,7 @@ export async function getAndAssembleConfig(values) {
       options: values.options ? JSON.parse(values.options) : {},
       projects: values.projects ? JSON.parse(values.projects) : [],
       envs: await loadEnvs(values),
-      version: values.version,
+      version: values.version || INIT_DEFAULT_CONFIG.version,
     };
 
     return config;

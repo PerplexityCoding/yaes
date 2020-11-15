@@ -15,6 +15,7 @@ module.exports = {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
   },
+  plugins: ["cypress"],
   overrides: [
     {
       files: [
@@ -27,6 +28,12 @@ module.exports = {
       env: {
         node: true,
         jest: true,
+      },
+    },
+    {
+      files: ["**/tests/cypress/**/*.spec.{j,t}s?(x)"],
+      env: {
+        "cypress/globals": true,
       },
     },
   ],

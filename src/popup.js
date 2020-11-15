@@ -5,9 +5,23 @@ import {
 import Popup from "./Popup.vue";
 import { createApp } from "vue";
 
-loadSentry();
+async function main() {
+  if (!window.Cypress) {
+    loadSentry();
+  }
 
-const app = createApp(Popup);
-queueVueGlobalErrorHandler(app);
+  const startApp = () => {
+    const app = createApp(Popup);
+    queueVueGlobalErrorHandler(app);
 
-app.mount("#app");
+    app.mount("#app");
+  };
+
+  if (window.Cypress) {
+    window.startApp = startApp;
+  } else {
+    startApp();
+  }
+}
+
+main();

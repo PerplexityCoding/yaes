@@ -2,7 +2,7 @@ import migrate from "./versions";
 import validateSchema from "@/services/business/storage/validate";
 
 async function migrateVersion(config, fromVersion, toVersion) {
-  const beforeValidation = validateSchema(config, fromVersion);
+  const beforeValidation = await validateSchema(config, fromVersion);
   if (!beforeValidation.status) {
     // console.log("before validation", config);
     console.error(beforeValidation.errors);
@@ -32,7 +32,6 @@ export const ConfigUpdateStatus = {
 
 export async function checkUpdate(config) {
   const version = config.version || "1.0.0";
-
   switch (version) {
     case "1.0.0":
       if (!(await migrateVersion(config, "1.0.0", "1.1.0"))) {

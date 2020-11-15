@@ -3,6 +3,7 @@ const SentryWebpackPlugin = require("@sentry/webpack-plugin");
 
 const isDevelopment = process.env.NODE_ENV === "development";
 const isReleasing = !!process.env.VERSION;
+const cypress = process.env.CYPRESS;
 
 const sentryRelease = `yaes@${process.env.npm_package_version}`;
 
@@ -33,14 +34,14 @@ module.exports = {
     popup: {
       title: "YAES - Popup",
       entry: "src/popup.js",
-      template: "public/popup.html",
+      template: cypress ? "public/popup_cypress.html" : "public/popup.html",
       filename: "popup.html",
       chunks: ["chunk-common", "chunk-popup-vendors", "popup"],
     },
     options: {
       title: "YAES - Options",
       entry: "src/options.js",
-      template: "public/options.html",
+      template: cypress ? "public/options_cypress.html" : "public/options.html",
       filename: "options.html",
       chunks: ["chunk-common", "chunk-options-vendors", "options"],
     },
@@ -93,9 +94,11 @@ module.exports = {
       },
     });
 
-    config.plugin("prefetch-popup").tap((options) => {
-      options[0].fileBlacklist = [/\.map$/, /vendors~sentry/];
-      return options;
-    });
+    if (config.plugins.has("prefetch-popup")) {
+      config.plugin("prefetch-popup").tap((options) => {
+        options[0].fileBlacklist = [/\.map$/, /vendors~sentry/];
+        return options;
+      });
+    }
   },
 };
