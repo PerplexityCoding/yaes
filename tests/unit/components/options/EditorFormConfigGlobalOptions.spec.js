@@ -46,7 +46,33 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
       expect(label.find("select").exists()).toBe(true);
 
     let i = 0;
-    let label = labels[i++];
+    let label = "";
+
+    label = labels[i++];
+    hasAttribute(label, "display-domain");
+    isCheckbox(label);
+
+    label = labels[i++];
+    hasAttribute(label, "display-header");
+    isCheckbox(label);
+
+    label = labels[i++];
+    hasAttribute(label, "display-footer");
+    isCheckbox(label);
+
+    label = labels[i++];
+    hasAttribute(label, "display-projects-links");
+    isCheckbox(label);
+
+    label = labels[i++];
+    hasAttribute(label, "color-scheme");
+    isSelect(label);
+
+    label = labels[i++];
+    hasAttribute(label, "allow-tracking");
+    isCheckbox(label);
+
+    label = labels[i++];
     hasAttribute(label, "display-badge");
     isCheckbox(label);
 
@@ -73,30 +99,6 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
     label = labels[i++];
     hasAttribute(label, "ribbon-type");
     isSelect(label);
-
-    label = labels[i++];
-    hasAttribute(label, "display-domain");
-    isCheckbox(label);
-
-    label = labels[i++];
-    hasAttribute(label, "display-header");
-    isCheckbox(label);
-
-    label = labels[i++];
-    hasAttribute(label, "display-footer");
-    isCheckbox(label);
-
-    label = labels[i++];
-    hasAttribute(label, "display-projects-links");
-    isCheckbox(label);
-
-    label = labels[i++];
-    hasAttribute(label, "color-scheme");
-    isSelect(label);
-
-    label = labels[i++];
-    hasAttribute(label, "allow-tracking");
-    isCheckbox(label);
   });
 
   it.each`

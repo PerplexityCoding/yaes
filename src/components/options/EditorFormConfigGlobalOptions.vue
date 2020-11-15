@@ -7,18 +7,6 @@
       data-intro="This is where you configure your global options. Some options can be overrode per environment."
     >
       <div class="left-col">
-        <EditorFormBadge
-          :option="mergedOptions"
-          @update:option="updateComputed"
-        />
-        <EditorFormRibbon
-          class="form-ribbon"
-          :option="mergedOptions"
-          @update:option="updateComputed"
-        />
-      </div>
-
-      <fieldset class="right-col">
         <div class="label-set" display-domain>
           <input
             :id="$id('display-domain')"
@@ -77,6 +65,19 @@
             >
           </label>
         </div>
+      </div>
+
+      <fieldset class="right-col">
+        <EditorFormBadge
+          :option="mergedOptions"
+          @update:option="updateComputed"
+        />
+        <EditorFormRibbon
+          v-if="ribbonEnabled"
+          class="form-ribbon"
+          :option="mergedOptions"
+          @update:option="updateComputed"
+        />
       </fieldset>
 
       <div class="third-col">
@@ -116,6 +117,7 @@ export default {
   mounted() {},
   emits: ["update:options"],
   computed: {
+    ribbonEnabled: () => !window.ENV || window.ENV.WITHOUT_RIBBON !== true,
     displayDomain: computed("displayDomain"),
     displayHeader: computed("displayHeader"),
     displayFooter: computed("displayFooter"),
@@ -170,13 +172,13 @@ export default {
     border: none;
     display: flex;
     flex-direction: column;
+  }
 
-    .label-set {
-      margin-bottom: 8px;
+  .label-set {
+    margin-bottom: 8px;
 
-      select {
-        margin-left: 8px;
-      }
+    select {
+      margin-left: 8px;
     }
   }
 

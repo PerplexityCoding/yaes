@@ -34,15 +34,22 @@ module.exports = {
     popup: {
       title: "YAES - Popup",
       entry: "src/popup.js",
-      template: cypress ? "public/popup_cypress.html" : "public/popup.html",
+      template: cypress ? "public/popup-cypress.html" : "public/popup.html",
       filename: "popup.html",
       chunks: ["chunk-common", "chunk-popup-vendors", "popup"],
     },
     options: {
       title: "YAES - Options",
       entry: "src/options.js",
-      template: cypress ? "public/options_cypress.html" : "public/options.html",
+      template: cypress ? "public/options-cypress.html" : "public/options.html",
       filename: "options.html",
+      chunks: ["chunk-common", "chunk-options-vendors", "options"],
+    },
+    "options-privacy": {
+      title: "YAES - Options",
+      entry: "src/options.js",
+      template: "public/options-privacy.html",
+      filename: "options-privacy.html",
       chunks: ["chunk-common", "chunk-options-vendors", "options"],
     },
     content: {

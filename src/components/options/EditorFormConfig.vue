@@ -23,7 +23,7 @@
       </div>
       <div
         class="right-pane"
-        :class="{ 'right-pane-empty': !selectedEnvId && !newEnv }"
+        :class="{ 'right-pane-empty': selectedEnvId == null && !newEnv }"
       >
         <EditorFormConfigEnv
           v-if="selectedEnv != null || newEnv != null"

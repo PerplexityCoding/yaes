@@ -154,7 +154,7 @@
           />
 
           <EditorFormRibbon
-            v-if="env"
+            v-if="env && ribbonEnabled"
             class="form-ribbon"
             :option="mergedEnv"
             :env="env"
@@ -246,6 +246,7 @@ export default {
     "cancel-new-env",
   ],
   computed: {
+    ribbonEnabled: () => !window.ENV || window.ENV.WITHOUT_RIBBON !== true,
     mergedEnv() {
       const env = this.env
         ? deepmerge(
