@@ -55,11 +55,11 @@ export default {
       default: () => {},
     },
     selectedEnvId: {
-      type: Number,
+      type: [Number, String],
       default: null,
     },
     selectedProjectId: {
-      type: Number,
+      type: [Number, String],
       default: null,
     },
   },

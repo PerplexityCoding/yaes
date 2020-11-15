@@ -27,7 +27,7 @@ export async function getAndAssembleConfig(values) {
 
 async function loadEnvs(values) {
   return Object.entries(values)
-    .filter(([key]) => /^env-[0-9]*$/.exec(key))
+    .filter(([key]) => /^env-[0-9a-zA-Z-]*$/.exec(key))
     .reduce((acc, entry) => {
       acc.push(JSON.parse(entry[1]));
       return acc;

@@ -47,7 +47,7 @@ export default defineComponent({
       validator: isValidProject,
     },
     openProjectId: {
-      type: Number,
+      type: [Number, String],
       required: true,
     },
   },

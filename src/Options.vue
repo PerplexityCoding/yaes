@@ -102,13 +102,9 @@ export default {
   async created() {
     this.config = await this.getOrInitConfig();
 
-    if (this.config.envs.length === 0) {
+    if (this.config.envs.length === 0 && this.config.projects.length === 0) {
       setTimeout(() => {
-        introJs()
-          .start()
-          .onexit(() => {
-            introJs().addHints();
-          });
+        introJs().start();
       }, 0);
     }
   },

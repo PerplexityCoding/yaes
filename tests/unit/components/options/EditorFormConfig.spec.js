@@ -93,7 +93,7 @@ describe("EditorFormConfig.vue", () => {
         {
           id: 0,
           name: "Project1",
-          envs: [2, 1, 4],
+          envs: [2, 1, "88888888-8888-4888-8888-888888888888"],
         },
         {
           id: 1,
@@ -104,7 +104,7 @@ describe("EditorFormConfig.vue", () => {
       envs: [
         ...config.envs,
         {
-          id: 4,
+          id: "88888888-8888-4888-8888-888888888888",
           name: "My New Env",
           url: "https://gogo.fr",
         },
@@ -137,13 +137,13 @@ describe("EditorFormConfig.vue", () => {
         {
           id: 1,
           name: "Project2",
-          envs: [3, 4],
+          envs: [3, "88888888-8888-4888-8888-888888888888"],
         },
       ],
       envs: [
         ...config.envs,
         {
-          id: 4,
+          id: "88888888-8888-4888-8888-888888888888",
           name: "My New Env 2",
           url: "https://gogo2.fr",
         },
@@ -167,7 +167,7 @@ describe("EditorFormConfig.vue", () => {
         {
           id: 0,
           name: "Project1",
-          envs: [2, 1, 4],
+          envs: [2, 1, "88888888-8888-4888-8888-888888888888"],
         },
         {
           id: 1,
@@ -192,7 +192,7 @@ describe("EditorFormConfig.vue", () => {
           url: "https://www.google.es/",
         },
         {
-          id: 4,
+          id: "88888888-8888-4888-8888-888888888888",
           name: "DE",
           url: "https://www.google.de/sdfsdf",
         },
@@ -254,7 +254,7 @@ describe("EditorFormConfig.vue", () => {
       projects: [
         ...config.projects,
         {
-          id: 2,
+          id: "88888888-8888-4888-8888-888888888888",
           name: "New Project",
           envs: [],
         },

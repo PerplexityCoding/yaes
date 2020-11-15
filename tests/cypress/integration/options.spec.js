@@ -5,7 +5,7 @@ context("Options", () => {
       {
         id: 0,
         name: "Project name test",
-        envs: [1, 2, 3],
+        envs: [1, "f87a0b70-324e-4724-ab90-36cb47ff1c7d", 3],
       },
     ]),
     "env-1": JSON.stringify({
@@ -13,8 +13,8 @@ context("Options", () => {
       name: "FR",
       url: "https://www.google.fr/sdfsdf",
     }),
-    "env-2": JSON.stringify({
-      id: 2,
+    "env-f87a0b70-324e-4724-ab90-36cb47ff1c7d": JSON.stringify({
+      id: "f87a0b70-324e-4724-ab90-36cb47ff1c7d",
       name: "DE",
       url: "https://www.google.de/sdfsdf",
     }),
@@ -57,10 +57,6 @@ context("Options", () => {
     loadData();
     // skip tutorial
     cy.get(".introjs-skipbutton").click();
-    cy.get(".introjs-hint-pulse").as("hints");
-
-    cy.get("@hints").first().click();
-    cy.get(".introjs-button").click();
 
     cy.get("button.new-project").click();
 

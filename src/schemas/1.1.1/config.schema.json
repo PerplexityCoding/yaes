@@ -93,7 +93,10 @@
       "default": {},
       "properties": {
         "id": {
-          "type": "number"
+          "anyOf": [
+            { "type": "number" },
+            { "type": "string" }
+          ]
         },
         "name": {
           "type": "string"
@@ -101,7 +104,10 @@
         "envs": {
           "type": "array",
           "items": {
-            "type": "number"
+            "anyOf": [
+              { "type": "number" },
+              { "type": "string" }
+            ]
           }
         }
       },
@@ -165,7 +171,10 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "number"
+          "anyOf": [
+            { "type": "number" },
+            { "type": "string" }
+          ]
         },
         "displayRibbon": {
           "type": "boolean",

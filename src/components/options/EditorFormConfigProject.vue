@@ -99,7 +99,7 @@ export default {
   },
   props: {
     projectId: {
-      type: Number,
+      type: [Number, String],
       default: () => {},
     },
     config: {
@@ -107,11 +107,11 @@ export default {
       default: () => {},
     },
     selectedEnvId: {
-      type: Number,
+      type: [Number, String],
       default: null,
     },
     selectedProjectId: {
-      type: Number,
+      type: [Number, String],
       default: null,
     },
   },

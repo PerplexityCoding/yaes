@@ -91,7 +91,7 @@ export default {
         setTimeout(() => {
           this.$emit("update:modelValue", false);
           this.hiding = false;
-        }, 700);
+        }, 5000);
       }
     },
   },

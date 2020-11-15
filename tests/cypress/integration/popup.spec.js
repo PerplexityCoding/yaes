@@ -5,11 +5,15 @@ context("Popup", () => {
       {
         id: 0,
         name: "Project name test",
-        envs: [1, 2, 3],
+        envs: [
+          "f87a0b70-324e-4724-ab90-36cb47ff1c7d",
+          2,
+          "39b2f74d-b8a4-405b-aa97-0cdeb46849af",
+        ],
       },
     ]),
-    "env-1": JSON.stringify({
-      id: 1,
+    "env-f87a0b70-324e-4724-ab90-36cb47ff1c7d": JSON.stringify({
+      id: "f87a0b70-324e-4724-ab90-36cb47ff1c7d",
       name: "FR",
       url: "https://www.google.fr/sdfsdf",
     }),
@@ -18,8 +22,8 @@ context("Popup", () => {
       name: "DE",
       url: "https://www.google.de/sdfsdf",
     }),
-    "env-3": JSON.stringify({
-      id: 3,
+    "env-39b2f74d-b8a4-405b-aa97-0cdeb46849af": JSON.stringify({
+      id: "39b2f74d-b8a4-405b-aa97-0cdeb46849af",
       name: "ES",
       url: "https://www.google.es/",
     }),
@@ -37,7 +41,7 @@ context("Popup", () => {
       {
         id: 1,
         name: "Project 2",
-        envs: [3],
+        envs: ["39b2f74d-b8a4-405b-aa97-0cdeb46849af"],
       },
     ]),
     "env-1": JSON.stringify({
@@ -50,8 +54,8 @@ context("Popup", () => {
       name: "DE",
       url: "https://www.google.de/sdfsdf",
     }),
-    "env-3": JSON.stringify({
-      id: 3,
+    "env-39b2f74d-b8a4-405b-aa97-0cdeb46849af": JSON.stringify({
+      id: "39b2f74d-b8a4-405b-aa97-0cdeb46849af",
       name: "ES",
       url: "https://www.google.es/",
     }),

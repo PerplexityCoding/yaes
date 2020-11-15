@@ -237,10 +237,7 @@ export default {
           this.selectedProjectId = projectId;
         }
         this.newEnv = newEnv;
-
-        setTimeout(() => {
-          this.isNewEnv = !!this.newEnv;
-        }, 0);
+        this.isNewEnv = !!this.newEnv;
       } else {
         this.selectedEnvId = null;
         this.selectedProjectId = null;

@@ -12,7 +12,11 @@ var validate = (function() {
     "default": {},
     "properties": {
       "id": {
-        "type": "number"
+        "anyOf": [{
+          "type": "number"
+        }, {
+          "type": "string"
+        }]
       },
       "name": {
         "type": "string"
@@ -20,7 +24,11 @@ var validate = (function() {
       "envs": {
         "type": "array",
         "items": {
-          "type": "number"
+          "anyOf": [{
+            "type": "number"
+          }, {
+            "type": "string"
+          }]
         }
       }
     },
@@ -58,7 +66,8 @@ var validate = (function() {
             }
           }
           if (valid1) {
-            if (data.id === undefined) {
+            var data1 = data.id;
+            if (data1 === undefined) {
               valid1 = false;
               validate.errors = [{
                 keyword: 'required',
@@ -72,18 +81,66 @@ var validate = (function() {
               return false;
             } else {
               var errs_1 = errors;
-              if ((typeof data.id !== "number")) {
-                validate.errors = [{
+              var errs__1 = errors;
+              var valid1 = false;
+              var errs_2 = errors;
+              if ((typeof data1 !== "number")) {
+                var err = {
                   keyword: 'type',
                   dataPath: (dataPath || '') + '.id',
-                  schemaPath: '#/properties/id/type',
+                  schemaPath: '#/properties/id/anyOf/0/type',
                   params: {
                     type: 'number'
                   },
                   message: 'should be number'
-                }];
-                return false;
+                };
+                if (vErrors === null) vErrors = [err];
+                else vErrors.push(err);
+                errors++;
               }
+              var valid2 = errors === errs_2;
+              valid1 = valid1 || valid2;
+              if (!valid1) {
+                var errs_2 = errors;
+                if (typeof data1 !== "string") {
+                  var err = {
+                    keyword: 'type',
+                    dataPath: (dataPath || '') + '.id',
+                    schemaPath: '#/properties/id/anyOf/1/type',
+                    params: {
+                      type: 'string'
+                    },
+                    message: 'should be string'
+                  };
+                  if (vErrors === null) vErrors = [err];
+                  else vErrors.push(err);
+                  errors++;
+                }
+                var valid2 = errors === errs_2;
+                valid1 = valid1 || valid2;
+                if (!valid1) {}
+              }
+              if (!valid1) {
+                var err = {
+                  keyword: 'anyOf',
+                  dataPath: (dataPath || '') + '.id',
+                  schemaPath: '#/properties/id/anyOf',
+                  params: {},
+                  message: 'should match some schema in anyOf'
+                };
+                if (vErrors === null) vErrors = [err];
+                else vErrors.push(err);
+                errors++;
+                validate.errors = vErrors;
+                return false;
+              } else {
+                errors = errs__1;
+                if (vErrors !== null) {
+                  if (errs__1) vErrors.length = errs__1;
+                  else vErrors = null;
+                }
+              }
+              if (errors === errs_1) {}
               var valid1 = errors === errs_1;
             }
             if (valid1) {
@@ -694,7 +751,11 @@ var validate = (function() {
     "type": "object",
     "properties": {
       "id": {
-        "type": "number"
+        "anyOf": [{
+          "type": "number"
+        }, {
+          "type": "string"
+        }]
       },
       "displayRibbon": {
         "type": "boolean",
@@ -1382,7 +1443,8 @@ var validate = (function() {
                     if (true) {
                       var errs__3 = errors;
                       var valid4 = true;
-                      if (data2.id === undefined) {
+                      var data3 = data2.id;
+                      if (data3 === undefined) {
                         valid4 = false;
                         validate.errors = [{
                           keyword: 'required',
@@ -1396,18 +1458,66 @@ var validate = (function() {
                         return false;
                       } else {
                         var errs_4 = errors;
-                        if ((typeof data2.id !== "number")) {
-                          validate.errors = [{
+                        var errs__4 = errors;
+                        var valid4 = false;
+                        var errs_5 = errors;
+                        if ((typeof data3 !== "number")) {
+                          var err = {
                             keyword: 'type',
                             dataPath: (dataPath || '') + '.projects[' + i1 + '].id',
-                            schemaPath: '#/definitions/project/properties/id/type',
+                            schemaPath: '#/definitions/project/properties/id/anyOf/0/type',
                             params: {
                               type: 'number'
                             },
                             message: 'should be number'
-                          }];
-                          return false;
+                          };
+                          if (vErrors === null) vErrors = [err];
+                          else vErrors.push(err);
+                          errors++;
                         }
+                        var valid5 = errors === errs_5;
+                        valid4 = valid4 || valid5;
+                        if (!valid4) {
+                          var errs_5 = errors;
+                          if (typeof data3 !== "string") {
+                            var err = {
+                              keyword: 'type',
+                              dataPath: (dataPath || '') + '.projects[' + i1 + '].id',
+                              schemaPath: '#/definitions/project/properties/id/anyOf/1/type',
+                              params: {
+                                type: 'string'
+                              },
+                              message: 'should be string'
+                            };
+                            if (vErrors === null) vErrors = [err];
+                            else vErrors.push(err);
+                            errors++;
+                          }
+                          var valid5 = errors === errs_5;
+                          valid4 = valid4 || valid5;
+                          if (!valid4) {}
+                        }
+                        if (!valid4) {
+                          var err = {
+                            keyword: 'anyOf',
+                            dataPath: (dataPath || '') + '.projects[' + i1 + '].id',
+                            schemaPath: '#/definitions/project/properties/id/anyOf',
+                            params: {},
+                            message: 'should match some schema in anyOf'
+                          };
+                          if (vErrors === null) vErrors = [err];
+                          else vErrors.push(err);
+                          errors++;
+                          validate.errors = vErrors;
+                          return false;
+                        } else {
+                          errors = errs__4;
+                          if (vErrors !== null) {
+                            if (errs__4) vErrors.length = errs__4;
+                            else vErrors = null;
+                          }
+                        }
+                        if (errors === errs_4) {}
                         var valid4 = errors === errs_4;
                       }
                       if (valid4) {
@@ -1459,19 +1569,68 @@ var validate = (function() {
                               var errs__4 = errors;
                               var valid4;
                               for (var i4 = 0; i4 < data3.length; i4++) {
+                                var data4 = data3[i4];
                                 var errs_5 = errors;
-                                if ((typeof data3[i4] !== "number")) {
-                                  validate.errors = [{
+                                var errs__5 = errors;
+                                var valid5 = false;
+                                var errs_6 = errors;
+                                if ((typeof data4 !== "number")) {
+                                  var err = {
                                     keyword: 'type',
                                     dataPath: (dataPath || '') + '.projects[' + i1 + '].envs[' + i4 + ']',
-                                    schemaPath: '#/definitions/project/properties/envs/items/type',
+                                    schemaPath: '#/definitions/project/properties/envs/items/anyOf/0/type',
                                     params: {
                                       type: 'number'
                                     },
                                     message: 'should be number'
-                                  }];
-                                  return false;
+                                  };
+                                  if (vErrors === null) vErrors = [err];
+                                  else vErrors.push(err);
+                                  errors++;
                                 }
+                                var valid6 = errors === errs_6;
+                                valid5 = valid5 || valid6;
+                                if (!valid5) {
+                                  var errs_6 = errors;
+                                  if (typeof data4 !== "string") {
+                                    var err = {
+                                      keyword: 'type',
+                                      dataPath: (dataPath || '') + '.projects[' + i1 + '].envs[' + i4 + ']',
+                                      schemaPath: '#/definitions/project/properties/envs/items/anyOf/1/type',
+                                      params: {
+                                        type: 'string'
+                                      },
+                                      message: 'should be string'
+                                    };
+                                    if (vErrors === null) vErrors = [err];
+                                    else vErrors.push(err);
+                                    errors++;
+                                  }
+                                  var valid6 = errors === errs_6;
+                                  valid5 = valid5 || valid6;
+                                  if (!valid5) {}
+                                }
+                                if (!valid5) {
+                                  var err = {
+                                    keyword: 'anyOf',
+                                    dataPath: (dataPath || '') + '.projects[' + i1 + '].envs[' + i4 + ']',
+                                    schemaPath: '#/definitions/project/properties/envs/items/anyOf',
+                                    params: {},
+                                    message: 'should match some schema in anyOf'
+                                  };
+                                  if (vErrors === null) vErrors = [err];
+                                  else vErrors.push(err);
+                                  errors++;
+                                  validate.errors = vErrors;
+                                  return false;
+                                } else {
+                                  errors = errs__5;
+                                  if (vErrors !== null) {
+                                    if (errs__5) vErrors.length = errs__5;
+                                    else vErrors = null;
+                                  }
+                                }
+                                if (errors === errs_5) {}
                                 var valid5 = errors === errs_5;
                                 if (!valid5) break;
                               }
@@ -1750,7 +1909,11 @@ validate.schema = {
       "default": {},
       "properties": {
         "id": {
-          "type": "number"
+          "anyOf": [{
+            "type": "number"
+          }, {
+            "type": "string"
+          }]
         },
         "name": {
           "type": "string"
@@ -1758,7 +1921,11 @@ validate.schema = {
         "envs": {
           "type": "array",
           "items": {
-            "type": "number"
+            "anyOf": [{
+              "type": "number"
+            }, {
+              "type": "string"
+            }]
           }
         }
       },
@@ -1814,7 +1981,11 @@ validate.schema = {
       "type": "object",
       "properties": {
         "id": {
-          "type": "number"
+          "anyOf": [{
+            "type": "number"
+          }, {
+            "type": "string"
+          }]
         },
         "displayRibbon": {
           "type": "boolean",
