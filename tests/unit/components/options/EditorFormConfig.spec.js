@@ -4,36 +4,35 @@ import EditorFormConfigProject from "@/components/options/EditorFormConfigProjec
 import EditorFormConfig from "@/components/options/EditorFormConfig";
 import { waitFor } from "@/services/utils";
 import UniqueId from "@/utils/plugins/unique-id";
-import { VuelidatePlugin } from "@vuelidate/core";
 
 describe("EditorFormConfig.vue", () => {
   const config = {
     version: "1.1.0",
     projects: [
       {
-        id: 0,
+        id: "0",
         name: "Project1",
-        envs: [2, 1],
+        envs: ["2", "1"],
       },
       {
-        id: 1,
+        id: "1",
         name: "Project2",
-        envs: [3],
+        envs: ["3"],
       },
     ],
     envs: [
       {
-        id: 1,
+        id: "1",
         name: "FR",
         url: "https://www.google.fr/sdfsdf",
       },
       {
-        id: 2,
+        id: "2",
         name: "DE",
         url: "https://www.google.de/sdfsdf",
       },
       {
-        id: 3,
+        id: "3",
         name: "ES",
         url: "https://www.google.es/",
       },
@@ -47,7 +46,7 @@ describe("EditorFormConfig.vue", () => {
         config: deepmerge({}, config),
       },
       global: {
-        plugins: [UniqueId, VuelidatePlugin],
+        plugins: [UniqueId],
       },
     });
 

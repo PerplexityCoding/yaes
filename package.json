@@ -27,11 +27,13 @@
   },
   "dependencies": {
     "@simonwep/pickr": "^1.7.4",
+    "@vee-validate/rules": "^4.0.0-beta.0",
     "@vue/composition-api": "^1.0.0-beta.19",
     "core-js": "^3.7.0",
     "html5sortable": "^0.9.18",
     "intro.js": "^3.0.1",
     "sinon-chrome": "^3.0.1",
+    "vee-validate": "^4.0.0-beta.19",
     "vue": "^3.0.2"
   },
   "devDependencies": {
@@ -45,8 +47,6 @@
     "@vue/compiler-sfc": "^3.0.2",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/test-utils": "^2.0.0-beta.8",
-    "@vuelidate/core": "^2.0.0-alpha.7",
-    "@vuelidate/validators": "^2.0.0-alpha.5",
     "ajv-cli": "^3.3.0",
     "bestzip": "^2.1.5",
     "cross-env": "^7.0.2",

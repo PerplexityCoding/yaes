@@ -5,7 +5,7 @@ import {
 import Options from "./Options.vue";
 import { createApp } from "vue";
 import uniqueId from "./utils/plugins/unique-id";
-import { VuelidatePlugin } from "@vuelidate/core";
+import "./utils/plugins/vee-validate";
 import "intro.js/minified/introjs.min.css";
 
 async function main() {
@@ -16,7 +16,6 @@ async function main() {
   const app = createApp(Options);
   const startApp = () => {
     app.use(uniqueId);
-    app.use(VuelidatePlugin);
     app.mount("#app");
   };
 

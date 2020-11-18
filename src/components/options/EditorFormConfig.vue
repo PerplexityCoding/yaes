@@ -27,7 +27,8 @@
       >
         <EditorFormConfigEnv
           v-if="selectedEnv != null || newEnv != null"
-          :env="newEnv ? newEnv : selectedEnv"
+          :env="newEnv || selectedEnv"
+          :key="`env-${(newEnv || selectedEnv).id}`"
           :config="config"
           :new-env="isNewEnv"
           :project-name="selectedProject.name"

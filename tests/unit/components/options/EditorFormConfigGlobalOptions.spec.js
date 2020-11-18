@@ -3,7 +3,6 @@ import { mount } from "@vue/test-utils";
 import EditorFormConfigGlobalOptions from "@/components/options/EditorFormConfigGlobalOptions";
 import { waitFor } from "@/services/utils";
 import UniqueId from "@/utils/plugins/unique-id";
-import { VuelidatePlugin } from "@vuelidate/core";
 
 describe("EditorFormConfigGlobalOptions.vue", () => {
   const options = {
@@ -17,7 +16,7 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
         options: deepmerge({}, options),
       },
       global: {
-        plugins: [UniqueId, VuelidatePlugin],
+        plugins: [UniqueId],
       },
     });
 
