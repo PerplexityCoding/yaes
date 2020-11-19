@@ -1,3 +1,5 @@
+import "./src/utils/plugins/vee-validate";
+
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: jest.fn().mockImplementation((query) => ({

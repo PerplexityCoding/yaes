@@ -5,7 +5,7 @@ import EditorFormConfig from "@/components/options/EditorFormConfig";
 import { waitFor } from "@/services/utils";
 import UniqueId from "@/utils/plugins/unique-id";
 
-describe.skip("EditorFormConfig.vue", () => {
+describe("EditorFormConfig.vue", () => {
   const config = {
     version: "1.1.0",
     projects: [
@@ -47,6 +47,9 @@ describe.skip("EditorFormConfig.vue", () => {
       },
       global: {
         plugins: [UniqueId],
+        stubs: {
+          transition: false,
+        },
       },
     });
 
@@ -84,20 +87,20 @@ describe.skip("EditorFormConfig.vue", () => {
     await inputs[1].setValue("https://gogo.fr");
     await waitFor(10);
 
-    await wrapper.find(".create-env-btn").trigger("click");
+    await wrapper.find("form").trigger("submit");
     await waitFor();
 
     checkUpdateConfig(wrapper, {
       projects: [
         {
-          id: 0,
+          id: "0",
           name: "Project1",
-          envs: [2, 1, "88888888-8888-4888-8888-888888888888"],
+          envs: ["2", "1", "88888888-8888-4888-8888-888888888888"],
         },
         {
-          id: 1,
+          id: "1",
           name: "Project2",
-          envs: [3],
+          envs: ["3"],
         },
       ],
       envs: [
@@ -123,20 +126,20 @@ describe.skip("EditorFormConfig.vue", () => {
     await inputs[1].setValue("https://gogo2.fr");
     await waitFor(10);
 
-    await wrapper.find(".create-env-btn").trigger("click");
+    await wrapper.find("form").trigger("submit");
     await waitFor();
 
     checkUpdateConfig(wrapper, {
       projects: [
         {
-          id: 0,
+          id: "0",
           name: "Project1",
-          envs: [2, 1],
+          envs: ["2", "1"],
         },
         {
-          id: 1,
+          id: "1",
           name: "Project2",
-          envs: [3, "88888888-8888-4888-8888-888888888888"],
+          envs: ["3", "88888888-8888-4888-8888-888888888888"],
         },
       ],
       envs: [
@@ -164,29 +167,29 @@ describe.skip("EditorFormConfig.vue", () => {
     checkUpdateConfig(wrapper, {
       projects: [
         {
-          id: 0,
+          id: "0",
           name: "Project1",
-          envs: [2, 1, "88888888-8888-4888-8888-888888888888"],
+          envs: ["2", "1", "88888888-8888-4888-8888-888888888888"],
         },
         {
-          id: 1,
+          id: "1",
           name: "Project2",
-          envs: [3],
+          envs: ["3"],
         },
       ],
       envs: [
         {
-          id: 1,
+          id: "1",
           name: "FR",
           url: "https://www.google.fr/sdfsdf",
         },
         {
-          id: 2,
+          id: "2",
           name: "DE",
           url: "https://www.google.de/sdfsdf",
         },
         {
-          id: 3,
+          id: "3",
           name: "ES",
           url: "https://www.google.es/",
         },
@@ -209,7 +212,7 @@ describe.skip("EditorFormConfig.vue", () => {
 
     const firstButton = wrapper.find(".side-panel .delete-btn");
     await firstButton.trigger("click");
-    await waitFor();
+    await waitFor(50);
 
     const confirmButton = wrapper.find(".side-panel .delete-confirm-btn");
     await confirmButton.trigger("click");
@@ -218,24 +221,24 @@ describe.skip("EditorFormConfig.vue", () => {
     checkUpdateConfig(wrapper, {
       projects: [
         {
-          id: 0,
+          id: "0",
           name: "Project1",
-          envs: [1],
+          envs: ["1"],
         },
         {
-          id: 1,
+          id: "1",
           name: "Project2",
-          envs: [3],
+          envs: ["3"],
         },
       ],
       envs: [
         {
-          id: 1,
+          id: "1",
           name: "FR",
           url: "https://www.google.fr/sdfsdf",
         },
         {
-          id: 3,
+          id: "3",
           name: "ES",
           url: "https://www.google.es/",
         },
@@ -264,8 +267,9 @@ describe.skip("EditorFormConfig.vue", () => {
   it("delete project 1st button", async () => {
     const wrapper = createDefaultWrapper();
 
-    const firstButton = wrapper.find(".project-item .delete-btn");
+    const firstButton = wrapper.findAll(".project-item .delete-btn")[0];
     await firstButton.trigger("click");
+    await waitFor(50);
 
     const confirmButton = wrapper.find(".delete-confirm-btn");
     await confirmButton.trigger("click");
@@ -274,14 +278,14 @@ describe.skip("EditorFormConfig.vue", () => {
     checkUpdateConfig(wrapper, {
       projects: [
         {
-          id: 1,
+          id: "1",
           name: "Project2",
-          envs: [3],
+          envs: ["3"],
         },
       ],
       envs: [
         {
-          id: 3,
+          id: "3",
           name: "ES",
           url: "https://www.google.es/",
         },
@@ -294,6 +298,7 @@ describe.skip("EditorFormConfig.vue", () => {
 
     const secondButton = wrapper.findAll(".project-item .delete-btn")[1];
     await secondButton.trigger("click");
+    await waitFor(50);
 
     const confirmButton = wrapper.find(".delete-confirm-btn");
     await confirmButton.trigger("click");
@@ -302,19 +307,19 @@ describe.skip("EditorFormConfig.vue", () => {
     checkUpdateConfig(wrapper, {
       projects: [
         {
-          id: 0,
+          id: "0",
           name: "Project1",
-          envs: [2, 1],
+          envs: ["2", "1"],
         },
       ],
       envs: [
         {
-          id: 1,
+          id: "1",
           name: "FR",
           url: "https://www.google.fr/sdfsdf",
         },
         {
-          id: 2,
+          id: "2",
           name: "DE",
           url: "https://www.google.de/sdfsdf",
         },
@@ -340,14 +345,14 @@ describe.skip("EditorFormConfig.vue", () => {
     checkUpdateConfig(wrapper, {
       projects: [
         {
-          id: 0,
+          id: "0",
           name: "Project1",
-          envs: [1, 2],
+          envs: ["1", "2"],
         },
         {
-          id: 1,
+          id: "1",
           name: "Project2",
-          envs: [3],
+          envs: ["3"],
         },
       ],
     });
@@ -371,14 +376,14 @@ describe.skip("EditorFormConfig.vue", () => {
     checkUpdateConfig(wrapper, {
       projects: [
         {
-          id: 1,
+          id: "1",
           name: "Project2",
-          envs: [3],
+          envs: ["3"],
         },
         {
-          id: 0,
+          id: "0",
           name: "Project1",
-          envs: [2, 1],
+          envs: ["2", "1"],
         },
       ],
     });
@@ -397,14 +402,14 @@ describe.skip("EditorFormConfig.vue", () => {
     checkUpdateConfig(wrapper, {
       projects: [
         {
-          id: 0,
+          id: "0",
           name: "ProjectX",
-          envs: [2, 1],
+          envs: ["2", "1"],
         },
         {
-          id: 1,
+          id: "1",
           name: "Project2",
-          envs: [3],
+          envs: ["3"],
         },
       ],
     });

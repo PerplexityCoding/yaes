@@ -4,7 +4,7 @@ import EditorFormConfigProjects from "@/components/options/EditorFormConfigProje
 import EditorFormConfigProject from "@/components/options/EditorFormConfigProject";
 import UniqueId from "@/utils/plugins/unique-id";
 
-describe.skip("EditorFormConfigProjects.vue", () => {
+describe("EditorFormConfigProjects.vue", () => {
   const config = {
     version: "1.1.0",
     projects: [
