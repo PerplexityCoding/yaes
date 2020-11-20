@@ -222,7 +222,7 @@ import deepmerge from "deepmerge";
 import { getComputedFactory } from "@/services/business/ui";
 import EditorFormRibbon from "@/components/options/form/EditorFormRibbon";
 import EditorFormBadge from "@/components/options/form/EditorFormBadge";
-import { removeUndefined } from "@/services/utils";
+import { removeEmptyString, removeUndefined } from "@/services/utils";
 import { DEFAULT_OPTIONS } from "@/services/business/storage/defaults";
 import ConfirmationDeleteButton from "@/components/options/form/ConfirmationDeleteButton";
 import CoreButton from "@/components/core/Button";
@@ -348,6 +348,7 @@ export default {
     update(values) {
       if (!this.newEnv) {
         const mergedEnv = deepmerge(deepmerge({}, this.env), values);
+        removeEmptyString(mergedEnv);
         this.$emit("update-env", mergedEnv);
       }
     },

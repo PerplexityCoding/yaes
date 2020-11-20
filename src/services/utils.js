@@ -79,3 +79,11 @@ export function uuidv4() {
     return v.toString(16);
   });
 }
+
+export function removeEmptyString(obj) {
+  for (const [key, value] of Object.entries(obj)) {
+    if (value === "") {
+      delete obj[key];
+    }
+  }
+}
