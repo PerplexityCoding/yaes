@@ -33,7 +33,7 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
 
     const labels = wrapper.findAll(".label-set");
     await waitFor();
-    expect(labels).toHaveLength(13);
+    expect(labels).toHaveLength(14);
 
     const hasAttribute = (label, attribute) =>
       expect(label.attributes()[attribute]).toBe("");
@@ -69,6 +69,10 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
 
     label = labels[i++];
     hasAttribute(label, "allow-tracking");
+    isCheckbox(label);
+
+    label = labels[i++];
+    hasAttribute(label, "ping-url");
     isCheckbox(label);
 
     label = labels[i++];

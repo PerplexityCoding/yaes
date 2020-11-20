@@ -647,7 +647,27 @@ var validate = (function() {
                                   if (errors === errs_1) {}
                                   var valid1 = errors === errs_1;
                                 }
-                                if (valid1) {}
+                                if (valid1) {
+                                  if (data.pingUrl === undefined) {
+                                    valid1 = true;
+                                  } else {
+                                    var errs_1 = errors;
+                                    if (typeof data.pingUrl !== "boolean") {
+                                      validate.errors = [{
+                                        keyword: 'type',
+                                        dataPath: (dataPath || '') + '.pingUrl',
+                                        schemaPath: '#/properties/pingUrl/type',
+                                        params: {
+                                          type: 'boolean'
+                                        },
+                                        message: 'should be boolean'
+                                      }];
+                                      return false;
+                                    }
+                                    var valid1 = errors === errs_1;
+                                  }
+                                  if (valid1) {}
+                                }
                               }
                             }
                           }
@@ -798,6 +818,10 @@ var validate = (function() {
         "type": "string",
         "pattern": "^[^,]+(,[^,]+)*$",
         "description": "Remove url parameters"
+      },
+      "pingUrl": {
+        "type": "boolean",
+        "default": false
       }
     },
     "anyOf": [{
@@ -1284,7 +1308,27 @@ var validate = (function() {
                               }
                               var valid1 = errors === errs_1;
                             }
-                            if (valid1) {}
+                            if (valid1) {
+                              if (data.pingUrl === undefined) {
+                                valid1 = true;
+                              } else {
+                                var errs_1 = errors;
+                                if (typeof data.pingUrl !== "boolean") {
+                                  validate.errors = [{
+                                    keyword: 'type',
+                                    dataPath: (dataPath || '') + '.pingUrl',
+                                    schemaPath: '#/properties/pingUrl/type',
+                                    params: {
+                                      type: 'boolean'
+                                    },
+                                    message: 'should be boolean'
+                                  }];
+                                  return false;
+                                }
+                                var valid1 = errors === errs_1;
+                              }
+                              if (valid1) {}
+                            }
                           }
                         }
                       }
@@ -1355,6 +1399,10 @@ var validate = (function() {
       "allowBugTrackerReporting": {
         "type": "boolean",
         "default": true
+      },
+      "pingUrl": {
+        "type": "boolean",
+        "default": false
       }
     },
     "additionalProperties": false
@@ -1973,6 +2021,10 @@ validate.schema = {
         "allowBugTrackerReporting": {
           "type": "boolean",
           "default": true
+        },
+        "pingUrl": {
+          "type": "boolean",
+          "default": false
         }
       },
       "additionalProperties": false
@@ -2028,6 +2080,10 @@ validate.schema = {
           "type": "string",
           "pattern": "^[^,]+(,[^,]+)*$",
           "description": "Remove url parameters"
+        },
+        "pingUrl": {
+          "type": "boolean",
+          "default": false
         }
       },
       "anyOf": [{

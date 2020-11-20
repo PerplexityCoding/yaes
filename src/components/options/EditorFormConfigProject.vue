@@ -247,7 +247,7 @@ export default {
         background: rgba(var(--bg-grey-hover));
 
         @at-root .dark-mode & {
-          background-color: rgba(var(--black-1));
+          background-color: rgba(var(--black-1), 0.5);
         }
       }
 
@@ -258,16 +258,20 @@ export default {
 
     .selected-env {
       background: rgba(var(--border-grey));
+      fill: rgba(var(--green));
+      color: rgba(var(--green));
 
       @at-root .dark-mode & {
-        background-color: rgba(var(--black-3));
+        background-color: rgba(var(--black-1));
+        fill: rgba(var(--green-apple));
+        color: rgba(var(--green-apple));
       }
 
       &:hover {
         background: rgba(var(--bg-grey-hover));
 
         @at-root .dark-mode & {
-          background-color: rgba(var(--black-3), 0.5);
+          background-color: rgba(var(--black-1), 0.5);
         }
       }
     }

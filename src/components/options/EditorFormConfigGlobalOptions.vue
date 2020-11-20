@@ -65,6 +65,10 @@
             >
           </label>
         </div>
+        <div class="label-set" ping-url>
+          <input :id="$id('ping-url')" type="checkbox" v-model="pingUrl" />
+          <label :for="$id('ping-url')"> Check if environment url is up </label>
+        </div>
       </div>
 
       <fieldset class="right-col">
@@ -124,6 +128,7 @@ export default {
     displaySeeProjectsLink: computed("displaySeeProjectsLink"),
     colorScheme: computed("colorScheme"),
     allowBugTrackerReporting: computed("allowBugTrackerReporting"),
+    pingUrl: computed("pingUrl"),
     mergedOptions() {
       const options = deepmerge(
         deepmerge({}, DEFAULT_OPTIONS),

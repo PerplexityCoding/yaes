@@ -163,6 +163,10 @@
         "allowBugTrackerReporting": {
           "type": "boolean",
           "default": true
+        },
+        "pingUrl": {
+          "type": "boolean",
+          "default": false
         }
       },
       "additionalProperties": false
@@ -217,6 +221,10 @@
           "type": "string",
           "pattern": "^[^,]+(,[^,]+)*$",
           "description": "Remove url parameters"
+        },
+        "pingUrl": {
+          "type": "boolean",
+          "default": false
         }
       },
       "anyOf": [

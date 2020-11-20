@@ -23,4 +23,5 @@ export const DEFAULT_OPTIONS = {
   },
   colorScheme: "system",
   allowBugTrackerReporting: true,
+  openUrl: false,
 };

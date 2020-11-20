@@ -194,6 +194,22 @@
                 </label>
               </div>
             </fieldset>
+
+            <fieldset class="field-domain">
+              <div class="label-set">
+                <input
+                  :id="$id('ping-url')"
+                  type="checkbox"
+                  v-model="pingUrl"
+                />
+                <label
+                  :for="$id('ping-url')"
+                  :class="{ defaulted: env.pingUrl === undefined }"
+                >
+                  Check if environment url is up
+                </label>
+              </div>
+            </fieldset>
           </div>
         </transition>
       </form>
@@ -276,6 +292,7 @@ export default {
       return env;
     },
     displayDomain: computed("displayDomain", null),
+    pingUrl: computed("pingUrl", null),
     hasOverrides() {
       const env = this.env;
       if (env) {
@@ -284,8 +301,12 @@ export default {
         const hasRibbonOverrides =
           env.displayRibbon !== undefined || env.ribbonOptions !== undefined;
         const hasDisplayDomainOverrides = env.displayDomain !== undefined;
+        const hasDisplayPingOverrides = env.pingUrl !== undefined;
         return (
-          hasBadgeOverrides || hasRibbonOverrides || hasDisplayDomainOverrides
+          hasBadgeOverrides ||
+          hasRibbonOverrides ||
+          hasDisplayDomainOverrides ||
+          hasDisplayPingOverrides
         );
       }
       return false;

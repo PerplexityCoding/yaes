@@ -1,7 +1,11 @@
 <template>
   <button
     class="list-button"
-    :class="{ selected: isSelected }"
+    :class="{
+      selected: isSelected,
+      'ping-ko': isStatusError === true,
+      'ping-ok': isStatusError === false,
+    }"
     @click.middle.exact="switchEnv(env, true)"
     @click.ctrl.exact="switchEnv(env, true)"
     @click.exact="switchEnv(env)"
@@ -12,14 +16,14 @@
         {{ hostname(env) }}
       </div>
     </span>
-    <span v-if="isSelected" class="selected-pill" />
+    <span v-if="isSelected || isStatusError === true" class="selected-pill" />
     <ArrowRight v-else height="14px" width="14px" />
   </button>
 </template>
 
 <script>
 import ArrowRight from "../icons/ArrowRight";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { hostnameFromEnv, isValidEnv } from "@/services/business/bo/env";
 
 export default defineComponent({
@@ -41,10 +45,30 @@ export default defineComponent({
     const switchEnv = (env, newTab) => {
       context.emit("switch-env", { env, newTab });
     };
+    const isStatusError = ref(null);
+
+    if (props.env.pingUrl) {
+      window.requestIdleCallback(() => {
+        setTimeout(() => {
+          try {
+            fetch(props.env.url)
+              .then((res) => {
+                isStatusError.value = res.status !== 200;
+              })
+              .catch(() => {
+                isStatusError.value = true;
+              });
+          } catch (e) {
+            debugger;
+          }
+        }, 500);
+      });
+    }
 
     return {
       hostname: hostnameFromEnv,
       switchEnv,
+      isStatusError,
     };
   },
 });
@@ -79,8 +103,36 @@ ul {
         }
       }
 
+      &.ping-ok {
+        fill: rgba(var(--green));
+
+        @at-root .dark-mode & {
+          fill: rgba(var(--green-apple));
+        }
+      }
+
       > .env-name {
         flex: 1;
+      }
+
+      &.selected,
+      &.ping-ko {
+        .selected-pill {
+          display: block;
+          border-radius: 50px;
+          height: 12px;
+          width: 12px;
+        }
+      }
+
+      &.ping-ko {
+        .selected-pill {
+          background-color: rgba(var(--ruby));
+
+          @at-root .dark-mode & {
+            background-color: rgba(var(--ruby));
+          }
+        }
       }
 
       &.selected {
@@ -95,10 +147,6 @@ ul {
         }
 
         .selected-pill {
-          display: block;
-          border-radius: 50px;
-          height: 12px;
-          width: 12px;
           background-color: rgba(var(--blue));
         }
       }

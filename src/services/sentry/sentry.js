@@ -23,6 +23,10 @@ function initSentry() {
     // We recommend adjusting this value in production, or using tracesSampler
     // for finer control
     tracesSampleRate: 1.0,
+    ignoreErrors: [
+      "TypeError: Failed to fetch",
+      "TypeError: NetworkError when attempting to fetch resource.",
+    ],
   });
 }
 
