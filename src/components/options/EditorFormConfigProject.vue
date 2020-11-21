@@ -79,7 +79,7 @@
 import { getProjectById, getProjectEnvs } from "@/services/business/bo/config";
 import { updateSortableEnvs } from "@/services/business/ui";
 import ConfirmationDeleteButton from "@/components/options/form/ConfirmationDeleteButton";
-import CoreButton from "@/components/core/Button";
+import CoreButton from "@/components/options/core/Button";
 
 export default {
   name: "EditorFormConfigProject",

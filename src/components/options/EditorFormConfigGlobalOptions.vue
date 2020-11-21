@@ -105,7 +105,7 @@ import { getComputedFactory } from "@/services/business/ui";
 import EditorFormRibbon from "@/components/options/form/EditorFormRibbon";
 import EditorFormBadge from "@/components/options/form/EditorFormBadge";
 import { DEFAULT_OPTIONS } from "@/services/business/storage/defaults";
-import CoreButton from "@/components/core/Button";
+import CoreButton from "@/components/options/core/Button";
 
 const computed = getComputedFactory("mergedOptions");
 

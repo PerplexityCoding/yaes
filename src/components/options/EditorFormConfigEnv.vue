@@ -225,7 +225,7 @@ import EditorFormBadge from "@/components/options/form/EditorFormBadge";
 import { removeEmptyString, removeUndefined } from "@/services/utils";
 import { DEFAULT_OPTIONS } from "@/services/business/storage/defaults";
 import ConfirmationDeleteButton from "@/components/options/form/ConfirmationDeleteButton";
-import CoreButton from "@/components/core/Button";
+import CoreButton from "@/components/options/core/Button";
 import { Field, Form } from "vee-validate";
 
 const computed = getComputedFactory("mergedEnv");

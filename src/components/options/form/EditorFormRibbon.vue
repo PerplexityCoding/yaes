@@ -67,7 +67,7 @@
 
 <script>
 import { getComputedFactory } from "@/services/business/ui";
-import ColorPicker from "@/components/core/ColorPicker";
+import ColorPicker from "@/components/options/core/ColorPicker";
 
 const computed = getComputedFactory("option");
 

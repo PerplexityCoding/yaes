@@ -39,7 +39,7 @@
 <script>
 import EditorFormConfigProject from "@/components/options/EditorFormConfigProject";
 import { updateSortableProjects } from "@/services/business/ui";
-import CoreButton from "@/components/core/Button";
+import CoreButton from "@/components/options/core/Button";
 
 export default {
   name: "EditorFormConfigProjects",
