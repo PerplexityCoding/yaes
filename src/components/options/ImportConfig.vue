@@ -17,7 +17,7 @@
                 v-model="configurationUrl"
               />
             </div>
-            <CoreButton elevation icon-name="Import" @click="importConfig">
+            <CoreButton elevation icon-name="ImportIcon" @click="importConfig">
               import
             </CoreButton>
             <span
@@ -97,7 +97,7 @@
 
     <div class="import-configuration">
       <strong> Export configuration </strong>
-      <CoreButton elevation icon-name="Export" @click="downloadConfig">
+      <CoreButton elevation icon-name="ExportIcon" @click="downloadConfig">
         Export
       </CoreButton>
       <span>Tips:</span>

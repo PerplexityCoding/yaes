@@ -88,7 +88,7 @@
         <CoreButton
           v-show="hasOptions"
           elevation
-          icon-name="GoBack"
+          icon-name="GoBackIcon"
           @click.prevent="resetToDefaultOptions"
           data-hint="Reset all options with default global options"
         >

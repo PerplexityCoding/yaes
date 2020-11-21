@@ -7,7 +7,7 @@
         <CoreButton
           elevation
           class="delete-btn button"
-          icon-name="Delete"
+          icon-name="DeleteIcon"
           variation="negative"
           @click="$emit('update:modelValue', !modelValue)"
         >

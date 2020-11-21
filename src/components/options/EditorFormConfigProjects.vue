@@ -24,7 +24,7 @@
 
     <footer>
       <CoreButton
-        icon-name="Add"
+        icon-name="AddIcon"
         variation="positive"
         class="new-project"
         @click="$emit('new-project')"

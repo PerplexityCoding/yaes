@@ -16,7 +16,7 @@
                 <CoreButton
                   elevation
                   class="clone-env"
-                  icon-name="Clone"
+                  icon-name="CloneIcon"
                   @click="$emit('clone-env', env.id)"
                 >
                   Clone
@@ -129,7 +129,7 @@
 
           <div v-if="newEnv" class="create-btns">
             <CoreButton
-              icon-name="Add"
+              icon-name="AddIcon"
               variation="positive"
               class="create-env-btn"
             >
@@ -156,7 +156,7 @@
               </span>
               <CoreButton
                 elevation
-                icon-name="GoBack"
+                icon-name="GoBackIcon"
                 @click.prevent="resetToGlobalOptions"
                 v-if="hasOverrides"
               >

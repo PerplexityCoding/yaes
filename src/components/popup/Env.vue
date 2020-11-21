@@ -17,12 +17,12 @@
       </div>
     </span>
     <span v-if="isSelected || isStatusError === true" class="selected-pill" />
-    <ArrowRight v-else height="14px" width="14px" />
+    <ArrowRightIcon v-else height="14px" width="14px" />
   </button>
 </template>
 
 <script>
-import ArrowRight from "../icons/ArrowRight";
+import ArrowRightIcon from "../icons/ArrowRightIcon";
 import { defineComponent, ref } from "vue";
 import { hostnameFromEnv, isValidEnv } from "@/services/business/bo/env";
 
@@ -53,7 +53,7 @@ export default defineComponent({
       default: false,
     },
   },
-  components: { ArrowRight },
+  components: { ArrowRightIcon },
   emits: ["switch-env"],
   setup(props, context) {
     const switchEnv = (env, newTab) => {

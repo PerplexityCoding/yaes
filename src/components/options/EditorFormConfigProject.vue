@@ -5,7 +5,7 @@
   >
     <header>
       <span class="project-sortable-handle">
-        <DragList height="16px" width="16px" />
+        <DragListIcon height="16px" width="16px" />
       </span>
 
       <div class="project-name">
@@ -30,7 +30,7 @@
             v-if="!projectNameEditable"
             elevation
             class="edit-project-name"
-            icon-name="EditText"
+            icon-name="EditTextIcon"
             @click="projectNameEditable = true"
           >
             Edit
@@ -53,7 +53,7 @@
         <span class="env-name">
           {{ env.name || env.shortName }}
         </span>
-        <ArrowRight height="14px" width="14px" />
+        <ArrowRightIcon height="14px" width="14px" />
       </li>
     </ul>
     <h3 v-else>
@@ -63,7 +63,7 @@
 
     <div class="action-buttons">
       <CoreButton
-        icon-name="Add"
+        icon-name="AddIcon"
         class="add-new-env"
         variation="positive"
         @click="$emit('new-env', projectId)"

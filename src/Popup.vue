@@ -23,7 +23,7 @@
             @click="changeMode('projects')"
           >
             <span>See projects</span>
-            <ArrowRight class="arrow" height="12px" width="12px" />
+            <ArrowRightIcon class="arrow" height="12px" width="12px" />
           </button>
         </div>
       </div>
@@ -39,7 +39,7 @@
           class="switch-env-btn"
           @click="changeMode('envs')"
         >
-          <ArrowRight class="arrow" height="12px" width="12px" />
+          <ArrowRightIcon class="arrow" height="12px" width="12px" />
           <span>See current env</span>
         </button>
       </div>
@@ -61,7 +61,7 @@
 import { defineComponent, computed, ref } from "vue";
 import EnvList from "./components/popup/EnvList";
 import ProjectList from "./components/popup/ProjectList";
-import ArrowRight from "./components/icons/ArrowRight";
+import ArrowRightIcon from "./components/icons/ArrowRightIcon";
 
 import {
   getCurrentTab,
@@ -134,7 +134,7 @@ async function useAsyncSetup(config, currentTab, mode, loaded) {
 
 export default defineComponent({
   name: "Popup",
-  components: { EnvList, ProjectList, ArrowRight },
+  components: { EnvList, ProjectList, ArrowRightIcon },
   setup() {
     const loaded = ref(false);
     const mode = ref("");
