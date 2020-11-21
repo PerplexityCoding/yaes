@@ -4,6 +4,7 @@ import Options from "@/Options.vue";
 import { waitFor } from "@/services/utils";
 import EditorFormConfigProjects from "@/components/options/EditorFormConfigProjects";
 import UniqueId from "@/utils/plugins/unique-id";
+import GlobalIcons from "@/utils/plugins/global-icons";
 
 jest.mock("@/services/business/storage");
 
@@ -46,7 +47,7 @@ describe.skip("Options.vue", () => {
 
     const wrapper = mount(Options, {
       global: {
-        plugins: [UniqueId],
+        plugins: [UniqueId, GlobalIcons],
       },
     });
     await waitFor();

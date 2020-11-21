@@ -21,3 +21,5 @@ window.requestIdleCallback = (cb) => {
 const mockMath = Object.create(global.Math);
 mockMath.random = () => 0.5;
 global.Math = mockMath;
+
+jest.mock("@/utils/plugins/get-icons-components");

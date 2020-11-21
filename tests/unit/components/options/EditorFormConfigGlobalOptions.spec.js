@@ -3,6 +3,7 @@ import { mount } from "@vue/test-utils";
 import EditorFormConfigGlobalOptions from "@/components/options/EditorFormConfigGlobalOptions";
 import { waitFor } from "@/services/utils";
 import UniqueId from "@/utils/plugins/unique-id";
+import GlobalIcons from "@/utils/plugins/global-icons";
 
 describe("EditorFormConfigGlobalOptions.vue", () => {
   const options = {
@@ -16,7 +17,7 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
         options: deepmerge({}, options),
       },
       global: {
-        plugins: [UniqueId],
+        plugins: [UniqueId, GlobalIcons],
       },
     });
 

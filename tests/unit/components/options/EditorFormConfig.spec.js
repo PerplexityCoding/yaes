@@ -4,6 +4,7 @@ import EditorFormConfigProject from "@/components/options/EditorFormConfigProjec
 import EditorFormConfig from "@/components/options/EditorFormConfig";
 import { waitFor } from "@/services/utils";
 import UniqueId from "@/utils/plugins/unique-id";
+import GlobalIcons from "@/utils/plugins/global-icons";
 
 describe("EditorFormConfig.vue", () => {
   const config = {
@@ -46,7 +47,7 @@ describe("EditorFormConfig.vue", () => {
         config: deepmerge({}, config),
       },
       global: {
-        plugins: [UniqueId],
+        plugins: [UniqueId, GlobalIcons],
         stubs: {
           transition: false,
         },

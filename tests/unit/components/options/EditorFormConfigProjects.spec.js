@@ -3,6 +3,7 @@ import { mount } from "@vue/test-utils";
 import EditorFormConfigProjects from "@/components/options/EditorFormConfigProjects";
 import EditorFormConfigProject from "@/components/options/EditorFormConfigProject";
 import UniqueId from "@/utils/plugins/unique-id";
+import GlobalIcons from "@/utils/plugins/global-icons";
 
 describe("EditorFormConfigProjects.vue", () => {
   const config = {
@@ -46,7 +47,7 @@ describe("EditorFormConfigProjects.vue", () => {
         selectedEnvId: 1,
       },
       global: {
-        plugins: [UniqueId],
+        plugins: [UniqueId, GlobalIcons],
       },
     });
 
