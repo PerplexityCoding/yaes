@@ -9,8 +9,6 @@
 </template>
 
 <script>
-import * as icons from "../icons";
-
 export default {
   name: "CoreButton",
   props: {
@@ -30,9 +28,6 @@ export default {
     },
   },
   emits: ["click"],
-  components: {
-    ...icons,
-  },
 };
 </script>
 

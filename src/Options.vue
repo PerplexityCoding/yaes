@@ -70,8 +70,6 @@
 <script>
 import { defineAsyncComponent } from "vue";
 import { getFixConfig, setConfig } from "./services/business/storage";
-import CheckIcon from "./components/icons/CheckIcon";
-import DeleteIcon from "./components/icons/Delete";
 import ImportConfig from "@/components/options/ImportConfig";
 import EditorFormConfig from "@/components/options/EditorFormConfig";
 import { downloadAsJson } from "@/services/utils";
@@ -99,8 +97,6 @@ export default {
     EditorFormConfig,
     EditorJsonConfig,
     ImportConfig,
-    CheckIcon,
-    DeleteIcon,
   },
   async created() {
     this.config = await this.getOrInitConfig();

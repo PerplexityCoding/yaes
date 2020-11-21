@@ -77,8 +77,6 @@
 
 <script>
 import { getProjectById, getProjectEnvs } from "@/services/business/bo/config";
-import DragList from "@/components/icons/DragList";
-import ArrowRight from "@/components/icons/ArrowRight";
 import { updateSortableEnvs } from "@/services/business/ui";
 import ConfirmationDeleteButton from "@/components/options/form/ConfirmationDeleteButton";
 import CoreButton from "@/components/core/Button";
@@ -93,8 +91,6 @@ export default {
   },
   components: {
     CoreButton,
-    DragList,
-    ArrowRight,
     ConfirmationDeleteButton,
   },
   props: {

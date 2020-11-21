@@ -7,6 +7,7 @@ import { createApp } from "vue";
 import uniqueId from "./utils/plugins/unique-id";
 import "./utils/plugins/vee-validate";
 import "intro.js/minified/introjs.min.css";
+import registerIcons from "./utils/register-icons";
 
 async function main() {
   if (!window.Cypress) {
@@ -15,6 +16,7 @@ async function main() {
 
   const app = createApp(Options);
   const startApp = () => {
+    registerIcons(app);
     app.use(uniqueId);
     app.mount("#app");
   };
