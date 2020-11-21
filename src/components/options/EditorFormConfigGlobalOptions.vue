@@ -118,7 +118,6 @@ export default {
       default: () => {},
     },
   },
-  mounted() {},
   emits: ["update:options"],
   computed: {
     ribbonEnabled: () => !window.ENV || window.ENV.WITHOUT_RIBBON !== true,

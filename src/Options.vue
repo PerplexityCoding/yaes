@@ -1,5 +1,5 @@
 <template>
-  <div v-if="config" class="options" :class="{ 'dark-mode': darkMode }">
+  <div v-if="config" class="options">
     <section>
       <h1
         data-intro="Hello, this is Yaes Configuration page. Nobody like a tutorial, so let's get it over with."
@@ -111,9 +111,21 @@ export default {
       }, 0);
     }
   },
+  watch: {
+    darkMode(darkMode) {
+      const classList = window.document.body.classList;
+      if (darkMode) {
+        classList.add("dark-mode");
+      } else {
+        classList.remove("dark-mode");
+      }
+    },
+  },
   computed: {
     darkMode() {
-      return isDarkMode(this.config.options.colorScheme);
+      return this.config.options
+        ? isDarkMode(this.config.options.colorScheme)
+        : false;
     },
   },
   methods: {
@@ -123,7 +135,6 @@ export default {
         mergeDefault: false,
       });
       if (errors && (errors.migrationFailed || errors.validationFailed)) {
-        console.error(errors);
         this.loadingError = true;
       }
 
@@ -190,6 +201,12 @@ export default {
 @import "@/styles/variables.scss";
 @import "@/styles/transition.scss";
 @import "@/styles/loader.scss";
+
+body {
+  &.dark-mode {
+    background-color: #0e0e0e !important;
+  }
+}
 
 input[type="url"],
 input[type="text"] {
@@ -346,7 +363,7 @@ fieldset {
   max-width: 800px;
   margin: 0 auto;
 
-  @at-root .dark-mode#{&} {
+  @at-root .dark-mode & {
     color: rgba(var(--bg-white-off), 0.8);
     background-color: #0e0e0e;
   }
@@ -410,7 +427,7 @@ fieldset {
     margin-top: 5px;
     font-weight: bold;
 
-    @at-root .dark-mode#{&} {
+    @at-root .dark-mode & {
       color: rgba(var(--green-apple));
       fill: rgba(var(--green-apple));
     }
