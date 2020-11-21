@@ -8,12 +8,14 @@
 import { defineComponent, watch, ref, onMounted, onBeforeUnmount } from "vue";
 import { createColorPicker } from "@/components/options/core/color-picker";
 
-function useColorPicker(pickr, pickrElem, props, context) {
+function useColorPicker(pickr, pickrElem, colorValue, context) {
   if (pickrElem.value != null && pickr.value == null) {
     pickr.value = createColorPicker({
       elem: pickrElem.value,
-      defaultColor: props.color,
+      defaultColor: colorValue,
       updateColor(color) {
+        const colorValue = color.toHEXA().toString();
+        pickr.value.setColor(colorValue);
         context.emit("update:color", color.toHEXA().toString());
       },
     });
@@ -32,12 +34,11 @@ export default defineComponent({
   setup(props, context) {
     const pickr = ref(null);
     const pickrElem = ref(null);
-    const color = ref(props.color);
 
     onMounted(() => {
       window.requestIdleCallback(
         () => {
-          useColorPicker(pickr, pickrElem, props, context);
+          useColorPicker(pickr, pickrElem, props.color, context);
         },
         { timeout: 500 }
       );
@@ -51,9 +52,12 @@ export default defineComponent({
       }
     });
 
-    watch(color, (val) => {
-      pickr.value.setColor(val);
-    });
+    watch(
+      () => props.color,
+      (val) => {
+        pickr.value.setColor(val);
+      }
+    );
 
     return {
       pickrElem,
