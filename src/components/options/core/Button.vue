@@ -9,7 +9,9 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from "vue";
+
+export default defineComponent({
   name: "CoreButton",
   props: {
     iconName: {
@@ -28,7 +30,7 @@ export default {
     },
   },
   emits: ["click"],
-};
+});
 </script>
 
 <style lang="scss" scoped>
