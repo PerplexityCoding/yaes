@@ -26,6 +26,20 @@ import ArrowRight from "../icons/ArrowRight";
 import { defineComponent, ref } from "vue";
 import { hostnameFromEnv, isValidEnv } from "@/services/business/bo/env";
 
+function usePingUrl(url, isStatusError) {
+  window.requestIdleCallback(() => {
+    setTimeout(() => {
+      fetch(url)
+        .then((res) => {
+          isStatusError.value = res.status !== 200;
+        })
+        .catch(() => {
+          isStatusError.value = true;
+        });
+    }, 500);
+  });
+}
+
 export default defineComponent({
   name: "Env",
   props: {
@@ -45,20 +59,10 @@ export default defineComponent({
     const switchEnv = (env, newTab) => {
       context.emit("switch-env", { env, newTab });
     };
-    const isStatusError = ref(null);
 
+    const isStatusError = ref(null);
     if (props.env.pingUrl) {
-      window.requestIdleCallback(() => {
-        setTimeout(() => {
-          fetch(props.env.url)
-            .then((res) => {
-              isStatusError.value = res.status !== 200;
-            })
-            .catch(() => {
-              isStatusError.value = true;
-            });
-        }, 500);
-      });
+      usePingUrl(props.env.url, isStatusError);
     }
 
     return {
