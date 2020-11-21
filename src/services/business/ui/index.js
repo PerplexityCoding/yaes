@@ -5,19 +5,12 @@ export function getComputedFactory(objectKey) {
     return {
       get() {
         const firstOption = this[objectKey][key];
-        const option =
-          subKey && firstOption != null ? firstOption[subKey] : firstOption;
+        const option = subKey && firstOption != null ? firstOption[subKey] : firstOption;
         return option != null ? option : "";
       },
       set(value) {
-        if (this.$v && this.$v[key]) {
-          this.$v[key].$touch();
-        }
-
         value = value === "" ? undefined : value;
-        this.updateComputed(
-          subKey ? { [key]: { [subKey]: value } } : { [key]: value }
-        );
+        this.updateComputed(subKey ? { [key]: { [subKey]: value } } : { [key]: value });
       },
     };
   };

@@ -1,23 +1,12 @@
 <template>
   <fieldset :class="{ 'has-env': !!env }">
-    <div
-      class="label-set"
-      display-badge
-      :class="{ defaulted: env ? env.displayBadge === undefined : false }"
-    >
-      <input
-        :id="$id('display-badge')"
-        type="checkbox"
-        v-model="displayBadge"
-      />
+    <div class="label-set" display-badge :class="{ defaulted: env ? env.displayBadge === undefined : false }">
+      <input :id="$id('display-badge')" type="checkbox" v-model="displayBadge" />
       <label :for="$id('display-badge')">Badge</label>
     </div>
 
     <div class="label-set" badge-bg-color>
-      <label
-        class="badge-bg-color"
-        :class="{ defaulted: isBadgeDefaultBgColor }"
-      >
+      <label class="badge-bg-color" :class="{ defaulted: isBadgeDefaultBgColor }">
         <ColorPicker v-model:color="badgeBgColor" />
         <span>Background Color</span>
       </label>
@@ -26,12 +15,11 @@
 </template>
 
 <script>
-import { getComputedFactory } from "@/services/business/ui";
 import ColorPicker from "@/components/options/core/ColorPicker";
 
-const computed = getComputedFactory("option");
+import { defineComponent, watch, ref } from "vue";
 
-export default {
+export default defineComponent({
   name: "EditorFormBadge",
   components: { ColorPicker },
   props: {
@@ -39,30 +27,36 @@ export default {
       type: Object,
       default: undefined,
     },
-    option: {
+    options: {
       type: Object,
       required: true,
     },
   },
   emits: ["update:option"],
-  computed: {
-    displayBadge: computed("displayBadge"),
-    badgeBgColor: computed("badgeOptions", "backgroundColor"),
-    isBadgeDefaultBgColor() {
-      const { env } = this;
-      return env
-        ? env.badgeOptions
-          ? env.badgeOptions.backgroundColor === undefined
-          : true
-        : false;
-    },
+  setup(props, context) {
+    // eslint-disable-next-line vue/no-setup-props-destructure
+    const options = props.options;
+    const displayBadge = ref(options.displayBadge);
+    const badgeBgColor = ref(options.badgeOptions.backgroundColor);
+
+    const isBadgeDefaultBgColor = () => {
+      const { env } = props;
+      const { badgeOptions } = env || {};
+      return badgeOptions ? badgeOptions.backgroundColor === undefined : false;
+    };
+
+    watch(displayBadge, (value) => emitUpdate({ displayBadge: value }));
+    watch(badgeBgColor, (value) => emitUpdate({ badgeOptions: { backgroundColor: value } }));
+
+    const emitUpdate = (data) => context.emit("update:option", data);
+
+    return {
+      isBadgeDefaultBgColor,
+      displayBadge,
+      badgeBgColor,
+    };
   },
-  methods: {
-    updateComputed(data) {
-      this.$emit("update:option", data);
-    },
-  },
-};
+});
 </script>
 
 <style scoped lang="scss">

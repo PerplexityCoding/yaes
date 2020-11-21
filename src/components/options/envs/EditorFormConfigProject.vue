@@ -1,8 +1,5 @@
 <template>
-  <li
-    class="project-item"
-    :class="{ 'selected-project': projectId === selectedProjectId }"
-  >
+  <li class="project-item" :class="{ 'selected-project': projectId === selectedProjectId }">
     <header>
       <span class="project-sortable-handle">
         <DragListIcon height="16px" width="16px" />
@@ -45,8 +42,7 @@
         :key="'env-' + env.id"
         class="project-env"
         :class="{
-          'selected-env':
-            selectedEnvId != null ? env.id === selectedEnvId : false,
+          'selected-env': selectedEnvId != null ? env.id === selectedEnvId : false,
         }"
         @click="$emit('select-env', { envId: env.id, projectId })"
       >
@@ -80,15 +76,10 @@ import { getProjectById, getProjectEnvs } from "@/services/business/bo/config";
 import { updateSortableEnvs } from "@/services/business/ui";
 import ConfirmationDeleteButton from "@/components/options/form/ConfirmationDeleteButton";
 import CoreButton from "@/components/options/core/Button";
+import { defineComponent, computed, ref, onMounted } from "vue";
 
-export default {
+export default defineComponent({
   name: "EditorFormConfigProject",
-  data() {
-    return {
-      deleteConfirm: false,
-      projectNameEditable: false,
-    };
-  },
   components: {
     CoreButton,
     ConfirmationDeleteButton,
@@ -111,43 +102,51 @@ export default {
       default: null,
     },
   },
-  mounted() {
-    updateSortableEnvs();
-  },
-  emits: [
-    "select-env",
-    "new-env",
-    "drop-env",
-    "delete-project",
-    "update-project",
-  ],
-  computed: {
-    projectEnvs() {
-      return getProjectEnvs(this.config, this.projectId);
-    },
-    projectName() {
-      const project = getProjectById(this.config, this.projectId);
+  emits: ["select-env", "new-env", "drop-env", "delete-project", "update-project"],
+  setup(props, context) {
+    const deleteConfirm = ref(false);
+    const projectNameEditable = ref(false);
+
+    onMounted(() => {
+      updateSortableEnvs();
+    });
+
+    const projectEnvs = computed(() => {
+      return getProjectEnvs(props.config, props.projectId);
+    });
+
+    const projectName = computed(() => {
+      const project = getProjectById(props.config, props.projectId);
       return project.name;
-    },
-  },
-  methods: {
-    updateProject(data) {
-      this.$emit("update-project", {
-        projectId: this.projectId,
+    });
+
+    const updateProject = (data) => {
+      context.emit("update-project", {
+        projectId: props.projectId,
         data,
       });
-    },
-    onDrop(e) {
+    };
+
+    const onDrop = (e) => {
       const { detail } = e;
       const { origin, destination } = detail;
-      this.$emit("drop-env", {
-        projectId: this.projectId,
+      context.emit("drop-env", {
+        projectId: props.projectId,
         origin,
         destination,
       });
-    },
+    };
+
+    return {
+      projectEnvs,
+      projectName,
+      updateProject,
+      onDrop,
+      deleteConfirm,
+      projectNameEditable,
+    };
   },
-};
+});
 </script>
 
 <style lang="scss">

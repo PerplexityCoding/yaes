@@ -24,8 +24,7 @@
         </h2>
 
         <div v-if="loadingError">
-          Oh oh it seems we had a little issue getting your configuration in a
-          proper state.
+          Oh oh it seems we had a little issue getting your configuration in a proper state.
         </div>
 
         <div>
@@ -49,11 +48,7 @@
         @update:config="saveConfig"
       />
 
-      <EditorFormConfig
-        v-if="editorMode === 'form'"
-        :config="config"
-        @update:config="saveConfig"
-      />
+      <EditorFormConfig v-if="editorMode === 'form'" :config="config" @update:config="saveConfig" />
 
       <h2>Import / Export</h2>
 
@@ -71,7 +66,7 @@
 import { defineAsyncComponent } from "vue";
 import { getFixConfig, setConfig } from "./services/business/storage";
 import ImportConfig from "@/components/options/ImportConfig";
-import EditorFormConfig from "@/components/options/EditorFormConfig";
+import EditorFormConfig from "@/components/options/envs/EditorFormConfig";
 import { downloadAsJson } from "@/services/utils";
 import { isDarkMode } from "@/services/business/utils";
 import introJs from "intro.js";
@@ -119,9 +114,7 @@ export default {
   },
   computed: {
     darkMode() {
-      return this.config.options
-        ? isDarkMode(this.config.options.colorScheme)
-        : false;
+      return this.config.options ? isDarkMode(this.config.options.colorScheme) : false;
     },
   },
   methods: {

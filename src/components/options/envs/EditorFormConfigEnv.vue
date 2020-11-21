@@ -8,10 +8,7 @@
         <div v-if="!newEnv">
           <span> Environment settings </span>
           <div class="env-btns">
-            <ConfirmationDeleteButton
-              v-model="deleteConfirm"
-              @action="$emit('delete-env', env.id)"
-            >
+            <ConfirmationDeleteButton v-model="deleteConfirm" @action="$emit('delete-env', env.id)">
               <template #beforeButton>
                 <CoreButton
                   elevation
@@ -37,7 +34,7 @@
             <label :for="$id('name')"> Name <b>*</b> </label>
             <div>
               <Field
-                ref="name"
+                ref="nameElem"
                 type="text"
                 name="name"
                 rules="required"
@@ -46,9 +43,7 @@
                 @focusout="update(values)"
                 :value="mergedEnv.name"
               />
-              <div class="error" v-if="errors.name">
-                Name field is required.
-              </div>
+              <div class="error" v-if="errors.name">Name field is required.</div>
             </div>
           </div>
           <transition name="fade-in">
@@ -85,9 +80,7 @@
           <transition name="fade-in">
             <div v-if="!newEnv">
               <div class="label-set">
-                <label :for="$id('append-url-params')">
-                  Append url params
-                </label>
+                <label :for="$id('append-url-params')"> Append url params </label>
                 <div>
                   <Field
                     :class="{ error: errors.appendUrlParams }"
@@ -105,9 +98,7 @@
                 </div>
               </div>
               <div class="label-set">
-                <label :for="$id('remove-url-params')">
-                  Remove url params
-                </label>
+                <label :for="$id('remove-url-params')"> Remove url params </label>
                 <div>
                   <Field
                     :id="$id('remove-url-params')"
@@ -128,18 +119,11 @@
           </transition>
 
           <div v-if="newEnv" class="create-btns">
-            <CoreButton
-              icon-name="AddIcon"
-              variation="positive"
-              class="create-env-btn"
-            >
+            <CoreButton icon-name="AddIcon" variation="positive" class="create-env-btn">
               Create and configure
             </CoreButton>
 
-            <CoreButton
-              class="cancel-btn"
-              @click.stop.prevent="$emit('cancel-new-env')"
-            >
+            <CoreButton class="cancel-btn" @click.stop.prevent="$emit('cancel-new-env')">
               Cancel
             </CoreButton>
           </div>
@@ -150,9 +134,7 @@
             <div class="override-message">
               <span>
                 Overrides global options for this environment <br />
-                <i
-                  >Fields with * are using global options, change to override</i
-                >
+                <i>Fields with * are using global options, change to override</i>
               </span>
               <CoreButton
                 elevation
@@ -166,7 +148,7 @@
 
             <EditorFormBadge
               v-if="env"
-              :option="mergedEnv"
+              :options="mergedEnv"
               :env="env"
               @update:option="updateComputed"
             />
@@ -181,11 +163,7 @@
 
             <fieldset class="field-domain">
               <div class="label-set">
-                <input
-                  :id="$id('display-domain')"
-                  type="checkbox"
-                  v-model="displayDomain"
-                />
+                <input :id="$id('display-domain')" type="checkbox" v-model="displayDomain" />
                 <label
                   :for="$id('display-domain')"
                   :class="{ defaulted: env.displayDomain === undefined }"
@@ -197,15 +175,8 @@
 
             <fieldset class="field-domain">
               <div class="label-set">
-                <input
-                  :id="$id('ping-url')"
-                  type="checkbox"
-                  v-model="pingUrl"
-                />
-                <label
-                  :for="$id('ping-url')"
-                  :class="{ defaulted: env.pingUrl === undefined }"
-                >
+                <input :id="$id('ping-url')" type="checkbox" v-model="pingUrl" />
+                <label :for="$id('ping-url')" :class="{ defaulted: env.pingUrl === undefined }">
                   Check if environment url is up
                 </label>
               </div>
@@ -219,7 +190,6 @@
 
 <script>
 import deepmerge from "deepmerge";
-import { getComputedFactory } from "@/services/business/ui";
 import EditorFormRibbon from "@/components/options/form/EditorFormRibbon";
 import EditorFormBadge from "@/components/options/form/EditorFormBadge";
 import { removeEmptyString, removeUndefined } from "@/services/utils";
@@ -228,9 +198,9 @@ import ConfirmationDeleteButton from "@/components/options/form/ConfirmationDele
 import CoreButton from "@/components/options/core/Button";
 import { Field, Form } from "vee-validate";
 
-const computed = getComputedFactory("mergedEnv");
+import { defineComponent, onMounted, computed, ref, watch } from "vue";
 
-export default {
+export default defineComponent({
   name: "EditorFormConfigEnv",
   components: {
     CoreButton,
@@ -259,45 +229,37 @@ export default {
       default: "",
     },
   },
-  data() {
-    return {
-      deleteConfirm: false,
-    };
-  },
-  mounted() {
-    if (this.newEnv) {
-      const nameEl = this.$refs.name.$el;
-      if (nameEl) {
-        nameEl.focus();
-        nameEl.setSelectionRange(0, nameEl.value.length);
+  emits: ["update-env", "delete-env", "clone-env", "create-new-env", "cancel-new-env"],
+  setup(props, context) {
+    const deleteConfirm = ref(false);
+    const nameElem = ref(null);
+    const ribbonEnabled = !window.ENV || window.ENV.WITHOUT_RIBBON !== true;
+
+    onMounted(() => {
+      if (props.newEnv) {
+        debugger;
+        const nameEl = nameElem.value.$el;
+        if (nameEl) {
+          nameEl.focus();
+          nameEl.setSelectionRange(0, nameEl.length);
+        }
       }
-    }
-  },
-  emits: [
-    "update-env",
-    "delete-env",
-    "clone-env",
-    "create-new-env",
-    "cancel-new-env",
-  ],
-  computed: {
-    ribbonEnabled: () => !window.ENV || window.ENV.WITHOUT_RIBBON !== true,
-    mergedEnv() {
-      const env = this.env
-        ? deepmerge(
-            deepmerge(deepmerge({}, DEFAULT_OPTIONS), this.config.options),
-            this.env
-          )
+    });
+
+    const mergedEnv = computed(() => {
+      const env = props.env
+        ? deepmerge(deepmerge(deepmerge({}, DEFAULT_OPTIONS), props.config.options), props.env)
         : {};
       return env;
-    },
-    displayDomain: computed("displayDomain", null),
-    pingUrl: computed("pingUrl", null),
-    hasOverrides() {
-      const env = this.env;
+    });
+
+    const displayDomain = ref(mergedEnv.value.displayDomain);
+    const pingUrl = ref(mergedEnv.value.pingUrl);
+
+    const hasOverrides = computed(() => {
+      const env = props.env;
       if (env) {
-        const hasBadgeOverrides =
-          env.displayBadge !== undefined || env.badgeOptions !== undefined;
+        const hasBadgeOverrides = env.displayBadge !== undefined || env.badgeOptions !== undefined;
         const hasRibbonOverrides =
           env.displayRibbon !== undefined || env.ribbonOptions !== undefined;
         const hasDisplayDomainOverrides = env.displayDomain !== undefined;
@@ -310,22 +272,15 @@ export default {
         );
       }
       return false;
-    },
-  },
-  methods: {
-    updateComputed(data) {
-      const mergedEnv = deepmerge(deepmerge({}, this.env), data);
-      this.$emit("update-env", mergedEnv);
-    },
-    resetToGlobalOptions() {
-      const {
-        id,
-        name,
-        shortName,
-        url,
-        appendUrlParams,
-        removeUrlParams,
-      } = this.env;
+    });
+
+    const updateComputed = (data) => {
+      const mergedEnv = deepmerge(deepmerge({}, props.env), data);
+      context.emit("update-env", mergedEnv);
+    };
+
+    const resetToGlobalOptions = () => {
+      const { id, name, shortName, url, appendUrlParams, removeUrlParams } = props.env;
 
       const newEnv = {
         id,
@@ -337,23 +292,42 @@ export default {
       };
       removeUndefined(newEnv);
 
-      this.$emit("update-env", newEnv);
-    },
-    submit(values) {
-      if (this.newEnv) {
-        const mergedEnv = deepmerge(deepmerge({}, this.env), values);
-        this.$emit("create-new-env", mergedEnv);
+      context.emit("update-env", newEnv);
+    };
+
+    const submit = (values) => {
+      if (props.newEnv) {
+        const mergedEnv = deepmerge(deepmerge({}, props.env), values);
+        context.emit("create-new-env", mergedEnv);
       }
-    },
-    update(values) {
-      if (!this.newEnv) {
-        const mergedEnv = deepmerge(deepmerge({}, this.env), values);
+    };
+
+    watch(displayDomain, (value) => update({ displayDomain: value }));
+    watch(pingUrl, (value) => update({ pingUrl: value }));
+
+    const update = (values) => {
+      if (!props.newEnv) {
+        const mergedEnv = deepmerge(deepmerge({}, props.env), values);
         removeEmptyString(mergedEnv);
-        this.$emit("update-env", mergedEnv);
+        context.emit("update-env", mergedEnv);
       }
-    },
+    };
+
+    return {
+      displayDomain,
+      pingUrl,
+      hasOverrides,
+      deleteConfirm,
+      nameElem,
+      ribbonEnabled,
+      mergedEnv,
+      updateComputed,
+      resetToGlobalOptions,
+      submit,
+      update,
+    };
   },
-};
+});
 </script>
 
 <style scoped lang="scss">

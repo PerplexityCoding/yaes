@@ -37,18 +37,14 @@
 </template>
 
 <script>
-import EditorFormConfigProject from "@/components/options/EditorFormConfigProject";
+import EditorFormConfigProject from "@/components/options/envs/EditorFormConfigProject";
 import { updateSortableProjects } from "@/services/business/ui";
 import CoreButton from "@/components/options/core/Button";
+import { defineComponent, onMounted, computed } from "vue";
 
-export default {
+export default defineComponent({
   name: "EditorFormConfigProjects",
   components: { CoreButton, EditorFormConfigProject },
-  data() {
-    return {
-      collapsed: false,
-    };
-  },
   props: {
     config: {
       type: Object,
@@ -63,13 +59,6 @@ export default {
       default: null,
     },
   },
-  mounted() {
-    setTimeout(() => {
-      updateSortableProjects({
-        handle: ".project-sortable-handle",
-      });
-    }, 100);
-  },
   emits: [
     "select-env",
     "new-env",
@@ -79,20 +68,29 @@ export default {
     "update-project",
     "drop-project",
   ],
-  methods: {
-    onDrop(e) {
+  setup(props, context) {
+    onMounted(() => {
+      setTimeout(() => {
+        updateSortableProjects({
+          handle: ".project-sortable-handle",
+        });
+      }, 100);
+    });
+
+    const hasProjects = computed(() => props.config.projects && props.config.projects.length > 0);
+
+    const onDrop = (e) => {
       const { detail } = e;
       const { origin, destination } = detail;
-      this.$emit("drop-project", { origin, destination });
-      this.collapsed = false;
-    },
+      context.emit("drop-project", { origin, destination });
+    };
+
+    return {
+      hasProjects,
+      onDrop,
+    };
   },
-  computed: {
-    hasProjects() {
-      return this.config.projects && this.config.projects.length > 0;
-    },
-  },
-};
+});
 </script>
 
 <style scoped lang="scss">

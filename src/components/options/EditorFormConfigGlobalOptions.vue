@@ -8,38 +8,20 @@
     >
       <div class="left-col">
         <div class="label-set" display-domain>
-          <input
-            :id="$id('display-domain')"
-            type="checkbox"
-            v-model="displayDomain"
-          />
+          <input :id="$id('display-domain')" type="checkbox" v-model="displayDomain" />
           <label :for="$id('display-domain')"> Display domain </label>
         </div>
         <div class="label-set" display-header>
-          <input
-            :id="$id('display-header')"
-            type="checkbox"
-            v-model="displayHeader"
-          />
+          <input :id="$id('display-header')" type="checkbox" v-model="displayHeader" />
           <label :for="$id('display-header')"> Display header </label>
         </div>
         <div class="label-set" display-footer>
-          <input
-            :id="$id('display-footer')"
-            type="checkbox"
-            v-model="displayFooter"
-          />
+          <input :id="$id('display-footer')" type="checkbox" v-model="displayFooter" />
           <label :for="$id('display-footer')"> Display footer </label>
         </div>
         <div class="label-set" display-projects-links>
-          <input
-            :id="$id('display-projects-links')"
-            type="checkbox"
-            v-model="displaySeeProjectsLink"
-          />
-          <label :for="$id('display-projects-links')"
-            >Display see projects link</label
-          >
+          <input :id="$id('display-projects-links')" type="checkbox" v-model="displaySeeProjectsLink" />
+          <label :for="$id('display-projects-links')">Display see projects link</label>
         </div>
         <div class="label-set" color-scheme>
           <label :for="$id('color-scheme')">Color Scheme</label>
@@ -50,19 +32,12 @@
           </select>
         </div>
         <div class="label-set" allow-tracking>
-          <input
-            :id="$id('allow-tracking')"
-            type="checkbox"
-            v-model="allowBugTrackerReporting"
-          />
+          <input :id="$id('allow-tracking')" type="checkbox" v-model="allowBugTrackerReporting" />
           <label :for="$id('allow-tracking')">
             Allow bugs to be reported <br />
             <i>No personal information are collected. Not now Not ever.</i>
             <br />
-            <i
-              >Please consider keeping it on, as it is every useful to improve
-              the quality of this extension.</i
-            >
+            <i>Please consider keeping it on, as it is every useful to improve the quality of this extension.</i>
           </label>
         </div>
         <div class="label-set" ping-url>
@@ -72,10 +47,7 @@
       </div>
 
       <fieldset class="right-col">
-        <EditorFormBadge
-          :option="mergedOptions"
-          @update:option="updateComputed"
-        />
+        <EditorFormBadge :options="mergedOptions" @update:option="updateComputed" />
         <EditorFormRibbon
           v-if="ribbonEnabled"
           class="form-ribbon"
@@ -129,10 +101,7 @@ export default {
     allowBugTrackerReporting: computed("allowBugTrackerReporting"),
     pingUrl: computed("pingUrl"),
     mergedOptions() {
-      const options = deepmerge(
-        deepmerge({}, DEFAULT_OPTIONS),
-        this.options || {}
-      );
+      const options = deepmerge(deepmerge({}, DEFAULT_OPTIONS), this.options || {});
       return options;
     },
     hasOptions() {

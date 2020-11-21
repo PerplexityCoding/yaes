@@ -2,7 +2,7 @@ import { getFixConfig } from "@/services/business/storage";
 import { mount } from "@vue/test-utils";
 import Options from "@/Options.vue";
 import { waitFor } from "@/services/utils";
-import EditorFormConfigProjects from "@/components/options/EditorFormConfigProjects";
+import EditorFormConfigProjects from "@/components/options/envs/EditorFormConfigProjects";
 import UniqueId from "@/utils/plugins/unique-id";
 import GlobalIcons from "@/utils/plugins/global-icons";
 

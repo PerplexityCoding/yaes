@@ -1,7 +1,7 @@
 import deepmerge from "deepmerge";
 import { mount } from "@vue/test-utils";
-import EditorFormConfigProject from "@/components/options/EditorFormConfigProject";
-import EditorFormConfig from "@/components/options/EditorFormConfig";
+import EditorFormConfigProject from "@/components/options/envs/EditorFormConfigProject";
+import EditorFormConfig from "@/components/options/envs/EditorFormConfig";
 import { waitFor } from "@/services/utils";
 import UniqueId from "@/utils/plugins/unique-id";
 import GlobalIcons from "@/utils/plugins/global-icons";
@@ -69,8 +69,7 @@ describe("EditorFormConfig.vue", () => {
     const wrapper = createDefaultWrapper();
 
     const projects = wrapper.findAllComponents(EditorFormConfigProject);
-    const expectName = (project, name) =>
-      expect(project.html()).toContain(name);
+    const expectName = (project, name) => expect(project.html()).toContain(name);
 
     expectName(projects[0], "Project1");
     expectName(projects[1], "Project2");
