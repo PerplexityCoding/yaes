@@ -1,16 +1,21 @@
 import { getTab } from "@/services/chrome/tabs";
 import { updateBadgeTextFromEnv } from "./services/business/badge";
-import { migrate } from "@/services/business/storage";
+import { autoUpdate, migrate } from "@/services/business/storage";
 
 async function main() {
-  await migrate();
   window.chrome.runtime.onInstalled.addListener(() => {
-    onInstalled();
+    onTabsActivatedUpdateBadge();
   });
-  onTabsActivatedUpdateBadge();
-}
 
-async function onInstalled() {
+  window.chrome.runtime.onUpdateAvailable.addListener(() => {
+    updateConfig();
+    window.chrome.runtime.reload();
+  });
+
+  window.chrome.runtime.onStartup.addListener(() => {
+    updateConfig();
+  });
+
   onTabsActivatedUpdateBadge();
 }
 
@@ -27,6 +32,11 @@ function onTabsActivatedUpdateBadge() {
       updateBadgeTextFromEnv(tabId, tab.url);
     }
   });
+}
+
+async function updateConfig() {
+  const { config } = await migrate();
+  await autoUpdate(config);
 }
 
 main();

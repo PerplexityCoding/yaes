@@ -1,5 +1,6 @@
+import deepmerge from "deepmerge";
 import { getNextEnvId, getNextProjectId } from "@/services/business/ids";
-import { updateArray } from "@/services/utils";
+import { removeUndefined, updateArray } from "@/services/utils";
 
 function findIndex(objId) {
   return (array) => array.findIndex((o) => o.id === objId);
@@ -107,4 +108,67 @@ export function getProjectById(config, projectId) {
 
 export function getEnvById(config, envId) {
   return config.envs.find((env) => env.id === envId);
+}
+
+export function mergeOptions(destConfig, currentConfig, mode) {
+  destConfig.options = mergeGlobalOptions(
+    destConfig.options,
+    currentConfig.options,
+    mode
+  );
+  mergeEnvOptions(destConfig, currentConfig, mode);
+}
+
+function mergeGlobalOptions(destConfigOptions, currentConfigOptions, mode) {
+  if (mode === "merge") {
+    return deepmerge(destConfigOptions, currentConfigOptions);
+  } else if (mode === "keep") {
+    return {
+      ...currentConfigOptions,
+    };
+  }
+}
+
+function mergeEnvOptions(destConfig, currentConfig, mode) {
+  const envOptionsById = currentConfig.envs.reduce((acc, env) => {
+    acc[env.id] = getOverridableOptions(env);
+    return acc;
+  }, {});
+
+  destConfig.envs = destConfig.envs.map((env) => {
+    const existingEnv = envOptionsById[env.id];
+    if (existingEnv) {
+      return {
+        ...getEnvBaseOptions(env),
+        ...mergeGlobalOptions(
+          getOverridableOptions(env),
+          envOptionsById[env.id],
+          mode
+        ),
+      };
+    }
+    return env;
+  });
+}
+
+function getEnvBaseOptions(env) {
+  return removeUndefined({
+    id: env.id,
+    shortName: env.shortName,
+    name: env.name,
+    url: env.url,
+    appendUrlParams: env.appendUrlParams,
+    removeUrlParams: env.removeUrlParams,
+  });
+}
+
+function getOverridableOptions(env) {
+  return removeUndefined({
+    displayRibbon: env.displayRibbon,
+    ribbonOptions: env.ribbonOptions,
+    displayBadge: env.displayBadge,
+    badgeOptions: env.badgeOptions,
+    displayDomain: env.displayDomain,
+    pingUrl: env.pingUrl,
+  });
 }

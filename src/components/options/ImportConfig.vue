@@ -7,25 +7,62 @@
       <strong class="import-title"> Import configuration </strong>
       <div class="import-methods">
         <div>
-          <div class="label-set">
-            <label :for="$id('import-url')"> Using Url </label>
-            <input
-              :id="$id('import-url')"
-              type="url"
-              placeholder="https://gist.githubusercontent.com/.../config.json"
-              v-model="configurationUrl"
-            />
+          <div class="import-url-field">
+            <div class="label-set">
+              <label :for="$id('import-url')"> Using Url </label>
+              <input
+                :id="$id('import-url')"
+                type="url"
+                placeholder="https://gist.githubusercontent.com/.../config.json"
+                v-model="configurationUrl"
+              />
+            </div>
+            <CoreButton elevation icon-name="Import" @click="importConfig">
+              import
+            </CoreButton>
+            <span
+              class="import-failed-message"
+              v-if="importUrlStatus === false"
+            >
+              Import from url failed
+            </span>
+            <span
+              class="import-success-message"
+              v-if="importUrlStatus === true"
+            >
+              Import from url successful
+            </span>
+            <div v-if="importConfigLoader" class="lds-dual-ring loader" />
           </div>
-          <CoreButton elevation icon-name="Import" @click="importConfig">
-            import
-          </CoreButton>
-          <span class="import-failed-message" v-if="importUrlStatus === false">
-            Import from url failed
-          </span>
-          <span class="import-success-message" v-if="importUrlStatus === true">
-            Import from url successful
-          </span>
-          <div v-if="importConfigLoader" class="lds-dual-ring loader" />
+
+          <div class="import-inline-options">
+            <div>
+              <label :for="$id('merge-options-mode')">
+                Merge options mode
+              </label>
+              <select
+                :id="$id('merge-options-mode')"
+                v-model="mergeOptionsMode"
+                @change="updateImportOptions"
+              >
+                <option value="">Override</option>
+                <option value="merge">Merge</option>
+                <option value="keep">Keep</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="import-inline-options">
+            <div>
+              <label :for="$id('auto-sync')"> Auto sync </label>
+              <input
+                :id="$id('auto-sync')"
+                type="checkbox"
+                v-model="autoSync"
+                @change="updateImportOptions"
+              />
+            </div>
+          </div>
         </div>
         <div>
           <div class="label-set">
@@ -70,20 +107,35 @@
 </template>
 
 <script>
-import { migrateConfig } from "@/services/business/storage";
+import { importConfig, importFromUrl } from "@/services/business/storage";
 import CoreButton from "@/components/core/Button";
 
 export default {
   name: "ImportConfig",
+  props: {
+    options: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
+    const importOptions = this.options.import;
+
     return {
-      configurationUrl: null,
+      configurationUrl: importOptions ? importOptions.url : "",
       importConfigLoader: false,
       importUrlStatus: null,
       importFileStatus: null,
+      mergeOptionsMode: importOptions ? importOptions.mergeOptionsMode : "",
+      autoSync: importOptions ? importOptions.sync : false,
     };
   },
-  emits: ["config-loaded", "config-load-failed", "download-config"],
+  emits: [
+    "config-loaded",
+    "config-load-failed",
+    "download-config",
+    "update:options",
+  ],
   components: { CoreButton },
   methods: {
     async importConfig() {
@@ -91,14 +143,16 @@ export default {
         this.resetErrors();
         this.importConfigLoader = true;
 
-        const response = await fetch(this.configurationUrl);
-        if (response) {
-          const data = await response.text();
-          const success = await this.saveConfig(data);
-          this.importUrlStatus = success;
-          this.configurationUrl = null;
-          this.importConfigLoader = false;
+        const config = await importFromUrl(this.configurationUrl, {
+          url: this.configurationUrl,
+          mergeOptionsMode: this.mergeOptionsMode,
+          sync: this.autoSync,
+        });
+        if (config) {
+          this.$emit("config-loaded", config);
         }
+        this.importUrlStatus = !!config;
+        this.importConfigLoader = false;
       }
     },
     downloadConfig() {
@@ -113,34 +167,31 @@ export default {
 
       reader.onload = async (event) => {
         const data = event.target.result;
-        const success = await this.saveConfig(data);
-        this.importFileStatus = success;
+        const config = await importConfig(data);
+        if (config) {
+          this.$emit("config-loaded", config);
+        }
+        this.importFileStatus = !!config;
       };
 
       reader.onerror = () => {
         this.importFileStatus = true;
       };
     },
-    async saveConfig(data) {
-      try {
-        const originalConfig = JSON.parse(data);
-
-        const { errors, config } = await migrateConfig(originalConfig);
-
-        if (!errors) {
-          this.$emit("config-loaded", config);
-          return true;
-        }
-
-        console.error(JSON.stringify(errors, null, 4));
-      } catch (e) {
-        console.error(e);
-      }
-      return false;
-    },
     resetErrors() {
       this.importFileStatus = null;
       this.importUrlStatus = null;
+    },
+    updateImportOptions() {
+      setTimeout(() => {
+        this.$emit("update:options", {
+          import: {
+            url: this.configurationUrl,
+            mergeOptionsMode: this.mergeOptionsMode,
+            sync: this.autoSync,
+          },
+        });
+      }, 0);
     },
   },
 };
@@ -188,27 +239,39 @@ export default {
       position: relative;
       top: -4px;
 
-      > div {
+      .import-url-field {
         flex: 1;
         display: flex;
+      }
+
+      .import-inline-options {
         margin-bottom: 8px;
+      }
 
-        .label-set {
-          flex: 1;
-        }
+      .import-inline-options:last-child {
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(var(--border-grey));
 
-        input {
-          flex: 1;
-          margin-right: 8px;
+        @at-root .dark-mode & {
+          border-color: rgba(var(--black-2), 1);
         }
+      }
 
-        input[type="file"] {
-          display: none;
-        }
+      .label-set {
+        flex: 1;
+      }
 
-        label {
-          margin-right: 8px;
-        }
+      input {
+        flex: 1;
+        margin-right: 8px;
+      }
+
+      label {
+        margin-right: 8px;
+      }
+
+      input[type="file"] {
+        display: none;
       }
     }
 

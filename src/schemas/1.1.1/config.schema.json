@@ -167,6 +167,9 @@
         "pingUrl": {
           "type": "boolean",
           "default": false
+        },
+        "import": {
+          "$ref": "#/definitions/import"
         }
       },
       "additionalProperties": false
@@ -281,6 +284,24 @@
             "right"
           ],
           "default": "right"
+        }
+      },
+      "additionalProperties": false
+    },
+    "import": {
+      "type": "object",
+      "properties": {
+        "sync": {
+          "type": "boolean",
+          "default": false
+        },
+        "mergeOptionsMode": {
+          "type": "string",
+          "default": ""
+        },
+        "url": {
+          "type": "string",
+          "default": ""
         }
       },
       "additionalProperties": false

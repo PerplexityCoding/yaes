@@ -50,17 +50,13 @@ export default defineComponent({
     if (props.env.pingUrl) {
       window.requestIdleCallback(() => {
         setTimeout(() => {
-          try {
-            fetch(props.env.url)
-              .then((res) => {
-                isStatusError.value = res.status !== 200;
-              })
-              .catch(() => {
-                isStatusError.value = true;
-              });
-          } catch (e) {
-            debugger;
-          }
+          fetch(props.env.url)
+            .then((res) => {
+              isStatusError.value = res.status !== 200;
+            })
+            .catch(() => {
+              isStatusError.value = true;
+            });
         }, 500);
       });
     }

@@ -43,14 +43,14 @@
       </div>
 
       <EditorJsonConfig
-        v-if="config && editorMode === 'json'"
+        v-if="editorMode === 'json'"
         ref="editor"
         :config="config"
         @update:config="saveConfig"
       />
 
       <EditorFormConfig
-        v-if="config && editorMode === 'form'"
+        v-if="editorMode === 'form'"
         :config="config"
         @update:config="saveConfig"
       />
@@ -58,6 +58,8 @@
       <h2>Import / Export</h2>
 
       <ImportConfig
+        :options="config.options"
+        @update:options="updateConfigOptions"
         @config-loaded="saveImportedConfig"
         @download-config="downloadConfig"
       />
@@ -75,6 +77,7 @@ import EditorFormConfig from "@/components/options/EditorFormConfig";
 import { downloadAsJson } from "@/services/utils";
 import { isDarkMode } from "@/services/business/utils";
 import introJs from "intro.js";
+import { mergeOptions } from "@/services/business/bo/config";
 
 const EditorJsonConfig = defineAsyncComponent(() =>
   import("@/components/options/EditorJsonConfig")
@@ -132,8 +135,23 @@ export default {
       this.saveConfig(editor.get(), { force: true });
     },
 
-    saveImportedConfig(data) {
-      this.saveConfig(data);
+    saveImportedConfig(config) {
+      const importConfig = config.options.import;
+      if (importConfig && importConfig.mergeOptionsMode) {
+        mergeOptions(config, this.config, importConfig.mergeOptionsMode);
+        config.options.import = importConfig;
+      }
+      this.saveConfig(config);
+    },
+
+    updateConfigOptions(options) {
+      this.saveConfig({
+        ...this.config,
+        options: {
+          ...this.config.options,
+          ...options,
+        },
+      });
     },
 
     async saveConfig(config, { force, noSave } = {}) {

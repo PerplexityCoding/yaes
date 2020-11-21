@@ -19,7 +19,7 @@ import {
   mergeOptionsInEnv,
 } from "@/services/business/storage/utils";
 
-async function migrateConfig(config, { mergeOptions } = {}) {
+async function migrateConfig(config) {
   let errors = null;
   let updatingConfig = deepmerge({}, config);
 
@@ -42,11 +42,6 @@ async function migrateConfig(config, { mergeOptions } = {}) {
       errors.validationFailed = true;
       errors.validationErrors = validation.errors;
     }
-
-    config = mergeOptionsDefault(config);
-    if (mergeOptions) {
-      config = mergeOptionsInEnv(config);
-    }
   }
 
   return {
@@ -55,13 +50,13 @@ async function migrateConfig(config, { mergeOptions } = {}) {
   };
 }
 
-async function migrate(migrateOptions = {}) {
+async function migrate() {
   let values = await chromeStorageGet(null);
   if (values != null && values.version != null) {
     let config = await getAndAssembleConfig(values);
     config.envs = await removeUnrefEnvs(config);
 
-    return migrateConfig(config, migrateOptions);
+    return migrateConfig(config);
   } else {
     const config = { ...INIT_DEFAULT_CONFIG };
     await setConfig(config);
@@ -148,4 +143,62 @@ async function deleteEnvs(config, envs) {
   return false;
 }
 
-export { setConfig, getFixConfig, migrate, migrateConfig, deleteEnvs };
+async function importConfig(data, importOptions) {
+  try {
+    const originalConfig = JSON.parse(data);
+
+    const { errors, config } = await migrateConfig(originalConfig);
+
+    if (!errors) {
+      if (importOptions) {
+        config.options.import = {
+          ...importOptions,
+        };
+      }
+      return config;
+    }
+
+    console.error(JSON.stringify(errors, null, 4));
+  } catch (e) {
+    console.error(e);
+  }
+  return null;
+}
+
+async function importFromUrl(url, importOptions) {
+  try {
+    const response = await fetch(url);
+    if (response) {
+      const data = await response.text();
+      return await importConfig(data, importOptions);
+    }
+    return null;
+  } catch (e) {
+    return null;
+  }
+}
+
+async function autoUpdate(config) {
+  const options = config.options;
+  if (options) {
+    const importOptions = options.import;
+    if (importOptions && importOptions.sync && importOptions.url) {
+      const config = await importFromUrl(importOptions.url, importOptions);
+
+      if (config) {
+        await setConfig(config);
+      }
+    }
+  }
+}
+
+export {
+  setConfig,
+  getFixConfig,
+  migrate,
+  migrateConfig,
+  deleteEnvs,
+  autoUpdate,
+  importConfig,
+  importFromUrl,
+};

@@ -1327,7 +1327,115 @@ var validate = (function() {
                                 }
                                 var valid1 = errors === errs_1;
                               }
-                              if (valid1) {}
+                              if (valid1) {
+                                var data1 = data.import;
+                                if (data1 === undefined) {
+                                  valid1 = true;
+                                } else {
+                                  var errs_1 = errors;
+                                  var errs_2 = errors;
+                                  if ((data1 && typeof data1 === "object" && !Array.isArray(data1))) {
+                                    var errs__2 = errors;
+                                    var valid3 = true;
+                                    for (var key2 in data1) {
+                                      var isAdditional2 = !(false || key2 == 'sync' || key2 == 'mergeOptionsMode' || key2 == 'url');
+                                      if (isAdditional2) {
+                                        valid3 = false;
+                                        validate.errors = [{
+                                          keyword: 'additionalProperties',
+                                          dataPath: (dataPath || '') + '.import',
+                                          schemaPath: '#/definitions/import/additionalProperties',
+                                          params: {
+                                            additionalProperty: '' + key2 + ''
+                                          },
+                                          message: 'should NOT have additional properties'
+                                        }];
+                                        return false;
+                                        break;
+                                      }
+                                    }
+                                    if (valid3) {
+                                      if (data1.sync === undefined) {
+                                        valid3 = true;
+                                      } else {
+                                        var errs_3 = errors;
+                                        if (typeof data1.sync !== "boolean") {
+                                          validate.errors = [{
+                                            keyword: 'type',
+                                            dataPath: (dataPath || '') + '.import.sync',
+                                            schemaPath: '#/definitions/import/properties/sync/type',
+                                            params: {
+                                              type: 'boolean'
+                                            },
+                                            message: 'should be boolean'
+                                          }];
+                                          return false;
+                                        }
+                                        var valid3 = errors === errs_3;
+                                      }
+                                      if (valid3) {
+                                        if (data1.mergeOptionsMode === undefined) {
+                                          valid3 = true;
+                                        } else {
+                                          var errs_3 = errors;
+                                          if (typeof data1.mergeOptionsMode !== "string") {
+                                            validate.errors = [{
+                                              keyword: 'type',
+                                              dataPath: (dataPath || '') + '.import.mergeOptionsMode',
+                                              schemaPath: '#/definitions/import/properties/mergeOptionsMode/type',
+                                              params: {
+                                                type: 'string'
+                                              },
+                                              message: 'should be string'
+                                            }];
+                                            return false;
+                                          }
+                                          var valid3 = errors === errs_3;
+                                        }
+                                        if (valid3) {
+                                          if (data1.url === undefined) {
+                                            valid3 = true;
+                                          } else {
+                                            var errs_3 = errors;
+                                            if (typeof data1.url !== "string") {
+                                              validate.errors = [{
+                                                keyword: 'type',
+                                                dataPath: (dataPath || '') + '.import.url',
+                                                schemaPath: '#/definitions/import/properties/url/type',
+                                                params: {
+                                                  type: 'string'
+                                                },
+                                                message: 'should be string'
+                                              }];
+                                              return false;
+                                            }
+                                            var valid3 = errors === errs_3;
+                                          }
+                                          if (valid3) {}
+                                        }
+                                      }
+                                    }
+                                    if (errs__2 == errors) {}
+                                  } else {
+                                    validate.errors = [{
+                                      keyword: 'type',
+                                      dataPath: (dataPath || '') + '.import',
+                                      schemaPath: '#/definitions/import/type',
+                                      params: {
+                                        type: 'object'
+                                      },
+                                      message: 'should be object'
+                                    }];
+                                    return false;
+                                  }
+                                  if (errors === errs_2) {}
+                                  var valid2 = errors === errs_2;
+                                  if (valid2) {}
+                                  if (errors === errs_1) {}
+                                  var valid1 = errors === errs_1;
+                                }
+                                if (valid1) {}
+                              }
                             }
                           }
                         }
@@ -1403,12 +1511,34 @@ var validate = (function() {
       "pingUrl": {
         "type": "boolean",
         "default": false
+      },
+      "import": {
+        "$ref": "#/definitions/import"
       }
     },
     "additionalProperties": false
   };
   refVal5.errors = null;
   refVal[5] = refVal5;
+  var refVal6 = {
+    "type": "object",
+    "properties": {
+      "sync": {
+        "type": "boolean",
+        "default": false
+      },
+      "mergeOptionsMode": {
+        "type": "string",
+        "default": ""
+      },
+      "url": {
+        "type": "string",
+        "default": ""
+      }
+    },
+    "additionalProperties": false
+  };
+  refVal[6] = refVal6;
   return function validate(data, dataPath, parentData, parentDataProperty, rootData) {
     'use strict'; /*# sourceURL=https://github.com/ymenard-dev/yaes/blob/main/src/schemas/config.schema.json */
     var vErrors = null;
@@ -2025,6 +2155,9 @@ validate.schema = {
         "pingUrl": {
           "type": "boolean",
           "default": false
+        },
+        "import": {
+          "$ref": "#/definitions/import"
         }
       },
       "additionalProperties": false
@@ -2124,6 +2257,24 @@ validate.schema = {
           "type": "string",
           "enum": ["left", "right"],
           "default": "right"
+        }
+      },
+      "additionalProperties": false
+    },
+    "import": {
+      "type": "object",
+      "properties": {
+        "sync": {
+          "type": "boolean",
+          "default": false
+        },
+        "mergeOptionsMode": {
+          "type": "string",
+          "default": ""
+        },
+        "url": {
+          "type": "string",
+          "default": ""
         }
       },
       "additionalProperties": false

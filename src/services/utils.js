@@ -64,6 +64,7 @@ export function removeUndefined(o) {
       delete o[key];
     }
   });
+  return o;
 }
 
 export function arrayValidator(fn) {
@@ -86,4 +87,5 @@ export function removeEmptyString(obj) {
       delete obj[key];
     }
   }
+  return obj;
 }
