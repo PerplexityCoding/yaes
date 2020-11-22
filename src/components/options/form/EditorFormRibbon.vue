@@ -5,11 +5,7 @@
       display-ribbon
       :class="{ defaulted: env ? env.displayRibbon === undefined : false }"
     >
-      <input
-        :id="$id('display-ribbon')"
-        type="checkbox"
-        v-model="displayRibbon"
-      />
+      <input :id="$id('display-ribbon')" type="checkbox" v-model="displayRibbon" />
       <label :for="$id('display-ribbon')">Ribbon</label>
     </div>
     <div class="form-options">
@@ -20,7 +16,7 @@
             defaulted: isDefaulted('backgroundColor'),
           }"
         >
-          <ColorPicker v-model:color="ribbonBgColor" />
+          <ColorPicker v-model:color="backgroundColor" />
           <span>Background Color</span>
         </label>
       </div>
@@ -31,7 +27,7 @@
             defaulted: isDefaulted('color'),
           }"
         >
-          <ColorPicker v-model:color="ribbonColor" />
+          <ColorPicker v-model:color="color" />
           <span>Text Color</span>
         </label>
       </div>
@@ -43,7 +39,7 @@
         ribbon-position
       >
         <label :for="$id('ribbon-position')">Position</label>
-        <select :id="$id('ribbon-position')" v-model="ribbonPosition">
+        <select :id="$id('ribbon-position')" v-model="position">
           <option value="left">left</option>
           <option value="right">right</option>
         </select>
@@ -56,7 +52,7 @@
         ribbon-type
       >
         <label :for="$id('ribbon-type')">Type</label>
-        <select :id="$id('ribbon-type')" v-model="ribbonType">
+        <select :id="$id('ribbon-type')" v-model="type">
           <option value="corner-ribbon">Corner</option>
           <option value="square-ribbon">Square</option>
         </select>
@@ -66,12 +62,10 @@
 </template>
 
 <script>
-import { getComputedFactory } from "@/services/business/ui";
 import ColorPicker from "@/components/options/core/ColorPicker";
+import { defineComponent, ref, watch, reactive, toRefs } from "vue";
 
-const computed = getComputedFactory("option");
-
-export default {
+export default defineComponent({
   name: "EditorFormRibbon",
   components: { ColorPicker },
   props: {
@@ -85,26 +79,41 @@ export default {
     },
   },
   emits: ["update:option"],
-  computed: {
-    displayRibbon: computed("displayRibbon"),
-    ribbonColor: computed("ribbonOptions", "color"),
-    ribbonBgColor: computed("ribbonOptions", "backgroundColor"),
-    ribbonPosition: computed("ribbonOptions", "position"),
-    ribbonType: computed("ribbonOptions", "type"),
-  },
-  methods: {
-    updateComputed(data) {
-      this.$emit("update:option", data);
-    },
-    isDefaulted(key) {
-      return this.env
-        ? this.env.ribbonOptions
-          ? this.env.ribbonOptions[key] === undefined
+  setup(props, context) {
+    const displayRibbon = ref(props.option.displayRibbon);
+
+    const ribbonOptions = reactive(props.option.ribbonOptions);
+
+    const isDefaulted = (key) => {
+      return props.env
+        ? props.env.ribbonOptions
+          ? props.env.ribbonOptions[key] === undefined
           : true
         : false;
-    },
+    };
+
+    const updateComputed = (data) => context.emit("update:option", data);
+
+    watch(ribbonOptions, (data) => {
+      updateComputed({
+        ribbonOptions: data,
+      });
+    });
+
+    watch(displayRibbon, (data) => {
+      updateComputed({
+        displayRibbon: data,
+      });
+    });
+
+    return {
+      displayRibbon,
+      ...toRefs(ribbonOptions),
+      isDefaulted,
+      updateComputed,
+    };
   },
-};
+});
 </script>
 
 <style scoped lang="scss">
