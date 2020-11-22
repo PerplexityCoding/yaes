@@ -21,7 +21,7 @@
 <script>
 import ColorPicker from "@/components/options/core/ColorPicker";
 
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 import { createComputedFactory } from "@/services/business/ui";
 
 export default defineComponent({
@@ -39,11 +39,14 @@ export default defineComponent({
   },
   emits: ["update:options"],
   setup(props, context) {
-    const isBadgeDefaultBgColor = () => {
+    const isBadgeDefaultBgColor = computed(() => {
       const { env } = props;
-      const { badgeOptions } = env || {};
+      if (!env) {
+        return false;
+      }
+      const { badgeOptions } = env;
       return badgeOptions ? badgeOptions.backgroundColor === undefined : false;
-    };
+    });
 
     const emitUpdate = (data) => context.emit("update:options", data);
 
