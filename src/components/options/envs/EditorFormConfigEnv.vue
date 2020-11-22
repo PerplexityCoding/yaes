@@ -24,167 +24,162 @@
         </div>
       </transition>
     </h3>
-    <Form ref="form" v-slot="{ errors, handleSubmit, values }" as="div">
-      <form @submit="handleSubmit($event, submit)">
-        <fieldset class="basis-settings">
-          <p class="mandatory-field-message">
-            <i>Fields with <b>*</b> are mandatory</i>
-          </p>
-          <div class="label-set">
-            <label :for="$id('name')"> Name <b>*</b> </label>
-            <div>
-              <Field
-                ref="nameElem"
-                type="text"
-                name="name"
-                rules="required"
-                :class="{ error: errors.name }"
-                :id="$id('name')"
-                @focusout="update(values)"
-                :value="mergedEnv.name"
-              />
-              <div class="error" v-if="errors.name">Name field is required.</div>
-            </div>
+    <form @submit="submit($event)">
+      <fieldset class="basis-settings">
+        <p class="mandatory-field-message">
+          <i>Fields with <b>*</b> are mandatory</i>
+        </p>
+        <div class="label-set">
+          <label :for="$id('name')"> Name <b>*</b> </label>
+          <div>
+            <CoreInput
+              type="text"
+              :class="{ error: errors.name }"
+              :id="$id('name')"
+              @focusout="update()"
+              @erase="update()"
+              :focus-on-mounted="newEnv"
+              v-model="fieldName"
+            />
+            <div class="error" v-if="errors.name">Name field is required.</div>
           </div>
-          <transition name="fade-in">
-            <div class="label-set" v-if="!newEnv">
-              <label :for="$id('short-name')"> Short name </label>
-              <Field
-                :id="$id('short-name')"
-                type="text"
-                name="shortName"
-                maxlength="4"
-                @focusout="update(values)"
-                :value="mergedEnv.shortName"
-              />
-            </div>
-          </transition>
-          <div class="label-set">
-            <label :for="$id('url')"> Url <b>*</b> </label>
-            <div>
-              <Field
-                :class="{ error: errors.url }"
-                :id="$id('url')"
-                type="text"
-                name="url"
-                rules="required|url"
-                placeholder="eg: https://www.ecosia.org"
-                @focusout="update(values)"
-                :value="mergedEnv.url"
-              />
-              <div class="error" v-if="errors.url">
-                Url field is required and must have an url format.
-              </div>
-            </div>
-          </div>
-          <transition name="fade-in">
-            <div v-if="!newEnv">
-              <div class="label-set">
-                <label :for="$id('append-url-params')"> Append url params </label>
-                <div>
-                  <Field
-                    :class="{ error: errors.appendUrlParams }"
-                    :id="$id('append-url-params')"
-                    type="text"
-                    placeholder="eg: search=true&query=dev&..."
-                    rules="urlParams"
-                    name="appendUrlParams"
-                    @focusout="update(values)"
-                    :value="mergedEnv.appendUrlParams"
-                  />
-                  <div class="error" v-if="errors.appendUrlParams">
-                    Append url params is not valid. (eg: search=true&query=dev )
-                  </div>
-                </div>
-              </div>
-              <div class="label-set">
-                <label :for="$id('remove-url-params')"> Remove url params </label>
-                <div>
-                  <Field
-                    :id="$id('remove-url-params')"
-                    :class="{ error: errors.removeUrlParams }"
-                    type="text"
-                    rules="list"
-                    placeholder="eg: search,query,..."
-                    name="removeUrlParams"
-                    @focusout="update(values)"
-                    :value="mergedEnv.removeUrlParams"
-                  />
-                  <div class="error" v-if="errors.removeUrlParams">
-                    Remove url params is not valid. (eg: search,query )
-                  </div>
-                </div>
-              </div>
-            </div>
-          </transition>
-
-          <div v-if="newEnv" class="create-btns">
-            <CoreButton icon-name="AddIcon" variation="positive" class="create-env-btn">
-              Create and configure
-            </CoreButton>
-
-            <CoreButton class="cancel-btn" @click.stop.prevent="$emit('cancel-new-env')">
-              Cancel
-            </CoreButton>
-          </div>
-        </fieldset>
-
+        </div>
         <transition name="fade-in">
-          <div class="override-options" v-if="!newEnv">
-            <div class="override-message">
-              <span>
-                Overrides global options for this environment <br />
-                <i>Fields with * are using global options, change to override</i>
-              </span>
-              <CoreButton
-                elevation
-                icon-name="GoBackIcon"
-                @click.prevent="resetToGlobalOptions"
-                v-if="hasOverrides"
-              >
-                Reset
-              </CoreButton>
-            </div>
-
-            <EditorFormBadge
-              v-if="env"
-              :options="mergedEnv"
-              :env="env"
-              @update:options="updateComputed"
+          <div class="label-set" v-if="!newEnv">
+            <label :for="$id('short-name')"> Short name </label>
+            <CoreInput
+              :id="$id('short-name')"
+              type="text"
+              :maxlength="4"
+              @focusout="update()"
+              @erase="update()"
+              v-model="fieldShortName"
             />
-
-            <EditorFormRibbon
-              v-if="env && ribbonEnabled"
-              class="form-ribbon"
-              :options="mergedEnv"
-              :env="env"
-              @update:options="updateComputed"
-            />
-
-            <fieldset class="field-domain">
-              <div class="label-set">
-                <input :id="$id('display-domain')" type="checkbox" v-model="displayDomain" />
-                <label
-                  :for="$id('display-domain')"
-                  :class="{ defaulted: env.displayDomain === undefined }"
-                >
-                  Display domain
-                </label>
-              </div>
-            </fieldset>
-
-            <fieldset class="field-domain">
-              <div class="label-set">
-                <input :id="$id('ping-url')" type="checkbox" v-model="pingUrl" />
-                <label :for="$id('ping-url')" :class="{ defaulted: env.pingUrl === undefined }">
-                  Check if environment url is up
-                </label>
-              </div>
-            </fieldset>
           </div>
         </transition>
-      </form>
-    </Form>
+        <div class="label-set">
+          <label :for="$id('url')"> Url <b>*</b> </label>
+          <div>
+            <CoreInput
+              :class="{ error: errors.url }"
+              :id="$id('url')"
+              type="text"
+              placeholder="eg: https://www.ecosia.org"
+              @focusout="update()"
+              @erase="update()"
+              v-model="fieldUrl"
+            />
+            <div class="error" v-if="errors.url">
+              Url field is required and must have an url format.
+            </div>
+          </div>
+        </div>
+        <transition name="fade-in">
+          <div v-if="!newEnv">
+            <div class="label-set">
+              <label :for="$id('append-url-params')"> Append url params </label>
+              <div>
+                <CoreInput
+                  :class="{ error: errors.appendUrlParams }"
+                  :id="$id('append-url-params')"
+                  type="text"
+                  placeholder="eg: search=true&query=dev&..."
+                  name="appendUrlParams"
+                  @focusout="update()"
+                  @erase="update()"
+                  v-model="fieldAppendUrlParams"
+                />
+                <div class="error" v-if="errors.appendUrlParams">
+                  Append url params is not valid. (eg: search=true&query=dev )
+                </div>
+              </div>
+            </div>
+            <div class="label-set">
+              <label :for="$id('remove-url-params')"> Remove url params </label>
+              <div>
+                <CoreInput
+                  :id="$id('remove-url-params')"
+                  :class="{ error: errors.removeUrlParams }"
+                  type="text"
+                  placeholder="eg: search,query,..."
+                  @focusout="update()"
+                  @erase="update()"
+                  v-model="fieldRemoveUrlParams"
+                />
+                <div class="error" v-if="errors.removeUrlParams">
+                  Remove url params is not valid. (eg: search,query )
+                </div>
+              </div>
+            </div>
+          </div>
+        </transition>
+
+        <div v-if="newEnv" class="create-btns">
+          <CoreButton icon-name="AddIcon" variation="positive" class="create-env-btn">
+            Create and configure
+          </CoreButton>
+
+          <CoreButton class="cancel-btn" @click.stop.prevent="$emit('cancel-new-env')">
+            Cancel
+          </CoreButton>
+        </div>
+      </fieldset>
+
+      <transition name="fade-in">
+        <div class="override-options" v-if="!newEnv">
+          <div class="override-message">
+            <span>
+              Overrides global options for this environment <br />
+              <i>Fields with * are using global options, change to override</i>
+            </span>
+            <CoreButton
+              elevation
+              icon-name="GoBackIcon"
+              @click.prevent="resetToGlobalOptions"
+              v-if="hasOverrides"
+            >
+              Reset
+            </CoreButton>
+          </div>
+
+          <EditorFormBadge
+            v-if="env"
+            :options="mergedEnv"
+            :env="env"
+            @update:options="updateComputed"
+          />
+
+          <EditorFormRibbon
+            v-if="env && ribbonEnabled"
+            class="form-ribbon"
+            :options="mergedEnv"
+            :env="env"
+            @update:options="updateComputed"
+          />
+
+          <fieldset class="field-domain">
+            <div class="label-set">
+              <input :id="$id('display-domain')" type="checkbox" v-model="displayDomain" />
+              <label
+                :for="$id('display-domain')"
+                :class="{ defaulted: env.displayDomain === undefined }"
+              >
+                Display domain
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="field-domain">
+            <div class="label-set">
+              <input :id="$id('ping-url')" type="checkbox" v-model="pingUrl" />
+              <label :for="$id('ping-url')" :class="{ defaulted: env.pingUrl === undefined }">
+                Check if environment url is up
+              </label>
+            </div>
+          </fieldset>
+        </div>
+      </transition>
+    </form>
   </div>
 </template>
 
@@ -196,20 +191,53 @@ import { removeEmptyString, removeUndefined } from "@/services/utils";
 import { DEFAULT_OPTIONS } from "@/services/business/storage/defaults";
 import ConfirmationDeleteButton from "@/components/options/form/ConfirmationDeleteButton";
 import CoreButton from "@/components/options/core/Button";
-import { Field, Form } from "vee-validate";
+import CoreInput from "@/components/options/core/Input";
+import { useForm, useField } from "vee-validate";
 
-import { defineComponent, onMounted, computed, ref } from "vue";
+import { defineComponent, computed, ref } from "vue";
 import { createComputedFactory } from "@/services/business/ui";
+
+function useFormValidation(mergedEnv) {
+  const { handleSubmit, errors, values, validate } = useForm();
+  const { value: fieldName } = useField("name", "required", {
+    initialValue: mergedEnv.value.name || "",
+  });
+  const { value: fieldShortName } = useField("shortName", "", {
+    initialValue: mergedEnv.value.shortName || "",
+  });
+  const { value: fieldUrl } = useField("url", "required|url", {
+    initialValue: mergedEnv.value.url || "",
+  });
+  const { value: fieldAppendUrlParams } = useField("appendUrlParams", "urlParams", {
+    initialValue: mergedEnv.value.appendUrlParams || "",
+  });
+  const { value: fieldRemoveUrlParams } = useField("removeUrlParams", "list", {
+    initialValue: mergedEnv.value.removeUrlParams || "",
+  });
+
+  return {
+    handleSubmit,
+    values,
+    validate,
+    fields: {
+      errors,
+      fieldName,
+      fieldShortName,
+      fieldUrl,
+      fieldAppendUrlParams,
+      fieldRemoveUrlParams,
+    },
+  };
+}
 
 export default defineComponent({
   name: "EditorFormConfigEnv",
   components: {
     CoreButton,
+    CoreInput,
     ConfirmationDeleteButton,
     EditorFormBadge,
     EditorFormRibbon,
-    Field,
-    Form,
   },
   props: {
     newEnv: {
@@ -233,18 +261,7 @@ export default defineComponent({
   emits: ["update-env", "delete-env", "clone-env", "create-new-env", "cancel-new-env"],
   setup(props, context) {
     const deleteConfirm = ref(false);
-    const nameElem = ref(null);
     const ribbonEnabled = !window.ENV || window.ENV.WITHOUT_RIBBON !== true;
-
-    onMounted(() => {
-      if (props.newEnv) {
-        const nameEl = nameElem.value.$el;
-        if (nameEl) {
-          nameEl.focus();
-          nameEl.setSelectionRange(0, nameEl.length);
-        }
-      }
-    });
 
     const mergedEnv = computed(() => {
       const env = props.env
@@ -252,6 +269,8 @@ export default defineComponent({
         : {};
       return env;
     });
+
+    const { handleSubmit, values, validate, fields } = useFormValidation(mergedEnv);
 
     const hasOverrides = computed(() => {
       const env = props.env;
@@ -292,18 +311,23 @@ export default defineComponent({
       context.emit("update-env", newEnv);
     };
 
-    const submit = (values) => {
-      if (props.newEnv) {
-        const mergedEnv = deepmerge(deepmerge({}, props.env), values);
-        context.emit("create-new-env", mergedEnv);
-      }
-    };
-
-    const update = (values) => {
-      if (!props.newEnv) {
+    const submit = handleSubmit(async () => {
+      const isValid = await validate();
+      if (isValid && props.newEnv) {
         const mergedEnv = deepmerge(deepmerge({}, props.env), values);
         removeEmptyString(mergedEnv);
-        context.emit("update-env", mergedEnv);
+        context.emit("create-new-env", mergedEnv);
+      }
+    });
+
+    const update = async () => {
+      if (!props.newEnv) {
+        const isValid = await validate();
+        if (isValid) {
+          const mergedEnv = deepmerge(deepmerge({}, props.env), values);
+          removeEmptyString(mergedEnv);
+          context.emit("update-env", mergedEnv);
+        }
       }
     };
 
@@ -324,13 +348,13 @@ export default defineComponent({
       pingUrl,
       hasOverrides,
       deleteConfirm,
-      nameElem,
       ribbonEnabled,
       mergedEnv,
       updateComputed,
       resetToGlobalOptions,
       submit,
       update,
+      ...fields,
     };
   },
 });

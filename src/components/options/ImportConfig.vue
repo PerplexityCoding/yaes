@@ -10,11 +10,13 @@
           <div class="import-url-field">
             <div class="label-set">
               <label :for="$id('import-url')"> Using Url </label>
-              <input
+              <CoreInput
+                class="url-input"
                 :id="$id('import-url')"
                 type="url"
                 placeholder="https://gist.githubusercontent.com/.../config.json"
                 v-model="configurationUrl"
+                @erase="updateImportOptions"
               />
             </div>
             <CoreButton elevation icon-name="ImportIcon" @click="importConfig"> import </CoreButton>
@@ -89,6 +91,7 @@
 <script>
 import { importConfig as importConfigService, importFromUrl } from "@/services/business/storage";
 import CoreButton from "@/components/options/core/Button";
+import CoreInput from "@/components/options/core/Input";
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
@@ -99,7 +102,7 @@ export default defineComponent({
       default: () => ({}),
     },
   },
-  components: { CoreButton },
+  components: { CoreButton, CoreInput },
   emits: ["config-loaded", "download-config", "update:options"],
   setup(props, context) {
     const configurationUrl = ref(props.options.import ? props.options.import.url : "");
@@ -232,6 +235,11 @@ export default defineComponent({
       .import-url-field {
         flex: 1;
         display: flex;
+        align-items: center;
+      }
+
+      .url-input {
+        flex: 1;
       }
 
       .import-inline-options {
@@ -248,10 +256,6 @@ export default defineComponent({
       }
 
       .label-set {
-        flex: 1;
-      }
-
-      input {
         flex: 1;
         margin-right: 8px;
       }
