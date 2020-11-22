@@ -117,8 +117,8 @@ async function isValid(config) {
   return result.status;
 }
 
-async function setConfig(config, force = false) {
-  if (force || (await isValid(config))) {
+async function setConfig(config) {
+  if (await isValid(config)) {
     const envsById = config.envs.reduce((acc, env) => {
       acc[`env-${env.id}`] = JSON.stringify(env);
       return acc;
