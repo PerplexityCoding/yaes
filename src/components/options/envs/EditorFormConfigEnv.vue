@@ -150,15 +150,15 @@
               v-if="env"
               :options="mergedEnv"
               :env="env"
-              @update:option="updateComputed"
+              @update:options="updateComputed"
             />
 
             <EditorFormRibbon
               v-if="env && ribbonEnabled"
               class="form-ribbon"
-              :option="mergedEnv"
+              :options="mergedEnv"
               :env="env"
-              @update:option="updateComputed"
+              @update:options="updateComputed"
             />
 
             <fieldset class="field-domain">
@@ -198,7 +198,8 @@ import ConfirmationDeleteButton from "@/components/options/form/ConfirmationDele
 import CoreButton from "@/components/options/core/Button";
 import { Field, Form } from "vee-validate";
 
-import { defineComponent, onMounted, computed, ref, watch } from "vue";
+import { defineComponent, onMounted, computed, ref } from "vue";
+import { createComputedFactory } from "@/services/business/ui";
 
 export default defineComponent({
   name: "EditorFormConfigEnv",
@@ -237,7 +238,6 @@ export default defineComponent({
 
     onMounted(() => {
       if (props.newEnv) {
-        debugger;
         const nameEl = nameElem.value.$el;
         if (nameEl) {
           nameEl.focus();
@@ -252,9 +252,6 @@ export default defineComponent({
         : {};
       return env;
     });
-
-    const displayDomain = ref(mergedEnv.value.displayDomain);
-    const pingUrl = ref(mergedEnv.value.pingUrl);
 
     const hasOverrides = computed(() => {
       const env = props.env;
@@ -302,9 +299,6 @@ export default defineComponent({
       }
     };
 
-    watch(displayDomain, (value) => update({ displayDomain: value }));
-    watch(pingUrl, (value) => update({ pingUrl: value }));
-
     const update = (values) => {
       if (!props.newEnv) {
         const mergedEnv = deepmerge(deepmerge({}, props.env), values);
@@ -312,6 +306,18 @@ export default defineComponent({
         context.emit("update-env", mergedEnv);
       }
     };
+
+    const createComputed = createComputedFactory(update);
+
+    const displayDomain = createComputed(
+      () => mergedEnv.value.displayDomain,
+      (val) => ({ displayDomain: val })
+    );
+
+    const pingUrl = createComputed(
+      () => mergedEnv.value.pingUrl,
+      (val) => ({ pingUrl: val })
+    );
 
     return {
       displayDomain,

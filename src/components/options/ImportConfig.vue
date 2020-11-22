@@ -87,10 +87,11 @@
 </template>
 
 <script>
-import { importConfig, importFromUrl } from "@/services/business/storage";
+import { importConfig as importConfigService, importFromUrl } from "@/services/business/storage";
 import CoreButton from "@/components/options/core/Button";
+import { defineComponent, ref } from "vue";
 
-export default {
+export default defineComponent({
   name: "ImportConfig",
   props: {
     options: {
@@ -98,43 +99,38 @@ export default {
       default: () => ({}),
     },
   },
-  data() {
-    const importOptions = this.options.import;
-
-    return {
-      configurationUrl: importOptions ? importOptions.url : "",
-      importConfigLoader: false,
-      importUrlStatus: null,
-      importFileStatus: null,
-      mergeOptionsMode: importOptions ? importOptions.mergeOptionsMode : "",
-      autoSync: importOptions ? importOptions.sync : false,
-    };
-  },
-  emits: ["config-loaded", "config-load-failed", "download-config", "update:options"],
   components: { CoreButton },
-  methods: {
-    async importConfig() {
-      if (this.configurationUrl) {
-        this.resetErrors();
-        this.importConfigLoader = true;
+  emits: ["config-loaded", "download-config", "update:options"],
+  setup(props, context) {
+    const configurationUrl = ref(props.options.import ? props.options.import.url : "");
+    const importUrlStatus = ref(null);
+    const importFileStatus = ref(null);
+    const importConfigLoader = ref(false);
+    const mergeOptionsMode = ref(
+      props.options.import ? props.options.import.mergeOptionsMode : false
+    );
+    const autoSync = ref(props.options.import ? props.options.import.sync : false);
 
-        const config = await importFromUrl(this.configurationUrl, {
-          url: this.configurationUrl,
-          mergeOptionsMode: this.mergeOptionsMode,
-          sync: this.autoSync,
+    const importConfig = async () => {
+      if (configurationUrl.value) {
+        resetErrors();
+        importConfigLoader.value = true;
+
+        const config = await importFromUrl(configurationUrl.value, {
+          url: configurationUrl.value,
+          mergeOptionsMode: mergeOptionsMode.value,
+          sync: autoSync.value,
         });
         if (config) {
-          this.$emit("config-loaded", config);
+          context.emit("config-loaded", config);
         }
-        this.importUrlStatus = !!config;
-        this.importConfigLoader = false;
+        importUrlStatus.value = !!config;
+        importConfigLoader.value = false;
       }
-    },
-    downloadConfig() {
-      this.$emit("download-config");
-    },
-    importFile(e) {
-      this.resetErrors();
+    };
+
+    const importFile = (e) => {
+      resetErrors();
 
       const file = e.target.files[0];
       const reader = new FileReader();
@@ -142,34 +138,53 @@ export default {
 
       reader.onload = async (event) => {
         const data = event.target.result;
-        const config = await importConfig(data);
+        const config = await importConfigService(data);
         if (config) {
-          this.$emit("config-loaded", config);
+          context.emit("config-loaded", config);
         }
-        this.importFileStatus = !!config;
+        importFileStatus.value = !!config;
       };
 
       reader.onerror = () => {
-        this.importFileStatus = true;
+        importFileStatus.value = false;
       };
-    },
-    resetErrors() {
-      this.importFileStatus = null;
-      this.importUrlStatus = null;
-    },
-    updateImportOptions() {
+    };
+
+    const resetErrors = () => {
+      importFileStatus.value = null;
+      importUrlStatus.value = null;
+    };
+
+    const updateImportOptions = () => {
       setTimeout(() => {
-        this.$emit("update:options", {
+        context.emit("update:options", {
           import: {
-            url: this.configurationUrl,
-            mergeOptionsMode: this.mergeOptionsMode,
-            sync: this.autoSync,
+            url: configurationUrl.value,
+            mergeOptionsMode: mergeOptionsMode.value,
+            sync: autoSync.value,
           },
         });
       }, 0);
-    },
+    };
+
+    const downloadConfig = () => {
+      context.emit("download-config");
+    };
+
+    return {
+      importFile,
+      importConfig,
+      updateImportOptions,
+      downloadConfig,
+      configurationUrl,
+      importUrlStatus,
+      importFileStatus,
+      importConfigLoader,
+      mergeOptionsMode,
+      autoSync,
+    };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

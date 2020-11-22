@@ -1,4 +1,5 @@
 import sortable from "html5sortable/dist/html5sortable.cjs";
+import { computed } from "vue";
 
 export function getComputedFactory(objectKey) {
   return (key, subKey) => {
@@ -13,6 +14,18 @@ export function getComputedFactory(objectKey) {
         this.updateComputed(subKey ? { [key]: { [subKey]: value } } : { [key]: value });
       },
     };
+  };
+}
+
+export function createComputedFactory(update) {
+  return (getFn, setFn) => {
+    return computed({
+      get: () => getFn(),
+      set: (val) => {
+        val = val === "" ? undefined : val;
+        update(setFn(val));
+      },
+    });
   };
 }
 

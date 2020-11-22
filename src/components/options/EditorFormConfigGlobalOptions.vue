@@ -54,12 +54,12 @@
       </div>
 
       <fieldset class="right-col">
-        <EditorFormBadge :options="mergedOptions" @update:option="updateComputed" />
+        <EditorFormBadge :options="mergedOptions" @update:options="updateComputed" />
         <EditorFormRibbon
           v-if="ribbonEnabled"
           class="form-ribbon"
-          :option="mergedOptions"
-          @update:option="updateComputed"
+          :options="mergedOptions"
+          @update:options="updateComputed"
         />
       </fieldset>
 
@@ -80,15 +80,14 @@
 
 <script>
 import deepmerge from "deepmerge";
-import { getComputedFactory } from "@/services/business/ui";
+import { createComputedFactory } from "@/services/business/ui";
 import EditorFormRibbon from "@/components/options/form/EditorFormRibbon";
 import EditorFormBadge from "@/components/options/form/EditorFormBadge";
 import { DEFAULT_OPTIONS } from "@/services/business/storage/defaults";
 import CoreButton from "@/components/options/core/Button";
+import { defineComponent, ref, computed } from "vue";
 
-const computed = getComputedFactory("mergedOptions");
-
-export default {
+export default defineComponent({
   name: "EditorFormConfigGlobalOptions",
   components: { CoreButton, EditorFormBadge, EditorFormRibbon },
   props: {
@@ -98,32 +97,51 @@ export default {
     },
   },
   emits: ["update:options"],
-  computed: {
-    ribbonEnabled: () => !window.ENV || window.ENV.WITHOUT_RIBBON !== true,
-    displayDomain: computed("displayDomain"),
-    displayHeader: computed("displayHeader"),
-    displayFooter: computed("displayFooter"),
-    displaySeeProjectsLink: computed("displaySeeProjectsLink"),
-    colorScheme: computed("colorScheme"),
-    allowBugTrackerReporting: computed("allowBugTrackerReporting"),
-    pingUrl: computed("pingUrl"),
-    mergedOptions() {
-      const options = deepmerge(deepmerge({}, DEFAULT_OPTIONS), this.options || {});
+  setup(props, context) {
+    const ribbonEnabled = ref(!window.ENV || window.ENV.WITHOUT_RIBBON !== true);
+
+    const updateComputed = (data) =>
+      context.emit("update:options", deepmerge({ ...props.options }, data));
+
+    const createComputed = createComputedFactory(updateComputed);
+
+    const resetToDefaultOptions = () => context.emit("update:options", {});
+
+    const mergedOptions = computed(() => {
+      const options = deepmerge(deepmerge({}, DEFAULT_OPTIONS), props.options || {});
       return options;
-    },
-    hasOptions() {
-      return Object.keys(this.options).length > 0;
-    },
+    });
+
+    const hasOptions = computed(() => {
+      return Object.keys(props.options).length > 0;
+    });
+
+    const localOptions = [
+      "displayDomain",
+      "displayHeader",
+      "displayFooter",
+      "displaySeeProjectsLink",
+      "colorScheme",
+      "allowBugTrackerReporting",
+      "pingUrl",
+    ].reduce((acc, key) => {
+      acc[key] = createComputed(
+        () => mergedOptions.value[key],
+        (val) => ({ [key]: val })
+      );
+      return acc;
+    }, {});
+
+    return {
+      mergedOptions,
+      hasOptions,
+      ribbonEnabled,
+      ...localOptions,
+      resetToDefaultOptions,
+      updateComputed,
+    };
   },
-  methods: {
-    resetToDefaultOptions() {
-      this.$emit("update:options", {});
-    },
-    updateComputed(data) {
-      this.$emit("update:options", deepmerge({ ...this.options }, data));
-    },
-  },
-};
+});
 </script>
 
 <style scoped lang="scss">

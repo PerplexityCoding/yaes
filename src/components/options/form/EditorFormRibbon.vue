@@ -16,7 +16,7 @@
             defaulted: isDefaulted('backgroundColor'),
           }"
         >
-          <ColorPicker v-model:color="backgroundColor" />
+          <ColorPicker v-model:color="ribbonBackgroundColor" />
           <span>Background Color</span>
         </label>
       </div>
@@ -27,7 +27,7 @@
             defaulted: isDefaulted('color'),
           }"
         >
-          <ColorPicker v-model:color="color" />
+          <ColorPicker v-model:color="ribbonColor" />
           <span>Text Color</span>
         </label>
       </div>
@@ -39,7 +39,7 @@
         ribbon-position
       >
         <label :for="$id('ribbon-position')">Position</label>
-        <select :id="$id('ribbon-position')" v-model="position">
+        <select :id="$id('ribbon-position')" v-model="ribbonPosition">
           <option value="left">left</option>
           <option value="right">right</option>
         </select>
@@ -52,7 +52,7 @@
         ribbon-type
       >
         <label :for="$id('ribbon-type')">Type</label>
-        <select :id="$id('ribbon-type')" v-model="type">
+        <select :id="$id('ribbon-type')" v-model="ribbonType">
           <option value="corner-ribbon">Corner</option>
           <option value="square-ribbon">Square</option>
         </select>
@@ -63,7 +63,9 @@
 
 <script>
 import ColorPicker from "@/components/options/core/ColorPicker";
-import { defineComponent, ref, watch, reactive, toRefs } from "vue";
+import { defineComponent } from "vue";
+import { createComputedFactory } from "@/services/business/ui";
+import upperFirst from "lodash/upperFirst";
 
 export default defineComponent({
   name: "EditorFormRibbon",
@@ -73,17 +75,13 @@ export default defineComponent({
       type: Object,
       default: undefined,
     },
-    option: {
+    options: {
       type: Object,
       required: true,
     },
   },
-  emits: ["update:option"],
+  emits: ["update:options"],
   setup(props, context) {
-    const displayRibbon = ref(props.option.displayRibbon);
-
-    const ribbonOptions = reactive(props.option.ribbonOptions);
-
     const isDefaulted = (key) => {
       return props.env
         ? props.env.ribbonOptions
@@ -92,23 +90,25 @@ export default defineComponent({
         : false;
     };
 
-    const updateComputed = (data) => context.emit("update:option", data);
+    const updateComputed = (data) => context.emit("update:options", data);
 
-    watch(ribbonOptions, (data) => {
-      updateComputed({
-        ribbonOptions: data,
-      });
-    });
+    const createComputed = createComputedFactory(updateComputed);
+    const displayRibbon = createComputed(
+      () => props.options.displayRibbon,
+      (val) => ({ displayRibbon: val })
+    );
 
-    watch(displayRibbon, (data) => {
-      updateComputed({
-        displayRibbon: data,
-      });
-    });
+    const ribbonOptions = ["color", "backgroundColor", "position", "type"].reduce((acc, key) => {
+      acc[`ribbon${upperFirst(key)}`] = createComputed(
+        () => props.options.ribbonOptions[key],
+        (val) => ({ ribbonOptions: { [key]: val } })
+      );
+      return acc;
+    }, {});
 
     return {
       displayRibbon,
-      ...toRefs(ribbonOptions),
+      ...ribbonOptions,
       isDefaulted,
       updateComputed,
     };

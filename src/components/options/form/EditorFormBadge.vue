@@ -21,7 +21,8 @@
 <script>
 import ColorPicker from "@/components/options/core/ColorPicker";
 
-import { defineComponent, watch, ref } from "vue";
+import { defineComponent } from "vue";
+import { createComputedFactory } from "@/services/business/ui";
 
 export default defineComponent({
   name: "EditorFormBadge",
@@ -36,23 +37,27 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["update:option"],
+  emits: ["update:options"],
   setup(props, context) {
-    // eslint-disable-next-line vue/no-setup-props-destructure
-    const options = props.options;
-    const displayBadge = ref(options.displayBadge);
-    const badgeBgColor = ref(options.badgeOptions.backgroundColor);
-
     const isBadgeDefaultBgColor = () => {
       const { env } = props;
       const { badgeOptions } = env || {};
       return badgeOptions ? badgeOptions.backgroundColor === undefined : false;
     };
 
-    watch(displayBadge, (value) => emitUpdate({ displayBadge: value }));
-    watch(badgeBgColor, (value) => emitUpdate({ badgeOptions: { backgroundColor: value } }));
+    const emitUpdate = (data) => context.emit("update:options", data);
 
-    const emitUpdate = (data) => context.emit("update:option", data);
+    const createComputed = createComputedFactory(emitUpdate);
+
+    const displayBadge = createComputed(
+      () => props.options.displayBadge,
+      (val) => ({ displayBadge: val })
+    );
+
+    const badgeBgColor = createComputed(
+      () => props.options.badgeOptions.backgroundColor,
+      (val) => ({ badgeOptions: { backgroundColor: val } })
+    );
 
     return {
       isBadgeDefaultBgColor,
