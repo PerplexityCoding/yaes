@@ -55,6 +55,18 @@ import { isDarkMode } from "@/services/business/utils";
 import introJs from "intro.js";
 import { mergeOptions } from "@/services/business/bo/config";
 
+async function useAsyncSetup(config, loadingError) {
+  const { storedConfig, hasErrors } = await getOrInitConfig();
+  config.value = storedConfig;
+  loadingError.value = hasErrors;
+
+  if (!hasErrors && storedConfig.envs.length === 0 && storedConfig.projects.length === 0) {
+    setTimeout(() => {
+      introJs().start();
+    }, 0);
+  }
+}
+
 async function getOrInitConfig() {
   const { config, errors } = await getFixConfig({
     mergeOptions: false,
@@ -64,6 +76,75 @@ async function getOrInitConfig() {
     hasErrors: errors && (errors.migrationFailed || errors.validationFailed),
     storedConfig: config,
   };
+}
+
+function useSaveConfig({ config, errorMessage, displaySaveInfo }) {
+  return async (savingConfig) => {
+    if (!savingConfig) {
+      return;
+    }
+
+    config.value = savingConfig;
+
+    errorMessage.value = null;
+
+    if (!(await setConfig(savingConfig))) {
+      displaySaveInfo.value = false;
+      errorMessage.value = "Save Failed";
+      return;
+    }
+    displaySaveInfo.value = true;
+
+    setTimeout(() => {
+      displaySaveInfo.value = false;
+    }, 3000);
+  };
+}
+
+function useSaveImportedConfig({ saveConfig, config }) {
+  return (importedConfig) => {
+    const importConfig = importedConfig.options.import;
+    if (importConfig && importConfig.mergeOptionsMode) {
+      mergeOptions(importedConfig, config.value, importConfig.mergeOptionsMode);
+      importedConfig.options.import = importConfig;
+    }
+    saveConfig(importedConfig);
+  };
+}
+
+function useUpdateConfigOptions({ saveConfig, config }) {
+  return (options) => {
+    saveConfig({
+      ...config.value,
+      options: {
+        ...config.value.options,
+        ...options,
+      },
+    });
+  };
+}
+
+function isConfigDarkMode(config) {
+  return config.value && config.value.options
+    ? isDarkMode(config.value.options.colorScheme)
+    : false;
+}
+
+function updateBodyClassListDarkMode(darkMode) {
+  const classList = window.document.body.classList;
+  if (darkMode) {
+    classList.add("dark-mode");
+    classList.remove("light-mode");
+  } else {
+    classList.add("light-mode");
+    classList.remove("dark-mode");
+  }
+}
+
+function useDarkMode(config) {
+  const darkMode = computed(() => isConfigDarkMode(config));
+  watch(darkMode, (value) => updateBodyClassListDarkMode(value));
+  return darkMode;
 }
 
 export default defineComponent({
@@ -78,76 +159,13 @@ export default defineComponent({
     const errorMessage = ref(null);
     const displaySaveInfo = ref(false);
 
-    (async () => {
-      const { storedConfig, hasErrors } = await getOrInitConfig();
-      config.value = storedConfig;
-      loadingError.value = hasErrors;
+    useAsyncSetup(config, loadingError);
 
-      if (!hasErrors && storedConfig.envs.length === 0 && storedConfig.projects.length === 0) {
-        setTimeout(() => {
-          introJs().start();
-        }, 0);
-      }
-    })();
+    const darkMode = useDarkMode(config);
 
-    const darkMode = computed(() => {
-      return config.value && config.value.options
-        ? isDarkMode(config.value.options.colorScheme)
-        : false;
-    });
-
-    watch(darkMode, (value) => {
-      const classList = window.document.body.classList;
-      if (value) {
-        classList.add("dark-mode");
-      } else {
-        classList.remove("dark-mode");
-      }
-    });
-
-    const saveImportedConfig = (importedConfig) => {
-      const importConfig = importedConfig.options.import;
-      if (importConfig && importConfig.mergeOptionsMode) {
-        mergeOptions(importedConfig, config.value, importConfig.mergeOptionsMode);
-        importedConfig.options.import = importConfig;
-      }
-      saveConfig(importedConfig);
-    };
-
-    const updateConfigOptions = (options) => {
-      saveConfig({
-        ...config.value,
-        options: {
-          ...config.value.options,
-          ...options,
-        },
-      });
-    };
-
-    const saveConfig = async (savingConfig, { noSave } = {}) => {
-      if (!savingConfig) {
-        return;
-      }
-
-      config.value = savingConfig;
-
-      if (noSave) {
-        return;
-      }
-
-      errorMessage.value = null;
-
-      if (!(await setConfig(savingConfig))) {
-        displaySaveInfo.value = false;
-        errorMessage.value = "Save Failed";
-        return;
-      }
-      displaySaveInfo.value = true;
-
-      setTimeout(() => {
-        displaySaveInfo.value = false;
-      }, 3000);
-    };
+    const saveConfig = useSaveConfig({ config, errorMessage, displaySaveInfo });
+    const saveImportedConfig = useSaveImportedConfig({ config, saveConfig });
+    const updateConfigOptions = useUpdateConfigOptions({ config, saveConfig });
 
     return {
       displaySaveInfo,
@@ -172,6 +190,10 @@ export default defineComponent({
 body {
   &.dark-mode {
     background-color: #0e0e0e !important;
+  }
+
+  &.light-mode {
+    background-color: #fdfbf8 !important;
   }
 }
 
