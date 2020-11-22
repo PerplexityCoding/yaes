@@ -5,19 +5,12 @@
       display-badge
       :class="{ defaulted: env ? env.displayBadge === undefined : false }"
     >
-      <input
-        :id="$id('display-badge')"
-        type="checkbox"
-        v-model="displayBadge"
-      />
+      <input :id="$id('display-badge')" type="checkbox" v-model="displayBadge" />
       <label :for="$id('display-badge')">Badge</label>
     </div>
 
     <div class="label-set" badge-bg-color>
-      <label
-        class="badge-bg-color"
-        :class="{ defaulted: isBadgeDefaultBgColor }"
-      >
+      <label class="badge-bg-color" :class="{ defaulted: isBadgeDefaultBgColor }">
         <ColorPicker v-model:color="badgeBgColor" />
         <span>Background Color</span>
       </label>
@@ -26,12 +19,12 @@
 </template>
 
 <script>
-import { getComputedFactory } from "@/services/business/ui";
-import ColorPicker from "@/components/core/ColorPicker";
+import ColorPicker from "@/components/options/core/ColorPicker";
 
-const computed = getComputedFactory("option");
+import { defineComponent } from "vue";
+import { createComputedFactory } from "@/services/business/ui";
 
-export default {
+export default defineComponent({
   name: "EditorFormBadge",
   components: { ColorPicker },
   props: {
@@ -39,30 +32,40 @@ export default {
       type: Object,
       default: undefined,
     },
-    option: {
+    options: {
       type: Object,
       required: true,
     },
   },
-  emits: ["update:option"],
-  computed: {
-    displayBadge: computed("displayBadge"),
-    badgeBgColor: computed("badgeOptions", "backgroundColor"),
-    isBadgeDefaultBgColor() {
-      const { env } = this;
-      return env
-        ? env.badgeOptions
-          ? env.badgeOptions.backgroundColor === undefined
-          : true
-        : false;
-    },
+  emits: ["update:options"],
+  setup(props, context) {
+    const isBadgeDefaultBgColor = () => {
+      const { env } = props;
+      const { badgeOptions } = env || {};
+      return badgeOptions ? badgeOptions.backgroundColor === undefined : false;
+    };
+
+    const emitUpdate = (data) => context.emit("update:options", data);
+
+    const createComputed = createComputedFactory(emitUpdate);
+
+    const displayBadge = createComputed(
+      () => props.options.displayBadge,
+      (val) => ({ displayBadge: val })
+    );
+
+    const badgeBgColor = createComputed(
+      () => props.options.badgeOptions.backgroundColor,
+      (val) => ({ badgeOptions: { backgroundColor: val } })
+    );
+
+    return {
+      isBadgeDefaultBgColor,
+      displayBadge,
+      badgeBgColor,
+    };
   },
-  methods: {
-    updateComputed(data) {
-      this.$emit("update:option", data);
-    },
-  },
-};
+});
 </script>
 
 <style scoped lang="scss">

@@ -1,25 +1,31 @@
 import sortable from "html5sortable/dist/html5sortable.cjs";
+import { computed } from "vue";
 
 export function getComputedFactory(objectKey) {
   return (key, subKey) => {
     return {
       get() {
         const firstOption = this[objectKey][key];
-        const option =
-          subKey && firstOption != null ? firstOption[subKey] : firstOption;
+        const option = subKey && firstOption != null ? firstOption[subKey] : firstOption;
         return option != null ? option : "";
       },
       set(value) {
-        if (this.$v && this.$v[key]) {
-          this.$v[key].$touch();
-        }
-
         value = value === "" ? undefined : value;
-        this.updateComputed(
-          subKey ? { [key]: { [subKey]: value } } : { [key]: value }
-        );
+        this.updateComputed(subKey ? { [key]: { [subKey]: value } } : { [key]: value });
       },
     };
+  };
+}
+
+export function createComputedFactory(update) {
+  return (getFn, setFn) => {
+    return computed({
+      get: () => getFn(),
+      set: (val) => {
+        val = val === "" ? undefined : val;
+        update(setFn(val));
+      },
+    });
   };
 }
 

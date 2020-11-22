@@ -5,6 +5,7 @@ import { waitFor } from "@/services/utils";
 import { getCurrentTab, openChromeUrl } from "@/services/chrome/tabs";
 import { getConfig } from "@/services/business/storage/get";
 import { INIT_DEFAULT_CONFIG } from "@/services/business/storage/defaults";
+import GlobalIcons from "@/utils/plugins/global-icons";
 
 jest.mock("@/services/business/storage/get");
 jest.mock("@/services/chrome/tabs");
@@ -44,6 +45,16 @@ function mockStorageEnvGetBadData() {
   getConfig.mockReturnValue({ config: { ...INIT_DEFAULT_CONFIG } });
 }
 
+function createDefaultWrapper() {
+  const wrapper = mount(Popup, {
+    global: {
+      plugins: [GlobalIcons],
+    },
+  });
+
+  return wrapper;
+}
+
 describe("Popup.vue", () => {
   beforeAll(() => {
     mockStorageEnvGet();
@@ -53,7 +64,7 @@ describe("Popup.vue", () => {
     const currentTab = { id: 0, url: "http://www.google.fr/coucou" };
     getCurrentTab.mockReturnValue(Promise.resolve(currentTab));
 
-    const wrapper = mount(Popup);
+    const wrapper = createDefaultWrapper();
     await waitFor();
 
     const envList = wrapper.findComponent(EnvList);
@@ -72,7 +83,7 @@ describe("Popup.vue", () => {
     const currentTab = { id: 0, url: "http://www.google.fr/coucou" };
     getCurrentTab.mockReturnValue(Promise.resolve(currentTab));
 
-    const wrapper = mount(Popup);
+    const wrapper = await createDefaultWrapper();
     await waitFor();
 
     const envList = wrapper.findComponent(EnvList);
@@ -80,11 +91,7 @@ describe("Popup.vue", () => {
     const firstButton = envList.findAll("button")[1];
     await firstButton.trigger("click.middle");
 
-    expect(openChromeUrl).toHaveBeenCalledWith(
-      currentTab,
-      "https://www.google.de/coucou",
-      true
-    );
+    expect(openChromeUrl).toHaveBeenCalledWith(currentTab, "https://www.google.de/coucou", true);
   });
 
   /*it("display empty message when not on env domain", async () => {
@@ -107,7 +114,7 @@ describe("Popup.vue", () => {
     consoleError.mockImplementation(() => {});
     mockStorageEnvGetBadData();
 
-    const wrapper = mount(Popup);
+    const wrapper = createDefaultWrapper();
     await waitFor();
 
     expect(wrapper.html()).toContain(

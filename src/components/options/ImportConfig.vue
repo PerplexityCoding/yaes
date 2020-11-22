@@ -10,26 +10,20 @@
           <div class="import-url-field">
             <div class="label-set">
               <label :for="$id('import-url')"> Using Url </label>
-              <input
+              <CoreInput
+                class="url-input"
                 :id="$id('import-url')"
                 type="url"
                 placeholder="https://gist.githubusercontent.com/.../config.json"
                 v-model="configurationUrl"
+                @erase="updateImportOptions"
               />
             </div>
-            <CoreButton elevation icon-name="Import" @click="importConfig">
-              import
-            </CoreButton>
-            <span
-              class="import-failed-message"
-              v-if="importUrlStatus === false"
-            >
+            <CoreButton elevation icon-name="ImportIcon" @click="importConfig"> import </CoreButton>
+            <span class="import-failed-message" v-if="importUrlStatus === false">
               Import from url failed
             </span>
-            <span
-              class="import-success-message"
-              v-if="importUrlStatus === true"
-            >
+            <span class="import-success-message" v-if="importUrlStatus === true">
               Import from url successful
             </span>
             <div v-if="importConfigLoader" class="lds-dual-ring loader" />
@@ -37,9 +31,7 @@
 
           <div class="import-inline-options">
             <div>
-              <label :for="$id('merge-options-mode')">
-                Merge options mode
-              </label>
+              <label :for="$id('merge-options-mode')"> Merge options mode </label>
               <select
                 :id="$id('merge-options-mode')"
                 v-model="mergeOptionsMode"
@@ -67,9 +59,7 @@
         <div>
           <div class="label-set">
             <label :for="$id('import-file')"> Using File </label>
-            <CoreButton elevation @click="$refs.importFileInput.click()">
-              Choose File
-            </CoreButton>
+            <CoreButton elevation @click="$refs.importFileInput.click()"> Choose File </CoreButton>
             <input
               ref="importFileInput"
               :id="$id('import-file')"
@@ -78,16 +68,10 @@
               @change="importFile"
             />
 
-            <span
-              class="import-failed-message"
-              v-if="importFileStatus === false"
-            >
+            <span class="import-failed-message" v-if="importFileStatus === false">
               Import file failed
             </span>
-            <span
-              class="import-success-message"
-              v-if="importFileStatus === true"
-            >
+            <span class="import-success-message" v-if="importFileStatus === true">
               Import file successful
             </span>
           </div>
@@ -97,9 +81,7 @@
 
     <div class="import-configuration">
       <strong> Export configuration </strong>
-      <CoreButton elevation icon-name="Export" @click="downloadConfig">
-        Export
-      </CoreButton>
+      <CoreButton elevation icon-name="ExportIcon" @click="downloadConfig"> Export </CoreButton>
       <span>Tips:</span>
       <a href="https://gist.github.com/" target="_blank">Share it on gist</a>
     </div>
@@ -107,10 +89,12 @@
 </template>
 
 <script>
-import { importConfig, importFromUrl } from "@/services/business/storage";
-import CoreButton from "@/components/core/Button";
+import { importConfig as importConfigService, importFromUrl } from "@/services/business/storage";
+import CoreButton from "@/components/options/core/Button";
+import CoreInput from "@/components/options/core/Input";
+import { defineComponent, ref } from "vue";
 
-export default {
+export default defineComponent({
   name: "ImportConfig",
   props: {
     options: {
@@ -118,48 +102,38 @@ export default {
       default: () => ({}),
     },
   },
-  data() {
-    const importOptions = this.options.import;
+  components: { CoreButton, CoreInput },
+  emits: ["config-loaded", "download-config", "update:options"],
+  setup(props, context) {
+    const configurationUrl = ref(props.options.import ? props.options.import.url : "");
+    const importUrlStatus = ref(null);
+    const importFileStatus = ref(null);
+    const importConfigLoader = ref(false);
+    const mergeOptionsMode = ref(
+      props.options.import ? props.options.import.mergeOptionsMode : false
+    );
+    const autoSync = ref(props.options.import ? props.options.import.sync : false);
 
-    return {
-      configurationUrl: importOptions ? importOptions.url : "",
-      importConfigLoader: false,
-      importUrlStatus: null,
-      importFileStatus: null,
-      mergeOptionsMode: importOptions ? importOptions.mergeOptionsMode : "",
-      autoSync: importOptions ? importOptions.sync : false,
-    };
-  },
-  emits: [
-    "config-loaded",
-    "config-load-failed",
-    "download-config",
-    "update:options",
-  ],
-  components: { CoreButton },
-  methods: {
-    async importConfig() {
-      if (this.configurationUrl) {
-        this.resetErrors();
-        this.importConfigLoader = true;
+    const importConfig = async () => {
+      if (configurationUrl.value) {
+        resetErrors();
+        importConfigLoader.value = true;
 
-        const config = await importFromUrl(this.configurationUrl, {
-          url: this.configurationUrl,
-          mergeOptionsMode: this.mergeOptionsMode,
-          sync: this.autoSync,
+        const config = await importFromUrl(configurationUrl.value, {
+          url: configurationUrl.value,
+          mergeOptionsMode: mergeOptionsMode.value,
+          sync: autoSync.value,
         });
         if (config) {
-          this.$emit("config-loaded", config);
+          context.emit("config-loaded", config);
         }
-        this.importUrlStatus = !!config;
-        this.importConfigLoader = false;
+        importUrlStatus.value = !!config;
+        importConfigLoader.value = false;
       }
-    },
-    downloadConfig() {
-      this.$emit("download-config");
-    },
-    importFile(e) {
-      this.resetErrors();
+    };
+
+    const importFile = (e) => {
+      resetErrors();
 
       const file = e.target.files[0];
       const reader = new FileReader();
@@ -167,34 +141,53 @@ export default {
 
       reader.onload = async (event) => {
         const data = event.target.result;
-        const config = await importConfig(data);
+        const config = await importConfigService(data);
         if (config) {
-          this.$emit("config-loaded", config);
+          context.emit("config-loaded", config);
         }
-        this.importFileStatus = !!config;
+        importFileStatus.value = !!config;
       };
 
       reader.onerror = () => {
-        this.importFileStatus = true;
+        importFileStatus.value = false;
       };
-    },
-    resetErrors() {
-      this.importFileStatus = null;
-      this.importUrlStatus = null;
-    },
-    updateImportOptions() {
+    };
+
+    const resetErrors = () => {
+      importFileStatus.value = null;
+      importUrlStatus.value = null;
+    };
+
+    const updateImportOptions = () => {
       setTimeout(() => {
-        this.$emit("update:options", {
+        context.emit("update:options", {
           import: {
-            url: this.configurationUrl,
-            mergeOptionsMode: this.mergeOptionsMode,
-            sync: this.autoSync,
+            url: configurationUrl.value,
+            mergeOptionsMode: mergeOptionsMode.value,
+            sync: autoSync.value,
           },
         });
       }, 0);
-    },
+    };
+
+    const downloadConfig = () => {
+      context.emit("download-config");
+    };
+
+    return {
+      importFile,
+      importConfig,
+      updateImportOptions,
+      downloadConfig,
+      configurationUrl,
+      importUrlStatus,
+      importFileStatus,
+      importConfigLoader,
+      mergeOptionsMode,
+      autoSync,
+    };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -242,6 +235,11 @@ export default {
       .import-url-field {
         flex: 1;
         display: flex;
+        align-items: center;
+      }
+
+      .url-input {
+        flex: 1;
       }
 
       .import-inline-options {
@@ -258,10 +256,6 @@ export default {
       }
 
       .label-set {
-        flex: 1;
-      }
-
-      input {
         flex: 1;
         margin-right: 8px;
       }

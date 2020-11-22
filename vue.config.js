@@ -36,28 +36,28 @@ module.exports = {
       entry: "src/popup.js",
       template: cypress ? "public/popup-cypress.html" : "public/popup.html",
       filename: "popup.html",
-      chunks: ["chunk-common", "chunk-popup-vendors", "popup"],
+      chunks: ["chunk-popup-vendors", "popup"],
     },
     options: {
       title: "YAES - Options",
       entry: "src/options.js",
       template: cypress ? "public/options-cypress.html" : "public/options.html",
       filename: "options.html",
-      chunks: ["chunk-common", "chunk-options-vendors", "options"],
+      chunks: ["chunk-options-vendors", "options"],
     },
     "options-privacy": {
       title: "YAES - Options",
       entry: "src/options.js",
       template: "public/options-privacy.html",
       filename: "options-privacy.html",
-      chunks: ["chunk-common", "chunk-options-vendors", "options"],
+      chunks: ["chunk-options-vendors", "options"],
     },
     content: {
       title: "YAES - Background Page",
       entry: "src/background.js",
       template: "public/background.html",
       filename: "background.html",
-      chunks: ["chunk-common", "chunk-content-vendors", "content"],
+      chunks: ["chunk-content-vendors", "content"],
     },
   },
   configureWebpack: {
@@ -72,7 +72,7 @@ module.exports = {
         options: {
           name: `chunk-options-vendors`,
           priority: -11,
-          chunks: (chunk) => chunk.name === "options",
+          chunks: (chunk) => chunk.name === "options" || chunk.name === "options-privacy",
           test: /[\\/]node_modules[\\/]/,
           enforce: true,
         },
@@ -90,20 +90,12 @@ module.exports = {
           test: /[\\/]node_modules[\\/]/,
           enforce: true,
         },
-        common: {
-          name: "chunk-common",
-          priority: -20,
-          chunks: "initial",
-          minChunks: 2,
-          reuseExistingChunk: true,
-          enforce: true,
-        },
       },
     });
 
     if (config.plugins.has("prefetch-popup")) {
       config.plugin("prefetch-popup").tap((options) => {
-        options[0].fileBlacklist = [/\.map$/, /vendors~sentry/];
+        options[0].fileBlacklist = [/\.map$/, /sentry/];
         return options;
       });
     }

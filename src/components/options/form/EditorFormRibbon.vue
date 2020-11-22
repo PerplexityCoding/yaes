@@ -5,11 +5,7 @@
       display-ribbon
       :class="{ defaulted: env ? env.displayRibbon === undefined : false }"
     >
-      <input
-        :id="$id('display-ribbon')"
-        type="checkbox"
-        v-model="displayRibbon"
-      />
+      <input :id="$id('display-ribbon')" type="checkbox" v-model="displayRibbon" />
       <label :for="$id('display-ribbon')">Ribbon</label>
     </div>
     <div class="form-options">
@@ -20,7 +16,7 @@
             defaulted: isDefaulted('backgroundColor'),
           }"
         >
-          <ColorPicker v-model:color="ribbonBgColor" />
+          <ColorPicker v-model:color="ribbonBackgroundColor" />
           <span>Background Color</span>
         </label>
       </div>
@@ -66,12 +62,12 @@
 </template>
 
 <script>
-import { getComputedFactory } from "@/services/business/ui";
-import ColorPicker from "@/components/core/ColorPicker";
+import ColorPicker from "@/components/options/core/ColorPicker";
+import { defineComponent } from "vue";
+import { createComputedFactory } from "@/services/business/ui";
+import upperFirst from "lodash/upperFirst";
 
-const computed = getComputedFactory("option");
-
-export default {
+export default defineComponent({
   name: "EditorFormRibbon",
   components: { ColorPicker },
   props: {
@@ -79,32 +75,45 @@ export default {
       type: Object,
       default: undefined,
     },
-    option: {
+    options: {
       type: Object,
       required: true,
     },
   },
-  emits: ["update:option"],
-  computed: {
-    displayRibbon: computed("displayRibbon"),
-    ribbonColor: computed("ribbonOptions", "color"),
-    ribbonBgColor: computed("ribbonOptions", "backgroundColor"),
-    ribbonPosition: computed("ribbonOptions", "position"),
-    ribbonType: computed("ribbonOptions", "type"),
-  },
-  methods: {
-    updateComputed(data) {
-      this.$emit("update:option", data);
-    },
-    isDefaulted(key) {
-      return this.env
-        ? this.env.ribbonOptions
-          ? this.env.ribbonOptions[key] === undefined
+  emits: ["update:options"],
+  setup(props, context) {
+    const isDefaulted = (key) => {
+      return props.env
+        ? props.env.ribbonOptions
+          ? props.env.ribbonOptions[key] === undefined
           : true
         : false;
-    },
+    };
+
+    const updateComputed = (data) => context.emit("update:options", data);
+
+    const createComputed = createComputedFactory(updateComputed);
+    const displayRibbon = createComputed(
+      () => props.options.displayRibbon,
+      (val) => ({ displayRibbon: val })
+    );
+
+    const ribbonOptions = ["color", "backgroundColor", "position", "type"].reduce((acc, key) => {
+      acc[`ribbon${upperFirst(key)}`] = createComputed(
+        () => props.options.ribbonOptions[key],
+        (val) => ({ ribbonOptions: { [key]: val } })
+      );
+      return acc;
+    }, {});
+
+    return {
+      displayRibbon,
+      ...ribbonOptions,
+      isDefaulted,
+      updateComputed,
+    };
   },
-};
+});
 </script>
 
 <style scoped lang="scss">

@@ -1,7 +1,4 @@
-import {
-  setBadgeBackgroundColor,
-  setBadgeText,
-} from "@/services/chrome/browserAction";
+import { setBadgeBackgroundColor, setBadgeText } from "@/services/chrome/browserAction";
 import { updateBadgeTextFromEnv } from "@/services/business/badge";
 import { getConfig } from "@/services/business/storage/get";
 import { waitFor } from "../../../../../src/services/utils";

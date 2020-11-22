@@ -60,9 +60,7 @@ context("Options", () => {
 
     cy.get("button.new-project").click();
 
-    cy.get(".left-pane").contains(
-      "There is currently no envs configured for this project."
-    );
+    cy.get(".left-pane").contains("There is currently no envs configured for this project.");
 
     cy.get(".project-item").first().get(".add-new-env").click();
 

@@ -24,11 +24,7 @@ export function addProject(config, project) {
 export function deleteProject(config, projectId) {
   const project = getProjectById(config, projectId);
   const envs = config.envs.filter((env) => project.envs.indexOf(env.id) < 0);
-  const projects = updateArray(
-    config.projects,
-    findIndex(projectId),
-    () => null
-  );
+  const projects = updateArray(config.projects, findIndex(projectId), () => null);
   return {
     ...config,
     envs,
@@ -39,11 +35,7 @@ export function deleteProject(config, projectId) {
 export function updateProject(config, project) {
   return {
     ...config,
-    projects: updateArray(
-      config.projects,
-      findIndex(project.id),
-      () => project
-    ),
+    projects: updateArray(config.projects, findIndex(project.id), () => project),
   };
 }
 
@@ -95,9 +87,7 @@ export function updateEnv(config, env) {
 export function getProjectEnvs(config, projectId) {
   const project = getProjectById(config, projectId);
   if (project.envs && project.envs.length > 0) {
-    return project.envs.map((envId) =>
-      config.envs.find((env) => env.id === envId)
-    );
+    return project.envs.map((envId) => config.envs.find((env) => env.id === envId));
   }
   return [];
 }
@@ -111,11 +101,7 @@ export function getEnvById(config, envId) {
 }
 
 export function mergeOptions(destConfig, currentConfig, mode) {
-  destConfig.options = mergeGlobalOptions(
-    destConfig.options,
-    currentConfig.options,
-    mode
-  );
+  destConfig.options = mergeGlobalOptions(destConfig.options, currentConfig.options, mode);
   mergeEnvOptions(destConfig, currentConfig, mode);
 }
 
@@ -140,11 +126,7 @@ function mergeEnvOptions(destConfig, currentConfig, mode) {
     if (existingEnv) {
       return {
         ...getEnvBaseOptions(env),
-        ...mergeGlobalOptions(
-          getOverridableOptions(env),
-          envOptionsById[env.id],
-          mode
-        ),
+        ...mergeGlobalOptions(getOverridableOptions(env), envOptionsById[env.id], mode),
       };
     }
     return env;

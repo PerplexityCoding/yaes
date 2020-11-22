@@ -8,7 +8,7 @@
       <span>
         {{ project.name || project.id }}
       </span>
-      <ArrowRight height="14px" width="14px" />
+      <ArrowRightIcon height="14px" width="14px" />
     </button>
     <div class="project-envs" v-if="isOpened">
       <EnvList
@@ -16,9 +16,7 @@
         :envs="projectEnvs(project)"
         @switch-env="(data) => $emit('redirect-env', data)"
       />
-      <div v-else class="info">
-        No environments has been configured for this project yet.
-      </div>
+      <div v-else class="info">No environments has been configured for this project yet.</div>
     </div>
   </div>
 </template>
@@ -26,14 +24,14 @@
 <script>
 import { defineComponent, computed } from "vue";
 import EnvList from "./EnvList";
-import ArrowRight from "../icons/ArrowRight";
+import ArrowRightIcon from "../icons/ArrowRightIcon";
 import { isValidProject, mapProjectEnvs } from "@/services/business/bo/project";
 import { isValidEnv } from "@/services/business/bo/env";
 import { arrayValidator } from "@/services/utils";
 
 export default defineComponent({
   name: "Project",
-  components: { EnvList, ArrowRight },
+  components: { EnvList, ArrowRightIcon },
   emits: ["redirect-env", "update:openProjectId"],
   props: {
     envs: {

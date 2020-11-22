@@ -8,27 +8,15 @@
     >
       <div class="left-col">
         <div class="label-set" display-domain>
-          <input
-            :id="$id('display-domain')"
-            type="checkbox"
-            v-model="displayDomain"
-          />
+          <input :id="$id('display-domain')" type="checkbox" v-model="displayDomain" />
           <label :for="$id('display-domain')"> Display domain </label>
         </div>
         <div class="label-set" display-header>
-          <input
-            :id="$id('display-header')"
-            type="checkbox"
-            v-model="displayHeader"
-          />
+          <input :id="$id('display-header')" type="checkbox" v-model="displayHeader" />
           <label :for="$id('display-header')"> Display header </label>
         </div>
         <div class="label-set" display-footer>
-          <input
-            :id="$id('display-footer')"
-            type="checkbox"
-            v-model="displayFooter"
-          />
+          <input :id="$id('display-footer')" type="checkbox" v-model="displayFooter" />
           <label :for="$id('display-footer')"> Display footer </label>
         </div>
         <div class="label-set" display-projects-links>
@@ -37,9 +25,7 @@
             type="checkbox"
             v-model="displaySeeProjectsLink"
           />
-          <label :for="$id('display-projects-links')"
-            >Display see projects link</label
-          >
+          <label :for="$id('display-projects-links')">Display see projects link</label>
         </div>
         <div class="label-set" color-scheme>
           <label :for="$id('color-scheme')">Color Scheme</label>
@@ -50,18 +36,14 @@
           </select>
         </div>
         <div class="label-set" allow-tracking>
-          <input
-            :id="$id('allow-tracking')"
-            type="checkbox"
-            v-model="allowBugTrackerReporting"
-          />
+          <input :id="$id('allow-tracking')" type="checkbox" v-model="allowBugTrackerReporting" />
           <label :for="$id('allow-tracking')">
             Allow bugs to be reported <br />
             <i>No personal information are collected. Not now Not ever.</i>
             <br />
             <i
-              >Please consider keeping it on, as it is every useful to improve
-              the quality of this extension.</i
+              >Please consider keeping it on, as it is every useful to improve the quality of this
+              extension.</i
             >
           </label>
         </div>
@@ -72,15 +54,12 @@
       </div>
 
       <fieldset class="right-col">
-        <EditorFormBadge
-          :option="mergedOptions"
-          @update:option="updateComputed"
-        />
+        <EditorFormBadge :options="mergedOptions" @update:options="updateComputed" />
         <EditorFormRibbon
           v-if="ribbonEnabled"
           class="form-ribbon"
-          :option="mergedOptions"
-          @update:option="updateComputed"
+          :options="mergedOptions"
+          @update:options="updateComputed"
         />
       </fieldset>
 
@@ -88,7 +67,7 @@
         <CoreButton
           v-show="hasOptions"
           elevation
-          icon-name="GoBack"
+          icon-name="GoBackIcon"
           @click.prevent="resetToDefaultOptions"
           data-hint="Reset all options with default global options"
         >
@@ -101,15 +80,14 @@
 
 <script>
 import deepmerge from "deepmerge";
-import { getComputedFactory } from "@/services/business/ui";
+import { createComputedFactory } from "@/services/business/ui";
 import EditorFormRibbon from "@/components/options/form/EditorFormRibbon";
 import EditorFormBadge from "@/components/options/form/EditorFormBadge";
 import { DEFAULT_OPTIONS } from "@/services/business/storage/defaults";
-import CoreButton from "@/components/core/Button";
+import CoreButton from "@/components/options/core/Button";
+import { defineComponent, ref, computed } from "vue";
 
-const computed = getComputedFactory("mergedOptions");
-
-export default {
+export default defineComponent({
   name: "EditorFormConfigGlobalOptions",
   components: { CoreButton, EditorFormBadge, EditorFormRibbon },
   props: {
@@ -119,35 +97,51 @@ export default {
     },
   },
   emits: ["update:options"],
-  computed: {
-    ribbonEnabled: () => !window.ENV || window.ENV.WITHOUT_RIBBON !== true,
-    displayDomain: computed("displayDomain"),
-    displayHeader: computed("displayHeader"),
-    displayFooter: computed("displayFooter"),
-    displaySeeProjectsLink: computed("displaySeeProjectsLink"),
-    colorScheme: computed("colorScheme"),
-    allowBugTrackerReporting: computed("allowBugTrackerReporting"),
-    pingUrl: computed("pingUrl"),
-    mergedOptions() {
-      const options = deepmerge(
-        deepmerge({}, DEFAULT_OPTIONS),
-        this.options || {}
-      );
+  setup(props, context) {
+    const ribbonEnabled = ref(!window.ENV || window.ENV.WITHOUT_RIBBON !== true);
+
+    const updateComputed = (data) =>
+      context.emit("update:options", deepmerge({ ...props.options }, data));
+
+    const createComputed = createComputedFactory(updateComputed);
+
+    const resetToDefaultOptions = () => context.emit("update:options", {});
+
+    const mergedOptions = computed(() => {
+      const options = deepmerge(deepmerge({}, DEFAULT_OPTIONS), props.options || {});
       return options;
-    },
-    hasOptions() {
-      return Object.keys(this.options).length > 0;
-    },
+    });
+
+    const hasOptions = computed(() => {
+      return Object.keys(props.options).length > 0;
+    });
+
+    const localOptions = [
+      "displayDomain",
+      "displayHeader",
+      "displayFooter",
+      "displaySeeProjectsLink",
+      "colorScheme",
+      "allowBugTrackerReporting",
+      "pingUrl",
+    ].reduce((acc, key) => {
+      acc[key] = createComputed(
+        () => mergedOptions.value[key],
+        (val) => ({ [key]: val })
+      );
+      return acc;
+    }, {});
+
+    return {
+      mergedOptions,
+      hasOptions,
+      ribbonEnabled,
+      ...localOptions,
+      resetToDefaultOptions,
+      updateComputed,
+    };
   },
-  methods: {
-    resetToDefaultOptions() {
-      this.$emit("update:options", {});
-    },
-    updateComputed(data) {
-      this.$emit("update:options", deepmerge({ ...this.options }, data));
-    },
-  },
-};
+});
 </script>
 
 <style scoped lang="scss">

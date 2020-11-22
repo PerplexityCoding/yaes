@@ -10,22 +10,11 @@
 
       <div class="title">
         <h2>
-          <span @click="envClick++"> Environments </span>
-          <div class="dev-buttons" v-if="envClick > 5">
-            <button class="save-btn" @click="forceSave">force save</button>
-
-            <button v-if="editorMode === 'form'" @click="editorMode = 'json'">
-              Switch to json
-            </button>
-            <button v-if="editorMode === 'json'" @click="editorMode = 'form'">
-              Switch to form
-            </button>
-          </div>
+          <span> Environments </span>
         </h2>
 
         <div v-if="loadingError">
-          Oh oh it seems we had a little issue getting your configuration in a
-          proper state.
+          Oh oh it seems we had a little issue getting your configuration in a proper state.
         </div>
 
         <div>
@@ -42,18 +31,7 @@
         </div>
       </div>
 
-      <EditorJsonConfig
-        v-if="editorMode === 'json'"
-        ref="editor"
-        :config="config"
-        @update:config="saveConfig"
-      />
-
-      <EditorFormConfig
-        v-if="editorMode === 'form'"
-        :config="config"
-        @update:config="saveConfig"
-      />
+      <EditorFormConfig :config="config" @update:config="saveConfig" />
 
       <h2>Import / Export</h2>
 
@@ -61,140 +39,129 @@
         :options="config.options"
         @update:options="updateConfigOptions"
         @config-loaded="saveImportedConfig"
-        @download-config="downloadConfig"
+        @download-config="downloadAsJson"
       />
     </section>
   </div>
 </template>
 
 <script>
-import { defineAsyncComponent } from "vue";
+import { defineComponent, ref, computed, watch } from "vue";
 import { getFixConfig, setConfig } from "./services/business/storage";
-import CheckIcon from "./components/icons/CheckIcon";
-import DeleteIcon from "./components/icons/Delete";
 import ImportConfig from "@/components/options/ImportConfig";
-import EditorFormConfig from "@/components/options/EditorFormConfig";
+import EditorFormConfig from "@/components/options/envs/EditorFormConfig";
 import { downloadAsJson } from "@/services/utils";
 import { isDarkMode } from "@/services/business/utils";
 import introJs from "intro.js";
 import { mergeOptions } from "@/services/business/bo/config";
 
-const EditorJsonConfig = defineAsyncComponent(() =>
-  import("@/components/options/EditorJsonConfig")
-);
+async function getOrInitConfig() {
+  const { config, errors } = await getFixConfig({
+    mergeOptions: false,
+    mergeDefault: false,
+  });
+  return {
+    hasErrors: errors && (errors.migrationFailed || errors.validationFailed),
+    storedConfig: config,
+  };
+}
 
-export default {
+export default defineComponent({
   name: "OptionsPage",
-  data() {
-    return {
-      envClick: 0,
-      editorMode: "form",
-      config: false,
-      displaySaveInfo: false,
-      loadingError: false,
-      errorMessage: null,
-    };
-  },
   components: {
     EditorFormConfig,
-    EditorJsonConfig,
     ImportConfig,
-    CheckIcon,
-    DeleteIcon,
   },
-  async created() {
-    this.config = await this.getOrInitConfig();
+  setup() {
+    const config = ref(null);
+    const loadingError = ref(false);
+    const errorMessage = ref(null);
+    const displaySaveInfo = ref(false);
 
-    if (this.config.envs.length === 0 && this.config.projects.length === 0) {
-      setTimeout(() => {
-        introJs().start();
-      }, 0);
-    }
-  },
-  watch: {
-    darkMode(darkMode) {
+    (async () => {
+      const { storedConfig, hasErrors } = await getOrInitConfig();
+      config.value = storedConfig;
+      loadingError.value = hasErrors;
+
+      if (!hasErrors && storedConfig.envs.length === 0 && storedConfig.projects.length === 0) {
+        setTimeout(() => {
+          introJs().start();
+        }, 0);
+      }
+    })();
+
+    const darkMode = computed(() => {
+      return config.value && config.value.options
+        ? isDarkMode(config.value.options.colorScheme)
+        : false;
+    });
+
+    watch(darkMode, (value) => {
       const classList = window.document.body.classList;
-      if (darkMode) {
+      if (value) {
         classList.add("dark-mode");
       } else {
         classList.remove("dark-mode");
       }
-    },
-  },
-  computed: {
-    darkMode() {
-      return this.config.options
-        ? isDarkMode(this.config.options.colorScheme)
-        : false;
-    },
-  },
-  methods: {
-    async getOrInitConfig() {
-      const { config, errors } = await getFixConfig({
-        mergeOptions: false,
-        mergeDefault: false,
-      });
-      if (errors && (errors.migrationFailed || errors.validationFailed)) {
-        this.loadingError = true;
-      }
+    });
 
-      return config;
-    },
-
-    forceSave() {
-      const editor = this.$refs.editor.editor;
-      this.saveConfig(editor.get(), { force: true });
-    },
-
-    saveImportedConfig(config) {
-      const importConfig = config.options.import;
+    const saveImportedConfig = (importedConfig) => {
+      const importConfig = importedConfig.options.import;
       if (importConfig && importConfig.mergeOptionsMode) {
-        mergeOptions(config, this.config, importConfig.mergeOptionsMode);
-        config.options.import = importConfig;
+        mergeOptions(importedConfig, config.value, importConfig.mergeOptionsMode);
+        importedConfig.options.import = importConfig;
       }
-      this.saveConfig(config);
-    },
+      saveConfig(importedConfig);
+    };
 
-    updateConfigOptions(options) {
-      this.saveConfig({
-        ...this.config,
+    const updateConfigOptions = (options) => {
+      saveConfig({
+        ...config.value,
         options: {
-          ...this.config.options,
+          ...config.value.options,
           ...options,
         },
       });
-    },
+    };
 
-    async saveConfig(config, { force, noSave } = {}) {
-      if (!force && !config) {
+    const saveConfig = async (savingConfig, { noSave } = {}) => {
+      if (!savingConfig) {
         return;
       }
 
-      this.config = config;
+      config.value = savingConfig;
 
       if (noSave) {
         return;
       }
 
-      this.errorMessage = null;
+      errorMessage.value = null;
 
-      if (!(await setConfig(config, force))) {
-        this.displaySaveInfo = false;
-        this.errorMessage = "Save Failed";
+      if (!(await setConfig(savingConfig))) {
+        displaySaveInfo.value = false;
+        errorMessage.value = "Save Failed";
         return;
       }
-      this.displaySaveInfo = true;
+      displaySaveInfo.value = true;
 
       setTimeout(() => {
-        this.displaySaveInfo = false;
+        displaySaveInfo.value = false;
       }, 3000);
-    },
+    };
 
-    downloadConfig() {
-      downloadAsJson(this.config);
-    },
+    return {
+      displaySaveInfo,
+      errorMessage,
+      config,
+      loadingError,
+      darkMode,
+      downloadAsJson,
+      saveConfig,
+      saveImportedConfig,
+      updateConfigOptions,
+    };
   },
-};
+});
 </script>
 
 <style lang="scss">

@@ -1,10 +1,7 @@
 import { getCurrentEnv } from "@/services/business/url";
 import { getConfig } from "@/services/business/storage/get";
 
-import {
-  setBadgeBackgroundColor,
-  setBadgeText,
-} from "@/services/chrome/browserAction";
+import { setBadgeBackgroundColor, setBadgeText } from "@/services/chrome/browserAction";
 import { loadSentry } from "@/services/sentry/loader";
 
 export async function updateBadgeTextFromEnv(tabId, url) {

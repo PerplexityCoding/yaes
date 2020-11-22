@@ -1,6 +1,7 @@
 import { mount } from "@vue/test-utils";
 import ProjectList from "@/components/popup/ProjectList.vue";
 import { waitFor } from "../../../src/services/utils";
+import GlobalIcons from "@/utils/plugins/global-icons";
 
 describe("ProjectList.vue", () => {
   const envs = [
@@ -48,6 +49,9 @@ describe("ProjectList.vue", () => {
         envs,
         projects,
         openProjectId: -1,
+      },
+      global: {
+        plugins: [GlobalIcons],
       },
     });
 

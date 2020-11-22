@@ -23,7 +23,7 @@
             @click="changeMode('projects')"
           >
             <span>See projects</span>
-            <ArrowRight class="arrow" height="12px" width="12px" />
+            <ArrowRightIcon class="arrow" height="12px" width="12px" />
           </button>
         </div>
       </div>
@@ -34,25 +34,18 @@
           @redirect-env="(o) => changeBaseUrlEnv(o, false)"
         />
 
-        <button
-          v-if="config.currentEnv"
-          class="switch-env-btn"
-          @click="changeMode('envs')"
-        >
-          <ArrowRight class="arrow" height="12px" width="12px" />
+        <button v-if="config.currentEnv" class="switch-env-btn" @click="changeMode('envs')">
+          <ArrowRightIcon class="arrow" height="12px" width="12px" />
           <span>See current env</span>
         </button>
       </div>
       <div v-else class="info">
-        No environments has been configured yet. Click on edit configuration
-        link.
+        No environments has been configured yet. Click on edit configuration link.
       </div>
     </section>
     <footer v-if="config.options.displayFooter !== false" class="footer">
       <a href="#/options" @click="openOptionsPage"> Edit Configuration </a>
-      <a href="https://github.com/ymenard-dev/yaes" target="_blank">
-        Homepage
-      </a>
+      <a href="https://github.com/ymenard-dev/yaes" target="_blank"> Homepage </a>
     </footer>
   </section>
 </template>
@@ -61,20 +54,13 @@
 import { defineComponent, computed, ref } from "vue";
 import EnvList from "./components/popup/EnvList";
 import ProjectList from "./components/popup/ProjectList";
-import ArrowRight from "./components/icons/ArrowRight";
+import ArrowRightIcon from "./components/icons/ArrowRightIcon";
 
-import {
-  getCurrentTab,
-  openChromeUrl,
-  openOptionsPage,
-} from "./services/chrome/tabs";
+import { getCurrentTab, openChromeUrl, openOptionsPage } from "./services/chrome/tabs";
 import { switchBaseUrl, getCurrentEnv } from "./services/business/url";
 import { getConfig } from "./services/business/storage/get";
 import { isDarkMode } from "@/services/business/utils";
-import {
-  findProjectByEnvId,
-  mapProjectEnvs,
-} from "@/services/business/bo/project";
+import { findProjectByEnvId, mapProjectEnvs } from "@/services/business/bo/project";
 
 function changeBaseUrlEnv(currentTab) {
   return async ({ env, newTab }, switchOption) => {
@@ -134,7 +120,7 @@ async function useAsyncSetup(config, currentTab, mode, loaded) {
 
 export default defineComponent({
   name: "Popup",
-  components: { EnvList, ProjectList, ArrowRight },
+  components: { EnvList, ProjectList, ArrowRightIcon },
   setup() {
     const loaded = ref(false);
     const mode = ref("");

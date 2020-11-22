@@ -8,10 +8,7 @@ import deepmerge from "deepmerge";
 
 import validateSchema from "./validate";
 
-import {
-  checkUpdate,
-  ConfigUpdateStatus,
-} from "@/services/business/storage/migrate";
+import { checkUpdate, ConfigUpdateStatus } from "@/services/business/storage/migrate";
 import { INIT_DEFAULT_CONFIG } from "@/services/business/storage/defaults";
 import {
   getAndAssembleConfig,
@@ -102,9 +99,7 @@ async function removeUnrefEnvs(config) {
     });
     return acc;
   }, {});
-  const unusedEnvIds = config.envs
-    .filter(({ id }) => !envIdsUsed[id])
-    .map((env) => env.id);
+  const unusedEnvIds = config.envs.filter(({ id }) => !envIdsUsed[id]).map((env) => env.id);
   const usedEnvs = config.envs.filter(({ id }) => envIdsUsed[id]);
 
   if (unusedEnvIds.length > 0) {
@@ -114,8 +109,16 @@ async function removeUnrefEnvs(config) {
   return usedEnvs;
 }
 
-async function setConfig(config, force = false) {
-  if (force || (await validateSchema(config)).status) {
+async function isValid(config) {
+  const result = await validateSchema(config);
+  if (!result.status) {
+    console.log(result.errors);
+  }
+  return result.status;
+}
+
+async function setConfig(config) {
+  if (await isValid(config)) {
     const envsById = config.envs.reduce((acc, env) => {
       acc[`env-${env.id}`] = JSON.stringify(env);
       return acc;

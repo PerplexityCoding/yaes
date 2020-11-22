@@ -1,5 +1,6 @@
 import { mount } from "@vue/test-utils";
 import EnvList from "@/components/popup/EnvList.vue";
+import GlobalIcons from "@/utils/plugins/global-icons";
 
 describe("EnvList.vue", () => {
   const envs = [
@@ -35,6 +36,9 @@ describe("EnvList.vue", () => {
       props: {
         envs,
         currentEnv,
+      },
+      global: {
+        plugins: [GlobalIcons],
       },
     });
 

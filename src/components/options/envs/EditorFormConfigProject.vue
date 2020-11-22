@@ -1,11 +1,8 @@
 <template>
-  <li
-    class="project-item"
-    :class="{ 'selected-project': projectId === selectedProjectId }"
-  >
+  <li class="project-item" :class="{ 'selected-project': projectId === selectedProjectId }">
     <header>
       <span class="project-sortable-handle">
-        <DragList height="16px" width="16px" />
+        <DragListIcon height="16px" width="16px" />
       </span>
 
       <div class="project-name">
@@ -30,7 +27,7 @@
             v-if="!projectNameEditable"
             elevation
             class="edit-project-name"
-            icon-name="EditText"
+            icon-name="EditTextIcon"
             @click="projectNameEditable = true"
           >
             Edit
@@ -45,15 +42,14 @@
         :key="'env-' + env.id"
         class="project-env"
         :class="{
-          'selected-env':
-            selectedEnvId != null ? env.id === selectedEnvId : false,
+          'selected-env': selectedEnvId != null ? env.id === selectedEnvId : false,
         }"
         @click="$emit('select-env', { envId: env.id, projectId })"
       >
         <span class="env-name">
           {{ env.name || env.shortName }}
         </span>
-        <ArrowRight height="14px" width="14px" />
+        <ArrowRightIcon height="14px" width="14px" />
       </li>
     </ul>
     <h3 v-else>
@@ -63,7 +59,7 @@
 
     <div class="action-buttons">
       <CoreButton
-        icon-name="Add"
+        icon-name="AddIcon"
         class="add-new-env"
         variation="positive"
         @click="$emit('new-env', projectId)"
@@ -77,24 +73,15 @@
 
 <script>
 import { getProjectById, getProjectEnvs } from "@/services/business/bo/config";
-import DragList from "@/components/icons/DragList";
-import ArrowRight from "@/components/icons/ArrowRight";
 import { updateSortableEnvs } from "@/services/business/ui";
 import ConfirmationDeleteButton from "@/components/options/form/ConfirmationDeleteButton";
-import CoreButton from "@/components/core/Button";
+import CoreButton from "@/components/options/core/Button";
+import { defineComponent, computed, ref, onMounted } from "vue";
 
-export default {
+export default defineComponent({
   name: "EditorFormConfigProject",
-  data() {
-    return {
-      deleteConfirm: false,
-      projectNameEditable: false,
-    };
-  },
   components: {
     CoreButton,
-    DragList,
-    ArrowRight,
     ConfirmationDeleteButton,
   },
   props: {
@@ -115,43 +102,51 @@ export default {
       default: null,
     },
   },
-  mounted() {
-    updateSortableEnvs();
-  },
-  emits: [
-    "select-env",
-    "new-env",
-    "drop-env",
-    "delete-project",
-    "update-project",
-  ],
-  computed: {
-    projectEnvs() {
-      return getProjectEnvs(this.config, this.projectId);
-    },
-    projectName() {
-      const project = getProjectById(this.config, this.projectId);
+  emits: ["select-env", "new-env", "drop-env", "delete-project", "update-project"],
+  setup(props, context) {
+    const deleteConfirm = ref(false);
+    const projectNameEditable = ref(false);
+
+    onMounted(() => {
+      updateSortableEnvs();
+    });
+
+    const projectEnvs = computed(() => {
+      return getProjectEnvs(props.config, props.projectId);
+    });
+
+    const projectName = computed(() => {
+      const project = getProjectById(props.config, props.projectId);
       return project.name;
-    },
-  },
-  methods: {
-    updateProject(data) {
-      this.$emit("update-project", {
-        projectId: this.projectId,
+    });
+
+    const updateProject = (data) => {
+      context.emit("update-project", {
+        projectId: props.projectId,
         data,
       });
-    },
-    onDrop(e) {
+    };
+
+    const onDrop = (e) => {
       const { detail } = e;
       const { origin, destination } = detail;
-      this.$emit("drop-env", {
-        projectId: this.projectId,
+      context.emit("drop-env", {
+        projectId: props.projectId,
         origin,
         destination,
       });
-    },
+    };
+
+    return {
+      projectEnvs,
+      projectName,
+      updateProject,
+      onDrop,
+      deleteConfirm,
+      projectNameEditable,
+    };
   },
-};
+});
 </script>
 
 <style lang="scss">

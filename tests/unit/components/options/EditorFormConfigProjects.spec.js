@@ -1,8 +1,9 @@
 import deepmerge from "deepmerge";
 import { mount } from "@vue/test-utils";
-import EditorFormConfigProjects from "@/components/options/EditorFormConfigProjects";
-import EditorFormConfigProject from "@/components/options/EditorFormConfigProject";
+import EditorFormConfigProjects from "@/components/options/envs/EditorFormConfigProjects";
+import EditorFormConfigProject from "@/components/options/envs/EditorFormConfigProject";
 import UniqueId from "@/utils/plugins/unique-id";
+import GlobalIcons from "@/utils/plugins/global-icons";
 
 describe("EditorFormConfigProjects.vue", () => {
   const config = {
@@ -46,7 +47,7 @@ describe("EditorFormConfigProjects.vue", () => {
         selectedEnvId: 1,
       },
       global: {
-        plugins: [UniqueId],
+        plugins: [UniqueId, GlobalIcons],
       },
     });
 
@@ -57,8 +58,7 @@ describe("EditorFormConfigProjects.vue", () => {
     const wrapper = createDefaultWrapper();
 
     const projects = wrapper.findAllComponents(EditorFormConfigProject);
-    const expectName = (project, name) =>
-      expect(project.html()).toContain(name);
+    const expectName = (project, name) => expect(project.html()).toContain(name);
 
     expectName(projects[0], "Project1");
     expectName(projects[1], "Project2");

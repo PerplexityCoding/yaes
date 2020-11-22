@@ -1,17 +1,14 @@
 <template>
-  <button
-    :class="{ [variation]: variation, elevation }"
-    @click="(e) => $emit('click', e)"
-  >
+  <button :class="{ [variation]: variation, elevation }" @click="(e) => $emit('click', e)">
     <component v-if="iconName" :is="iconName" height="18px" width="18px" />
     <slot />
   </button>
 </template>
 
 <script>
-import * as icons from "../icons";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "CoreButton",
   props: {
     iconName: {
@@ -21,8 +18,7 @@ export default {
     variation: {
       type: String,
       default: null,
-      validator: (s) =>
-        s.indexOf("negative") >= 0 || s.indexOf("positive") >= 0,
+      validator: (s) => s.indexOf("negative") >= 0 || s.indexOf("positive") >= 0,
     },
     elevation: {
       type: Boolean,
@@ -30,10 +26,7 @@ export default {
     },
   },
   emits: ["click"],
-  components: {
-    ...icons,
-  },
-};
+});
 </script>
 
 <style lang="scss" scoped>

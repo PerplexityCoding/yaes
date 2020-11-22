@@ -1,8 +1,5 @@
 import deep from "deepmerge";
-import {
-  DEFAULT_OPTIONS,
-  INIT_DEFAULT_CONFIG,
-} from "@/services/business/storage/defaults";
+import { DEFAULT_OPTIONS, INIT_DEFAULT_CONFIG } from "@/services/business/storage/defaults";
 
 export function mergeOptionsDefault(config) {
   config.options = deep(deep({}, DEFAULT_OPTIONS), config.options || {});
