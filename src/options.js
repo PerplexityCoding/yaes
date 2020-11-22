@@ -6,8 +6,10 @@ import GlobalIcons from "./utils/plugins/global-icons";
 import "./utils/plugins/vee-validate";
 import "intro.js/minified/introjs.min.css";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 async function main() {
-  if (!window.Cypress) {
+  if (isProduction && !window.Cypress) {
     loadSentry();
   }
 
