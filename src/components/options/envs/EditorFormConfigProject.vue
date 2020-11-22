@@ -74,7 +74,7 @@
 <script>
 import { getProjectById, getProjectEnvs } from "@/services/business/bo/config";
 import { updateSortableEnvs } from "@/services/business/ui";
-import ConfirmationDeleteButton from "@/components/options/form/ConfirmationDeleteButton";
+import ConfirmationDeleteButton from "@/components/options/core/ConfirmationDeleteButton";
 import CoreButton from "@/components/options/core/Button";
 import { defineComponent, computed, ref, onMounted } from "vue";
 
