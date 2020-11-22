@@ -1,8 +1,5 @@
 <template>
-  <button
-    :class="{ [variation]: variation, elevation }"
-    @click="(e) => $emit('click', e)"
-  >
+  <button :class="{ [variation]: variation, elevation }" @click="(e) => $emit('click', e)">
     <component v-if="iconName" :is="iconName" height="18px" width="18px" />
     <slot />
   </button>
@@ -21,8 +18,7 @@ export default defineComponent({
     variation: {
       type: String,
       default: null,
-      validator: (s) =>
-        s.indexOf("negative") >= 0 || s.indexOf("positive") >= 0,
+      validator: (s) => s.indexOf("negative") >= 0 || s.indexOf("positive") >= 0,
     },
     elevation: {
       type: Boolean,

@@ -41,15 +41,12 @@ export function getComponentName(vm) {
 
   // injected by vue-loader
   if (vm.$options.__file) {
-    const unifiedFile = vm.$options.__file
-      .replace(/^[a-zA-Z]:/, "")
-      .replace(/\\/g, "/");
+    const unifiedFile = vm.$options.__file.replace(/^[a-zA-Z]:/, "").replace(/\\/g, "/");
     const filename = basename(unifiedFile, ".vue");
     return (
       this._componentsCache[filename] ||
-      (this._componentsCache[filename] = filename.replace(
-        COMPONENT_NAME_REGEXP,
-        (_, c) => (c ? c.toUpperCase() : "")
+      (this._componentsCache[filename] = filename.replace(COMPONENT_NAME_REGEXP, (_, c) =>
+        c ? c.toUpperCase() : ""
       ))
     );
   }

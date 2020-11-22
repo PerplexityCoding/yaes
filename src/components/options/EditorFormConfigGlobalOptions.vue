@@ -20,7 +20,11 @@
           <label :for="$id('display-footer')"> Display footer </label>
         </div>
         <div class="label-set" display-projects-links>
-          <input :id="$id('display-projects-links')" type="checkbox" v-model="displaySeeProjectsLink" />
+          <input
+            :id="$id('display-projects-links')"
+            type="checkbox"
+            v-model="displaySeeProjectsLink"
+          />
           <label :for="$id('display-projects-links')">Display see projects link</label>
         </div>
         <div class="label-set" color-scheme>
@@ -37,7 +41,10 @@
             Allow bugs to be reported <br />
             <i>No personal information are collected. Not now Not ever.</i>
             <br />
-            <i>Please consider keeping it on, as it is every useful to improve the quality of this extension.</i>
+            <i
+              >Please consider keeping it on, as it is every useful to improve the quality of this
+              extension.</i
+            >
           </label>
         </div>
         <div class="label-set" ping-url>

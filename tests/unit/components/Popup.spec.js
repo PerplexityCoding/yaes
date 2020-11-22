@@ -91,11 +91,7 @@ describe("Popup.vue", () => {
     const firstButton = envList.findAll("button")[1];
     await firstButton.trigger("click.middle");
 
-    expect(openChromeUrl).toHaveBeenCalledWith(
-      currentTab,
-      "https://www.google.de/coucou",
-      true
-    );
+    expect(openChromeUrl).toHaveBeenCalledWith(currentTab, "https://www.google.de/coucou", true);
   });
 
   /*it("display empty message when not on env domain", async () => {

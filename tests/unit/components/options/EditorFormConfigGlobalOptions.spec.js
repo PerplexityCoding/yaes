@@ -36,14 +36,10 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
     await waitFor();
     expect(labels).toHaveLength(14);
 
-    const hasAttribute = (label, attribute) =>
-      expect(label.attributes()[attribute]).toBe("");
-    const isCheckbox = (label) =>
-      expect(label.find("input[type=checkbox]").exists()).toBe(true);
-    const isColorSelector = (label) =>
-      expect(label.html()).toContain("pcr-button");
-    const isSelect = (label) =>
-      expect(label.find("select").exists()).toBe(true);
+    const hasAttribute = (label, attribute) => expect(label.attributes()[attribute]).toBe("");
+    const isCheckbox = (label) => expect(label.find("input[type=checkbox]").exists()).toBe(true);
+    const isColorSelector = (label) => expect(label.html()).toContain("pcr-button");
+    const isSelect = (label) => expect(label.find("select").exists()).toBe(true);
 
     let i = 0;
     let label = "";
@@ -113,17 +109,14 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
     ${"display-header"}         | ${"displayHeader"}
     ${"display-footer"}         | ${"displayFooter"}
     ${"display-projects-links"} | ${"displaySeeProjectsLink"}
-  `(
-    "Changing select options $name $optionName",
-    async ({ name, optionName }) => {
-      const wrapper = createDefaultWrapper();
+  `("Changing select options $name $optionName", async ({ name, optionName }) => {
+    const wrapper = createDefaultWrapper();
 
-      const input = wrapper.find(`.label-set[${name}] input`);
-      expect(input.element.value).toBe("on");
-      const newValue = !input.element.checked;
-      await input.setValue(newValue);
+    const input = wrapper.find(`.label-set[${name}] input`);
+    expect(input.element.value).toBe("on");
+    const newValue = !input.element.checked;
+    await input.setValue(newValue);
 
-      updateOptionsWith(wrapper, { [optionName]: newValue });
-    }
-  );
+    updateOptionsWith(wrapper, { [optionName]: newValue });
+  });
 });

@@ -26,9 +26,7 @@
         >
           Yes
         </CoreButton>
-        <CoreButton class="button" elevation ref="no" @click="hide">
-          No
-        </CoreButton>
+        <CoreButton class="button" elevation ref="no" @click="hide"> No </CoreButton>
       </div>
     </transition>
   </div>

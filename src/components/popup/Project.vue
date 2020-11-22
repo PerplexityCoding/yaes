@@ -16,9 +16,7 @@
         :envs="projectEnvs(project)"
         @switch-env="(data) => $emit('redirect-env', data)"
       />
-      <div v-else class="info">
-        No environments has been configured for this project yet.
-      </div>
+      <div v-else class="info">No environments has been configured for this project yet.</div>
     </div>
   </div>
 </template>

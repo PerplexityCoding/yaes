@@ -1,6 +1,10 @@
 <template>
   <fieldset :class="{ 'has-env': !!env }">
-    <div class="label-set" display-badge :class="{ defaulted: env ? env.displayBadge === undefined : false }">
+    <div
+      class="label-set"
+      display-badge
+      :class="{ defaulted: env ? env.displayBadge === undefined : false }"
+    >
       <input :id="$id('display-badge')" type="checkbox" v-model="displayBadge" />
       <label :for="$id('display-badge')">Badge</label>
     </div>

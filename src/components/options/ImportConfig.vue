@@ -17,19 +17,11 @@
                 v-model="configurationUrl"
               />
             </div>
-            <CoreButton elevation icon-name="ImportIcon" @click="importConfig">
-              import
-            </CoreButton>
-            <span
-              class="import-failed-message"
-              v-if="importUrlStatus === false"
-            >
+            <CoreButton elevation icon-name="ImportIcon" @click="importConfig"> import </CoreButton>
+            <span class="import-failed-message" v-if="importUrlStatus === false">
               Import from url failed
             </span>
-            <span
-              class="import-success-message"
-              v-if="importUrlStatus === true"
-            >
+            <span class="import-success-message" v-if="importUrlStatus === true">
               Import from url successful
             </span>
             <div v-if="importConfigLoader" class="lds-dual-ring loader" />
@@ -37,9 +29,7 @@
 
           <div class="import-inline-options">
             <div>
-              <label :for="$id('merge-options-mode')">
-                Merge options mode
-              </label>
+              <label :for="$id('merge-options-mode')"> Merge options mode </label>
               <select
                 :id="$id('merge-options-mode')"
                 v-model="mergeOptionsMode"
@@ -67,9 +57,7 @@
         <div>
           <div class="label-set">
             <label :for="$id('import-file')"> Using File </label>
-            <CoreButton elevation @click="$refs.importFileInput.click()">
-              Choose File
-            </CoreButton>
+            <CoreButton elevation @click="$refs.importFileInput.click()"> Choose File </CoreButton>
             <input
               ref="importFileInput"
               :id="$id('import-file')"
@@ -78,16 +66,10 @@
               @change="importFile"
             />
 
-            <span
-              class="import-failed-message"
-              v-if="importFileStatus === false"
-            >
+            <span class="import-failed-message" v-if="importFileStatus === false">
               Import file failed
             </span>
-            <span
-              class="import-success-message"
-              v-if="importFileStatus === true"
-            >
+            <span class="import-success-message" v-if="importFileStatus === true">
               Import file successful
             </span>
           </div>
@@ -97,9 +79,7 @@
 
     <div class="import-configuration">
       <strong> Export configuration </strong>
-      <CoreButton elevation icon-name="ExportIcon" @click="downloadConfig">
-        Export
-      </CoreButton>
+      <CoreButton elevation icon-name="ExportIcon" @click="downloadConfig"> Export </CoreButton>
       <span>Tips:</span>
       <a href="https://gist.github.com/" target="_blank">Share it on gist</a>
     </div>
@@ -130,12 +110,7 @@ export default {
       autoSync: importOptions ? importOptions.sync : false,
     };
   },
-  emits: [
-    "config-loaded",
-    "config-load-failed",
-    "download-config",
-    "update:options",
-  ],
+  emits: ["config-loaded", "config-load-failed", "download-config", "update:options"],
   components: { CoreButton },
   methods: {
     async importConfig() {

@@ -22,8 +22,7 @@ window["onunhandledrejection"] = function (exception) {
   queue.push({
     p: exception.reason,
   });
-  if (_oldOnunhandledrejection)
-    _oldOnunhandledrejection.apply(window, arguments);
+  if (_oldOnunhandledrejection) _oldOnunhandledrejection.apply(window, arguments);
 };
 
 export async function loadSentry() {

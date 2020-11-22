@@ -49,9 +49,7 @@ function migrateId(env, idx) {
 
 function migrateEnvProject(config, env) {
   const projects = config.projects;
-  const defaultProject = projects.find(
-    (project) => project.name === "Default Project"
-  ) || {
+  const defaultProject = projects.find((project) => project.name === "Default Project") || {
     name: "Default Project",
     envs: [],
   };

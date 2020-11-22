@@ -1,10 +1,6 @@
 import { hostnameFromEnv } from "@/services/business/bo/env";
 
-export function switchBaseUrl(
-  currentUrl,
-  newBaseUrl,
-  { appendUrlParams, removeUrlParams }
-) {
+export function switchBaseUrl(currentUrl, newBaseUrl, { appendUrlParams, removeUrlParams }) {
   const baseUrl = new URL(newBaseUrl);
   const url = new URL(currentUrl);
   url.hostname = baseUrl.hostname;

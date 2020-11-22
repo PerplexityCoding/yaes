@@ -5,11 +5,7 @@ context("Popup", () => {
       {
         id: 0,
         name: "Project name test",
-        envs: [
-          "f87a0b70-324e-4724-ab90-36cb47ff1c7d",
-          2,
-          "39b2f74d-b8a4-405b-aa97-0cdeb46849af",
-        ],
+        envs: ["f87a0b70-324e-4724-ab90-36cb47ff1c7d", 2, "39b2f74d-b8a4-405b-aa97-0cdeb46849af"],
       },
     ]),
     "env-f87a0b70-324e-4724-ab90-36cb47ff1c7d": JSON.stringify({
@@ -233,27 +229,15 @@ context("Popup", () => {
       .click()
       .should("have.class", "is-opened");
 
-    cy.get(".project-list li")
-      .contains("Project 2")
-      .should("not.have.class", "is-opened");
+    cy.get(".project-list li").contains("Project 2").should("not.have.class", "is-opened");
 
-    cy.get(".env-list li")
-      .first()
-      .should("contain", "FR")
-      .next()
-      .should("contain", "DE")
-      .end();
+    cy.get(".env-list li").first().should("contain", "FR").next().should("contain", "DE").end();
 
-    cy.get(".project-list li")
-      .contains("Project 2")
-      .click()
-      .should("have.class", "is-opened");
+    cy.get(".project-list li").contains("Project 2").click().should("have.class", "is-opened");
 
     cy.get(".env-list li").first().should("contain", "ES").end();
 
-    cy.get(".project-list li")
-      .contains("Project 1")
-      .should("not.have.class", "is-opened");
+    cy.get(".project-list li").contains("Project 1").should("not.have.class", "is-opened");
   });
 
   it("Should create new tab when clicking on env (not current domain)", () => {

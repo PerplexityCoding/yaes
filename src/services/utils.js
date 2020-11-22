@@ -23,9 +23,7 @@ export function debounce(func, wait, immediate) {
 }
 
 export function downloadAsJson(obj) {
-  const data =
-    "text/json;charset=utf-8," +
-    encodeURIComponent(JSON.stringify(obj, null, 2));
+  const data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj, null, 2));
 
   const a = document.createElement("a");
   a.href = "data:" + data;
@@ -40,11 +38,9 @@ export function downloadAsJson(obj) {
 export function updateArray(arr, findIndex, cb) {
   const index = findIndex(arr);
   if (index >= 0) {
-    return [
-      ...arr.slice(0, index),
-      cb(arr[index]),
-      ...arr.slice(index + 1),
-    ].filter((el) => el != null);
+    return [...arr.slice(0, index), cb(arr[index]), ...arr.slice(index + 1)].filter(
+      (el) => el != null
+    );
   }
   return arr;
 }
