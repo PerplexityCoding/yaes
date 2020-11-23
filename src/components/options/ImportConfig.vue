@@ -31,15 +31,15 @@
 
           <div class="import-inline-options">
             <div>
-              <label :for="$id('merge-options-mode')"> Merge options mode </label>
+              <label :for="$id('merge-options-mode')"> Update options mode </label>
               <select
                 :id="$id('merge-options-mode')"
                 v-model="mergeOptionsMode"
                 @change="updateImportOptions"
               >
-                <option value="">Override</option>
-                <option value="merge">Merge</option>
-                <option value="keep">Keep</option>
+                <option value="default">Don't keep your options</option>
+                <option value="merge">Merge your options</option>
+                <option value="keep">Keep your options</option>
               </select>
             </div>
           </div>
@@ -92,7 +92,9 @@
 import { importConfig as importConfigService, importFromUrl } from "@/services/business/storage";
 import CoreButton from "@/components/options/core/Button";
 import CoreInput from "@/components/options/core/Input";
-import { defineComponent, ref } from "vue";
+import { defineComponent, computed, ref } from "vue";
+import deepmerge from "deepmerge";
+import { DEFAULT_OPTIONS } from "@/services/business/storage/defaults";
 
 export default defineComponent({
   name: "ImportConfig",
@@ -105,14 +107,17 @@ export default defineComponent({
   components: { CoreButton, CoreInput },
   emits: ["config-loaded", "download-config", "update:options"],
   setup(props, context) {
+    const mergedOptions = computed(() => {
+      const options = deepmerge(deepmerge({}, DEFAULT_OPTIONS), props.options || {});
+      return options;
+    });
+
     const configurationUrl = ref(props.options.import ? props.options.import.url : "");
     const importUrlStatus = ref(null);
     const importFileStatus = ref(null);
     const importConfigLoader = ref(false);
-    const mergeOptionsMode = ref(
-      props.options.import ? props.options.import.mergeOptionsMode : false
-    );
-    const autoSync = ref(props.options.import ? props.options.import.sync : false);
+    const mergeOptionsMode = ref(mergedOptions.value.import.mergeOptionsMode);
+    const autoSync = ref(mergedOptions.value.import.sync);
 
     const importConfig = async () => {
       if (configurationUrl.value) {
