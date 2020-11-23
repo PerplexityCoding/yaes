@@ -2,21 +2,17 @@ import { getTab } from "@/services/chrome/tabs";
 import { updateBadgeTextFromEnv } from "./services/business/badge";
 import { autoUpdate, migrate } from "@/services/business/storage";
 
-async function main() {
+function main() {
   window.chrome.runtime.onInstalled.addListener(() => {
     onTabsActivatedUpdateBadge();
   });
 
   window.chrome.runtime.onUpdateAvailable.addListener(() => {
-    updateConfig();
     window.chrome.runtime.reload();
   });
 
-  window.chrome.runtime.onStartup.addListener(() => {
-    updateConfig();
-  });
-
   onTabsActivatedUpdateBadge();
+  updateConfig();
 }
 
 function onTabsActivatedUpdateBadge() {
