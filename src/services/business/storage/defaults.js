@@ -24,7 +24,7 @@ export const DEFAULT_OPTIONS = {
   colorScheme: "system",
   allowBugTrackerReporting: true,
   import: {
-    sync: "false",
+    sync: false,
     mergeOptionsMode: "default",
   },
   pingUrl: false,

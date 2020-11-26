@@ -103,10 +103,16 @@ function useSaveConfig({ config, errorMessage, displaySaveInfo }) {
 
 function useSaveImportedConfig({ saveConfig, config }) {
   return (importedConfig) => {
-    const importConfig = importedConfig.options.import;
-    if (importConfig && importConfig.mergeOptionsMode) {
-      mergeOptions(importedConfig, config.value, importConfig.mergeOptionsMode);
-      importedConfig.options.import = importConfig;
+    let importConfigOptions = importedConfig.options;
+    if (importConfigOptions) {
+      const importConfig = importConfigOptions.import;
+      if (importConfig && importConfig.mergeOptionsMode) {
+        mergeOptions(importedConfig, config.value, importConfig.mergeOptionsMode);
+        importedConfig.options = {
+          ...importConfigOptions,
+          import: importConfig,
+        };
+      }
     }
     saveConfig(importedConfig);
   };
