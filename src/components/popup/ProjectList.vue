@@ -86,7 +86,7 @@ export default defineComponent({
     }
 
     .project-envs {
-      padding-top: 11px;
+      padding-top: 8px;
     }
 
     .project-btn-wrapper {

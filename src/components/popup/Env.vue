@@ -1,6 +1,6 @@
 <template>
   <button
-    class="list-button"
+    class="list-button env-button"
     :class="{
       selected: isSelected,
       'ping-ko': isStatusError === true,
@@ -11,7 +11,7 @@
     @click.exact="switchEnv(env)"
   >
     <span class="env-name">
-      {{ env.name || env.shortName }}
+      {{ envName }}
       <div class="domain" v-if="env.displayDomain && env.url">
         {{ hostname(env) }}
       </div>
@@ -65,8 +65,10 @@ export default defineComponent({
       usePingUrl(props.env.url, isStatusError);
     }
 
+    const shortName = (props.env.shortName || props.env.name).substring(0, 4);
     return {
       hostname: hostnameFromEnv,
+      envName: props.env.displayStyle === "grid" ? shortName : props.env.name || shortName,
       switchEnv,
       isStatusError,
     };
@@ -80,76 +82,77 @@ export default defineComponent({
   font-size: 0.75rem;
 }
 
-ul {
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+.list-button.env-button {
+  @at-root .style-grid & {
+    min-width: 5rem;
+    min-height: 4.5rem;
+    max-width: 5rem;
+    max-height: 4.5rem;
+    justify-content: space-evenly;
+    padding: 4px;
+  }
 
-  li {
-    display: flex;
-    list-style: none;
-    padding: 0;
+  &.ping-ok {
+    fill: rgba(var(--green));
 
-    + li {
-      padding-top: 10px;
+    @at-root .dark-mode & {
+      fill: rgba(var(--green-apple));
+    }
+  }
+
+  > .env-name {
+    flex: 1;
+
+    @at-root .style-grid & {
+      flex: initial;
+    }
+  }
+
+  &.selected,
+  &.ping-ko {
+    .selected-pill {
+      display: block;
+      border-radius: 50px;
+      height: 12px;
+      width: 12px;
+    }
+  }
+
+  &.ping-ko {
+    .selected-pill {
+      background-color: rgba(var(--ruby));
+
+      @at-root .dark-mode & {
+        background-color: rgba(var(--ruby));
+      }
+    }
+  }
+
+  &.selected {
+    border-left-color: rgba(var(--blue));
+    font-weight: bold;
+    background-color: rgba(var(--bg-grey));
+    border-left-width: 6px;
+
+    @at-root {
+      .style-grid & {
+        border-left-width: 1px;
+        border-left-color: rgba(var(--border-grey));
+        border-bottom-width: 6px;
+        border-bottom-color: rgba(var(--blue));
+      }
+
+      .dark-mode.style-grid & {
+        border-left-color: rgba(var(--black-1));
+      }
     }
 
-    .list-button {
-      &:hover {
-        @at-root .dark-mode & {
-          background-color: rgba(var(--black-1), 0.8);
-        }
-      }
+    @at-root .dark-mode & {
+      background-color: rgba(var(--black-3));
+    }
 
-      &.ping-ok {
-        fill: rgba(var(--green));
-
-        @at-root .dark-mode & {
-          fill: rgba(var(--green-apple));
-        }
-      }
-
-      > .env-name {
-        flex: 1;
-      }
-
-      &.selected,
-      &.ping-ko {
-        .selected-pill {
-          display: block;
-          border-radius: 50px;
-          height: 12px;
-          width: 12px;
-        }
-      }
-
-      &.ping-ko {
-        .selected-pill {
-          background-color: rgba(var(--ruby));
-
-          @at-root .dark-mode & {
-            background-color: rgba(var(--ruby));
-          }
-        }
-      }
-
-      &.selected {
-        border-left-color: rgba(var(--blue));
-        border-left-width: 7px;
-        padding-left: 8px;
-        font-weight: bold;
-        background-color: rgba(var(--bg-grey));
-
-        @at-root .dark-mode & {
-          background-color: rgba(var(--black-3));
-        }
-
-        .selected-pill {
-          background-color: rgba(var(--blue));
-        }
-      }
+    .selected-pill {
+      background-color: rgba(var(--blue));
     }
   }
 }

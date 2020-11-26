@@ -7,6 +7,13 @@
       data-intro="This is where you configure your global options. Some options can be overrode per environment."
     >
       <div class="left-col">
+        <div class="label-set" display-style>
+          <label :for="$id('display-style')">Display Style</label>
+          <select :id="$id('display-style')" v-model="displayStyle">
+            <option value="list">List</option>
+            <option value="grid">Grid</option>
+          </select>
+        </div>
         <div class="label-set" display-domain>
           <input :id="$id('display-domain')" type="checkbox" v-model="displayDomain" />
           <label :for="$id('display-domain')"> Display domain </label>
@@ -124,6 +131,7 @@ export default defineComponent({
       "colorScheme",
       "allowBugTrackerReporting",
       "pingUrl",
+      "displayStyle",
     ].reduce((acc, key) => {
       acc[key] = createComputed(
         () => mergedOptions.value[key],

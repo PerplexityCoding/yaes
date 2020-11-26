@@ -1,5 +1,9 @@
 <template>
-  <section v-if="loaded" class="popin" :class="{ 'dark-mode': darkMode }">
+  <section
+    v-if="loaded"
+    class="popin"
+    :class="{ 'dark-mode': darkMode, 'style-grid': config.options.displayStyle === 'grid' }"
+  >
     <header v-if="config.options.displayHeader !== false" class="header">
       <img src="assets/images/favicon-16x16.png" />
       <span> Yet Another Env Switcher </span>
@@ -190,6 +194,10 @@ export default defineComponent({
   min-width: 270px;
   display: flex;
   flex-direction: column;
+
+  @at-root .style-grid#{&} {
+    min-width: 272px;
+  }
 }
 
 .info {
@@ -202,7 +210,7 @@ export default defineComponent({
 }
 
 .body {
-  padding: 11px 7px;
+  padding: 12px 8px;
 }
 
 .switch-env-btn {
@@ -263,7 +271,7 @@ export default defineComponent({
   border-bottom: 1px solid rgba(var(--border-grey));
   background-color: rgba(var(--bg-grey));
   color: rgba(var(--fg-black));
-  padding: 7px;
+  padding: 8px;
   display: flex;
 
   > img {
@@ -286,7 +294,7 @@ export default defineComponent({
 .footer {
   border-top: 1px solid rgba(var(--border-grey));
   background-color: rgba(var(--bg-grey));
-  padding: 7px;
+  padding: 8px;
   display: flex;
   justify-content: space-between;
 

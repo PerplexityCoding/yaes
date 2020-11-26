@@ -28,4 +28,5 @@ export const DEFAULT_OPTIONS = {
     mergeOptionsMode: "default",
   },
   pingUrl: false,
+  displayStyle: "list",
 };

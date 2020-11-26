@@ -34,7 +34,7 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
 
     const labels = wrapper.findAll(".label-set");
     await waitFor();
-    expect(labels).toHaveLength(14);
+    expect(labels).toHaveLength(15);
 
     const hasAttribute = (label, attribute) => expect(label.attributes()[attribute]).toBe("");
     const isCheckbox = (label) => expect(label.find("input[type=checkbox]").exists()).toBe(true);
@@ -43,6 +43,10 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
 
     let i = 0;
     let label = "";
+
+    label = labels[i++];
+    hasAttribute(label, "display-style");
+    isSelect(label);
 
     label = labels[i++];
     hasAttribute(label, "display-domain");

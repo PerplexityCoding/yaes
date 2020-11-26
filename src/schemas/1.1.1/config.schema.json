@@ -170,6 +170,13 @@
         },
         "import": {
           "$ref": "#/definitions/import"
+        },
+        "displayStyle": {
+          "type": "string",
+          "enum": [
+            "list",
+            "grid"
+          ]
         }
       },
       "additionalProperties": false

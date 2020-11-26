@@ -1434,7 +1434,48 @@ var validate = (function() {
                                   if (errors === errs_1) {}
                                   var valid1 = errors === errs_1;
                                 }
-                                if (valid1) {}
+                                if (valid1) {
+                                  var data1 = data.displayStyle;
+                                  if (data1 === undefined) {
+                                    valid1 = true;
+                                  } else {
+                                    var errs_1 = errors;
+                                    if (typeof data1 !== "string") {
+                                      validate.errors = [{
+                                        keyword: 'type',
+                                        dataPath: (dataPath || '') + '.displayStyle',
+                                        schemaPath: '#/properties/displayStyle/type',
+                                        params: {
+                                          type: 'string'
+                                        },
+                                        message: 'should be string'
+                                      }];
+                                      return false;
+                                    }
+                                    var schema1 = validate.schema.properties.displayStyle.enum;
+                                    var valid1;
+                                    valid1 = false;
+                                    for (var i1 = 0; i1 < schema1.length; i1++)
+                                      if (equal(data1, schema1[i1])) {
+                                        valid1 = true;
+                                        break;
+                                      } if (!valid1) {
+                                      validate.errors = [{
+                                        keyword: 'enum',
+                                        dataPath: (dataPath || '') + '.displayStyle',
+                                        schemaPath: '#/properties/displayStyle/enum',
+                                        params: {
+                                          allowedValues: schema1
+                                        },
+                                        message: 'should be equal to one of the allowed values'
+                                      }];
+                                      return false;
+                                    } else {}
+                                    if (errors === errs_1) {}
+                                    var valid1 = errors === errs_1;
+                                  }
+                                  if (valid1) {}
+                                }
                               }
                             }
                           }
@@ -1514,6 +1555,10 @@ var validate = (function() {
       },
       "import": {
         "$ref": "#/definitions/import"
+      },
+      "displayStyle": {
+        "type": "string",
+        "enum": ["list", "grid"]
       }
     },
     "additionalProperties": false
@@ -2158,6 +2203,10 @@ validate.schema = {
         },
         "import": {
           "$ref": "#/definitions/import"
+        },
+        "displayStyle": {
+          "type": "string",
+          "enum": ["list", "grid"]
         }
       },
       "additionalProperties": false

@@ -45,52 +45,36 @@ export default defineComponent({
   font-size: 0.75rem;
 }
 
-ul {
+.env-list {
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
 
+  @at-root .style-grid & {
+    display: grid;
+    grid-template-columns: repeat(3, 5rem);
+    grid-template-rows: auto;
+    row-gap: 8px;
+    column-gap: 8px;
+  }
+
   li {
     display: flex;
     list-style: none;
     padding: 0;
 
-    + li {
-      padding-top: 10px;
+    @at-root {
+      .style-grid & {
+        justify-self: center;
+        padding-left: 0;
+        padding-top: 0;
+      }
     }
 
-    .list-button {
-      &:hover {
-        @at-root .dark-mode & {
-          background-color: rgba(var(--black-1), 0.8);
-        }
-      }
-
-      > .env-name {
-        flex: 1;
-      }
-
-      &.selected {
-        border-left-color: rgba(var(--blue));
-        border-left-width: 7px;
-        padding-left: 8px;
-        font-weight: bold;
-        background-color: rgba(var(--bg-grey));
-
-        @at-root .dark-mode & {
-          background-color: rgba(var(--black-3));
-        }
-
-        .selected-pill {
-          display: block;
-          border-radius: 50px;
-          height: 12px;
-          width: 12px;
-          background-color: rgba(var(--blue));
-        }
-      }
+    + li {
+      padding-top: 10px;
     }
   }
 }
