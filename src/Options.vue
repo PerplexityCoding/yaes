@@ -109,7 +109,7 @@ function useSaveImportedConfig({ saveConfig, config }) {
       if (importConfig && importConfig.mergeOptionsMode) {
         mergeOptions(importedConfig, config.value, importConfig.mergeOptionsMode);
         importedConfig.options = {
-          ...importConfigOptions,
+          ...importedConfig.options,
           import: importConfig,
         };
       }
