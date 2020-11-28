@@ -53,6 +53,7 @@ function asyncLoadSentry() {
         }
       });
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e);
     }
   }, 100);
@@ -82,6 +83,7 @@ function drainQueue(Sentry, logVueError) {
 
     queue.splice(0, queue.length);
   } catch (o_O) {
+    // eslint-disable-next-line no-console
     console.error(o_O);
   }
 }
@@ -96,6 +98,7 @@ export function queueVueGlobalErrorHandler(_app) {
         info,
       },
     });
+    // eslint-disable-next-line no-console
     console.error(err);
   };
 }
@@ -109,6 +112,7 @@ function addVueGlobalErrorHandler(logVueError) {
         info,
       });
     });
+    // eslint-disable-next-line no-console
     console.error(err);
   };
 }

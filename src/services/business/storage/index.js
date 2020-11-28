@@ -112,6 +112,7 @@ async function removeUnrefEnvs(config) {
 async function isValid(config) {
   const result = await validateSchema(config);
   if (!result.status) {
+    // eslint-disable-next-line no-console
     console.log(result.errors);
   }
   return result.status;
@@ -161,8 +162,10 @@ async function importConfig(data, importOptions) {
       return config;
     }
 
+    // eslint-disable-next-line no-console
     console.error(JSON.stringify(errors, null, 4));
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error(e);
   }
   return null;
