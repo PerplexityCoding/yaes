@@ -95,10 +95,15 @@ import CoreInput from "@/components/options/core/Input";
 import { defineComponent, computed, ref } from "vue";
 import deepmerge from "deepmerge";
 import { DEFAULT_OPTIONS } from "@/services/business/storage/defaults";
+import { mergeImportedConfig } from "@/services/business/bo/config";
 
 export default defineComponent({
   name: "ImportConfig",
   props: {
+    config: {
+      type: Object,
+      default: () => ({}),
+    },
     options: {
       type: Object,
       default: () => ({}),
@@ -124,15 +129,19 @@ export default defineComponent({
         resetErrors();
         importConfigLoader.value = true;
 
-        const config = await importFromUrl(configurationUrl.value, {
-          url: configurationUrl.value,
-          mergeOptionsMode: mergeOptionsMode.value,
-          sync: autoSync.value,
-        });
-        if (config) {
+        const importedConfig = await importFromUrl(configurationUrl.value);
+        if (importedConfig) {
+          const config = mergeImportedConfig(importedConfig, props.config, mergeOptionsMode.value);
+          config.options = config.options || {};
+          config.options.import = {
+            url: configurationUrl.value,
+            mergeOptionsMode: mergeOptionsMode.value,
+            sync: autoSync.value,
+          };
+
           context.emit("config-loaded", config);
         }
-        importUrlStatus.value = !!config;
+        importUrlStatus.value = !!importedConfig;
         importConfigLoader.value = false;
       }
     };

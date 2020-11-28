@@ -37,8 +37,9 @@
 
       <ImportConfig
         :options="config.options"
+        :config="config"
         @update:options="updateConfigOptions"
-        @config-loaded="saveImportedConfig"
+        @config-loaded="saveConfig"
         @download-config="downloadAsJson"
       />
     </section>
@@ -53,7 +54,6 @@ import EditorFormConfig from "@/components/options/envs/EditorFormConfig";
 import { downloadAsJson } from "@/services/utils";
 import { isDarkMode } from "@/services/business/utils";
 import introJs from "intro.js";
-import { mergeOptions } from "@/services/business/bo/config";
 
 async function useAsyncSetup(config, loadingError) {
   const { storedConfig, hasErrors } = await getOrInitConfig();
@@ -98,23 +98,6 @@ function useSaveConfig({ config, errorMessage, displaySaveInfo }) {
     setTimeout(() => {
       displaySaveInfo.value = false;
     }, 3000);
-  };
-}
-
-function useSaveImportedConfig({ saveConfig, config }) {
-  return (importedConfig) => {
-    let importConfigOptions = importedConfig.options;
-    if (importConfigOptions) {
-      const importConfig = importConfigOptions.import;
-      if (importConfig && importConfig.mergeOptionsMode) {
-        mergeOptions(importedConfig, config.value, importConfig.mergeOptionsMode);
-        importedConfig.options = {
-          ...importedConfig.options,
-          import: importConfig,
-        };
-      }
-    }
-    saveConfig(importedConfig);
   };
 }
 
@@ -170,7 +153,6 @@ export default defineComponent({
     const darkMode = useDarkMode(config);
 
     const saveConfig = useSaveConfig({ config, errorMessage, displaySaveInfo });
-    const saveImportedConfig = useSaveImportedConfig({ config, saveConfig });
     const updateConfigOptions = useUpdateConfigOptions({ config, saveConfig });
 
     return {
@@ -179,9 +161,8 @@ export default defineComponent({
       config,
       loadingError,
       darkMode,
-      downloadAsJson,
+      downloadAsJson: () => downloadAsJson(config.value),
       saveConfig,
-      saveImportedConfig,
       updateConfigOptions,
     };
   },

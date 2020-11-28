@@ -15,6 +15,7 @@ import {
   mergeOptionsDefault,
   mergeOptionsInEnv,
 } from "@/services/business/storage/utils";
+import { mergeImportedConfig } from "@/services/business/bo/config";
 
 async function migrateConfig(config) {
   let errors = null;
@@ -147,18 +148,13 @@ async function deleteEnvs(config, envs) {
   return false;
 }
 
-async function importConfig(data, importOptions) {
+async function importConfig(data) {
   try {
     const originalConfig = JSON.parse(data);
 
     const { errors, config } = await migrateConfig(originalConfig);
 
     if (!errors) {
-      if (importOptions) {
-        config.options.import = {
-          ...importOptions,
-        };
-      }
       return config;
     }
 
@@ -171,12 +167,12 @@ async function importConfig(data, importOptions) {
   return null;
 }
 
-async function importFromUrl(url, importOptions) {
+async function importFromUrl(url) {
   try {
     const response = await fetch(url);
     if (response) {
       const data = await response.text();
-      return await importConfig(data, importOptions);
+      return await importConfig(data);
     }
     return null;
   } catch (e) {
@@ -189,10 +185,23 @@ async function autoUpdate(config) {
   if (options) {
     const importOptions = options.import;
     if (importOptions && importOptions.sync && importOptions.url) {
-      const config = await importFromUrl(importOptions.url, importOptions);
+      let importedConfig = await importFromUrl(importOptions.url, importOptions);
 
-      if (config) {
-        await setConfig(config);
+      const importedConfigUrl =
+        importedConfig.options && importedConfig.options.import
+          ? importedConfig.options.import.url
+          : null;
+
+      importedConfig = mergeImportedConfig(importedConfig, config, importOptions.mergeOptionsMode);
+      const importedConfigOptions = (importedConfig.options = importedConfig.options || {});
+
+      importedConfigOptions.import = {
+        ...importOptions,
+        url: importedConfigUrl || importOptions.url,
+      };
+
+      if (importedConfig) {
+        await setConfig(importedConfig);
       }
     }
   }
@@ -205,6 +214,6 @@ export {
   migrateConfig,
   deleteEnvs,
   autoUpdate,
-  importConfig,
   importFromUrl,
+  importConfig,
 };

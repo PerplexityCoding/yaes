@@ -100,6 +100,14 @@ export function getEnvById(config, envId) {
   return config.envs.find((env) => env.id === envId);
 }
 
+export function mergeImportedConfig(importedConfig, config, mode) {
+  let importConfigOptions = importedConfig.options;
+  if (importConfigOptions) {
+    mergeOptions(importedConfig, config, mode);
+  }
+  return importedConfig;
+}
+
 export function mergeOptions(destConfig, currentConfig, mode) {
   destConfig.options = mergeGlobalOptions(destConfig.options, currentConfig.options, mode);
   mergeEnvOptions(destConfig, currentConfig, mode);
