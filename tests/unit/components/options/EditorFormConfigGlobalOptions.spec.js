@@ -34,7 +34,7 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
 
     const labels = wrapper.findAll(".label-set");
     await waitFor();
-    expect(labels).toHaveLength(15);
+    expect(labels).toHaveLength(16);
 
     const hasAttribute = (label, attribute) => expect(label.attributes()[attribute]).toBe("");
     const isCheckbox = (label) => expect(label.find("input[type=checkbox]").exists()).toBe(true);
@@ -74,6 +74,10 @@ describe("EditorFormConfigGlobalOptions.vue", () => {
 
     label = labels[i++];
     hasAttribute(label, "ping-url");
+    isCheckbox(label);
+
+    label = labels[i++];
+    hasAttribute(label, "switch-env-projects");
     isCheckbox(label);
 
     label = labels[i++];

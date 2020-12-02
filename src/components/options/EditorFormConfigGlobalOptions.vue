@@ -58,6 +58,14 @@
           <input :id="$id('ping-url')" type="checkbox" v-model="pingUrl" />
           <label :for="$id('ping-url')"> Check if environment url is up </label>
         </div>
+        <div class="label-set" switch-env-projects>
+          <input
+            :id="$id('switch-env-projects')"
+            type="checkbox"
+            v-model="switchEnvBetweenProjects"
+          />
+          <label :for="$id('switch-env-projects')"> Switch environments between projects </label>
+        </div>
       </div>
 
       <fieldset class="right-col">
@@ -132,6 +140,7 @@ export default defineComponent({
       "allowBugTrackerReporting",
       "pingUrl",
       "displayStyle",
+      "switchEnvBetweenProjects",
     ].reduce((acc, key) => {
       acc[key] = createComputed(
         () => mergedOptions.value[key],

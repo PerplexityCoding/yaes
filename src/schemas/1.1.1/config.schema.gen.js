@@ -1474,7 +1474,27 @@ var validate = (function() {
                                     if (errors === errs_1) {}
                                     var valid1 = errors === errs_1;
                                   }
-                                  if (valid1) {}
+                                  if (valid1) {
+                                    if (data.switchEnvBetweenProjects === undefined) {
+                                      valid1 = true;
+                                    } else {
+                                      var errs_1 = errors;
+                                      if (typeof data.switchEnvBetweenProjects !== "boolean") {
+                                        validate.errors = [{
+                                          keyword: 'type',
+                                          dataPath: (dataPath || '') + '.switchEnvBetweenProjects',
+                                          schemaPath: '#/properties/switchEnvBetweenProjects/type',
+                                          params: {
+                                            type: 'boolean'
+                                          },
+                                          message: 'should be boolean'
+                                        }];
+                                        return false;
+                                      }
+                                      var valid1 = errors === errs_1;
+                                    }
+                                    if (valid1) {}
+                                  }
                                 }
                               }
                             }
@@ -1559,6 +1579,10 @@ var validate = (function() {
       "displayStyle": {
         "type": "string",
         "enum": ["list", "grid"]
+      },
+      "switchEnvBetweenProjects": {
+        "type": "boolean",
+        "default": true
       }
     },
     "additionalProperties": false
@@ -2207,6 +2231,10 @@ validate.schema = {
         "displayStyle": {
           "type": "string",
           "enum": ["list", "grid"]
+        },
+        "switchEnvBetweenProjects": {
+          "type": "boolean",
+          "default": true
         }
       },
       "additionalProperties": false

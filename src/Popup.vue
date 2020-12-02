@@ -35,7 +35,10 @@
         <ProjectList
           :projects="config.projects"
           :envs="config.envs"
-          @redirect-env="(o) => changeBaseUrlEnv(o, false)"
+          @redirect-env="
+            (o) =>
+              changeBaseUrlEnv(o, !!config.currentEnv && config.options.switchEnvBetweenProjects)
+          "
         />
 
         <button v-if="config.currentEnv" class="switch-env-btn" @click="changeMode('envs')">

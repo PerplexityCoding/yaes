@@ -177,6 +177,10 @@
             "list",
             "grid"
           ]
+        },
+        "switchEnvBetweenProjects": {
+          "type": "boolean",
+          "default": true
         }
       },
       "additionalProperties": false

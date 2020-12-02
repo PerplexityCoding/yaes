@@ -29,4 +29,5 @@ export const DEFAULT_OPTIONS = {
   },
   pingUrl: false,
   displayStyle: "list",
+  switchEnvBetweenProjects: true,
 };
