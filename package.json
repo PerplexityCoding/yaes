@@ -14,7 +14,6 @@
     "build:content-script": "vue-cli-service build --target lib --name content-script --dest dist/js --no-clean src/content-script.js",
     "build:content-script:watch": "npm run build:content-script -- --mode development --watch",
     "build:schemas": "ajv compile -s src/schemas/1.1.1/config.schema.json -o src/schemas/1.1.1/config.schema.gen.js",
-    "dev": "bash tools/launch-dev.sh",
     "jest": "jest",
     "prepare:bundle": "rm -rf build/ && npm run build && cd dist/ && rm ./js/*.js.map",
     "bundle": "npm run prepare:bundle && npm run bundle:standard && rm -rf dist/",
