@@ -45,13 +45,6 @@ module.exports = {
       filename: "options.html",
       chunks: ["chunk-options-vendors", "options"],
     },
-    "options-privacy": {
-      title: "YAES - Options",
-      entry: "src/options.js",
-      template: "public/options-privacy.html",
-      filename: "options-privacy.html",
-      chunks: ["chunk-options-vendors", "options"],
-    },
     content: {
       title: "YAES - Background Page",
       entry: "src/background.js",
@@ -72,7 +65,7 @@ module.exports = {
         options: {
           name: `chunk-options-vendors`,
           priority: -11,
-          chunks: (chunk) => chunk.name === "options" || chunk.name === "options-privacy",
+          chunks: (chunk) => chunk.name === "options",
           test: /[\\/]node_modules[\\/]/,
           enforce: true,
         },
