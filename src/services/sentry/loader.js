@@ -6,32 +6,35 @@ let app = null;
 // Store reference to the old `onerror` handler and override it with our own function
 // that will just push exceptions to the queue and call through old handler if we found one
 
-const _oldOnerror = window["onerror"];
-window["onerror"] = function () {
+let isWindowContext = typeof window !== "undefined";
+let globalThis = isWindowContext ? window : self;
+
+const _oldOnerror = globalThis["onerror"];
+globalThis["onerror"] = function () {
   // Use keys as "data type" to save some characters"
   queue.push({
     e: [].slice.call(arguments),
   });
 
-  if (_oldOnerror) _oldOnerror.apply(window, arguments);
+  if (_oldOnerror) _oldOnerror.apply(globalThis, arguments);
 };
 
 // Do the same store/queue/call operations for `onunhandledrejection` event
-const _oldOnunhandledrejection = window["onunhandledrejection"];
-window["onunhandledrejection"] = function (exception) {
+const _oldOnunhandledrejection = globalThis["onunhandledrejection"];
+globalThis["onunhandledrejection"] = function (exception) {
   queue.push({
     p: exception.reason,
   });
-  if (_oldOnunhandledrejection) _oldOnunhandledrejection.apply(window, arguments);
+  if (_oldOnunhandledrejection) _oldOnunhandledrejection.apply(globalThis, arguments);
 };
 
 export async function loadSentry() {
   const isAllowed = await isTrackingAllowed();
   if (isAllowed) {
-    if (document.readyState === "complete") {
+    if (isWindowContext && document.readyState === "complete") {
       asyncLoadSentry();
     } else {
-      window.addEventListener("load", () => {
+      globalThis.addEventListener("load", () => {
         asyncLoadSentry();
       });
     }

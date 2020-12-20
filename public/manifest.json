@@ -8,7 +8,7 @@
     "tabs",
     "storage"
   ],
-  "browser_action": {
+  "action": {
     "default_popup": "popup.html",
     "default_icon": {
       "16": "assets/images/favicon-16x16.png",
@@ -28,20 +28,19 @@
     "512": "assets/images/android-chrome-512x512.png"
   },
   "background": {
-    "page": "background.html",
-    "persistent": false
+    "service_worker": "background.js"
   },
   "content_scripts": [
     {
       "matches": [
         "<all_urls>"
       ],
-      "js": ["js/content-script.umd.js"]
+      "js": ["js/content-script/content-script.umd.js"]
     }
   ],
   "options_ui": {
     "page": "options.html",
     "open_in_tab": true
   },
-  "manifest_version": 2
+  "manifest_version": 3
 }

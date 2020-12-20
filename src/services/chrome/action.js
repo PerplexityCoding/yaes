@@ -1,12 +1,12 @@
 export function setBadgeBackgroundColor(tabId, color) {
-  return window.chrome.browserAction.setBadgeBackgroundColor({
+  return chrome.action.setBadgeBackgroundColor({
     tabId,
     color,
   });
 }
 
 export function setBadgeText(tabId, text) {
-  window.chrome.browserAction.setBadgeText({
+  chrome.action.setBadgeText({
     tabId,
     text,
   });

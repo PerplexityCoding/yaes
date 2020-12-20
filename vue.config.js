@@ -45,13 +45,6 @@ module.exports = {
       filename: "options.html",
       chunks: ["chunk-options-vendors", "options"],
     },
-    content: {
-      title: "YAES - Background Page",
-      entry: "src/background.js",
-      template: "public/background.html",
-      filename: "background.html",
-      chunks: ["chunk-content-vendors", "content"],
-    },
   },
   configureWebpack: {
     devtool: isDevelopment ? "cheap-module-source-map" : "source-map",
@@ -73,13 +66,6 @@ module.exports = {
           name: `chunk-popup-vendors`,
           priority: -11,
           chunks: (chunk) => chunk.name === "popup",
-          test: /[\\/]node_modules[\\/]/,
-          enforce: true,
-        },
-        content: {
-          name: `chunk-content-vendors`,
-          priority: -11,
-          chunks: (chunk) => chunk.name === "content",
           test: /[\\/]node_modules[\\/]/,
           enforce: true,
         },

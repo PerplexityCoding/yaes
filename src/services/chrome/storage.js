@@ -1,6 +1,6 @@
 function storageGet(values, type = "sync") {
   return new Promise((resolve) => {
-    window.chrome.storage[type].get(values, (data) => {
+    chrome.storage[type].get(values, (data) => {
       // console.log(data);
       resolve(data);
     });
@@ -9,7 +9,7 @@ function storageGet(values, type = "sync") {
 
 function storageSet(data, type = "sync") {
   return new Promise((resolve) => {
-    window.chrome.storage[type].set(data, () => {
+    chrome.storage[type].set(data, () => {
       // console.log("Value is set to ", data);
       resolve(data);
     });
@@ -18,7 +18,7 @@ function storageSet(data, type = "sync") {
 
 function storageRemove(data, type = "sync") {
   return new Promise((resolve) => {
-    window.chrome.storage[type].remove(data, () => {
+    chrome.storage[type].remove(data, () => {
       // console.log("Remove Value ", data);
       resolve();
     });
@@ -27,7 +27,7 @@ function storageRemove(data, type = "sync") {
 
 function storageClear(data, type = "sync") {
   return new Promise((resolve) => {
-    window.chrome.storage[type].clear(() => {
+    chrome.storage[type].clear(() => {
       resolve();
     });
   });

@@ -2,6 +2,7 @@ module.exports = {
   root: true,
   env: {
     node: true,
+    webextensions: true,
   },
   extends: ["plugin:vue/vue3-strongly-recommended", "eslint:recommended", "@vue/prettier"],
   parserOptions: {
