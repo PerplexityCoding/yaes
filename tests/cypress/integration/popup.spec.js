@@ -103,7 +103,7 @@ context("Popup", () => {
 
   beforeEach(() => {
     cy.viewport(300, 700);
-    cy.visit("http://localhost:8080/popup.html");
+    cy.visit("http://localhost:8285/popup.html");
   });
 
   it("Should display empty message on empty state", () => {

@@ -39,7 +39,7 @@ context("Options", () => {
   }
 
   beforeEach(() => {
-    cy.visit("http://localhost:8080/options.html");
+    cy.visit("http://localhost:8285/options.html");
   });
 
   it("Should display tutorial on empty state", () => {

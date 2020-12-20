@@ -1,11 +1,11 @@
-import { setBadgeBackgroundColor, setBadgeText } from "@/services/chrome/browserAction";
+import { setBadgeBackgroundColor, setBadgeText } from "@/services/chrome/action";
 import { updateBadgeTextFromEnv } from "@/services/business/badge";
 import { getConfig } from "@/services/business/storage/get";
 import { waitFor } from "../../../../../src/services/utils";
 
 jest.mock("@/services/business/storage/get");
 jest.mock("@/services/chrome/storage");
-jest.mock("@/services/chrome/browserAction");
+jest.mock("@/services/chrome/action");
 
 describe("Badge", () => {
   const config = {
