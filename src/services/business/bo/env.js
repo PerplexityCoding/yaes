@@ -1,3 +1,5 @@
+import { mergeOptionsDefault, mergeOptionsInEnv } from "@/services/business/storage/utils";
+
 export function equalsEnv(env1, env2) {
   if (!env1 || !env2) {
     return false;
@@ -11,4 +13,15 @@ export function hostnameFromEnv(env) {
 
 export function isValidEnv(env) {
   return env && (env.name != null || env.shortName != null) && env.id != null;
+}
+
+export function getAllEnvsUrlWithRibbon(config) {
+  config = mergeOptionsDefault(config);
+  config = mergeOptionsInEnv(config);
+  return config.envs
+    .map((env) => {
+      const hasRibbon = env.displayRibbon !== false;
+      return hasRibbon ? env.url : null;
+    })
+    .filter((env) => !!env);
 }

@@ -54,6 +54,13 @@ import EditorFormConfig from "@/components/options/envs/EditorFormConfig";
 import { downloadAsJson } from "@/services/utils";
 import { isDarkMode } from "@/services/business/utils";
 import introJs from "intro.js";
+import {
+  requestPermissions,
+  getAllPermissions,
+  removePermissions,
+} from "@/services/chrome/permissions";
+import { getDiffPermissions } from "@/services/business/bo/permissions";
+import { getAllEnvsUrlWithRibbon } from "@/services/business/bo/env";
 
 async function useAsyncSetup(config, loadingError) {
   const { storedConfig, hasErrors } = await getOrInitConfig();
@@ -78,6 +85,25 @@ async function getOrInitConfig() {
   };
 }
 
+async function updatePermissions(config) {
+  const envs = getAllEnvsUrlWithRibbon(config.value);
+  const permissions = await getAllPermissions();
+
+  const diff = getDiffPermissions(permissions.origins, envs);
+
+  if (diff.toAdd.length > 0) {
+    requestPermissions({
+      origins: diff.toAdd,
+    });
+  }
+
+  if (diff.toRemove.length > 0) {
+    removePermissions({
+      origins: diff.toRemove,
+    });
+  }
+}
+
 function useSaveConfig({ config, errorMessage, displaySaveInfo }) {
   return async (savingConfig) => {
     if (!savingConfig) {
@@ -94,6 +120,8 @@ function useSaveConfig({ config, errorMessage, displaySaveInfo }) {
       return;
     }
     displaySaveInfo.value = true;
+
+    updatePermissions(config);
 
     setTimeout(() => {
       displaySaveInfo.value = false;

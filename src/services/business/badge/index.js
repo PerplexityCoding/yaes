@@ -1,10 +1,6 @@
-import { getCurrentEnv } from "@/services/business/url";
-import { getConfig } from "@/services/business/storage/get";
 import { setBadgeBackgroundColor, setBadgeText } from "@/services/chrome/action";
 
-export async function updateBadgeTextFromEnv(tabId, url) {
-  const { config } = await getConfig();
-  const env = getCurrentEnv(url, config);
+export async function updateBadgeTextFromEnv(tabId, env) {
   if (env != null && env.displayBadge !== false) {
     const color = env.badgeOptions.backgroundColor;
     setBadgeBackgroundColor(tabId, color);

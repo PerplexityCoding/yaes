@@ -10,7 +10,7 @@ export const DEFAULT_OPTIONS = {
   displayHeader: true,
   displayFooter: true,
   displaySeeProjectsLink: true,
-  displayRibbon: true,
+  displayRibbon: false,
   displayBadge: true,
   badgeOptions: {
     backgroundColor: "#2677c9",

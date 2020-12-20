@@ -6,7 +6,12 @@
   "permissions": [
     "declarativeContent",
     "tabs",
-    "storage"
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "*://*/*"
   ],
   "action": {
     "default_popup": "popup.html",
@@ -30,14 +35,6 @@
   "background": {
     "service_worker": "background.js"
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "*://*/*"
-      ],
-      "js": ["js/content-script/content-script.umd.js"]
-    }
-  ],
   "options_ui": {
     "page": "options.html",
     "open_in_tab": true

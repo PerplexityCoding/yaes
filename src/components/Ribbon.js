@@ -59,13 +59,15 @@ const ribbonH = ({ name, color, backgroundColor, position, type }) => `
 `;
 
 function renderRibbon(config, env) {
-  injectRibbonStyle(ribbonCss);
-  renderRibbonHtml(config, env);
+  if (!document.getElementById("yaes-ribbon")) {
+    injectRibbonStyle(ribbonCss);
+    renderRibbonHtml(config, env);
+  }
 }
 
 function renderRibbonHtml(config, env) {
   const elem = document.createElement("div");
-  elem.setAttribute("id", "ribbon");
+  elem.setAttribute("id", "yaes-ribbon");
 
   const ribbonOptions = env.ribbonOptions;
   const backgroundColor = ribbonOptions.backgroundColor;
