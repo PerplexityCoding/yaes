@@ -22,3 +22,11 @@ export function getAllPermissions() {
     chrome.permissions.getAll(resolve);
   });
 }
+
+export function onAddedPermissions(fn) {
+  return chrome.permissions.onAdded.addListener(fn);
+}
+
+export function onRemovedPermissions(fn) {
+  return chrome.permissions.onRemoved.addListener(fn);
+}

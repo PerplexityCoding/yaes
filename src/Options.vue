@@ -8,6 +8,31 @@
         YAES - Configuration Page
       </h1>
 
+      <div v-if="permissionsDiff.needUpdate" class="box-elevation box-permissions">
+        It seems that some permissions are not up to date to run the extension at its full features.
+        <br />
+        Let's fix it right now by clicking on the following button.
+
+        <div v-if="permissionsDiff.toAdd.length > 0">
+          <br />
+          We would like you to accept adding "Host Permission" on the following domain(s):
+          <ul>
+            <li v-for="(item, i) of permissionsDiff.toAdd" :key="`perm-${i}`">{{ item }}</li>
+          </ul>
+        </div>
+        <div v-if="permissionsDiff.toRemove.length > 0">
+          <br />
+          We no longer need "Host Permission" on the following domain(s), so we can remove it for
+          you:
+          <ul>
+            <li v-for="(item, i) of permissionsDiff.toRemove" :key="`perm-${i}`">{{ item }}</li>
+          </ul>
+        </div>
+        <CoreButton elevation class="grant-permission" @click="updateAllPermissions">
+          Update Permissions
+        </CoreButton>
+      </div>
+
       <div class="title">
         <h2>
           <span> Environments </span>
@@ -58,9 +83,12 @@ import {
   requestPermissions,
   getAllPermissions,
   removePermissions,
+  onAddedPermissions,
+  onRemovedPermissions,
 } from "@/services/chrome/permissions";
 import { getDiffPermissions } from "@/services/business/bo/permissions";
 import { getAllEnvsUrlWithRibbon } from "@/services/business/bo/env";
+import CoreButton from "@/components/options/core/Button";
 
 async function useAsyncSetup(config, loadingError) {
   const { storedConfig, hasErrors } = await getOrInitConfig();
@@ -74,6 +102,18 @@ async function useAsyncSetup(config, loadingError) {
   }
 }
 
+async function usePermissions(permissions) {
+  const reloadPermissions = async () => (permissions.value = await getAllPermissions());
+  reloadPermissions();
+  onAddedPermissions(() => {
+    reloadPermissions();
+  });
+  onRemovedPermissions(() => {
+    reloadPermissions();
+  });
+  return {};
+}
+
 async function getOrInitConfig() {
   const { config, errors } = await getFixConfig({
     mergeOptions: false,
@@ -85,11 +125,18 @@ async function getOrInitConfig() {
   };
 }
 
-async function updatePermissions(config) {
-  const envs = getAllEnvsUrlWithRibbon(config.value);
-  const permissions = await getAllPermissions();
+function getConfigPermissionsDiff(config, permissions) {
+  if (config.value == null || permissions.value == null) {
+    return null;
+  }
 
-  const diff = getDiffPermissions(permissions.origins, envs);
+  const envs = getAllEnvsUrlWithRibbon(config.value);
+  const res = getDiffPermissions(permissions.value.origins, envs);
+  return res;
+}
+
+async function updatePermissions(config, permissions) {
+  const diff = await getConfigPermissionsDiff(config, permissions);
 
   if (diff.toAdd.length > 0) {
     requestPermissions({
@@ -104,7 +151,7 @@ async function updatePermissions(config) {
   }
 }
 
-function useSaveConfig({ config, errorMessage, displaySaveInfo }) {
+function useSaveConfig({ config, errorMessage, displaySaveInfo, permissions }) {
   return async (savingConfig) => {
     if (!savingConfig) {
       return;
@@ -121,7 +168,7 @@ function useSaveConfig({ config, errorMessage, displaySaveInfo }) {
     }
     displaySaveInfo.value = true;
 
-    updatePermissions(config);
+    updatePermissions(config, permissions);
 
     setTimeout(() => {
       displaySaveInfo.value = false;
@@ -169,18 +216,21 @@ export default defineComponent({
   components: {
     EditorFormConfig,
     ImportConfig,
+    CoreButton,
   },
   setup() {
     const config = ref(null);
     const loadingError = ref(false);
     const errorMessage = ref(null);
     const displaySaveInfo = ref(false);
+    const permissions = ref(null);
 
+    usePermissions(permissions);
     useAsyncSetup(config, loadingError);
 
     const darkMode = useDarkMode(config);
 
-    const saveConfig = useSaveConfig({ config, errorMessage, displaySaveInfo });
+    const saveConfig = useSaveConfig({ config, errorMessage, displaySaveInfo, permissions });
     const updateConfigOptions = useUpdateConfigOptions({ config, saveConfig });
 
     return {
@@ -192,6 +242,8 @@ export default defineComponent({
       downloadAsJson: () => downloadAsJson(config.value),
       saveConfig,
       updateConfigOptions,
+      permissionsDiff: computed(() => getConfigPermissionsDiff(config, permissions)),
+      updateAllPermissions: () => updatePermissions(config, permissions),
     };
   },
 });
@@ -434,6 +486,23 @@ fieldset {
     @at-root .dark-mode & {
       color: rgba(var(--green-apple));
       fill: rgba(var(--green-apple));
+    }
+  }
+
+  .box-permissions {
+    margin-top: 16px;
+    font-size: 0.9rem;
+    color: white;
+    background-color: rgba(var(--green-2));
+
+    ul {
+      margin-bottom: 0;
+    }
+
+    .grant-permission {
+      margin-top: 16px;
+      color: black;
+      background-color: rgba(var(--green-apple));
     }
   }
 
