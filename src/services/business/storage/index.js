@@ -149,9 +149,15 @@ async function deleteEnvs(config, envs) {
 }
 
 async function importConfig(data) {
+  let originalConfig;
   try {
-    const originalConfig = JSON.parse(data);
+    originalConfig = JSON.parse(data);
+  } catch (e) {
+    // known case: this is not a json -> no need to log
+    return null;
+  }
 
+  try {
     const { errors, config } = await migrateConfig(originalConfig);
 
     if (!errors) {
@@ -176,6 +182,10 @@ async function importFromUrl(url) {
     }
     return null;
   } catch (e) {
+    if (e.message !== "Failed to fetch") {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
     return null;
   }
 }
@@ -187,21 +197,27 @@ async function autoUpdate(config) {
     if (importOptions && importOptions.sync && importOptions.url) {
       let importedConfig = await importFromUrl(importOptions.url, importOptions);
 
-      const importedConfigUrl =
-        importedConfig.options && importedConfig.options.import
-          ? importedConfig.options.import.url
-          : null;
-
-      importedConfig = mergeImportedConfig(importedConfig, config, importOptions.mergeOptionsMode);
-      const importedConfigOptions = (importedConfig.options = importedConfig.options || {});
-
-      importedConfigOptions.import = {
-        ...importOptions,
-        url: importedConfigUrl || importOptions.url,
-      };
-
       if (importedConfig) {
-        await setConfig(importedConfig);
+        const importedConfigUrl =
+          importedConfig.options && importedConfig.options.import
+            ? importedConfig.options.import.url
+            : null;
+
+        importedConfig = mergeImportedConfig(
+          importedConfig,
+          config,
+          importOptions.mergeOptionsMode
+        );
+        if (importedConfig) {
+          const importedConfigOptions = (importedConfig.options = importedConfig.options || {});
+
+          importedConfigOptions.import = {
+            ...importOptions,
+            url: importedConfigUrl || importOptions.url,
+          };
+
+          await setConfig(importedConfig);
+        }
       }
     }
   }
