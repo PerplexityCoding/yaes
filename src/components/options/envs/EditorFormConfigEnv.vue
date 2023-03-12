@@ -185,13 +185,13 @@
 
 <script>
 import deepmerge from "deepmerge";
-import EditorFormRibbon from "@/components/options/form/EditorFormRibbon";
-import EditorFormBadge from "@/components/options/form/EditorFormBadge";
+import EditorFormRibbon from "@/components/options/form/EditorFormRibbon.vue";
+import EditorFormBadge from "@/components/options/form/EditorFormBadge.vue";
 import { removeEmptyString, removeUndefined } from "@/services/utils";
 import { DEFAULT_OPTIONS } from "@/services/business/storage/defaults";
-import ConfirmationDeleteButton from "@/components/options/core/ConfirmationDeleteButton";
-import CoreButton from "@/components/options/core/Button";
-import CoreInput from "@/components/options/core/Input";
+import ConfirmationDeleteButton from "@/components/options/core/ConfirmationDeleteButton.vue";
+import CoreButton from "@/components/options/core/Button.vue";
+import CoreInput from "@/components/options/core/Input.vue";
 import { useForm, useField } from "vee-validate";
 
 import { defineComponent, computed, ref } from "vue";

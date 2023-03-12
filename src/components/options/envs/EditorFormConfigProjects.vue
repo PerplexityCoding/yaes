@@ -37,9 +37,9 @@
 </template>
 
 <script>
-import EditorFormConfigProject from "@/components/options/envs/EditorFormConfigProject";
+import EditorFormConfigProject from "@/components/options/envs/EditorFormConfigProject.vue";
 import { updateSortableProjects } from "@/services/business/ui";
-import CoreButton from "@/components/options/core/Button";
+import CoreButton from "@/components/options/core/Button.vue";
 import { defineComponent, onMounted, computed } from "vue";
 
 export default defineComponent({

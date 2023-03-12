@@ -14,7 +14,7 @@
 <script>
 import { ref, defineComponent } from "vue";
 import { isValidProject } from "@/services/business/bo/project";
-import Project from "./Project";
+import Project from "./Project.vue";
 import { isValidEnv } from "@/services/business/bo/env";
 import { arrayValidator } from "@/services/utils";
 

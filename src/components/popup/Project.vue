@@ -23,8 +23,8 @@
 
 <script>
 import { defineComponent, computed } from "vue";
-import EnvList from "./EnvList";
-import ArrowRightIcon from "../icons/ArrowRightIcon";
+import EnvList from "./EnvList.vue";
+import ArrowRightIcon from "../icons/ArrowRightIcon.vue";
 import { isValidProject, mapProjectEnvs } from "@/services/business/bo/project";
 import { isValidEnv } from "@/services/business/bo/env";
 import { arrayValidator } from "@/services/utils";

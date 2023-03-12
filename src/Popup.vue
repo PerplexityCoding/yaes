@@ -5,7 +5,7 @@
     :class="{ 'dark-mode': darkMode, 'style-grid': config.options.displayStyle === 'grid' }"
   >
     <header v-if="config.options.displayHeader !== false" class="header">
-      <img src="assets/images/favicon-16x16.png" />
+      <img src="/assets/images/favicon-16x16.png" />
       <span> Yet Another Env Switcher </span>
     </header>
     <section class="body">
@@ -59,15 +59,15 @@
 
 <script>
 import { defineComponent, computed, ref } from "vue";
-import EnvList from "./components/popup/EnvList";
-import ProjectList from "./components/popup/ProjectList";
-import ArrowRightIcon from "./components/icons/ArrowRightIcon";
+import EnvList from "./components/popup/EnvList.vue";
+import ProjectList from "./components/popup/ProjectList.vue";
+import ArrowRightIcon from "./components/icons/ArrowRightIcon.vue";
 
 import { getCurrentTab, openChromeUrl, openOptionsPage } from "./services/chrome/tabs";
 import { switchBaseUrl, getCurrentEnv } from "./services/business/url";
 import { getConfig } from "./services/business/storage/get";
-import { isDarkMode } from "@/services/business/utils";
-import { findProjectByEnvId, mapProjectEnvs } from "@/services/business/bo/project";
+import { isDarkMode } from "./services/business/utils";
+import { findProjectByEnvId, mapProjectEnvs } from "./services/business/bo/project";
 
 function changeBaseUrlEnv(currentTab) {
   return async ({ env, newTab }, switchOption) => {
@@ -150,8 +150,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "@/styles/variables.scss";
-@import "@/styles/icons.scss";
+@import "./styles/variables.css";
+@import "./styles/icons.css";
 
 .list-button {
   appearance: none;

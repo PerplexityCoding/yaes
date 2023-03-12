@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import ColorPicker from "@/components/options/core/ColorPicker";
+import ColorPicker from "@/components/options/core/ColorPicker.vue";
 
 import { defineComponent, computed } from "vue";
 import { createComputedFactory } from "@/services/business/ui";

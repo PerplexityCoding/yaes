@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import Env from "./Env";
+import Env from "./Env.vue";
 import { defineComponent } from "vue";
 import { equalsEnv, isValidEnv } from "@/services/business/bo/env";
 
