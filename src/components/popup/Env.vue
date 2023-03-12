@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import ArrowRightIcon from "../icons/ArrowRightIcon";
+import ArrowRightIcon from "../icons/ArrowRightIcon.vue";
 import { defineComponent, ref } from "vue";
 import { hostnameFromEnv, isValidEnv } from "@/services/business/bo/env";
 

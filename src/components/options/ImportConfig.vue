@@ -90,8 +90,8 @@
 
 <script>
 import { importConfig as importConfigService, importFromUrl } from "@/services/business/storage";
-import CoreButton from "@/components/options/core/Button";
-import CoreInput from "@/components/options/core/Input";
+import CoreButton from "@/components/options/core/Button.vue";
+import CoreInput from "@/components/options/core/Input.vue";
 import { defineComponent, computed, ref } from "vue";
 import deepmerge from "deepmerge";
 import { DEFAULT_OPTIONS } from "@/services/business/storage/defaults";
@@ -205,7 +205,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
+@import "@/styles/variables.css";
 
 .loader {
   margin-left: 4px;

@@ -47,9 +47,9 @@
 </template>
 
 <script>
-import EditorFormConfigEnv from "@/components/options/envs/EditorFormConfigEnv";
-import EditorFormConfigProjects from "@/components/options/envs/EditorFormConfigProjects";
-import EditorFormConfigGlobalOptions from "@/components/options/EditorFormConfigGlobalOptions";
+import EditorFormConfigEnv from "@/components/options/envs/EditorFormConfigEnv.vue";
+import EditorFormConfigProjects from "@/components/options/envs/EditorFormConfigProjects.vue";
+import EditorFormConfigGlobalOptions from "@/components/options/EditorFormConfigGlobalOptions.vue";
 import {
   deleteEnv as servicesDeleteEnv,
   updateEnv as servicesUpdateEnv,

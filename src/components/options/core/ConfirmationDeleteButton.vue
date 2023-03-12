@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import CoreButton from "@/components/options/core/Button";
+import CoreButton from "@/components/options/core/Button.vue";
 
 import { defineComponent } from "vue";
 

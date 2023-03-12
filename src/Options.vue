@@ -49,8 +49,8 @@
 <script>
 import { defineComponent, ref, computed, watch } from "vue";
 import { getFixConfig, setConfig } from "./services/business/storage";
-import ImportConfig from "@/components/options/ImportConfig";
-import EditorFormConfig from "@/components/options/envs/EditorFormConfig";
+import ImportConfig from "@/components/options/ImportConfig.vue";
+import EditorFormConfig from "@/components/options/envs/EditorFormConfig.vue";
 import { downloadAsJson } from "@/services/utils";
 import { isDarkMode } from "@/services/business/utils";
 import introJs from "intro.js";
@@ -170,9 +170,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "@/styles/variables.scss";
-@import "@/styles/transition.scss";
-@import "@/styles/loader.scss";
+@import "./styles/variables.css";
+@import "./styles/transition.css";
+@import "./styles/loader.css";
 
 body {
   &.dark-mode {

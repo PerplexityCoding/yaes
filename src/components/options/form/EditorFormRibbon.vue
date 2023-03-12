@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import ColorPicker from "@/components/options/core/ColorPicker";
+import ColorPicker from "@/components/options/core/ColorPicker.vue";
 import { defineComponent } from "vue";
 import { createComputedFactory } from "@/services/business/ui";
 import upperFirst from "lodash/upperFirst";

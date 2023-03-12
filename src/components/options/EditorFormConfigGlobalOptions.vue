@@ -96,10 +96,10 @@
 <script>
 import deepmerge from "deepmerge";
 import { createComputedFactory } from "@/services/business/ui";
-import EditorFormRibbon from "@/components/options/form/EditorFormRibbon";
-import EditorFormBadge from "@/components/options/form/EditorFormBadge";
+import EditorFormRibbon from "@/components/options/form/EditorFormRibbon.vue";
+import EditorFormBadge from "@/components/options/form/EditorFormBadge.vue";
 import { DEFAULT_OPTIONS } from "@/services/business/storage/defaults";
-import CoreButton from "@/components/options/core/Button";
+import CoreButton from "@/components/options/core/Button.vue";
 import { defineComponent, ref, computed } from "vue";
 
 export default defineComponent({
